@@ -1,8 +1,3 @@
 html {
   background: #fff;
 }
-
-.backfaceVisibility {
-  -webkit-backface-visibility: visible;
-  backface-visibility: visible;
-}
