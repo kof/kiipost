@@ -13,7 +13,11 @@ require.config({
         inherits: '../lib/inherits/inherits',
         iscroll: '../lib/iscroll/build',
         controller: '../lib/backbone.controller/backbone.controller',
-        underscore: '../lib/underscore/underscore'
+        underscore: '../lib/underscore/underscore',
+        'backbone.controller': '../lib/backbone.controller/backbone.controller',
+        mustache: '../lib/hogan.js/hogan.js',
+        'images-loader': '../lib/images-loader/build/ImagesLoader',
+        multiline: '../lib/multiline/multiline'
     },
     packages: [
 

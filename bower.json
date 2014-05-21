@@ -34,6 +34,7 @@
     "backbone": "1.1.2",
     "iscroll": "~5.1.1",
     "backbone.controller": "*",
-    "underscore": "~1.6.0"
+    "underscore": "~1.6.0",
+    "images-loader": "~0.1.1"
   }
 }

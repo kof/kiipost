@@ -1,21 +1,18 @@
 define(function(require, exports, module) {
 'use strict'
 
-var $ = require('jquery'),
-    Backbone = require('backbone'),
-    mustache = require('mustache'),
-    inherits = require('inherits'),
-    _ = require('underscore'),
-    IScroll = require('iscroll'),
-    ImagesLoder = require('images-loader/index')
+var $ = require('jquery')
+var Backbone = require('backbone')
+var mustache = require('mustache')
+var inherits = require('inherits')
+var _ = require('underscore')
+var IScroll = require('iscroll/iscroll-infinite')
+var ImagesLoder = require('images-loader')
 
-var conf = require('conf'),
-    app = require('app'),
-    log = require('log'),
-    dataset = require('dataset/index'),
-    elementsMap = require('jquery.elementsMap')
+var dataset = require('modules/dataset/index')
+var elementsMap = require('modules/jquery-elements-map/jquery.ElementsMap')
 
-var streamTpl = mustache.compile(require('stream/client/templates/stream.html'))
+var streamTpl = mustache.compile(require('../templates/stream.html'))
 
 /**
  * Stream constructor.
@@ -30,8 +27,6 @@ function Stream(options) {
         'beforehide.ipanel': '_onBeforeHide',
         'show.ipanel': '_onShow',
         'tap .js-tag': '_onAddTag',
-        'tap .js-list-item': '_onItemSelect',
-        'mouseover .js-list-item': '_onItemHover',
         'tapdown .js-open': '_onOpenExternal',
         'tapdown .js-preview': '_onPreview'
     }
@@ -77,11 +72,6 @@ module.exports = Stream
  */
 Stream.prototype.initialize = function() {
     this.listenTo(this.collection, 'sync', this._onSync)
-    this.listenTo(app.collections.tags, 'change add remove', this._onTagsChange)
-    this.listenTo(app.models.settings, 'change:sort', this._onSortChange)
-    this.listenTo(app.models.settings, 'change:since', this._onSinceChange)
-    this.listenTo(app.models.settings, 'change:view', this._onViewChange)
-    this.listenTo(this, 'itemSelect', this._onItemSelect)
 }
 
 /**
@@ -462,35 +452,6 @@ Stream.prototype._onViewChange = function(settings, view, options) {
     this._setOption('view', view)
 }
 
-/**
- * On item selected.
- *
- * @param {Event} e
- * @api private
- */
-Stream.prototype._onItemSelect = function(e) {
-    var el = e.currentTarget,
-        model
-
-    if (this._scrolling) return
-
-    e.preventDefault()
-    model = this.collection.get(el.id)
-    if (model) this._select(el, model)
-}
-
-/**
- * On item hover.
- *
- * @param {Event} e
- * @api private
- */
-Stream.prototype._onItemHover = function(e) {
-    if (this._scrolling) return
-    e.preventDefault()
-    this.model = null
-    this.trigger('itemSelect', e)
-}
 
 /**
  * Open post in new window.
@@ -516,48 +477,5 @@ Stream.prototype._onPreview = function(e) {
     this.trigger('open', this.model)
 }
 
-/**
- * Open dialog to add tag and add it.
- *
- * @param {Event} e
- * @api private
- */
-Stream.prototype._onAddTag = function(e) {
-    var $elem = $(e.currentTarget),
-        name
-
-    e.preventDefault()
-
-    if (this._scrolling ||
-        !this.model ||
-        this.model.id != $elem.data('itemId')) return
-
-    e.stopPropagation()
-
-    // Tags user has already added.
-    if (!$elem.hasClass('add')) return
-
-    name = $elem.text().trim()
-
-    app.views.alert
-        .show({title: 'Tag ' + name  + ' will be added to your tags'})
-        .once('close', function(button) {
-            var firstTag, newTag
-
-            if (button != 'ok') return
-            this.loading(true)
-            firstTag = this.model.get('tags')[0]
-            newTag = {
-                name: name.substr(1),
-                catId: firstTag.catId,
-                color: firstTag.color
-            }
-            app.views.tags.add(newTag, function(err, model) {
-                this.loading(false)
-                if (err) return log(err, {level: 'trace'})
-                $elem.css('background-color', model.get('color')).removeClass('add')
-            }.bind(this))
-        }.bind(this))
-}
 
 })
