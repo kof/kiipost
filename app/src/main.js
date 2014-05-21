@@ -1,23 +1,32 @@
 /* globals define */
 define(function(require, exports, module) {
-    'use strict';
-    // import dependencies
-    var Engine = require('famous/core/Engine');
-    var Modifier = require('famous/core/Modifier');
-    var Transform = require('famous/core/Transform');
-    var Scrollview = require("famous/views/Scrollview");
-    var View = require('famous/core/View');
-    var ViewSequence = require('famous/core/ViewSequence');
-    var Surface = require('famous/core/Surface');
-    var EventHandler = require('famous/core/EventHandler');
-    var OptionsManager = require('famous/core/OptionsManager');
-    var FlexibleLayout = require('famous/views/FlexibleLayout');
+    'use strict'
+
+    var Engine = require('famous/core/Engine')
+    var Modifier = require('famous/core/Modifier')
+    var Transform = require('famous/core/Transform')
+    var ViewSequence = require('famous/core/ViewSequence')
+    var Surface = require('famous/core/Surface')
+    var EventHandler = require('famous/core/EventHandler')
+    var OptionsManager = require('famous/core/OptionsManager')
+    var View = require('famous/core/View')
+    var RenderNode = require('famous/core/RenderNode')
+
+    var Scrollview = require('famous/views/Scrollview')
+    var FlexibleLayout = require('famous/views/FlexibleLayout')
+    var EdgeSwapper = require('famous/views/EdgeSwapper')
+
+    var FastClick = require('famous/inputs/FastClick')
+
+    var Utility = require('famous/utilities/Utility')
+    var inherits = require('inherits')
 
     var mainContext = Engine.createContext()
 
     function App() {
         View.apply(this, arguments)
-        this.header = new Header()
+        this.menu = new Menu()
+        this.header = new Header({tpl: this.menu.options.tpl})
         this.content = new Content()
         this.navigation = new View()
         this.scrollview = new Scrollview()
@@ -29,22 +38,47 @@ define(function(require, exports, module) {
         }, this)
     }
 
-    App.prototype = Object.create(View.prototype)
+    inherits(App, View)
 
-    function Header() {
+    function Header(options) {
         View.apply(this, arguments)
-        this.surface = new Surface({
-            content: 'Header',
+        this.header = new Surface({
+            content: options.tpl,
             size: [undefined, 200],
             properties: {
                 backgroundColor: 'red'
+            }
+        })
+        this.add(this.header)
+        this.header.pipe(this)
+    }
+
+    inherits(Header, View)
+
+    function Menu(options) {
+        if (!options) options = {}
+
+        OptionsManager.patch(options, Menu.defaults)
+        View.call(this, options)
+        this.surface = new Surface({
+            content: 'Menu',
+            size: [undefined, 40],
+            properties: {
+                backgroundColor: 'yellow',
+                top: '160px',
+                zIndex: 1,
+                classes: ['menu']
             }
         })
         this.add(this.surface)
         this.surface.pipe(this)
     }
 
-    Header.prototype = Object.create(View.prototype)
+    inherits(Menu, View)
+
+    Menu.defaults = {
+        tpl: '<div class="menu">saved | discover</div>'
+    }
 
     function Content() {
         View.apply(this, arguments)
@@ -58,7 +92,7 @@ define(function(require, exports, module) {
         this.surface.pipe(this)
     }
 
-    Content.prototype = Object.create(View.prototype)
+    inherits(Content, View)
 
-    mainContext.add(new App());
+    mainContext.add(new App())
 })

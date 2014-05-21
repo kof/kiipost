@@ -23,6 +23,7 @@
         "quotes": [2, "single"],
         "one-var": 0,
         "space-infix-ops": 0,
-        "strict": 0
+        "strict": 0,
+        "semi": [2, "never"]
     }
 }

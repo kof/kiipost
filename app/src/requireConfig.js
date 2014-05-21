@@ -7,7 +7,13 @@ require.config({
         famous: '../lib/famous',
         requirejs: '../lib/requirejs/require',
         almond: '../lib/almond/almond',
-        'famous-polyfills': '../lib/famous-polyfills/index'
-    }
+        'famous-polyfills': '../lib/famous-polyfills/index',
+        backbone: '../lib/backbone/backbone',
+        jquery: '../lib/jquery/dist/jquery',
+        inherits: '../lib/inherits/inherits'
+    },
+    packages: [
+
+    ]
 });
 require(['main']);
