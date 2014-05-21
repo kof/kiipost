@@ -3,10 +3,12 @@
   "description": "E.g. Seed project to get started with Famo.us.",
   "version": "0.1.0",
   "homepage": "https://github.com/kof/kiipost",
-  "authors": [{
-    "name": "Oleg Slobodskoi",
-    "url": "http://github.com/kof/"
-  }],
+  "authors": [
+    {
+      "name": "Oleg Slobodskoi",
+      "url": "http://github.com/kof/"
+    }
+  ],
   "main": "app/index.html",
   "moduleType": [
     "amd"
@@ -29,6 +31,9 @@
     "famous-polyfills": "git+https://github.com/Famous/polyfills.git#0.1.1",
     "famous": "git+https://github.com/Famous/famous.git#0.2.0",
     "jquery": "2.1.1",
-    "backbone": "1.1.2"
+    "backbone": "1.1.2",
+    "iscroll": "~5.1.1",
+    "backbone.controller": "*",
+    "underscore": "~1.6.0"
   }
 }

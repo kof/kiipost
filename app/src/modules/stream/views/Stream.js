@@ -1,24 +1,21 @@
+define(function(require, exports, module) {
 'use strict'
 
 var $ = require('jquery'),
     Backbone = require('backbone'),
-    conf = require('conf'),
     mustache = require('mustache'),
     inherits = require('inherits'),
     _ = require('underscore'),
-    app = require('app'),
     IScroll = require('iscroll'),
+    ImagesLoder = require('images-loader/index')
+
+var conf = require('conf'),
+    app = require('app'),
     log = require('log'),
-    ImagesLoder = require('images-loader/index'),
-    dataset = require('dataset/index')
+    dataset = require('dataset/index'),
+    elementsMap = require('jquery.elementsMap')
 
-require('jquery.elementsMap')
-
-var TooltipView = require('tooltip/views/Tooltip')
-
-var streamTpl = mustache.compile(require('stream/client/templates/stream.html')),
-    itemToolbarTpl = mustache.compile(require('stream/client/templates/item-toolbar.html')),
-    tooltipsTpl = mustache.compile(require('stream/client/templates/tooltips.html'))
+var streamTpl = mustache.compile(require('stream/client/templates/stream.html'))
 
 /**
  * Stream constructor.
@@ -85,8 +82,6 @@ Stream.prototype.initialize = function() {
     this.listenTo(app.models.settings, 'change:since', this._onSinceChange)
     this.listenTo(app.models.settings, 'change:view', this._onViewChange)
     this.listenTo(this, 'itemSelect', this._onItemSelect)
-    app.view.elements.window.on('orientationchange', this._onOrientationChange.bind(this))
-    this.views.tooltip = new TooltipView()
 }
 
 /**
@@ -187,70 +182,6 @@ Stream.prototype.setup = function(options) {
     if (opts.catId) this.collection.options.catId = opts.catId
 
     return opts
-}
-
-/**
- * Show tooltip.
- *
- * @param {String} topic
- * @return {Stream} this
- * @api public
- */
-Stream.prototype.showTip = function(topic) {
-    var $tag, $relevance,
-        topic,
-        onHide,
-        o = this.options
-
-    if (!o.showTips || this._isEmpty || !this.views.tooltip.isHidden()) return this
-
-    if (topic) {
-        if (app.models.explain.explained(topic)) return this
-    } else {
-        topic = _.find(o.explain, function(topic) {
-            if (!app.models.explain.explained(topic)) return true
-        })
-    }
-
-    if (!topic) {
-        o.showTips = false
-        return this
-    }
-
-    onHide = function() {
-        app.models.explain.explained(topic, true)
-        this.showTip()
-    }.bind(this)
-
-    if (topic == 'tags') {
-        $tag = this.elements.listItems.eq(0).find('.js-tag:first:not(.hidden)')
-        if ($tag.length) {
-            this.views.tooltip
-                .type('info')
-                .arrow('tl')
-                .html(tooltipsTpl.render({tags: true}))
-                .insertAfter(this.$el)
-                .target($tag)
-                .show()
-                .once('hide', onHide)
-        } else {
-            this.showTip('relevance')
-        }
-    } else if (topic == 'relevance') {
-        $relevance = this.elements.listItems.eq(0).find('.js-relevance-indicator')
-        if ($relevance.length) {
-            this.views.tooltip
-                .type('info')
-                .arrow('left')
-                .html(tooltipsTpl.render({relevance: true}))
-                .insertAfter(this.$el)
-                .target($relevance)
-                .show()
-                .once('hide', onHide)
-        }
-    }
-
-    return this
 }
 
 /**
@@ -473,7 +404,6 @@ Stream.prototype._onScrollStart = function() {
     if (this.elements.selected) this.elements.selected.removeClass('selected')
     this.model = null
     this._scrolling = true
-    this.views.tooltip.hide({silent: true})
 }
 
 /**
@@ -630,12 +560,4 @@ Stream.prototype._onAddTag = function(e) {
         }.bind(this))
 }
 
-/**
- * Refresh iscroll on orientation change.
- *
- * @param {Event} e
- * @api private
- */
-Stream.prototype._onOrientationChange = function(e) {
-    if (this._iScroll) this._iScroll.refresh({resize: true})
-}
+})
