@@ -3,13 +3,25 @@ define(function(require, exports, module) {
 
 var View = require('famous/core/View')
 var Surface = require('famous/core/Surface')
+var Modifier  = require('famous/core/Modifier')
+var Transform = require('famous/core/Transform')
+
 var inherits = require('inherits')
 
-var ScreenView = require('modules/screen/views/Screen')
-var StreamView = require('modules/stream/views/Stream')
+var HeaderView = require('components/header/views/Header')
+var StreamView = require('components/stream/views/Stream')
+var StreamItemView = require('./StreamItem')
 
 function Discover() {
     View.apply(this, arguments)
+
+    this.header = new HeaderView()
+    this.header.setBgImage(this.options.headerBg)
+    this.stream = new StreamView({
+        ItemView: StreamItemView,
+        header: this.header
+    })
+    this.add(this.stream)
 }
 
 inherits(Discover, View)
@@ -19,12 +31,5 @@ Discover.DEFAULT_OPTIONS = {
     headerBg: 'content/images/discover-header.jpg'
 }
 
-Discover.prototype.initialize = function() {
-    this.screen = new ScreenView()
-    this.stream = new StreamView({headerHeight: this.screen.header.getSize()[1]})
-    this.screen.body.add(this.stream)
-    this.stream._eventInput.pipe(this.screen.body)
-    this.screen.header.setBgImage(this.options.headerBg)
-}
 
 })

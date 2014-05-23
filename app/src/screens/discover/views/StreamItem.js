@@ -5,20 +5,26 @@ var View = require('famous/core/View')
 var Surface = require('famous/core/Surface')
 var inherits = require('inherits')
 
-function Body() {
+function StreamItem() {
     View.apply(this, arguments)
-    console.log(this.options)
+    this.model = this.options.model
     this.surface = new Surface({
+        content: this.model.title,
+        size: [undefined, 100],
         properties: {
-            top: this.options.headerHeight + 'px'
         },
-        classes: ['body']
+        classes: ['stream-item']
     })
     this.add(this.surface)
     this.surface.pipe(this)
 }
 
-inherits(Body, View)
-module.exports = Body
+inherits(StreamItem, View)
+module.exports = StreamItem
+
+StreamItem.DEFAULT_OPTIONS = {
+    model: null
+}
+
 
 })

@@ -21,6 +21,7 @@ Controller.prototype.initialize = function() {
 }
 
 Controller.prototype.discover = function() {
-    this.view.initialize()
+    context.add(this.view)
 }
+
 })
