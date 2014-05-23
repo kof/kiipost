@@ -12,13 +12,15 @@ function Controller(options) {
         '/': 'discover'
     }
     BackboneController.apply(this, arguments)
-    this.view = new DiscoverView()
 }
-
 inherits(Controller, BackboneController)
 module.exports = Controller
 
+Controller.prototype.initialize = function() {
+    this.view = new DiscoverView()
+}
+
 Controller.prototype.discover = function() {
-    console.log('discover')
+    this.view.initialize()
 }
 })

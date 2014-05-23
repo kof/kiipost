@@ -1,0 +1,15 @@
+.menu {
+    color: #fff;
+    padding: 0 15px;
+}
+.menu .indicator {
+    background: #fff;
+    height: 1px;
+}
+
+.menu .item {
+    display: inline-block;
+    height: 100%;
+    line-height: 40px;
+    cursor: pointer;
+}

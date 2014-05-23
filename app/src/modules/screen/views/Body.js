@@ -5,18 +5,20 @@ var View = require('famous/core/View')
 var Surface = require('famous/core/Surface')
 var inherits = require('inherits')
 
-function Content() {
+function Body() {
     View.apply(this, arguments)
+    console.log(this.options)
     this.surface = new Surface({
-        content: 'Content',
         properties: {
-            backgroundColor: 'green'
-        }
+            top: this.options.headerHeight + 'px'
+        },
+        classes: ['body']
     })
     this.add(this.surface)
     this.surface.pipe(this)
 }
 
-inherits(Content, View)
-module.exports = Content
+inherits(Body, View)
+module.exports = Body
+
 })

@@ -35,6 +35,8 @@
     "iscroll": "~5.1.1",
     "backbone.controller": "*",
     "underscore": "~1.6.0",
-    "images-loader": "~0.1.1"
+    "images-loader": "~0.1.1",
+    "underscore.string": "~2.3.3",
+    "famous-infinitescroll": "~0.0.3"
   }
 }

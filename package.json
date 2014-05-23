@@ -52,6 +52,6 @@
   },
   "scripts": {
     "test": "grunt test",
-    "postinstall": "grunt browserify & grunt bower"
+    "postinstall": "grunt browserify"
   }
 }

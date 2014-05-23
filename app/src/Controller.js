@@ -2,13 +2,11 @@ define(function(require, exports, module) {
 
 var BackboneController = require('controller')
 var inherits = require('inherits')
-var context = require('context')
-
-var Discover = require('./screens/discover/Controller')
+var DiscoverController = require('./screens/discover/Controller')
 
 function Controller(options) {
     BackboneController.apply(this, arguments)
-    this.discover = new Discover()
+    this.discover = new DiscoverController(options)
 }
 
 inherits(Controller, BackboneController)
