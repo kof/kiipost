@@ -33,7 +33,7 @@ inherits(Header, View)
 module.exports = Header
 
 Header.DEFAULT_OPTIONS = {
-    size: [undefined, 300]
+    size: [undefined, 200]
 }
 
 Header.prototype.setBgImage = function(url) {

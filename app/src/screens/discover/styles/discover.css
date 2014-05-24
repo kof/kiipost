@@ -1,0 +1,8 @@
+.discover .stream-title {
+    color: green;
+    overflow: hidden;
+}
+.discover .stream-summary {
+    color: red;
+    overflow: hidden;
+}

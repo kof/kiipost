@@ -21,6 +21,7 @@ function Discover() {
         ItemView: StreamItemView,
         header: this.header
     })
+    this.stream.addClass('discover')
     this.add(this.stream)
 }
 

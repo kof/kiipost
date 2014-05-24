@@ -82,4 +82,8 @@ Stream.prototype.setContent = function() {
     }, this)
 }
 
+Stream.prototype.addClass = function(name) {
+    this.scrollview._scroller.group.addClass(name)
+}
+
 })

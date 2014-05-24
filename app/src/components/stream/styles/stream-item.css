@@ -1,3 +1,31 @@
 .stream-item {
     background: #fff;
+    display: -webkit-flex;
+    -webkit-flex-flow: row;
+    border-bottom: 1px solid #ededed;
+}
+.stream-item .text {
+     -webkit-flex: 1 1 65%;
+    padding: 1em;
+}
+.stream-item .image {
+     -webkit-flex: 1 1 35%;
+    background-repeat: no-repeat;
+    background-position: center top;
+}
+
+.stream-item h1 {
+    font-size: 1em;
+    margin: 0 0 0.5em 0;
+    max-height: 3.5em;
+    overflow: hidden;
+}
+.stream-item p {
+    margin: 0 0 0.5em 0;
+    max-height: 4.5em;
+    overflow: hidden;
+}
+
+.stream-item a {
+    display: block;
 }
