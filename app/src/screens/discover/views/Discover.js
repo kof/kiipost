@@ -15,8 +15,7 @@ var StreamItemView = require('./StreamItem')
 function Discover() {
     View.apply(this, arguments)
 
-    this.header = new HeaderView()
-    this.header.setBgImage(this.options.headerBg)
+    this.header = new HeaderView(this.options)
     this.stream = new StreamView({
         ItemView: StreamItemView,
         header: this.header
@@ -29,7 +28,7 @@ inherits(Discover, View)
 module.exports = Discover
 
 Discover.DEFAULT_OPTIONS = {
-    headerBg: 'content/images/discover-header.jpg'
+    backgroundImage: 'content/images/discover-header.jpg'
 }
 
 

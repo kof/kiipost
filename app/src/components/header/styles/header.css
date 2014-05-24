@@ -3,3 +3,24 @@
     background-position: 0 50%;
     background-repeat: no-repeat;
 }
+.header .logo {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    color: #fff;
+    font-size: 1.3em;
+    cursor: pointer;
+}
+.header .avatar {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 35px;
+    height: 35px;
+    background-position: 0 50%;
+    background-repeat: no-repeat;
+    border-radius: 100%;
+    background-size: cover;
+    cursor: pointer;
+    border: 2px solid #fff;
+}
