@@ -1,5 +1,9 @@
 html {
-  background: #fff;
+    background: #fff;
+    font-family: Ubuntu;
+}
+a  {
+    color: #503c8d;
 }
 .truncate {
     text-overflow: ellipsis;

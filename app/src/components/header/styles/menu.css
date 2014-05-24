@@ -1,16 +1,24 @@
 .menu {
-    color: #fff;
+    color: #afafaf;
     padding: 0 15px;
 }
 .menu .indicator {
-    background: #fff;
+    background: #afafaf;
     height: 1px;
 }
-
+.menu .indicator span {
+    display: block;
+    width: 60px;
+    height: 100%;
+    background: #fff;
+}
 .menu .item {
     display: inline-block;
     height: 100%;
     line-height: 40px;
     cursor: pointer;
     margin-right: 30px;
+}
+.menu .item.active {
+    color: #fff;
 }

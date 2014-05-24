@@ -19,11 +19,13 @@
     margin: 0 0 0.5em 0;
     max-height: 3.5em;
     overflow: hidden;
+    color: #333;
 }
 .stream-item p {
     margin: 0 0 0.5em 0;
     max-height: 4.5em;
     overflow: hidden;
+    color: #a3a3a3;
 }
 
 .stream-item a {

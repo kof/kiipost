@@ -13,12 +13,13 @@ function Menu() {
         content: tpl,
         size: this.options.size,
         properties: {
-            top: this.options.headerHeight - this.options.size[1] + 'px'
+            top: this.options.headerHeight - this.getSize()[1] + 'px'
         },
         classes: ['menu']
     })
     this.add(this.surface)
     this.surface.pipe(this)
+    this.surface.on('click', this._onClick)
 }
 
 inherits(Menu, View)
@@ -28,6 +29,11 @@ Menu.DEFAULT_OPTIONS = {
     size: [undefined, 50],
     headerHeight: null
 }
+
+Menu.prototype._onClick = function(e) {
+
+}
+
 })
 
 

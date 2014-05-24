@@ -65,7 +65,6 @@ Stream.prototype.load = function() {
     setTimeout(function() {
         var len = this.views.length
         this.collection = rss.slice(len, len + this.options.itemsAmount)
-        console.log(this.collection.length)
         this.scrollview.infiniteScrollDisabled = false
         this.loading = false
         this.setContent()
