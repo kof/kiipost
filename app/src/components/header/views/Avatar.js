@@ -27,7 +27,7 @@ inherits(Avatar, View)
 module.exports = Avatar
 
 Avatar.DEFAULT_OPTIONS = {
-    size: [40, 40],
+    size: [30, 30],
     top: 10,
     right: 10,
     avatar: 'content/images/dummy-avatar.png'

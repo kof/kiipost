@@ -39,8 +39,10 @@ function Stream() {
         margin: contextHeight * 2
     })
 
+    var header = this.options.header
     this.collection = this.options.collection
-    this.views = [this.options.header]
+    this.views = [header]
+    header._eventInput.pipe(this.scrollview)
     this.scrollview.sequenceFrom(this.views)
     this.lastRenderedIndex = 0
     this.scrollview.on('infiniteScroll', this.load.bind(this))
