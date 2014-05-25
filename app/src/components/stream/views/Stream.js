@@ -33,7 +33,7 @@ function Stream() {
 
     this.scrollview = new InfiniteScrollView({
         // Trigger infiniteScroll event 5 screens before items actually get rendered.
-        offset: contextHeight * 3,
+        offset: contextHeight * 5,
         // Height of the full scroller, factor 2 to render invisible items
         // before they get shown.
         margin: contextHeight * 2
@@ -47,6 +47,7 @@ function Stream() {
     this.lastRenderedIndex = 0
     this.scrollview.on('infiniteScroll', this.load.bind(this))
     this.scrollview._eventInput.pipe(this)
+    this.scrollview._eventInput.pipe(header._eventOutput)
     this.add(this.scrollview)
     this.load()
 }

@@ -1,4 +1,6 @@
 define(function(require, exports, module) {
-    module.exports = require('famous/core/Engine').createContext()
+var Engine = require('famous/core/Engine')
+
+module.exports = Engine.createContext()
 })
 
