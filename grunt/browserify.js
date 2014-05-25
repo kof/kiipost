@@ -21,7 +21,6 @@ for (name in dependencies) {
     }
     if (!main) continue;
     destDir = path.join('app', 'lib', name)
-    console.log(main)
     module.exports[name] = {
         src: [path.resolve(modulePath, main)],
         dest: path.join(destDir, name + '.js'),

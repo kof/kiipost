@@ -1,37 +1,36 @@
 define(function(require, exports, module) {
-'use strict'
+    'use strict'
 
-var View = require('famous/core/View')
-var Group = require('famous/core/Group')
-var Surface = require('famous/core/Surface')
-var FlexibleLayout = require('famous/views/FlexibleLayout')
+    var inherits = require('inherits')
+    var mustache = require('mustache')
 
-var inherits = require('inherits')
-var mustache = require('mustache')
-var tpl = mustache.compile(require('../templates/stream-item.html'))
+    var View = require('famous/core/View')
+    var Group = require('famous/core/Group')
+    var Surface = require('famous/core/Surface')
+    var FlexibleLayout = require('famous/views/FlexibleLayout')
 
-function StreamItem() {
+    var tpl = mustache.compile(require('../templates/stream-item.html'))
 
-    View.apply(this, arguments)
-    this.model = this.options.model
+    function StreamItem() {
 
-    this.surface = new Surface({
-        content: tpl.render(this.model),
-        size: [undefined, 200],
-        properties: {},
-        classes: ['stream-item']
-    })
+        View.apply(this, arguments)
+        this.model = this.options.model
 
-    this.add(this.surface)
-    this.surface.pipe(this)
-}
+        this.surface = new Surface({
+            content: tpl.render(this.model.toJSON()),
+            size: [undefined, 200],
+            properties: {},
+            classes: ['stream-item']
+        })
 
-inherits(StreamItem, View)
-module.exports = StreamItem
+        this.add(this.surface)
+        this.surface.pipe(this)
+    }
 
-StreamItem.DEFAULT_OPTIONS = {
-    model: null
-}
+    inherits(StreamItem, View)
+    module.exports = StreamItem
 
-
+    StreamItem.DEFAULT_OPTIONS = {
+        model: null
+    }
 })

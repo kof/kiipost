@@ -1,12 +1,8 @@
-/* globals define */
 define(function(require, exports, module) {
-'use strict'
+    'use strict'
 
-var FastClick = require('famous/inputs/FastClick')
-var Backbone = require('backbone')
-var Controller = require('./Controller')
-
-new Controller({router: true})
-Backbone.history.start()
-
+    require('famous/inputs/FastClick')
+    require('./setup')
+    require('./test/apis')
+    require('./app')
 })
