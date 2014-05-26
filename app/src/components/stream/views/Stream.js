@@ -34,6 +34,7 @@ define(function(require, exports, module) {
         })
 
         var header = this.options.header
+
         this.collection = this.options.collection
         this.views = [header]
         header._eventInput.pipe(this.scrollview)

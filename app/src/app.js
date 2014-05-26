@@ -12,6 +12,13 @@ define(function(require, exports, module) {
     app.options = {router: true}
     app.context = Engine.createContext()
 
-    var discover = new DiscoverController(app.options)
-    backbone.history.start()
+    var initialized = false
+
+    // Some views require to know the context size immediately.
+    app.context.on('resize', function() {
+        if (initialized) return
+        var discover = new DiscoverController(app.options)
+        backbone.history.start()
+        initialized = true
+    })
 })

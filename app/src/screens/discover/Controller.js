@@ -1,6 +1,4 @@
 define(function(require, exports, module) {
-    'use strict'
-
     var BackboneController = require('controller')
     var inherits = require('inherits')
     var _ = require('underscore')

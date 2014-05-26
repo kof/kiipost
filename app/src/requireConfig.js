@@ -20,7 +20,7 @@ require.config({
         multiline: '../lib/multiline/multiline',
         'underscore.string': '../lib/underscore.string/lib/underscore.string',
         'famous-infinitescroll': '../lib/famous-infinitescroll/infiniteScrollView',
-        sinon: '../lib/sinon/lib'
+        sinon: '../lib/sinon/pkg/sinon'
     },
     packages: [
 

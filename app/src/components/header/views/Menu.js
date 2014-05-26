@@ -13,7 +13,7 @@ function Menu() {
         content: tpl,
         size: this.options.size,
         properties: {
-            top: this.options.headerHeight - this.getSize()[1] + 'px'
+            top: this.options.header.getSize()[1] - this.getSize()[1] + 'px'
         },
         classes: ['menu']
     })
@@ -27,7 +27,7 @@ module.exports = Menu
 
 Menu.DEFAULT_OPTIONS = {
     size: [undefined, 50],
-    headerHeight: null
+    header: null
 }
 
 Menu.prototype._onClick = function(e) {

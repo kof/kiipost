@@ -12,7 +12,6 @@ define(function(require, exports, module) {
     var tpl = mustache.compile(require('../templates/stream-item.html'))
 
     function StreamItem() {
-
         View.apply(this, arguments)
         this.model = this.options.model
 

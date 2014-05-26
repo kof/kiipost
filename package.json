@@ -47,7 +47,8 @@
   "dependencies": {
     "inherits": "~2.0.1",
     "hogan.js": "~2.0.0",
-    "multiline": "~0.3.4"
+    "multiline": "~0.3.4",
+    "sinon": "~1.10.0"
   },
   "scripts": {
     "test": "grunt test",

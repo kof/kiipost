@@ -8,12 +8,17 @@ var mustache = require('mustache')
 var Modifier  = require("famous/core/Modifier")
 var Transform = require("famous/core/Transform")
 
+var app = require('app')
+
 var Menu = require('./Menu')
 
 var tpl = mustache.compile(require('../templates/header.html'))
 
 function Header() {
     View.apply(this, arguments)
+
+    this.options.size = [undefined, this.options.height * app.context.getSize()[1]]
+
     this.surface = new Surface({
         content: tpl.render(this.options),
         size: this.options.size,
@@ -22,11 +27,11 @@ function Header() {
             backgroundImage: 'url(' + this.options.backgroundImage + ')'
         }
     })
-    this.modifier = new Modifier();
+    this.modifier = new Modifier()
     this.add(this.modifier).add(this.surface)
     this.surface.pipe(this)
     this.surface.on('click', this._onClick.bind(this))
-    this.menu = new Menu({headerHeight: this.getSize()[1]})
+    this.menu = new Menu({header: this})
     this.add(this.menu)
     this.menu._eventInput.pipe(this)
     this._initParallax()
@@ -36,7 +41,7 @@ inherits(Header, View)
 module.exports = Header
 
 Header.DEFAULT_OPTIONS = {
-    size: [undefined, 200],
+    height: 0.3,
     backgroundImage: null,
     avatarImage: 'content/images/dummy-avatar.png'
 }
@@ -49,7 +54,7 @@ Header.prototype._onClick = function(e) {
 
 Header.prototype._initParallax = function() {
     var y = 0
-    var maxY = this.getSize()[1]
+    var maxY = this.surface.getSize()[1]
     var minY = 0
 
     var opacity = 1
@@ -64,7 +69,6 @@ Header.prototype._initParallax = function() {
             this.modifier.transformFrom(Transform.translate(0, y ,0))
             opacity = 1 - y / maxY
             if (opacity > maxOpacity) opacity = maxOpacity
-            if (opacity < minOpacity) opacity = minOpacity
             this.modifier.opacityFrom(opacity)
         }
     }.bind(this))
