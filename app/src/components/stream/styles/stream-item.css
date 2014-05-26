@@ -5,15 +5,19 @@
     border-bottom: 1px solid #ededed;
 }
 .stream-item .text {
-     -webkit-flex: 1 1 65%;
+    -webkit-flex: 1 1 65%;
     padding: 1em;
 }
 .stream-item .image {
-     -webkit-flex: 1 1 35%;
+    -webkit-flex: 1 1 35%;
     background-repeat: no-repeat;
-    background-position: center top;
+    background-position: center;
+    background-size: cover;
 }
+.stream-item .image.icon {
+    background-size: initial;
 
+}
 .stream-item h1 {
     font-size: 0.9em;
     line-height: 1.3;
