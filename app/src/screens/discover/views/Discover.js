@@ -22,6 +22,7 @@ define(function(require, exports, module) {
             collection: this.options.collection
         })
         this.stream.addClass('discover')
+        this.stream.on('update', this._onScroll.bind(this))
         this.add(this.stream)
     }
 
@@ -30,5 +31,11 @@ define(function(require, exports, module) {
 
     Discover.DEFAULT_OPTIONS = {
         backgroundImage: 'content/images/discover-header.jpg'
+    }
+
+    Discover.prototype._onScroll = function(e) {
+        if (e.delta > 5) {
+            console.log('show menu')
+        }
     }
 })

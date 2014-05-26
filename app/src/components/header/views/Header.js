@@ -41,7 +41,7 @@ inherits(Header, View)
 module.exports = Header
 
 Header.DEFAULT_OPTIONS = {
-    height: 0.3,
+    height: 0.4,
     backgroundImage: null,
     avatarImage: 'content/images/dummy-avatar.png'
 }
@@ -61,6 +61,7 @@ Header.prototype._initParallax = function() {
     var maxOpacity = 1
     var minOpacity = 0.3
 
+    // ScrollView events are piped to header.
     this.on('update', function(e) {
         y -= Math.round(e.delta / 3)
         if (y > maxY) y = maxY

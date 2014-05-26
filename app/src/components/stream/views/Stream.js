@@ -23,7 +23,12 @@ define(function(require, exports, module) {
      */
     function Stream() {
         View.apply(this, arguments)
+
         var contextHeight = app.context.getSize()[1]
+        var header = this.options.header
+
+        this.collection = this.options.collection
+        this.views = [header]
 
         this.scrollview = new InfiniteScrollView({
             // Trigger infiniteScroll event 5 screens before items actually get rendered.
@@ -32,17 +37,17 @@ define(function(require, exports, module) {
             // before they get shown.
             margin: contextHeight * 2
         })
-
-        var header = this.options.header
-
-        this.collection = this.options.collection
-        this.views = [header]
-        header._eventInput.pipe(this.scrollview)
-        this.scrollview.sequenceFrom(this.views)
-        this.scrollview.on('infiniteScroll', this.load.bind(this))
-        this.scrollview._eventInput.pipe(this)
-        this.scrollview._eventInput.pipe(header._eventOutput)
         this.add(this.scrollview)
+        this.scrollview.sequenceFrom(this.views)
+
+        // Header can scroll the scrollview.
+        header._eventInput.pipe(this.scrollview)
+        this.scrollview.on('infiniteScroll', this.load.bind(this))
+        // Make stream emit scrollview events.
+        this.scrollview._eventInput.pipe(this._eventOutput)
+        // Let header react on "update"
+        this.scrollview._eventInput.pipe(header._eventOutput)
+
         this.collection.on('sync', this._onSync.bind(this))
         this.load()
     }

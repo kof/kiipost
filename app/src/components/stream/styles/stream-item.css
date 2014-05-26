@@ -3,6 +3,7 @@
     display: -webkit-flex;
     -webkit-flex-flow: row;
     border-bottom: 1px solid #ededed;
+    z-index: 1;
 }
 .stream-item .text {
     -webkit-flex: 1 1 65%;
