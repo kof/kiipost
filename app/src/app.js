@@ -2,6 +2,7 @@ define(function(require, exports, module) {
     'use strict'
 
     var backbone = require('backbone')
+    var ImagesLoader = require('images-loader')
 
     var Engine = require('famous/core/Engine')
 
@@ -11,6 +12,9 @@ define(function(require, exports, module) {
 
     app.options = {router: true}
     app.context = Engine.createContext()
+
+    // One images pool can be used by any component.
+    app.imagesLoader = new ImagesLoader()
 
     var initialized = false
 

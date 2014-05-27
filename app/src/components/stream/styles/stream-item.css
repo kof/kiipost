@@ -10,14 +10,17 @@
     padding: 1em;
 }
 .stream-item .image {
+    /* If change this, change also StreamItem. */
     -webkit-flex: 1 1 35%;
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
 }
 .stream-item .image.icon {
+    background-size: contain;
+}
+.stream-item .image.small {
     background-size: initial;
-
 }
 .stream-item h1 {
     font-size: 0.9em;

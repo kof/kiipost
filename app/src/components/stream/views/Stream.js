@@ -5,7 +5,6 @@ define(function(require, exports, module) {
     var mustache = require('mustache')
     var inherits = require('inherits')
     var _ = require('underscore')
-    var ImagesLoder = require('images-loader')
 
     var View = require('famous/core/View')
     var Surface = require('famous/core/Surface')
