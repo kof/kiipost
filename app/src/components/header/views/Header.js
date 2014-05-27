@@ -1,79 +1,82 @@
 define(function(require, exports, module) {
-'use strict'
+    'use strict'
 
-var View = require('famous/core/View')
-var Surface = require('famous/core/Surface')
-var inherits = require('inherits')
-var mustache = require('mustache')
-var Modifier  = require("famous/core/Modifier")
-var Transform = require("famous/core/Transform")
+    var View = require('famous/core/View')
+    var Surface = require('famous/core/Surface')
+    var inherits = require('inherits')
+    var mustache = require('mustache')
+    var Modifier  = require('famous/core/Modifier')
+    var Transform = require('famous/core/Transform')
+    var ContainerSurface = require('famous/surfaces/ContainerSurface')
 
-var app = require('app')
+    var app = require('app')
 
-var Menu = require('./Menu')
+    function Header() {
+        View.apply(this, arguments)
 
-var tpl = mustache.compile(require('../templates/header.html'))
+        this.options.size = [undefined, this.options.height * app.context.getSize()[1]]
 
-function Header() {
-    View.apply(this, arguments)
+        this.surface = new ContainerSurface({
+            size: this.options.size,
+            classes: ['header']
+        })
+        this.surface.pipe(this)
+        this.surface.on('click', this._onClick.bind(this))
 
-    this.options.size = [undefined, this.options.height * app.context.getSize()[1]]
+        this.logo = new Surface({
+            content: 'kiipost',
+            classes: ['logo'],
+            size: [100, 30]
+        })
+        this.surface.add(this.logo)
 
-    this.surface = new Surface({
-        content: tpl.render(this.options),
-        size: this.options.size,
-        classes: ['header'],
-        properties: {
-            backgroundImage: 'url(' + this.options.backgroundImage + ')'
-        }
-    })
-    this.modifier = new Modifier()
-    this.add(this.modifier).add(this.surface)
-    this.surface.pipe(this)
-    this.surface.on('click', this._onClick.bind(this))
-    this.menu = new Menu({header: this})
-    this.add(this.menu)
-    this.menu._eventInput.pipe(this)
-    this._initParallax()
-}
+        this.avatar = new Surface({
+            classes: ['avatar'],
+            size: [35, 35],
+            properties: {
+                backgroundImage: this.options.avatarImage
+            }
+        })
+        this.surface.add(this.avatar)
 
-inherits(Header, View)
-module.exports = Header
-
-Header.DEFAULT_OPTIONS = {
-    height: 0.4,
-    backgroundImage: null,
-    avatarImage: 'content/images/dummy-avatar.png'
-}
-
-Header.prototype._onClick = function(e) {
-    if (e.target.className == 'avatar') {
-        console.log('avatar')
+        this.modifier = new Modifier()
+        this.add(this.modifier).add(this.surface)
+        //this._initParallax()
     }
-}
 
-Header.prototype._initParallax = function() {
-    var y = 0
-    var maxY = this.surface.getSize()[1]
-    var minY = 0
+    inherits(Header, View)
+    module.exports = Header
 
-    var opacity = 1
-    var maxOpacity = 1
-    var minOpacity = 0.3
+    Header.DEFAULT_OPTIONS = {
+        height: 0.4
+    }
 
-    // ScrollView events are piped to header.
-    this.on('update', function(e) {
-        y -= Math.round(e.delta / 3)
-        if (y > maxY) y = maxY
-        if (y < minY) y = 0
-        if (y < maxY && y > minY) {
-            this.modifier.transformFrom(Transform.translate(0, y ,0))
-            opacity = 1 - y / maxY
-            if (opacity > maxOpacity) opacity = maxOpacity
-            this.modifier.opacityFrom(opacity)
+    Header.prototype._onClick = function(e) {
+        if (e.target.classList.contains('avatar')) {
+            console.log('avatar')
         }
-    }.bind(this))
-}
+    }
 
+    Header.prototype._initParallax = function() {
+        var y = 0
+        var maxY = this.surface.getSize()[1]
+        var minY = 0
+
+        var opacity = 1
+        var maxOpacity = 1
+        var minOpacity = 0.3
+
+        // ScrollView events are piped to header.
+        this.on('update', function(e) {
+            y -= Math.round(e.delta / 3)
+            if (y > maxY) y = maxY
+            if (y < minY) y = 0
+            if (y < maxY && y > minY) {
+                this.modifier.transformFrom(Transform.translate(0, y ,0))
+                opacity = 1 - y / maxY
+                if (opacity > maxOpacity) opacity = maxOpacity
+                this.modifier.opacityFrom(opacity)
+            }
+        }.bind(this))
+    }
 })
-

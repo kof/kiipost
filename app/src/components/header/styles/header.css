@@ -1,9 +1,8 @@
 .header {
+    background: url('/content/images/discover-header.jpg') no-repeat;
     background-size: cover;
-    background-repeat: no-repeat;
 }
 .header .logo {
-    position: absolute;
     left: 10px;
     top: 10px;
     color: #fff;
@@ -11,15 +10,14 @@
     cursor: pointer;
 }
 .header .avatar {
-    position: absolute;
     right: 10px;
     top: 10px;
-    width: 35px;
-    height: 35px;
-    background-position: 0 50%;
-    background-repeat: no-repeat;
     border-radius: 100%;
-    background-size: cover;
     cursor: pointer;
     border: 2px solid #fff;
+    background: url('/content/images/dummy-avatar.png') no-repeat 0 50%;
+    background-size: cover;
+}
+.header .menu {
+    bottom: 0;
 }

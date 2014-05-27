@@ -10,12 +10,15 @@ define(function(require, exports, module) {
 
     var HeaderView = require('components/header/views/Header')
     var StreamView = require('components/stream/views/Stream')
+    var MenuView = require('components/menu/views/Menu')
 
     var StreamItemView = require('./StreamItem')
 
     function Discover() {
         View.apply(this, arguments)
         this.header = new HeaderView(this.options)
+        this.menu = new MenuView()
+        this.header.surface.add(this.menu)
         this.stream = new StreamView({
             ItemView: StreamItemView,
             header: this.header,
@@ -29,9 +32,7 @@ define(function(require, exports, module) {
     inherits(Discover, View)
     module.exports = Discover
 
-    Discover.DEFAULT_OPTIONS = {
-        backgroundImage: 'content/images/discover-header.jpg'
-    }
+    Discover.DEFAULT_OPTIONS = {}
 
     Discover.prototype._onScroll = function(e) {
         if (e.delta > 5) {

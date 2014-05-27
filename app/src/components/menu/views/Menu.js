@@ -12,9 +12,6 @@ define(function(require, exports, module) {
         this.surface = new Surface({
             content: tpl,
             size: this.options.size,
-            properties: {
-                top: this.options.header.getSize()[1] - this.getSize()[1] + 'px'
-            },
             classes: ['menu']
         })
         this.add(this.surface)
@@ -26,14 +23,12 @@ define(function(require, exports, module) {
     module.exports = Menu
 
     Menu.DEFAULT_OPTIONS = {
-        size: [undefined, 50],
-        header: null
+        size: [undefined, 50]
     }
 
     Menu.prototype._onClick = function(e) {
 
     }
-
 })
 
 
