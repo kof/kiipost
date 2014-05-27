@@ -44,7 +44,9 @@ define(function(require, exports, module) {
 
         if (data.image) {
             app.imagesLoader.load(data.image.url, function(err, image) {
-                if (!err) {
+                if (err)  {
+                    delete data.image
+                } else {
                     var containerWidth = Math.round(app.context.getSize()[0] * this.options.imageWidth / 100)
                     if (image.width <= containerWidth && image.height <= this.getSize()[1]) {
                         data.image.small = true

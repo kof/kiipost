@@ -5,7 +5,9 @@ module.exports = require('multiline')(function() {/*
     <p>{{summary}}</p>
     <a href="{{website}}" target="kiipost-article" class="truncate">{{website}}</a>
 </div>
-<div class="image {{#image.icon}}icon{{/image.icon}} {{#image.small}}small{{/image.small}}" style="background-image: url('{{image.url}}')"></div>
+{{#image}}
+    <div class="image {{#image.icon}}icon{{/image.icon}} {{#image.small}}small{{/image.small}}" style="background-image: url('{{image.url}}')"></div>
+{{/image}}
 */})
 })
 
