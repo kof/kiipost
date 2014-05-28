@@ -5,5 +5,5 @@ define(function(require, exports, module) {
     var sinon = window.sinon
     var server = module.exports = sinon.fakeServer.create()
     server.autoRespond = true
-    //server.autoRespondAfter = 500;
+    server.autoRespondAfter = 300;
 })

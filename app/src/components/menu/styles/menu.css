@@ -2,7 +2,7 @@
 }
 .menu .indicator {
     position: relative;
-    background: #afafaf;
+    background: rgba(255, 255, 255, .5);
     height: 1px;
 }
 .menu .indicator span {
@@ -18,7 +18,7 @@
     height: 100%;
     line-height: 40px;
     cursor: pointer;
-    margin-right: 30px;
+    margin-right: 15px;
     color: #fff;
     opacity: 0.7;
 }
