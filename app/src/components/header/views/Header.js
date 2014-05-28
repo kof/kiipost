@@ -3,11 +3,11 @@ define(function(require, exports, module) {
 
     var View = require('famous/core/View')
     var Surface = require('famous/core/Surface')
-    var inherits = require('inherits')
-    var mustache = require('mustache')
     var Modifier  = require('famous/core/Modifier')
     var Transform = require('famous/core/Transform')
     var ContainerSurface = require('famous/surfaces/ContainerSurface')
+
+    var inherits = require('inherits')
 
     var app = require('app')
 

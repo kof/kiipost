@@ -66,7 +66,7 @@ define(function(require, exports, module) {
         var rect = this.active.getBoundingClientRect()
         if (!this._indicatorRect) this._indicatorRect = this.indicator.getBoundingClientRect()
         this.indicator.style.width = rect.width + 'px'
-        this.indicator.style.marginLeft = rect.left - this._indicatorRect.left + 'px'
+        this.indicator.style.left = rect.left - this._indicatorRect.left + 'px'
     }
 
     Menu.prototype._onClick = function(e) {
