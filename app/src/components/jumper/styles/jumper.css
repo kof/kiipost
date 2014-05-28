@@ -4,9 +4,9 @@
 }
 .jumper span {
     background: rgba(0, 0, 0, .8);
-    border: 2px solid #fff;
+    border: 2px solid #CFCECE;
     border-radius: 100%;
-    padding: 0.4em 0.45em;
+    padding: 0.4em 0.42em;
     color: #fff;
     font-size: 1.4em;
     line-height: 3;
