@@ -1,17 +1,18 @@
 .header {
     background: url('/content/images/discover-header.jpg') no-repeat;
     background-size: cover;
+    padding: 10px 10px 0 10px;
 }
 .header .logo {
-    left: 10px;
-    top: 10px;
+    left: 0;
+    top: 0;
     color: #fff;
     font-size: 1.3em;
     cursor: pointer;
 }
 .header .avatar {
-    right: 10px;
-    top: 10px;
+    right: 0;
+    top: 0;
     border-radius: 100%;
     cursor: pointer;
     border: 2px solid #fff;

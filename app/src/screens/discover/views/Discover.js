@@ -19,13 +19,19 @@ define(function(require, exports, module) {
         this.header = new HeaderView(this.options)
         this.menu = new MenuView()
         this.header.surface.add(this.menu)
+
         this.stream = new StreamView({
             ItemView: StreamItemView,
-            header: this.header,
+            views: [this.header],
             collection: this.options.collection
         })
         this.stream.addClass('discover')
         this.stream.on('update', this._onScroll.bind(this))
+        // Header can scroll the scrollview.
+        this.header._eventInput.pipe(this.stream.scrollview)
+        // Let header react on "update"
+        //this.scrollview._eventInput.pipe(header._eventOutput)
+
         this.add(this.stream)
     }
 

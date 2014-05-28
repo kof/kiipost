@@ -24,11 +24,10 @@ define(function(require, exports, module) {
         View.apply(this, arguments)
 
         var contextHeight = app.context.getSize()[1]
-        var header = this.options.header
 
         this.collection = this.options.collection
-        this.views = [header]
-
+        this.views = this.options.views
+        this._initialViewsAmount = this.views.length
         this.scrollview = new InfiniteScrollView({
             // Trigger infiniteScroll event 5 screens before items actually get rendered.
             offset: contextHeight * 5,
@@ -39,14 +38,9 @@ define(function(require, exports, module) {
         this.add(this.scrollview)
         this.scrollview.sequenceFrom(this.views)
 
-        // Header can scroll the scrollview.
-        header._eventInput.pipe(this.scrollview)
         this.scrollview.on('infiniteScroll', this.load.bind(this))
         // Make stream emit scrollview events.
         this.scrollview._eventInput.pipe(this._eventOutput)
-        // Let header react on "update"
-        this.scrollview._eventInput.pipe(header._eventOutput)
-
         this.collection.on('sync', this._onSync.bind(this))
         this.load()
     }
@@ -55,15 +49,16 @@ define(function(require, exports, module) {
     module.exports = Stream
 
     Stream.DEFAULT_OPTIONS = {
-        ItemView: null
+        ItemView: null,
+        views: null
     }
 
     Stream.prototype.load = function() {
         if (this.loading) return
         this.loading = true
         this.scrollview.infiniteScrollDisabled = true
-        // -1 because of the header
-        this.collection.options.skip = this.views.length - 1
+        // Minus views added before scroll items.
+        this.collection.options.skip = this.views.length - this._initialViewsAmount
         this.collection.fetch()
     }
 
