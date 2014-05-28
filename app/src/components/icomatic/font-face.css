@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'Icomatic';
+    src: url('/fonts/icomatic/icomatic.svg#icomatic') format('svg'),
+         url('/fonts/icomatic/icomatic.eot'),
+         url('/fonts/icomatic/icomatic.eot?#iefix') format("embedded-opentype"),
+         url('/fonts/icomatic/icomatic.woff') format("woff"),
+         url('/fonts/icomatic/icomatic.ttf') format("truetype");
+}

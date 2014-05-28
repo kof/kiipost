@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'Ubuntu';
-    src: url('../fonts/ubuntu/Ubuntu-R.ttf') format('truetype');
+    src: url('/fonts/ubuntu/Ubuntu-R.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }

@@ -1,0 +1,16 @@
+.icomatic {
+    font-family: 'Icomatic','sans-serif';
+    line-height: 1;
+    font-feature-settings: "liga", "dlig";
+    font-smoothing: antialiased;
+    display: inline;
+}
+.icomatic-alt {
+    margin: -1px;
+    border:0;
+    padding: 0;
+    width: 1px; height: 1px;
+    clip: rect(0 0 0 0);
+    position: absolute;
+    overflow: hidden;
+}

@@ -11,8 +11,9 @@ define(function(require, exports, module) {
         this.scrollview = this.options.scrollview
         this.hidden = true
         this.surface = new Surface({
-            size: [undefined, 30],
-            classes: ['jumper']
+            size: [undefined, 60],
+            classes: ['jumper'],
+            content: '<span class="icomatic">arrowup</span>'
         })
         this.add(this.surface)
         this.surface.on('click', this._onClick.bind(this))
