@@ -42,7 +42,6 @@ define(function(require, exports, module) {
         // Make stream emit scrollview events.
         this.scrollview._eventInput.pipe(this._eventOutput)
         this.collection.on('sync', this._onSync.bind(this))
-        this.load()
     }
 
     inherits(Stream, View)
@@ -60,6 +59,7 @@ define(function(require, exports, module) {
         // Minus views added before scroll items.
         this.collection.options.skip = this.views.length - this._initialViewsAmount
         this.collection.fetch()
+        this._eventOutput.emit('spinner:show')
     }
 
     Stream.prototype.setContent = function() {
@@ -80,5 +80,6 @@ define(function(require, exports, module) {
         this.loading = false
         this.scrollview.infiniteScrollDisabled = false
         this.setContent()
+        this._eventOutput.emit('spinner:hide')
     }
 })

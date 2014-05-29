@@ -26,18 +26,21 @@ define(function(require, exports, module) {
             collection: this.options.collection
         })
         this.stream.addClass('discover')
+        this.add(this.stream)
+
         // Header can scroll the scrollview.
         this.header._eventInput.pipe(this.stream.scrollview)
         // Let header react on "update"
         this.stream.pipe(this.header._eventOutput)
-        this.add(this.stream)
+
+        this.spinner = new SpinnerView()
+        this.add(this.spinner)
+        this.stream.pipe(this.spinner)
 
         this.jumper = new JumperView({scrollview: this.stream.scrollview})
         this.add(this.jumper)
 
-        this.spinner = new SpinnerView()
-        this.add(this.spinner)
-
+        this.stream.load()
     }
 
     inherits(Discover, View)
