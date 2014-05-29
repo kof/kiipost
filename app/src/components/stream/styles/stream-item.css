@@ -1,17 +1,17 @@
 .stream-item {
     background: #fff;
-    display: -webkit-flex;
-    -webkit-flex-flow: row;
     border-bottom: 1px solid #ededed;
     z-index: 1;
 }
 .stream-item .text {
-    -webkit-flex: 1 1 65%;
-    padding: 1em;
+    float: left;
+    padding: 8px;
+    box-sizing: border-box;
+    height: 100%;
 }
 .stream-item .image {
-    /* If change this, change also StreamItem. */
-    -webkit-flex: 1 1 35%;
+    float: left;
+    height: 100%;
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;

@@ -32,8 +32,7 @@ define(function(require, exports, module) {
         size: [undefined, 50],
         items: [
             {title: 'discover', active: true},
-            {title: 'saved'},
-            {title: 'check later'}
+            {title: 'saved'}
         ]
     }
 

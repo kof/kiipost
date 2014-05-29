@@ -16,6 +16,10 @@ define(function(require, exports, module) {
     function StreamItem() {
         View.apply(this, arguments)
         this.model = this.options.model
+        var width = app.context.getSize()[0]
+        this.options.size = [width, width * app.GOLDEN_RATIO]
+        this._imageWidth = Math.round(this.options.size[1] * app.GOLDEN_RATIO)
+
         this.surface = new Surface({
             size: this.options.size,
             classes: ['stream-item']
@@ -29,10 +33,7 @@ define(function(require, exports, module) {
     module.exports = StreamItem
 
     StreamItem.DEFAULT_OPTIONS = {
-        model: null,
-        size: [undefined, 200],
-        // In percent, if change this, change also css.
-        imageWidth: 35
+        model: null
     }
 
     StreamItem.prototype.setContent = function() {
@@ -43,12 +44,13 @@ define(function(require, exports, module) {
         }
 
         if (data.image) {
+            data.image.width = this._imageWidth
+            data.width = this.options.size[0] - this._imageWidth
             app.imagesLoader.load(data.image.url, function(err, image) {
                 if (err)  {
                     delete data.image
                 } else {
-                    var containerWidth = Math.round(app.context.getSize()[0] * this.options.imageWidth / 100)
-                    if (image.width <= containerWidth && image.height <= this.getSize()[1]) {
+                    if (image.width <= this._imageWidth && image.height <= this.options.size[1]) {
                         data.image.small = true
                     }
                 }

@@ -7,14 +7,21 @@ define(function(require, exports, module) {
     var Engine = require('famous/core/Engine')
 
     var DiscoverController = require('./screens/discover/Controller')
+    var BackgroundView = require('components/background/Background')
 
     var app = module.exports
+
+    app.GOLDEN_RATIO = 0.618
 
     app.options = {router: true}
     app.context = Engine.createContext()
 
-    // One images pool can be used by any component.
     app.imagesLoader = new ImagesLoader()
+
+    // Background view is accessing app.context.
+    setTimeout(function() {
+        app.context.add(new BackgroundView())
+    }, 10)
 
     var initialized = false
 

@@ -13,8 +13,11 @@ define(function(require, exports, module) {
 
     function Header() {
         View.apply(this, arguments)
+
         var size = app.context.getSize()
-        this.options.size = [size[0], this.options.height * size[0]]
+
+        // Height is the golden ratio.
+        this.options.size = [size[0], app.GOLDEN_RATIO * size[0]]
 
         this.surface = new ContainerSurface({
             size: this.options.size,
@@ -22,13 +25,7 @@ define(function(require, exports, module) {
         })
         this.surface.pipe(this)
         this.surface.on('click', this._onClick.bind(this))
-
-        this.bg = new Surface({
-            classes: ['bg'],
-            size: this.options.size
-        })
-        this.bgModifier = new Modifier()
-        this.surface.add(this.bgModifier).add(this.bg)
+        this.add(this.surface)
 
         this.logo = new Surface({
             content: 'kiipost',
@@ -46,7 +43,13 @@ define(function(require, exports, module) {
         })
         this.surface.add(this.avatar)
 
-        this.add(this.surface)
+        this.title = new Surface({
+            classes: ['title'],
+            size: [undefined, 30],
+            content: this.options.title
+        })
+        this.surface.add(this.title)
+
         //this._initParallax()
     }
 
@@ -54,7 +57,7 @@ define(function(require, exports, module) {
     module.exports = Header
 
     Header.DEFAULT_OPTIONS = {
-        height: 0.618
+        title: 'Home'
     }
 
     Header.prototype._onClick = function(e) {

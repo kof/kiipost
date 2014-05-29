@@ -12,8 +12,6 @@ define(function(require, exports, module) {
 
     var app = require('app')
 
-    var streamTpl = mustache.compile(require('../templates/stream.html'))
-
     /**
      * Infinite list.
      *
