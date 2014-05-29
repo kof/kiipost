@@ -14,7 +14,7 @@ define(function(require, exports, module) {
     function Header() {
         View.apply(this, arguments)
         var size = app.context.getSize()
-        this.options.size = [size[0], this.options.height * size[1]]
+        this.options.size = [size[0], this.options.height * size[0]]
 
         this.surface = new ContainerSurface({
             size: this.options.size,
@@ -54,7 +54,7 @@ define(function(require, exports, module) {
     module.exports = Header
 
     Header.DEFAULT_OPTIONS = {
-        height: 0.4
+        height: 0.618
     }
 
     Header.prototype._onClick = function(e) {
