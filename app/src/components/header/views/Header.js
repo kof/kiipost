@@ -13,8 +13,8 @@ define(function(require, exports, module) {
 
     function Header() {
         View.apply(this, arguments)
-
-        this.options.size = [undefined, this.options.height * app.context.getSize()[1]]
+        var size = app.context.getSize()
+        this.options.size = [size[0], this.options.height * size[1]]
 
         this.surface = new ContainerSurface({
             size: this.options.size,
@@ -22,6 +22,13 @@ define(function(require, exports, module) {
         })
         this.surface.pipe(this)
         this.surface.on('click', this._onClick.bind(this))
+
+        this.bg = new Surface({
+            classes: ['bg'],
+            size: this.options.size
+        })
+        this.bgModifier = new Modifier()
+        this.surface.add(this.bgModifier).add(this.bg)
 
         this.logo = new Surface({
             content: 'kiipost',
@@ -39,8 +46,7 @@ define(function(require, exports, module) {
         })
         this.surface.add(this.avatar)
 
-        this.modifier = new Modifier()
-        this.add(this.modifier).add(this.surface)
+        this.add(this.surface)
         //this._initParallax()
     }
 
@@ -72,10 +78,10 @@ define(function(require, exports, module) {
             if (y > maxY) y = maxY
             if (y < minY) y = 0
             if (y < maxY && y > minY) {
-                this.modifier.transformFrom(Transform.translate(0, y ,0))
+                this.bgModifier.transformFrom(Transform.translate(0, y ,0))
                 opacity = 1 - y / maxY
                 if (opacity > maxOpacity) opacity = maxOpacity
-                this.modifier.opacityFrom(opacity)
+                this.bgModifier.opacityFrom(opacity)
             }
         }.bind(this))
     }

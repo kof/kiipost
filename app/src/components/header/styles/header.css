@@ -1,7 +1,11 @@
 .header {
+    padding: 10px 10px 0 10px;
+}
+.header .bg {
     background: url('/content/images/discover-header.jpg') no-repeat;
     background-size: cover;
-    padding: 10px 10px 0 10px;
+    left: -10px;
+    top: -10px;
 }
 .header .logo {
     left: 0;
