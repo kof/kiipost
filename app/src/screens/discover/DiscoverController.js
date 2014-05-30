@@ -27,6 +27,6 @@ define(function(require, exports, module) {
     }
 
     DiscoverController.prototype.discover = function() {
-        app.renderController.show(this.view)
+        app.controller.show(this.view)
     }
 })

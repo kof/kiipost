@@ -32,7 +32,7 @@ define(function(require, exports, module) {
         } else {
             this.view.model = model
         }
-        app.renderController.show(this.view)
+        app.controller.show(this.view)
     }
 
     ArticleController.prototype._onOpen = function(model) {

@@ -20,8 +20,8 @@ define(function(require, exports, module) {
 
     app.imagesLoader = new ImagesLoader()
 
-    app.renderController = new RenderController()
-    app.context.add(app.renderController)
+    app.controller = new RenderController()
+    app.context.add(app.controller)
 
     // Background view is accessing app.context.
     setTimeout(function() {
