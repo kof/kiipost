@@ -49,10 +49,17 @@ define(function(require, exports, module) {
         window.addEventListener('deviceorientation', function(e) {
             var x = e.gamma
             var y = e.beta
+            var set = false
 
-            if (x < o.offset && x > -o.offset) this.x = -x
-            if (y < o.offset && y > -o.offset) this.y = -y
-            this.modifier.transformFrom(Transform.translate(this.x, this.y, 0))
+            if (x < o.offset && x > -o.offset && this.x !== -x) {
+                this.x = -x
+                set = true
+            }
+            if (y < o.offset && y > -o.offset && this.y !== -y) {
+                this.y = -y
+                set = true
+            }
+            if (set) this.modifier.transformFrom(Transform.translate(this.x, this.y, 0))
         }.bind(this));
     }
 })
