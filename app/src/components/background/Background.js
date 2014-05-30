@@ -26,19 +26,17 @@ define(function(require, exports, module) {
             },
             size: [size[0] + o.offset * 2, size[1] + o.offset * 2]
         })
-        this.modifier = new Modifier()
+        this.modifier = new Modifier({origin: [0.5, 0.5]})
         this.add(this.modifier).add(this.image)
 
         this.x = -o.offset
         this.y = -o.offset
-        this.modifier.transformFrom(Transform.translate(this.x, this.y, 0))
         window.addEventListener('deviceorientation', function(e) {
-            var y = e.beta
             var x = e.gamma
+            var y = e.beta
 
-            if (y < o.offset || y > -o.offset) this.y = -y
-            if (x < o.offset || x > -o.offset) this.x = -x
-
+            if (x < o.offset && x > -o.offset) this.x = -x
+            if (y < o.offset && y > -o.offset) this.y = -y
             this.modifier.transformFrom(Transform.translate(this.x, this.y, 0))
         }.bind(this));
     }
@@ -47,7 +45,7 @@ define(function(require, exports, module) {
     module.exports = Background
 
     Background.DEFAULT_OPTIONS = {
-        offset: 20,
+        offset: 40,
         url: '/content/images/background.png'
     }
 })
