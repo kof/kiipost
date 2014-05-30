@@ -49,8 +49,6 @@ define(function(require, exports, module) {
             content: this.options.title
         })
         this.surface.add(this.title)
-
-        //this._initParallax()
     }
 
     inherits(Header, View)
@@ -64,28 +62,5 @@ define(function(require, exports, module) {
         if (e.target.classList.contains('avatar')) {
             console.log('avatar')
         }
-    }
-
-    Header.prototype._initParallax = function() {
-        var y = 0
-        var maxY = this.surface.getSize()[1]
-        var minY = 0
-
-        var opacity = 1
-        var maxOpacity = 1
-        var minOpacity = 0.3
-
-        // ScrollView events are piped to header.
-        this.on('update', function(e) {
-            y -= Math.round(e.delta / 3)
-            if (y > maxY) y = maxY
-            if (y < minY) y = 0
-            if (y < maxY && y > minY) {
-                this.bgModifier.transformFrom(Transform.translate(0, y ,0))
-                opacity = 1 - y / maxY
-                if (opacity > maxOpacity) opacity = maxOpacity
-                this.bgModifier.opacityFrom(opacity)
-            }
-        }.bind(this))
     }
 })

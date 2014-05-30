@@ -29,16 +29,7 @@ define(function(require, exports, module) {
         this.modifier = new Modifier({origin: [0.5, 0.5]})
         this.add(this.modifier).add(this.image)
 
-        this.x = -o.offset
-        this.y = -o.offset
-        window.addEventListener('deviceorientation', function(e) {
-            var x = e.gamma
-            var y = e.beta
-
-            if (x < o.offset && x > -o.offset) this.x = -x
-            if (y < o.offset && y > -o.offset) this.y = -y
-            this.modifier.transformFrom(Transform.translate(this.x, this.y, 0))
-        }.bind(this));
+        this._initParallax()
     }
 
     inherits(Background, View)
@@ -47,5 +38,21 @@ define(function(require, exports, module) {
     Background.DEFAULT_OPTIONS = {
         offset: 40,
         url: '/content/images/background.png'
+    }
+
+    Background.prototype._initParallax = function() {
+        var o = this.options
+
+        this.x = -o.offset
+        this.y = -o.offset
+
+        window.addEventListener('deviceorientation', function(e) {
+            var x = e.gamma
+            var y = e.beta
+
+            if (x < o.offset && x > -o.offset) this.x = -x
+            if (y < o.offset && y > -o.offset) this.y = -y
+            this.modifier.transformFrom(Transform.translate(this.x, this.y, 0))
+        }.bind(this));
     }
 })

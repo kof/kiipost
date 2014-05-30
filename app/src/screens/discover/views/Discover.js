@@ -30,8 +30,6 @@ define(function(require, exports, module) {
 
         // Header can scroll the scrollview.
         this.header._eventInput.pipe(this.stream.scrollview)
-        // Let header react on "update"
-        this.stream.pipe(this.header._eventOutput)
 
         this.spinner = new SpinnerView()
         this.add(this.spinner)
