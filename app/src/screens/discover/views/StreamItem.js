@@ -27,6 +27,7 @@ define(function(require, exports, module) {
         this.add(this.surface)
         this.surface.pipe(this)
         this.setContent()
+        this.surface.on('click', this._onClick.bind(this))
     }
 
     inherits(StreamItem, View)
@@ -59,5 +60,9 @@ define(function(require, exports, module) {
         } else {
             set.call(this)
         }
+    }
+
+    StreamItem.prototype._onClick = function() {
+        app.context.emit('article:open', this.model)
     }
 })

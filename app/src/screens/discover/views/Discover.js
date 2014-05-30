@@ -26,6 +26,7 @@ define(function(require, exports, module) {
             collection: this.options.collection
         })
         this.stream.addClass('discover')
+        this.stream.pipe(this._eventOutput)
         this.add(this.stream)
 
         // Header can scroll the scrollview.

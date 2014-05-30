@@ -1,5 +1,5 @@
 define(function(require, exports, module) {
-    var BackboneController = require('controller')
+    var Controller = require('controller')
     var inherits = require('inherits')
     var _ = require('underscore')
 
@@ -9,20 +9,17 @@ define(function(require, exports, module) {
 
     var DiscoverView = require('./views/Discover')
 
-    function Controller(options) {
-        this.options = _.extend({}, Controller.DEFAULT_OPTIONS, options)
+    function DiscoverController(options) {
         this.routes = {
             '': 'discover',
             '/': 'discover'
         }
-        BackboneController.apply(this, arguments)
+        Controller.apply(this, arguments)
     }
-    inherits(Controller, BackboneController)
-    module.exports = Controller
+    inherits(DiscoverController, Controller)
+    module.exports = DiscoverController
 
-    Controller.DEFAULT_OPTIONS = {}
-
-    Controller.prototype.initialize = function() {
+    DiscoverController.prototype.initialize = function() {
         this.collection = new Collection(null, {
             basePath: '/api/discover',
             view: 'gallery'
@@ -30,7 +27,7 @@ define(function(require, exports, module) {
         this.view = new DiscoverView({collection: this.collection})
     }
 
-    Controller.prototype.discover = function() {
+    DiscoverController.prototype.discover = function() {
         app.context.add(this.view)
     }
 })

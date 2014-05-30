@@ -6,7 +6,8 @@ define(function(require, exports, module) {
 
     var Engine = require('famous/core/Engine')
 
-    var DiscoverController = require('./screens/discover/Controller')
+    var DiscoverController = require('./screens/discover/DiscoverController')
+    var ArticleController = require('./screens/article/ArticleController')
     var BackgroundView = require('components/background/Background')
 
     var app = module.exports
@@ -29,6 +30,7 @@ define(function(require, exports, module) {
     app.context.on('resize', function() {
         if (initialized) return
         var discover = new DiscoverController(app.options)
+        var article = new ArticleController(app.options)
         backbone.history.start()
         initialized = true
     })

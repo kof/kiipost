@@ -3,4 +3,6 @@ define(function(require, exports, module) {
 
     var $ = require('jquery')
     $.ajaxSetup({cache: false})
+    var backbone = require('backbone')
+    backbone.Model.prototype.idAttribute = '_id'
 })
