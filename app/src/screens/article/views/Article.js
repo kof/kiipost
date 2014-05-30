@@ -21,8 +21,4 @@ define(function(require, exports, module) {
     module.exports = Article
 
     Article.DEFAULT_OPTIONS = {}
-
-    Article.prototype.show = function() {
-
-    }
 })

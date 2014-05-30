@@ -12,11 +12,10 @@ define(function(require, exports, module) {
     function Spinner() {
         View.apply(this, arguments)
 
-        this.hidden = true
+        this.rotate = false
         this.container = new ContainerSurface({
             classes: ['spinner'],
-            size: this.options.containerSize,
-            properties: {display: 'none'}
+            size: this.options.containerSize
         })
         this.add(new Modifier({origin: [0.5, 0.5]})).add(this.container)
 
@@ -26,27 +25,21 @@ define(function(require, exports, module) {
         })
 
         var angle = 0
-        this.imageModifier = new Modifier({
+        this._imageModifier = new Modifier({
             origin: [0.5, 0.5],
             transform : function() {
-                if (this.hidden) return
+                if (!this.rotate) return
                 angle += this.options.step
                 return Transform.rotateZ(angle)
             }.bind(this)
         })
-        this.container.add(this.imageModifier).add(this.image)
-
-        this._eventInput.on('spinner:show', this.show.bind(this))
-        this._eventInput.on('spinner:hide', this.hide.bind(this))
+        this.container.add(this._imageModifier).add(this.image)
     }
 
     inherits(Spinner, View)
     module.exports = Spinner
 
     Spinner.DEFAULT_OPTIONS = {
-        // Wait before showing indicator
-        // http://ux.stackexchange.com/questions/37416/is-it-bad-ux-to-omit-a-progress-indicator
-        delay: 1000,
         // Step to rotate in rad.
         step: 0.07,
         containerSize: [100, 100],
@@ -54,17 +47,11 @@ define(function(require, exports, module) {
         content: '/src/components/spinner/images/grey-100.png'
     }
 
-    Spinner.prototype.show = function(immediate) {
-        clearTimeout(this._timeoutId)
-        this._timeoutId = setTimeout(function() {
-            this.hidden = false
-            this.container.setProperties({display: 'block'})
-        }.bind(this), immediate ? 0 : this.options.delay)
+    Spinner.prototype.start = function() {
+        this.rotate = true
     }
 
-    Spinner.prototype.hide = function() {
-        clearTimeout(this._timeoutId)
-        this.hidden = true
-        this.container.setProperties({display: 'none'})
+    Spinner.prototype.stop = function() {
+        this.rotate = false
     }
 })

@@ -10,7 +10,7 @@ define(function(require, exports, module) {
     var StreamView = require('components/stream/views/Stream')
     var MenuView = require('components/menu/views/Menu')
     var JumperView = require('components/jumper/views/Jumper')
-    var SpinnerView = require('components/spinner/views/Spinner')
+    var SpinnerController = require('components/spinner/views/Controller')
 
     var StreamItemView = require('./StreamItem')
 
@@ -32,9 +32,9 @@ define(function(require, exports, module) {
         // Header can scroll the scrollview.
         this.header._eventInput.pipe(this.stream.scrollview)
 
-        this.spinner = new SpinnerView()
-        this.add(this.spinner)
+        this.spinner = new SpinnerController()
         this.stream.pipe(this.spinner)
+        this.add(this.spinner)
 
         this.jumper = new JumperView({scrollview: this.stream.scrollview})
         this.add(this.jumper)

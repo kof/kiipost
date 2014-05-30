@@ -5,6 +5,7 @@ define(function(require, exports, module) {
     var ImagesLoader = require('images-loader')
 
     var Engine = require('famous/core/Engine')
+    var RenderController = require('famous/views/RenderController')
 
     var DiscoverController = require('./screens/discover/DiscoverController')
     var ArticleController = require('./screens/article/ArticleController')
@@ -18,6 +19,9 @@ define(function(require, exports, module) {
     app.context = Engine.createContext()
 
     app.imagesLoader = new ImagesLoader()
+
+    app.renderController = new RenderController()
+    app.context.add(app.renderController)
 
     // Background view is accessing app.context.
     setTimeout(function() {

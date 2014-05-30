@@ -11,8 +11,7 @@ define(function(require, exports, module) {
 
     function DiscoverController(options) {
         this.routes = {
-            '': 'discover',
-            '/': 'discover'
+            '': 'discover'
         }
         Controller.apply(this, arguments)
     }
@@ -28,6 +27,6 @@ define(function(require, exports, module) {
     }
 
     DiscoverController.prototype.discover = function() {
-        app.context.add(this.view)
+        app.renderController.show(this.view)
     }
 })

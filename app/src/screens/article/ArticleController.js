@@ -13,8 +13,7 @@ define(function(require, exports, module) {
 
     function ArticleController(options) {
         this.routes = {
-            'article/:id': 'article',
-            'article/:id/': 'article'
+            'article/:id': 'article'
         }
         Controller.apply(this, arguments)
         app.context.on('article:open', this._onOpen.bind(this))
@@ -27,15 +26,17 @@ define(function(require, exports, module) {
         this.view = new ArticleView()
     }
 
-    ArticleController.prototype.article = function(id) {
-        console.log('article', id)
-        app.context.add(this.view)
+    ArticleController.prototype.article = function(model) {
+        if (typeof model == 'string') {
+            this.view.options.articleId = model
+        } else {
+            this.view.model = model
+        }
+        app.renderController.show(this.view)
     }
 
     ArticleController.prototype._onOpen = function(model) {
-        console.log('open', model)
-        this.view.model = model
-        this.view.show()
-        this.options.router.navigate('/article/' + model.id, {trigger: true})
+        this.options.router.navigate('/article/' + model.id)
+        this.article(model)
     }
 })
