@@ -26,8 +26,7 @@ define(function(require, exports, module) {
         var angle = 0
         this._imageModifier = new Modifier({
             origin: [0.5, 0.5],
-            transform : function() {
-                if (!this.rotate) return
+            transform: function(val) {
                 angle += this.options.step
                 return Transform.rotateZ(angle)
             }.bind(this)
@@ -57,14 +56,12 @@ define(function(require, exports, module) {
     Controller.prototype.show = function(immediate) {
         clearTimeout(this._timeoutId)
         this._timeoutId = setTimeout(function() {
-            this.rotate = true
             Controller.super_.prototype.show.call(this, this.container)
         }.bind(this), immediate ? 0 : this.options.delay)
     }
 
     Controller.prototype.hide = function() {
         clearTimeout(this._timeoutId)
-        this.rotate = false
         Controller.super_.prototype.hide.call(this, this.container)
     }
 })

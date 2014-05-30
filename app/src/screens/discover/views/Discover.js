@@ -38,7 +38,7 @@ define(function(require, exports, module) {
         this.add(new Modifier({origin: [0.5, 0.5]})).add(this.spinner)
 
         this.jumper = new JumperView({scrollview: this.stream.scrollview})
-        this.add(this.jumper)
+        this.add(new Modifier({origin: [0.5, 0.05]})).add(this.jumper)
 
         this.stream.load()
     }
