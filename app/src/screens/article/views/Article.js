@@ -65,7 +65,6 @@ define(function(require, exports, module) {
         this.model = new ArticleModel({_id: articleId})
         this.spinner.show(true)
         this.model.fetch().then(function() {
-            this.text.setClasses(['article-text'])
             this.setContent(this.model)
             this.spinner.hide()
         }.bind(this))
@@ -75,5 +74,6 @@ define(function(require, exports, module) {
         this.title.textContent = model.get('title')
         this.image.setContent(model.get('image').url)
         this.text.setContent(model.get('summary') + model.get('summary') + model.get('summary') + model.get('summary') + model.get('summary') + model.get('summary') + model.get('summary') + model.get('summary') + model.get('summary') + model.get('summary'))
+        this.text.setClasses(['article-text'])
     }
 })

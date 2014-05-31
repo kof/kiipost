@@ -30,7 +30,7 @@ define(function(require, exports, module) {
     ArticleController.prototype.initialize = function() {
         this.view = new ArticleView()
         this.view.on('close', function() {
-            this.router.navigate('', {trigger: true})
+            this.router.navigate('/', {trigger: true})
         }.bind(this))
     }
 
