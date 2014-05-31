@@ -6,7 +6,7 @@ define(function(require, exports, module) {
     var View = require('famous/core/View')
     var Surface = require('famous/core/Surface')
     var Modifier = require('famous/core/Modifier')
-    var ScrollContainer = require('famous/views/ScrollContainer')
+    var Scrollview = require('famous/views/ScrollContainer')
     var Utility = require('famous/utilities/Utility')
 
     var BackgroundView = require('components/background/Background')
@@ -20,11 +20,9 @@ define(function(require, exports, module) {
 
         this.surfaces = []
 
-        this.scrollcontainer = new ScrollContainer({
-            scrollview: {direction: Utility.Direction.Y}
-        })
-        this.add(this.scrollcontainer)
-        this.scrollcontainer.sequenceFrom(this.surfaces)
+        this.scrollview = new Scrollview()
+        this.add(this.scrollview)
+        this.scrollview.sequenceFrom(this.surfaces)
 
         this.image = new BackgroundView()
         this.add(this.image)
@@ -45,12 +43,17 @@ define(function(require, exports, module) {
             classes: ['article-head'],
             size: [undefined, app.context.getSize()[0] * app.GOLDEN_RATIO]
         })
+        this.head.pipe(this.scrollview)
         this.surfaces.push(this.head)
 
+        this.textContent = document.createElement('div')
         this.text = new Surface({
+            content: this.textContent,
             size: [undefined, true]
         })
+        this.text.pipe(this.scrollview)
         this.surfaces.push(this.text)
+
 
         this.spinner = new SpinnerView()
         this.add(new Modifier({origin: [0.5, 0.5]})).add(this.spinner)
@@ -73,7 +76,24 @@ define(function(require, exports, module) {
     Article.prototype.setContent = function(model) {
         this.title.textContent = model.get('title')
         this.image.setContent(model.get('image').url)
-        this.text.setContent(model.get('summary') + model.get('summary') + model.get('summary') + model.get('summary') + model.get('summary') + model.get('summary') + model.get('summary') + model.get('summary') + model.get('summary') + model.get('summary'))
+        // Set class now to avoid white screen artifact during loading.
         this.text.setClasses(['article-text'])
+        this.textContent.innerHTML = model.get('summary')
+        // Wait until text is rendered.
+        setTimeout(function() {
+            var textHeight = this.textContent.parentNode.clientHeight,
+                headerHeight = this.head.getSize()[1],
+                contextHeight = app.context.getSize()[1]
+
+            if (textHeight + headerHeight < contextHeight) {
+                textHeight = contextHeight - headerHeight
+            }
+            this.text.setSize([undefined, textHeight])
+        }.bind(this), 50)
     }
+
+    Article.prototype._setTextSize = _.debounce(function() {
+        console.log(this.textContent.parentNode.clientHeight)
+        this.text.setSize([undefined, this.textContent.parentNode.clientHeight])
+    }, 100)
 })

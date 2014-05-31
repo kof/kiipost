@@ -2,7 +2,6 @@ define(function(require, exports, module) {
     'use strict'
 
     var inherits = require('inherits')
-    var _ = require('underscore')
     var backbone = require('backbone')
 
     function Article() {
