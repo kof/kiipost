@@ -16,6 +16,7 @@ define(function(require, exports, module) {
         }
         Controller.apply(this, arguments)
         this.options = _.extend({}, ArticleController.DEFAULT_OPTIONS, this.options)
+        this.router = this.options.router
         app.context.on('article:open', this._onOpen.bind(this))
     }
 
@@ -28,6 +29,9 @@ define(function(require, exports, module) {
 
     ArticleController.prototype.initialize = function() {
         this.view = new ArticleView()
+        this.view.on('close', function() {
+            this.router.navigate('', {trigger: true})
+        }.bind(this))
     }
 
     ArticleController.prototype.article = function(model) {
@@ -40,7 +44,7 @@ define(function(require, exports, module) {
     }
 
     ArticleController.prototype._onOpen = function(model) {
-        this.options.router.navigate('/article/' + model.id)
+        this.router.navigate('/article/' + model.id)
         this.article(model)
     }
 })

@@ -29,6 +29,16 @@ define(function(require, exports, module) {
         this.image = new BackgroundView()
         this.add(this.image)
 
+        this.close = new Surface({
+            content: 'close',
+            classes: ['icomatic', 'article-close'],
+            size: [true, true]
+        })
+        this.close.on('click', function() {
+            this._eventOutput.emit('close')
+        }.bind(this))
+        this.surfaces.push(this.close)
+
         this.title = document.createElement('h1')
         this.head = new Surface({
             content: this.title,
