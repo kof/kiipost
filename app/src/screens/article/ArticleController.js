@@ -7,20 +7,24 @@ define(function(require, exports, module) {
 
     var app = require('app')
 
-    var ArticleModel = require('components/stream/collections/Stream')
-
+    var ArticleModel = require('./models/Article')
     var ArticleView = require('./views/Article')
 
-    function ArticleController(options) {
+    function ArticleController() {
         this.routes = {
             'article/:id': 'article'
         }
         Controller.apply(this, arguments)
+        this.options = _.extend({}, ArticleController.DEFAULT_OPTIONS, this.options)
         app.context.on('article:open', this._onOpen.bind(this))
     }
 
     inherits(ArticleController, Controller)
     module.exports = ArticleController
+
+    ArticleController.DEFAULT_OPTIONS = {
+        duration: 150
+    }
 
     ArticleController.prototype.initialize = function() {
         this.view = new ArticleView()
@@ -28,11 +32,11 @@ define(function(require, exports, module) {
 
     ArticleController.prototype.article = function(model) {
         if (typeof model == 'string') {
-            this.view.options.articleId = model
+            this.view.load(model)
         } else {
-            this.view.model = model
+            this.view.setContent(model)
         }
-        app.controller.show(this.view)
+        app.controller.show(this.view, this.options)
     }
 
     ArticleController.prototype._onOpen = function(model) {

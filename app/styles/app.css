@@ -1,5 +1,6 @@
 html {
-    background: #fff;
+    background: url('/content/images/background.png') no-repeat;
+    background-size: cover;
     font-family: Ubuntu;
 }
 a  {

@@ -9,7 +9,6 @@ define(function(require, exports, module) {
 
     var DiscoverController = require('./screens/discover/DiscoverController')
     var ArticleController = require('./screens/article/ArticleController')
-    var BackgroundView = require('components/background/Background')
 
     var app = module.exports
 
@@ -23,13 +22,11 @@ define(function(require, exports, module) {
     app.controller = new RenderController()
     app.context.add(app.controller)
 
-    // Background view is accessing app.context.
-    setTimeout(function() {
-        app.context.add(new BackgroundView())
-    }, 10)
+    window.addEventListener('deviceorientation', function(e) {
+        app.context.emit('deviceorientation', e)
+    })
 
     var initialized = false
-
     // Some views require to know the context size immediately.
     app.context.on('resize', function() {
         if (initialized) return

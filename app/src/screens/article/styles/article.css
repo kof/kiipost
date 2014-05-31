@@ -1,0 +1,18 @@
+.article-head h1 {
+    font-size: 1.5em;
+    height: 2.45em;
+    overflow: hidden;
+    position: absolute;
+    bottom: 0;
+    margin: 0 0 0.5em 0.5em;
+    color: #fff;
+}
+
+.article-text {
+    background: #fff;
+    color: #a3a3a3;
+    padding: 1em;
+    box-sizing: border-box;
+    font-size: 1.1em;
+    line-height: 1.4;
+}

@@ -12,11 +12,15 @@ define(function(require, exports, module) {
     var MenuView = require('components/menu/views/Menu')
     var JumperView = require('components/jumper/views/Jumper')
     var SpinnerView = require('components/spinner/views/Spinner')
+    var BackgroundView = require('components/background/Background')
 
     var StreamItemView = require('./StreamItem')
 
     function Discover() {
         View.apply(this, arguments)
+
+        this.background = new BackgroundView({content: '/content/images/background.png'})
+        this.add(this.background)
         this.header = new HeaderView(this.options)
         this.menu = new MenuView()
         this.header.surface.add(this.menu)

@@ -19,8 +19,7 @@ define(function(require, exports, module) {
         this.image = new Surface({
             classes: ['background'],
             properties: {
-                backgroundSize: 'cover',
-                backgroundImage: 'url(' + o.url + ')',
+                backgroundSize: 'contain',
                 backgroundRepeat: 'no-repeat',
                 zIndex: -1
             },
@@ -28,7 +27,7 @@ define(function(require, exports, module) {
         })
         this.modifier = new Modifier({origin: [0.5, 0.5]})
         this.add(this.modifier).add(this.image)
-
+        if (o.content) this.setContent(o.content)
         this._initParallax()
     }
 
@@ -36,8 +35,12 @@ define(function(require, exports, module) {
     module.exports = Background
 
     Background.DEFAULT_OPTIONS = {
-        offset: 40,
-        url: '/content/images/background.png'
+        offset: 20,
+        content: null
+    }
+
+    Background.prototype.setContent = function(url) {
+        this.image.setProperties({backgroundImage: 'url(' + url + ')'})
     }
 
     Background.prototype._initParallax = function() {
@@ -46,7 +49,7 @@ define(function(require, exports, module) {
         this.x = -o.offset
         this.y = -o.offset
 
-        window.addEventListener('deviceorientation', function(e) {
+        app.context.on('deviceorientation', function(e) {
             var x = e.gamma
             var y = e.beta
             var set = false
