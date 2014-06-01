@@ -37,6 +37,7 @@ define(function(require, exports, module) {
         properties: {
             backgroundSize: 'contain',
             backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'top left',
             zIndex: -1
         }
     }
@@ -47,6 +48,11 @@ define(function(require, exports, module) {
 
     Background.prototype.setProperties = function(props) {
         return this.image.setProperties(props)
+    }
+
+    Background.prototype.reset = function() {
+        this.image.setProperties(this.options.properties)
+        this.image.setContent(this.options.content)
     }
 
     Background.prototype._initParallax = function() {
