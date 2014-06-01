@@ -2,17 +2,14 @@
     padding: 10px 10px 0 10px;
     color: #fff;
 }
-.header .bg {
-    background: url('/content/images/discover-header.jpg') no-repeat;
-    background-size: cover;
-    left: -10px;
-    top: -10px;
-}
+
 .header .logo {
     left: 0;
     top: 0;
-    font-size: 1.3em;
-    cursor: pointer;
+    width: 2em;
+    height: 2em;
+    background: url('/content/images/logo.png') no-repeat;
+    background-size: contain;
 }
 .header .avatar {
     right: 0;

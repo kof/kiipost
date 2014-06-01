@@ -32,9 +32,8 @@
     height: 3.5em;
     cursor: pointer;
     z-index: 1;
-    background: url('/content/images/logo.png') no-repeat center;
-    background-size: 85%;
-    background-color: rgba(0, 0, 0, .9);
+    background: url('/content/images/logo.png') no-repeat center #000;
+    background-size: 33%;
     border: 2px solid #CFCECE;
     border-radius: 100%;
 }

@@ -28,9 +28,8 @@ define(function(require, exports, module) {
         this.add(this.surface)
 
         this.logo = new Surface({
-            content: 'kiipost',
             classes: ['logo'],
-            size: [100, 30]
+            size: [true, true]
         })
         this.surface.add(this.logo)
 
