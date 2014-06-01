@@ -14,15 +14,11 @@ define(function(require, exports, module) {
         View.apply(this, arguments)
 
         var o = this.options
-        var size = app.context.getSize()
+        var size = o.size || app.context.getSize()
 
         this.image = new Surface({
             classes: ['background'],
-            properties: {
-                backgroundSize: 'contain',
-                backgroundRepeat: 'no-repeat',
-                zIndex: -1
-            },
+            properties: o.properties,
             size: [size[0] + o.offset * 2, size[1] + o.offset * 2]
         })
         this.modifier = new Modifier({origin: [0.5, 0.5]})
@@ -36,11 +32,21 @@ define(function(require, exports, module) {
 
     Background.DEFAULT_OPTIONS = {
         offset: 20,
-        content: null
+        content: null,
+        size: null,
+        properties: {
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            zIndex: -1
+        }
     }
 
     Background.prototype.setContent = function(url) {
         this.image.setProperties({backgroundImage: 'url(' + url + ')'})
+    }
+
+    Background.prototype.setProperties = function(props) {
+        return this.image.setProperties(props)
     }
 
     Background.prototype._initParallax = function() {

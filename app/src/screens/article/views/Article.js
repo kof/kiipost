@@ -18,6 +18,8 @@ define(function(require, exports, module) {
     function Article() {
         View.apply(this, arguments)
 
+        var size = app.context.getSize()
+
         this.surfaces = []
 
         this.scrollview = new Scrollview()
@@ -31,7 +33,7 @@ define(function(require, exports, module) {
             content: '<span class="close icomatic">close</span>' +
                 '<span class="source icomatic">externallink</span>',
             classes: ['article-top-btns'],
-            size: [undefined, true]
+            size: [size[0], true]
         })
         this.topBtns.on('click', this._onTopBtnClick.bind(this))
         this.surfaces.push(this.topBtns)
@@ -40,7 +42,7 @@ define(function(require, exports, module) {
         this.head = new Surface({
             content: this.title,
             classes: ['article-head'],
-            size: [undefined, app.context.getSize()[0] * app.GOLDEN_RATIO]
+            size: [size[0], size[0] * app.GOLDEN_RATIO]
         })
         this.head.pipe(this.scrollview)
         this.surfaces.push(this.head)
@@ -48,7 +50,7 @@ define(function(require, exports, module) {
         this.textContent = document.createElement('div')
         this.text = new Surface({
             content: this.textContent,
-            size: [undefined, true]
+            size: [size[0], true]
         })
         this.text.pipe(this.scrollview)
         this.surfaces.push(this.text)
@@ -79,37 +81,58 @@ define(function(require, exports, module) {
     }
 
     Article.prototype.setContent = function(model) {
+        this.model = model
         this.title.textContent = model.get('title')
-        this.image.setContent(model.get('image').url)
+        this._setImage(model.get('image'))
         // Set class now to avoid white screen artifact during loading.
         this.text.setClasses(['article-text'])
         this.textContent.innerHTML = model.get('summary')
         // Wait until text is rendered.
-        setTimeout(function() {
-            var textHeight = this.textContent.parentNode.clientHeight
-            var headerHeight = this.head.getSize()[1]
-            var contextHeight = app.context.getSize()[1]
-
-            if (textHeight + headerHeight < contextHeight) {
-                textHeight = contextHeight - headerHeight
-            }
-            this.text.setSize([undefined, textHeight])
-        }.bind(this), 50)
+        setTimeout(this._setTextSize.bind(this), 50)
     }
 
-    Article.prototype._setTextSize = _.debounce(function() {
-        this.text.setSize([undefined, this.textContent.parentNode.clientHeight])
-    }, 100)
+    Article.prototype._setImage = function(image) {
+        if (!image) return
+
+        app.imagesLoader.load(image.url, function(err, data) {
+            if (err) return
+
+            var size = this.head.getSize()
+
+            if (data.width <= size[0] && data.height <= size[1]) {
+                var top = (size[1] + this.image.options.offset * 2 - data.height) / 2
+                console.log(top)
+                this.image.setProperties({
+                    backgroundSize: 'initial',
+                    backgroundPosition: 'center ' + top + 'px'
+                })
+            }
+
+            this.image.setContent(image.url)
+        }.bind(this))
+    }
+
+    Article.prototype._setTextSize = function() {
+        var textHeight = this.textContent.parentNode.clientHeight
+        var headerHeight = this.head.getSize()[1]
+        var contextHeight = app.context.getSize()[1]
+
+        if (textHeight + headerHeight < contextHeight) {
+            textHeight = contextHeight - headerHeight
+        }
+        this.text.setSize([undefined, textHeight])
+    }
 
     Article.prototype._onKiipost = function() {
         console.log('kiipost')
     }
 
     Article.prototype._onTopBtnClick = function(e) {
-        if (e.target.classList.contains('close')) {
+        var cls = e.target.classList
+        if (cls.contains('close')) {
             this._eventOutput.emit('close')
-        } else if (e.target.classList.contains('source')) {
-            console.log('source')
+        } else if (cls.contains('source')) {
+            window.open(this.model.get('link'), 'article')
         }
     }
 })

@@ -5,6 +5,7 @@
     color: #fff;
     padding: 1em;
     display: inline-block;
+    cursor: pointer;
 }
 .article-top-btns .source {
     float: right;
@@ -21,7 +22,7 @@
 .article-text {
     background: #fff;
     color: #a3a3a3;
-    padding: 1em;
+    padding: 1em 1em 4em 1em;
     box-sizing: border-box;
     font-size: 1.1em;
     line-height: 1.4;
