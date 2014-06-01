@@ -7,7 +7,6 @@ define(function(require, exports, module) {
 
     var app = require('app')
 
-    var ArticleModel = require('./models/Article')
     var ArticleView = require('./views/Article')
 
     function ArticleController() {

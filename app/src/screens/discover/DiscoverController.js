@@ -5,7 +5,8 @@ define(function(require, exports, module) {
 
     var app = require('app')
 
-    var Collection = require('components/stream/collections/Stream')
+    var ArticleModel = require('components/article/models/Article')
+    var StreamCollection = require('components/stream/collections/Stream')
 
     var DiscoverView = require('./views/Discover')
 
@@ -19,9 +20,10 @@ define(function(require, exports, module) {
     module.exports = DiscoverController
 
     DiscoverController.prototype.initialize = function() {
-        this.collection = new Collection(null, {
+        this.collection = new StreamCollection(null, {
             basePath: '/api/discover',
-            view: 'gallery'
+            view: 'gallery',
+            model: ArticleModel
         })
         this.view = new DiscoverView({collection: this.collection})
     }

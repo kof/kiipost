@@ -11,7 +11,7 @@ define(function(require, exports, module) {
 
     var BackgroundView = require('components/background/Background')
     var SpinnerView = require('components/spinner/views/Spinner')
-    var ArticleModel = require('../models/Article')
+    var ArticleModel = require('components/article/models/Article')
 
     var app = require('app')
 
@@ -101,7 +101,6 @@ define(function(require, exports, module) {
 
             if (data.width <= size[0] && data.height <= size[1]) {
                 var top = (size[1] + this.image.options.offset * 2 - data.height) / 2
-                console.log(top)
                 this.image.setProperties({
                     backgroundSize: 'initial',
                     backgroundPosition: 'center ' + top + 'px'
