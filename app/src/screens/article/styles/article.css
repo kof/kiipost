@@ -27,10 +27,13 @@
     line-height: 1.4;
 }
 .article-kiipost-btn {
-    border-radius: 100%;
-    background: red;
-    width: 3em;
-    height: 3em;
+    width: 3.5em;
+    height: 3.5em;
     cursor: pointer;
     z-index: 1;
+    background: url('/content/images/logo.png') no-repeat center;
+    background-size: 85%;
+    background-color: rgba(0, 0, 0, .9);
+    border: 2px solid #CFCECE;
+    border-radius: 100%;
 }
