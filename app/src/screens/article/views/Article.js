@@ -27,15 +27,14 @@ define(function(require, exports, module) {
         this.image = new BackgroundView()
         this.add(this.image)
 
-        this.close = new Surface({
-            content: 'close',
-            classes: ['icomatic', 'article-close'],
-            size: [true, true]
+        this.topBtns = new Surface({
+            content: '<span class="close icomatic">close</span>' +
+                '<span class="source icomatic">externallink</span>',
+            classes: ['article-top-btns'],
+            size: [undefined, true]
         })
-        this.close.on('click', function() {
-            this._eventOutput.emit('close')
-        }.bind(this))
-        this.surfaces.push(this.close)
+        this.topBtns.on('click', this._onTopBtnClick.bind(this))
+        this.surfaces.push(this.topBtns)
 
         this.title = document.createElement('h1')
         this.head = new Surface({
@@ -54,9 +53,15 @@ define(function(require, exports, module) {
         this.text.pipe(this.scrollview)
         this.surfaces.push(this.text)
 
-
         this.spinner = new SpinnerView()
         this.add(new Modifier({origin: [0.5, 0.5]})).add(this.spinner)
+
+        this.kiipost = new Surface({
+            classes: ['article-kiipost-btn'],
+            size: [true, true]
+        })
+        this.add(new Modifier({origin: [0.5, 0.97]})).add(this.kiipost)
+        this.kiipost.on('click', this._onKiipost.bind(this))
     }
 
     inherits(Article, View)
@@ -81,9 +86,9 @@ define(function(require, exports, module) {
         this.textContent.innerHTML = model.get('summary')
         // Wait until text is rendered.
         setTimeout(function() {
-            var textHeight = this.textContent.parentNode.clientHeight,
-                headerHeight = this.head.getSize()[1],
-                contextHeight = app.context.getSize()[1]
+            var textHeight = this.textContent.parentNode.clientHeight
+            var headerHeight = this.head.getSize()[1]
+            var contextHeight = app.context.getSize()[1]
 
             if (textHeight + headerHeight < contextHeight) {
                 textHeight = contextHeight - headerHeight
@@ -93,7 +98,18 @@ define(function(require, exports, module) {
     }
 
     Article.prototype._setTextSize = _.debounce(function() {
-        console.log(this.textContent.parentNode.clientHeight)
         this.text.setSize([undefined, this.textContent.parentNode.clientHeight])
     }, 100)
+
+    Article.prototype._onKiipost = function() {
+        console.log('kiipost')
+    }
+
+    Article.prototype._onTopBtnClick = function(e) {
+        if (e.target.classList.contains('close')) {
+            this._eventOutput.emit('close')
+        } else if (e.target.classList.contains('source')) {
+            console.log('source')
+        }
+    }
 })

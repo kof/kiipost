@@ -1,7 +1,13 @@
-.article-close {
+.article-top-btns {
+    z-index: 1;
+}
+.article-top-btns span {
     color: #fff;
     padding: 1em;
-    z-index: 1;
+    display: inline-block;
+}
+.article-top-btns .source {
+    float: right;
 }
 .article-head h1 {
     font-size: 1.5em;
@@ -12,7 +18,6 @@
     margin: 0 0 0.5em 0.5em;
     color: #fff;
 }
-
 .article-text {
     background: #fff;
     color: #a3a3a3;
@@ -20,4 +25,12 @@
     box-sizing: border-box;
     font-size: 1.1em;
     line-height: 1.4;
+}
+.article-kiipost-btn {
+    border-radius: 100%;
+    background: red;
+    width: 3em;
+    height: 3em;
+    cursor: pointer;
+    z-index: 1;
 }
