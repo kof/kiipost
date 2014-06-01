@@ -5,6 +5,8 @@ define(function(require, exports, module) {
     var backbone = require('backbone')
     var url = require('components/utils/url')
 
+    var wwwRegexp = /^www\./
+
     function Article() {
         this.url = '/api/article'
         Article.super_.apply(this, arguments)
@@ -16,6 +18,7 @@ define(function(require, exports, module) {
     Article.prototype.parse = function(data) {
         if (data.website) {
             data.hostname = url.parse(data.website).hostname
+                .replace(wwwRegexp, '')
         }
 
         return data
