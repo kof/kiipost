@@ -29,7 +29,7 @@ define(function(require, exports, module) {
         this.scrollview = new InfiniteScrollView({
             // Trigger infiniteScroll event 5 screens before items actually get rendered.
             offset: contextHeight * 5,
-            // Height of the full scroller, factor 2 to render invisible items
+            // Margin for full scroller to render invisible items
             // before they get shown.
             margin: contextHeight * 2
         })

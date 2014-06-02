@@ -2,23 +2,39 @@ define(function(require, exports, module) {
     'use strict'
 
     var inherits = require('inherits')
-    var mustache = require('mustache')
 
+    var Engine = require('famous/core/Engine')
     var View = require('famous/core/View')
     var Group = require('famous/core/Group')
     var Surface = require('famous/core/Surface')
     var FlexibleLayout = require('famous/views/FlexibleLayout')
 
+    var Pool = require('components/stream/helpers/Pool')
+    var elementsMap = require('components/elements-map/elementsMap')
+
     var app = require('app')
 
-    var tpl = mustache.compile(require('../templates/stream-item.html'))
+    var tpl = require('../templates/stream-item.html')
+
+    var pool = new Pool()
+
+    pool.setCreator(function() {
+        var container = document.createElement('div')
+        container.innerHTML = tpl
+        var map = elementsMap(container)
+        map.container = container
+        return map
+    })
 
     function StreamItem() {
         View.apply(this, arguments)
-        this.model = this.options.model
+
         var width = app.context.getSize()[0]
+
+        this.model = this.options.model
         this.options.size = [width, width * app.GOLDEN_RATIO]
         this._imageWidth = Math.round(this.options.size[1] * app.GOLDEN_RATIO)
+        this._poolItem = pool.get()
 
         this.surface = new Surface({
             size: this.options.size,
@@ -26,8 +42,10 @@ define(function(require, exports, module) {
         })
         this.add(this.surface)
         this.surface.pipe(this)
-        this.setContent()
+
         this.surface.on('click', this._onClick.bind(this))
+        this.surface.on('recall', this._onRecall.bind(this))
+        this.surface.on('deploy',this._onDeploy.bind(this))
     }
 
     inherits(StreamItem, View)
@@ -38,33 +56,49 @@ define(function(require, exports, module) {
     }
 
     StreamItem.prototype.setContent = function() {
-        var data = this.model.toJSON()
+        var attr = this.model.attributes
+        var i = this._poolItem
+        var textWidth
 
-        function set() {
-            this.surface.setContent(tpl.render(data))
-        }
+        if (attr.image) {
+            textWidth = this.options.size[0] - this._imageWidth + 'px'
+            app.imagesLoader.load(attr.image.url, function(err, image) {
+                if (err) return
 
-        if (data.image) {
-            data.image.width = this._imageWidth
-            data.width = this.options.size[0] - this._imageWidth
-            app.imagesLoader.load(data.image.url, function(err, image) {
-                if (err)  {
-                    delete data.image
-                } else {
-                    if (image.width <= this._imageWidth && image.height <= this.options.size[1]) {
-                        data.image.small = true
-                    }
+                i.image.style.backgroundImage = 'url(' + attr.image.url + ')'
+                i.image.style.width = this._imageWidth + 'px'
+                i.image.style.backgroundSize = attr.image.icon ? 'contain' : 'cover'
+                if (image.width <= this._imageWidth && image.height <= this.options.size[1]) {
+                    i.image.style.backgroundSize = 'initial'
                 }
-                set.call(this)
+                i.image.style.display = 'block'
             }.bind(this))
         } else {
-            set.call(this)
+            textWidth = '100%'
         }
+
+        i.text.style.width = textWidth
+        i.title.textContent = attr.title
+        i.summary.textContent = attr.summary
+        i.link.href = attr.link
+        i.link.textContent = attr.hostname
+        i.image.style.display = 'none'
+
+        this.surface.setContent(i.container)
     }
 
     StreamItem.prototype._onClick = function(e) {
         if (e.target.classList.contains('source')) return
         e.preventDefault()
         app.context.emit('article:open', this.model)
+    }
+
+    StreamItem.prototype._onRecall = function() {
+        pool.release(this._poolItem)
+    }
+
+    StreamItem.prototype._onDeploy = function() {
+        // Without nextTick changes will not applied.
+        Engine.nextTick(this.setContent.bind(this))
     }
 })
