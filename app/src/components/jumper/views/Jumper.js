@@ -46,19 +46,32 @@ define(function(require, exports, module) {
         outTransition: {duration: 200},
     }
 
-    Jumper.prototype._onScroll = _.debounce(function(e) {
-        if (e.delta >= this.options.scrollBackDelta) {
+    Jumper.prototype._onScroll = function(e) {
+        if (Math.abs(e.delta) < this.options.scrollBackDelta) return
+
+        // Show
+        if (e.delta > 0) {
             // XXX After scrolling down and up, pageSpringPosition value never
             // gets its original value 0
+            // Only Show if not on the first page.
             if (this.scrollview._pageSpringPosition < -3) {
-                this.show(this.surface)
+                this._show()
             } else {
-                this.hide(this.surface)
+                this._hide()
             }
-        } else if (this._showing > -1 && e.delta < 0) {
-            this.hide(this.surface)
+        // Hide
+        } else {
+            this._hide()
         }
-    }, 500, true)
+    }
+
+    Jumper.prototype._hide = function() {
+        if (this._showing > -1) this.hide(this.surface)
+    }
+
+    Jumper.prototype._show = function() {
+        if (this._showing < 0) this.show(this.surface)
+    }
 
     Jumper.prototype._onClick = function() {
         this.hide(this.surface)
