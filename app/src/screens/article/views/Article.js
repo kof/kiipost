@@ -92,9 +92,8 @@ define(function(require, exports, module) {
     }
 
     Article.prototype._setImage = function(image) {
-        if (!image) return
-
         this.image.reset()
+        if (!image) return
         app.imagesLoader.load(image.url, function(err, data) {
             if (err) return
 

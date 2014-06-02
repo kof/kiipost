@@ -38,6 +38,7 @@ define(function(require, exports, module) {
             backgroundSize: 'contain',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'top left',
+            backgroundImage: null,
             zIndex: -1
         }
     }
@@ -51,8 +52,7 @@ define(function(require, exports, module) {
     }
 
     Background.prototype.reset = function() {
-        this.image.setProperties(this.options.properties)
-        this.image.setContent(this.options.content)
+        this.image.setProperties(Background.DEFAULT_OPTIONS.properties)
     }
 
     Background.prototype._initParallax = function() {
