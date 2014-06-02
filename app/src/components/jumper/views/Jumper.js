@@ -16,6 +16,8 @@ define(function(require, exports, module) {
         RenderController.apply(this, arguments)
         this.scrollview = this.options.scrollview
 
+        this._height = app.context.getSize()[1]
+
         this.surface = new Surface({
             content: 'arrowup',
             size: this.options.size,
@@ -54,7 +56,7 @@ define(function(require, exports, module) {
             // XXX After scrolling down and up, pageSpringPosition value never
             // gets its original value 0
             // Only Show if not on the first page.
-            if (this.scrollview._pageSpringPosition < -3) {
+            if (this.scrollview._pageSpringPosition < -this._height) {
                 this._show()
             } else {
                 this._hide()
