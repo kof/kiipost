@@ -14,31 +14,33 @@ define(function(require, exports, module) {
 
     var app = require('app')
 
-    var tpl = require('../templates/stream-item.html')
+    var tpl = require('../templates/saved-item.html')
 
     var pool = new Pool()
 
     pool.setCreator(function() {
         var container = document.createElement('div')
+        container.className = 'inner'
         container.innerHTML = tpl
         var map = elementsMap(container)
         map.container = container
         return map
     })
 
-    function StreamItem() {
+    function SavedItem() {
         View.apply(this, arguments)
 
         var width = app.context.getSize()[0]
+        var height = width * app.GOLDEN_RATIO
 
         this.model = this.options.model
-        this.options.size = [width, width * app.GOLDEN_RATIO]
-        this._imageWidth = Math.round(this.options.size[1] * app.GOLDEN_RATIO)
+        this.options.size = [width, height]
+        this._imageWidth = Math.round((height - (height * this.options.memoHeight)) * app.GOLDEN_RATIO)
         this._poolItem = pool.get()
 
         this.surface = new Surface({
             size: this.options.size,
-            classes: ['stream-item']
+            classes: ['saved-item']
         })
         this.add(this.surface)
         this.surface.pipe(this)
@@ -48,14 +50,15 @@ define(function(require, exports, module) {
         this.surface.on('deploy',this._onDeploy.bind(this))
     }
 
-    inherits(StreamItem, View)
-    module.exports = StreamItem
+    inherits(SavedItem, View)
+    module.exports = SavedItem
 
-    StreamItem.DEFAULT_OPTIONS = {
-        model: null
+    SavedItem.DEFAULT_OPTIONS = {
+        model: null,
+        memoHeight: 0.35
     }
 
-    StreamItem.prototype.setContent = function() {
+    SavedItem.prototype.setContent = function() {
         var attr = this.model.attributes
         var i = this._poolItem
         var textWidth
@@ -88,17 +91,16 @@ define(function(require, exports, module) {
         this.surface.setContent(i.container)
     }
 
-    StreamItem.prototype._onClick = function(e) {
+    SavedItem.prototype._onClick = function(e) {
         if (e.target.classList.contains('source')) return
         e.preventDefault()
-        app.context.emit('discover:open', this.model)
     }
 
-    StreamItem.prototype._onRecall = function() {
+    SavedItem.prototype._onRecall = function() {
         pool.release(this._poolItem)
     }
 
-    StreamItem.prototype._onDeploy = function() {
+    SavedItem.prototype._onDeploy = function() {
         // Without nextTick changes will not applied.
         Engine.nextTick(this.setContent.bind(this))
     }

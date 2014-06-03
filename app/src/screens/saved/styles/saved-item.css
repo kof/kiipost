@@ -1,0 +1,64 @@
+.saved-item {
+    background: #fff;
+    border-bottom: 1px solid #999;
+    z-index: 1;
+}
+.saved-item .inner {
+    display: flex;
+    height: 100%;
+    padding-top: 1em;
+    box-sizing: border-box;
+}
+.saved-item h1 {
+    font-size: 0.9em;
+    line-height: 1.3;
+    margin: 0;
+    max-height: 2.5em;
+    overflow: hidden;
+    color: #424242;
+}
+.saved-item .avatar {
+    width: 10em;
+}
+.saved-item h1.memo {
+    max-height: 5.6em;
+    border-bottom: 1px solid #999;
+    padding-bottom: 0.5em;
+    color: #000;
+}
+.saved-item .content {
+    height: 100%;
+}
+
+.saved-item .article {
+    height: 6.3em;
+    display: flex;
+}
+.saved-item .article h1 {
+    margin: 0.5em 0.5em 0.5em 0;
+}
+.saved-item .text {
+    box-sizing: border-box;
+    height: 100%;
+    font-size: 0.8em;
+}
+.saved-item .image {
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+.saved-item p {
+    font-size: 0.8em;
+    line-height: 1.4;
+    margin: 0 0.5em 0.5em 0;
+    max-height: 3.8em;
+    overflow: hidden;
+    color: #a3a3a3;
+}
+.saved-item a {
+    display: block;
+    font-size: 0.8em;
+    line-height: 1;
+    text-decoration: none;
+}

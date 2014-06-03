@@ -33,6 +33,7 @@ define(function(require, exports, module) {
         app.controller.show(this.view, function() {
             this.view.menu.select('saved')
         }.bind(this))
+        this.view.load()
     }
 
     SavedController.prototype._onMenuChange = function(name) {

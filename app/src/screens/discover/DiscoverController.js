@@ -35,6 +35,7 @@ define(function(require, exports, module) {
         app.controller.show(this.view, function() {
             this.view.menu.select('discover')
         }.bind(this))
+        this.view.load()
     }
 
     DiscoverController.prototype._onMenuChange = function(name) {

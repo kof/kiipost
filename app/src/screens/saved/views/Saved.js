@@ -14,7 +14,7 @@ define(function(require, exports, module) {
     var SpinnerView = require('components/spinner/views/Spinner')
     var BackgroundView = require('components/background/Background')
 
-    var StreamItemView = require('./StreamItem')
+    var SavedItemView = require('./SavedItem')
 
     function Saved() {
         View.apply(this, arguments)
@@ -29,7 +29,7 @@ define(function(require, exports, module) {
         this.header.surface.add(this.menu)
 
         this.stream = new StreamView({
-            ItemView: StreamItemView,
+            ItemView: SavedItemView,
             views: [this.header],
             collection: this.options.collection
         })
@@ -46,12 +46,14 @@ define(function(require, exports, module) {
 
         this.jumper = new JumperView({scrollview: this.stream.scrollview})
         this.add(new Modifier({origin: [0.5, 0.05]})).add(this.jumper)
-
-        this.stream.load()
     }
 
     inherits(Saved, View)
     module.exports = Saved
+
+    Saved.prototype.load = function() {
+        this.stream.load()
+    }
 
     Saved.DEFAULT_OPTIONS = {}
 })

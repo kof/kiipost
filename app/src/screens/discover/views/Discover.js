@@ -46,12 +46,16 @@ define(function(require, exports, module) {
 
         this.jumper = new JumperView({scrollview: this.stream.scrollview})
         this.add(new Modifier({origin: [0.5, 0.05]})).add(this.jumper)
-
-        this.stream.load()
     }
 
     inherits(Discover, View)
     module.exports = Discover
 
     Discover.DEFAULT_OPTIONS = {}
+
+
+    Discover.prototype.load = function() {
+        this.stream.load()
+    }
+
 })

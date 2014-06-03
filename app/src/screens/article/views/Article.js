@@ -47,10 +47,10 @@ define(function(require, exports, module) {
         this.head.pipe(this.scrollview)
         this.surfaces.push(this.head)
 
-        this.textContent = document.createElement('div')
+        //this.textContent = document.createElement('div')
         this.text = new Surface({
-            content: this.textContent,
-            size: [size[0], true]
+            content: 'aaa aaa aaaaaa aaa aaaaaa aaa aaaaaa aaa aaaaaa aaa aaaaaa aaa aaaaaa aaa aaaaaa aaa aaaaaa aaa aaaaaa aaa aaaaaa aaa aaaaaa aaa aaaaaa aaa aaaaaa aaa aaaaaa aaa aaaaaa aaa aaaaaa aaa aaaaaa aaa aaaaaa aaa aaaaaa aaa aaaaaa aaa aaaaaa aaa aaaaaa aaa aaaaaa aaa aaaaaa aaa aaaaaa aaa aaaaaa aaa aaaaaa aaa aaaaaa aaa aaaaaa aaa aaaaaa aaa aaaaaa aaa aaaaaa aaa aaaaaa aaa aaaaaa aaa aaa',
+            size: [size[0], 300]
         })
         this.text.pipe(this.scrollview)
         this.surfaces.push(this.text)
@@ -86,9 +86,10 @@ define(function(require, exports, module) {
         this._setImage(model.get('image'))
         // Set class now to avoid white screen artifact during loading.
         this.text.setClasses(['article-text'])
-        this.textContent.innerHTML = model.get('summary')
+        //this.textContent.innerHTML = model.get('summary')
+        this.text.setContent(model.get('summary'))
         // Wait until text is rendered.
-        setTimeout(this._setTextSize.bind(this), 50)
+        //setTimeout(this._setTextSize.bind(this), 50)
     }
 
     Article.prototype._setImage = function(image) {
