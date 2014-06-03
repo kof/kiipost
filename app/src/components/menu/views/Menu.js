@@ -1,21 +1,23 @@
 define(function(require, exports, module) {
     'use strict'
 
+    var inherits = require('inherits')
+    var _ = require('underscore')
+
     var View = require('famous/core/View')
     var Surface = require('famous/core/Surface')
     var ContainerSurface = require('famous/surfaces/ContainerSurface')
     var SequentialLayout = require('famous/views/SequentialLayout')
     var Utility = require('famous/utilities/Utility')
 
-    var inherits = require('inherits')
+    var app = require('app')
 
     function Menu() {
         View.apply(this, arguments)
 
         this.content = document.createDocumentFragment()
         this.indicator = this._createIndicator()
-        this.active = this._createItems()
-
+        this.items = this._createItems()
         this.surface = new Surface({
             content: this.content,
             size: this.options.size,
@@ -31,9 +33,26 @@ define(function(require, exports, module) {
     Menu.DEFAULT_OPTIONS = {
         size: [undefined, 50],
         items: [
-            {title: 'discover', active: true},
-            {title: 'saved'}
-        ]
+            {title: 'discover', name: 'discover'},
+            {title: 'saved', name: 'saved'}
+        ],
+        selected: 'discover'
+    }
+
+    Menu.prototype.select = function(name) {
+        if (this.selected && this.selected.name == name) return
+
+        if (this.selected) this.selected.el.classList.remove('selected')
+        this.selected = _.findWhere(this.items, {name: name})
+
+        this.selected.el.classList.add('selected')
+
+        // Set indicator position.
+        var itemRect = this.selected.el.getBoundingClientRect()
+        var indicatorRect = this.indicator.parentNode.getBoundingClientRect()
+
+        this.indicator.style.width = itemRect.width + 'px'
+        this.indicator.style.left = itemRect.left - indicatorRect.left + 'px'
     }
 
     Menu.prototype._createIndicator = function() {
@@ -46,34 +65,26 @@ define(function(require, exports, module) {
     }
 
     Menu.prototype._createItems = function() {
-        var active
+        var items = {}
+
         this.options.items.forEach(function(item) {
-            var el = document.createElement('span')
+            item = _.clone(item)
+            var el = item.el = document.createElement('span')
             el.className = 'item'
             el.textContent = item.title
-            if (item.active) {
-                el.className += ' active'
-                active = el
-            }
+            el.setAttribute('data-name', item.name)
             this.content.appendChild(el)
+            items[item.name] = item
         }, this)
 
-        return active
-    }
-
-    Menu.prototype._setIndicatorPosition = function() {
-        var rect = this.active.getBoundingClientRect()
-        if (!this._indicatorRect) this._indicatorRect = this.indicator.getBoundingClientRect()
-        this.indicator.style.width = rect.width + 'px'
-        this.indicator.style.left = rect.left - this._indicatorRect.left + 'px'
+        return items
     }
 
     Menu.prototype._onClick = function(e) {
         if (!e.target.classList.contains('item')) return
-        this.active.classList.remove('active')
-        this.active = e.target
-        this.active.classList.add('active')
-        this._setIndicatorPosition()
+        var name = e.target.getAttribute('data-name')
+        if (this.selected && this.selected.name == name) return
+        this._eventOutput.emit('menu:change', name)
     }
 })
 

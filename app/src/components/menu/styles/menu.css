@@ -8,10 +8,10 @@
 .menu .indicator span {
     position: absolute;
     left: 0;
-    width: 60px;
+    width: 0;
     height: 100%;
     background: #fff;
-    transition: 300ms;
+    transition: 250ms;
 }
 .menu .item {
     display: inline-block;
@@ -22,6 +22,6 @@
     color: #fff;
     opacity: 0.7;
 }
-.menu .item.active {
+.menu .item.selected {
     opacity: 1;
 }

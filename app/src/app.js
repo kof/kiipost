@@ -9,12 +9,12 @@ define(function(require, exports, module) {
 
     var DiscoverController = require('./screens/discover/DiscoverController')
     var ArticleController = require('./screens/article/ArticleController')
+    var SavedController = require('./screens/saved/SavedController')
 
     var app = module.exports
 
     app.GOLDEN_RATIO = 0.618
 
-    app.options = {router: true}
     app.context = Engine.createContext()
 
     app.imagesLoader = new ImagesLoader()
@@ -27,12 +27,16 @@ define(function(require, exports, module) {
     })
 
     var initialized = false
+
     // Some views require to know the context size immediately.
     app.context.on('resize', function() {
         if (initialized) return
-        var discover = new DiscoverController(app.options)
-        var article = new ArticleController(app.options)
-        backbone.history.start()
+        var options = {router: true}
+
+        var discover = new DiscoverController(options)
+        var article = new ArticleController(options)
+        var saved = new SavedController(options)
         initialized = true
+        backbone.history.start()
     })
 })

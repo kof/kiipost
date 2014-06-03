@@ -16,7 +16,7 @@ define(function(require, exports, module) {
 
     var StreamItemView = require('./StreamItem')
 
-    function Discover() {
+    function Saved() {
         View.apply(this, arguments)
 
         this.background = new BackgroundView({content: '/content/images/background.png'})
@@ -24,7 +24,7 @@ define(function(require, exports, module) {
 
         this.header = new HeaderView(this.options)
 
-        this.menu = new MenuView()
+        this.menu = new MenuView({selected: 'saved'})
         this.menu.pipe(this._eventOutput)
         this.header.surface.add(this.menu)
 
@@ -50,8 +50,8 @@ define(function(require, exports, module) {
         this.stream.load()
     }
 
-    inherits(Discover, View)
-    module.exports = Discover
+    inherits(Saved, View)
+    module.exports = Saved
 
-    Discover.DEFAULT_OPTIONS = {}
+    Saved.DEFAULT_OPTIONS = {}
 })

@@ -16,7 +16,7 @@ define(function(require, exports, module) {
         Controller.apply(this, arguments)
         this.options = _.extend({}, ArticleController.DEFAULT_OPTIONS, this.options)
         this.router = this.options.router
-        app.context.on('article:open', this._onOpen.bind(this))
+        app.context.on('discover:open', this._onOpen.bind(this))
     }
 
     inherits(ArticleController, Controller)

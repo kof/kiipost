@@ -1,43 +1,41 @@
 define(function(require, exports, module) {
     var Controller = require('controller')
     var inherits = require('inherits')
-    var _ = require('underscore')
 
     var app = require('app')
 
     var ArticleModel = require('components/article/models/Article')
     var StreamCollection = require('components/stream/collections/Stream')
 
-    var DiscoverView = require('./views/Discover')
+    var SavedView = require('./views/Saved')
 
-    function DiscoverController(options) {
+    function SavedController(options) {
         this.routes = {
-            '': 'discover',
-            'discover': 'discover'
+            'saved': 'saved'
         }
         Controller.apply(this, arguments)
         this.router = this.options.router
     }
-    inherits(DiscoverController, Controller)
-    module.exports = DiscoverController
+    inherits(SavedController, Controller)
+    module.exports = SavedController
 
-    DiscoverController.prototype.initialize = function() {
+    SavedController.prototype.initialize = function() {
         this.collection = new StreamCollection(null, {
-            basePath: '/api/discover',
-            view: 'discover',
+            basePath: '/api/saved',
+            view: 'saved',
             model: ArticleModel
         })
-        this.view = new DiscoverView({collection: this.collection})
+        this.view = new SavedView({collection: this.collection})
         this.view.on('menu:change', this._onMenuChange.bind(this))
     }
 
-    DiscoverController.prototype.discover = function() {
+    SavedController.prototype.saved = function() {
         app.controller.show(this.view, function() {
-            this.view.menu.select('discover')
+            this.view.menu.select('saved')
         }.bind(this))
     }
 
-    DiscoverController.prototype._onMenuChange = function(name) {
+    SavedController.prototype._onMenuChange = function(name) {
         this.router.navigate(name, {trigger: true})
         setTimeout(function() {
             this.view.menu.select(name)
