@@ -39,7 +39,6 @@ define(function(require, exports, module) {
         this.scrollview.on('infiniteScroll', this.load.bind(this))
         // Make stream emit scrollview events.
         this.scrollview._eventInput.pipe(this._eventOutput)
-        this.collection.on('sync', this._onSync.bind(this))
     }
 
     inherits(Stream, View)
@@ -52,12 +51,19 @@ define(function(require, exports, module) {
 
     Stream.prototype.load = function() {
         if (this.loading) return
+        this._eventOutput.emit('spinner:show')
         this.loading = true
         this.scrollview.infiniteScrollDisabled = true
         // Minus views added before scroll items.
         this.collection.options.skip = this.views.length - this._initialViewsAmount
-        this.collection.fetch()
-        this._eventOutput.emit('spinner:show')
+        this.collection
+            .fetch()
+            .then(function() {
+                this.loading = false
+                this.scrollview.infiniteScrollDisabled = false
+                this._eventOutput.emit('spinner:hide')
+                this.setContent()
+            }.bind(this))
     }
 
     Stream.prototype.setContent = function() {
@@ -72,12 +78,5 @@ define(function(require, exports, module) {
 
     Stream.prototype.addClass = function(name) {
         this.scrollview._scroller.group.addClass(name)
-    }
-
-    Stream.prototype._onSync = function() {
-        this.loading = false
-        this.scrollview.infiniteScrollDisabled = false
-        this.setContent()
-        this._eventOutput.emit('spinner:hide')
     }
 })

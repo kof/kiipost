@@ -6,6 +6,9 @@
 .stream-item > div {
     height: 100%;
 }
+.stream-item .article {
+    height: 100%;
+}
 .stream-item .text {
     float: left;
     padding: 8px;

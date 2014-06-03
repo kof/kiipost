@@ -77,6 +77,7 @@ define(function(require, exports, module) {
             textWidth = '100%'
         }
 
+        i.memo.textContent = attr.memo
         i.text.style.width = textWidth
         i.title.textContent = attr.title
         i.summary.textContent = attr.summary
@@ -90,7 +91,7 @@ define(function(require, exports, module) {
     StreamItem.prototype._onClick = function(e) {
         if (e.target.classList.contains('source')) return
         e.preventDefault()
-        app.context.emit('article:open', this.model)
+        app.context.emit('discover:open', this.model)
     }
 
     StreamItem.prototype._onRecall = function() {
