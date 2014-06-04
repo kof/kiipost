@@ -12,7 +12,6 @@ define(function(require, exports, module) {
 
     function DiscoverController(options) {
         this.routes = {
-            '': 'discover',
             'discover': 'discover'
         }
         Controller.apply(this, arguments)

@@ -7,6 +7,7 @@ define(function(require, exports, module) {
     var Engine = require('famous/core/Engine')
     var RenderController = require('famous/views/RenderController')
 
+    var LoginController = require('./screens/login/LoginController')
     var DiscoverController = require('./screens/discover/DiscoverController')
     var ArticleController = require('./screens/article/ArticleController')
     var SavedController = require('./screens/saved/SavedController')
@@ -33,6 +34,7 @@ define(function(require, exports, module) {
         if (initialized) return
         var options = {router: true}
 
+        var login = new LoginController(options)
         var discover = new DiscoverController(options)
         var article = new ArticleController(options)
         var saved = new SavedController(options)

@@ -32,12 +32,12 @@ define(function(require, exports, module) {
 
     Background.DEFAULT_OPTIONS = {
         offset: 20,
-        content: null,
+        content: '/content/images/background.png',
         size: null,
         properties: {
-            backgroundSize: 'contain',
+            backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'top left',
+            backgroundPosition: 'center',
             backgroundImage: null,
             zIndex: -1
         }
@@ -49,10 +49,6 @@ define(function(require, exports, module) {
 
     Background.prototype.setProperties = function(props) {
         return this.image.setProperties(props)
-    }
-
-    Background.prototype.reset = function() {
-        this.image.setProperties(Background.DEFAULT_OPTIONS.properties)
     }
 
     Background.prototype._initParallax = function() {

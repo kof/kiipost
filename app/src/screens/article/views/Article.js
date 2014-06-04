@@ -92,8 +92,14 @@ define(function(require, exports, module) {
     }
 
     Article.prototype._setImage = function(image) {
-        this.image.reset()
+        this.image.setProperties({
+            backgroundImage: null,
+            backgroundSize: 'contain',
+            backgroundPosition: 'center top'
+        })
+
         if (!image) return
+
         app.imagesLoader.load(image.url, function(err, data) {
             if (err) return
 

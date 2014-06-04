@@ -19,7 +19,7 @@ define(function(require, exports, module) {
     function Saved() {
         View.apply(this, arguments)
 
-        this.background = new BackgroundView({content: '/content/images/background.png'})
+        this.background = new BackgroundView()
         this.add(this.background)
 
         this.header = new HeaderView(this.options)
