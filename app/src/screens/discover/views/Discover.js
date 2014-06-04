@@ -14,7 +14,7 @@ define(function(require, exports, module) {
     var SpinnerView = require('components/spinner/views/Spinner')
     var BackgroundView = require('components/background/Background')
 
-    var StreamItemView = require('./StreamItem')
+    var DiscoverItemView = require('./DiscoverItem')
 
     function Discover() {
         View.apply(this, arguments)
@@ -29,7 +29,7 @@ define(function(require, exports, module) {
         this.header.surface.add(this.menu)
 
         this.stream = new StreamView({
-            ItemView: StreamItemView,
+            ItemView: DiscoverItemView,
             views: [this.header],
             collection: this.options.collection
         })

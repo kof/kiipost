@@ -14,7 +14,7 @@ define(function(require, exports, module) {
 
     var app = require('app')
 
-    var tpl = require('../templates/stream-item.html')
+    var tpl = require('../templates/discover-item.html')
 
     var pool = new Pool()
 
