@@ -9,7 +9,7 @@ define(function(require, exports, module) {
     var ContainerSurface = require('famous/surfaces/ContainerSurface')
     var RenderController = require('famous/views/RenderController')
 
-    function Controller() {
+    function Spinner() {
         RenderController.apply(this, arguments)
 
         this.rotate = false
@@ -37,10 +37,10 @@ define(function(require, exports, module) {
         this._eventInput.on('spinner:hide', this.hide.bind(this))
     }
 
-    inherits(Controller, RenderController)
-    module.exports = Controller
+    inherits(Spinner, RenderController)
+    module.exports = Spinner
 
-    Controller.DEFAULT_OPTIONS = {
+    Spinner.DEFAULT_OPTIONS = {
         // Wait before showing indicator
         // http://ux.stackexchange.com/questions/37416/is-it-bad-ux-to-omit-a-progress-indicator
         delay: 1000,
@@ -53,15 +53,15 @@ define(function(require, exports, module) {
         content: '/src/components/spinner/images/grey-100.png'
     }
 
-    Controller.prototype.show = function(immediate) {
+    Spinner.prototype.show = function(immediate) {
         clearTimeout(this._timeoutId)
         this._timeoutId = setTimeout(function() {
-            Controller.super_.prototype.show.call(this, this.container)
+            Spinner.super_.prototype.show.call(this, this.container)
         }.bind(this), immediate ? 0 : this.options.delay)
     }
 
-    Controller.prototype.hide = function() {
+    Spinner.prototype.hide = function() {
         clearTimeout(this._timeoutId)
-        Controller.super_.prototype.hide.call(this, this.container)
+        Spinner.super_.prototype.hide.call(this, this.container)
     }
 })

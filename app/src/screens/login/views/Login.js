@@ -30,7 +30,7 @@ define(function(require, exports, module) {
 
         this.bg = new BackgroundView()
         this.add(this.bg)
-console.log(size)
+
         this.logo = new Surface({
             classes: ['login-logo'],
             properties: {

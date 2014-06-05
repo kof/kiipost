@@ -7,10 +7,10 @@ define(function(require, exports, module) {
     var Surface = require('famous/core/Surface')
     var Modifier = require('famous/core/Modifier')
     var Scrollview = require('famous/views/Scrollview')
-    var Utility = require('famous/utilities/Utility')
 
     var BackgroundView = require('components/background/Background')
     var SpinnerView = require('components/spinner/views/Spinner')
+    var KiipostView = require('./Kiipost')
     var ArticleModel = require('components/article/models/Article')
 
     var app = require('app')
@@ -58,12 +58,16 @@ define(function(require, exports, module) {
         this.spinner = new SpinnerView()
         this.add(new Modifier({origin: [0.5, 0.5]})).add(this.spinner)
 
-        this.kiipost = new Surface({
+        this.kiipostBtn = new Surface({
             classes: ['article-kiipost-btn'],
             size: [true, true]
         })
-        this.add(new Modifier({origin: [0.5, 0.97]})).add(this.kiipost)
-        this.kiipost.on('click', this._onKiipost.bind(this))
+        this.kiipostBtn.on('click', this._onKiipost.bind(this))
+        this.add(new Modifier({origin: [0.5, 0.97]})).add(this.kiipostBtn)
+
+        this.kiipost = new KiipostView()
+        this.kiipost.on('hide', this._onKiipostHide.bind(this))
+        this.add(this.kiipost)
     }
 
     inherits(Article, View)
@@ -128,8 +132,14 @@ define(function(require, exports, module) {
         this.text.setSize([undefined, textHeight])
     }
 
-    Article.prototype._onKiipost = function() {
-        console.log('kiipost')
+    Article.prototype._onKiipost = function(e) {
+        e.preventDefault()
+        e.stopPropagation()
+        this.kiipost.show()
+    }
+
+    Article.prototype._onKiipostHide = function() {
+
     }
 
     Article.prototype._onTopBtnClick = function(e) {

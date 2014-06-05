@@ -7,7 +7,6 @@ define(function(require, exports, module) {
     var View = require('famous/core/View')
     var Surface = require('famous/core/Surface')
     var ContainerSurface = require('famous/surfaces/ContainerSurface')
-    var SequentialLayout = require('famous/views/SequentialLayout')
     var Utility = require('famous/utilities/Utility')
 
     var app = require('app')
