@@ -4,7 +4,7 @@
     z-index: 1;
 }
 .saved-item .inner {
-    display: flex;
+    display: -webkit-flex;
     height: 100%;
     padding-top: 1em;
     box-sizing: border-box;
@@ -38,7 +38,7 @@
 
 .saved-item .article {
     height: 6.9em;
-    display: flex;
+    display: -webkit-flex;
 }
 .saved-item .article h1 {
     margin: 0.5em 0.5em 0.5em 0;
