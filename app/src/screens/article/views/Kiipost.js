@@ -69,7 +69,7 @@ define(function(require, exports, module) {
 
         this.memo = new FormContainerSurface({
             classes: ['memo'],
-            size: [undefined, 100]
+            size: [undefined, 130]
         })
         this.layoutSequence.push(this.memo)
 
