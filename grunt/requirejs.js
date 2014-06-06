@@ -5,7 +5,7 @@ module.exports =  {
       uglify2: {
         mangler: {
           toplevel: true,
-        },
+        }
       },
       baseUrl: '<%= config.app %>/src',
       mainConfigFile: '<%= config.app %>/src/requireConfig.js',

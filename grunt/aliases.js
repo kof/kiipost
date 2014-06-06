@@ -32,6 +32,7 @@ module.exports = function (grunt) {
     'copy:dist',
     'rev',
     'usemin',
+    'relativeRoot:dist',
     'htmlmin'
   ]);
 
