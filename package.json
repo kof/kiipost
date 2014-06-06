@@ -45,8 +45,11 @@
     "grunt-umd": "~1.7.4"
   },
   "dependencies": {
-    "inherits": "~2.0.1",
     "hogan.js": "~2.0.0",
+    "inherits": "~2.0.1",
+    "koa": "^0.6.2",
+    "koa-compose": "^2.3.0",
+    "koa-router": "^3.1.4",
     "multiline": "~0.3.4",
     "sinon": "~1.10.0"
   },
