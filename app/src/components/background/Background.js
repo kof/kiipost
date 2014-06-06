@@ -32,7 +32,7 @@ define(function(require, exports, module) {
 
     Background.DEFAULT_OPTIONS = {
         offset: 20,
-        content: '/content/images/background.png',
+        content: 'content/images/background.png',
         size: null,
         properties: {
             backgroundSize: 'cover',

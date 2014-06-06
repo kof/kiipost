@@ -49,7 +49,7 @@
     "inherits": "~2.0.1",
     "koa": "^0.6.2",
     "koa-compose": "^2.3.0",
-    "koa-router": "^3.1.4",
+    "koa-route": "^1.1.4",
     "multiline": "~0.3.4",
     "sinon": "~1.10.0"
   },

@@ -50,7 +50,7 @@ define(function(require, exports, module) {
         step: 0.07,
         containerSize: [100, 100],
         imageSize: [50, 50],
-        content: '/src/components/spinner/images/grey-100.png'
+        content: 'src/components/spinner/images/grey-100.png'
     }
 
     Spinner.prototype.show = function(immediate) {
