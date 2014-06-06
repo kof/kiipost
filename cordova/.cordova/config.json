@@ -1,0 +1,8 @@
+{
+    "lib": {
+        "www": {
+            "uri": "../../dist",
+            "link": true
+        }
+    }
+}
