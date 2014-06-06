@@ -126,7 +126,7 @@ define(function(require, exports, module) {
         this.counter.setContent(remaining)
     }, 100, {leading: false})
 
-    Kiipost.prototype._onSubmit = function() {
+    Kiipost.prototype._onSubmit = function() {
         alert('submit')
     }
 })

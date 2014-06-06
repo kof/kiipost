@@ -10,7 +10,7 @@ define(function(require, exports, module) {
 
     var app = require('app')
 
-    function Background() {
+    function Background() {
         View.apply(this, arguments)
 
         var o = this.options

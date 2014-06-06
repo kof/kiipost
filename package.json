@@ -51,10 +51,13 @@
     "koa-compose": "^2.3.0",
     "koa-route": "^1.1.4",
     "multiline": "~0.3.4",
-    "sinon": "~1.10.0"
+    "sinon": "~1.10.2"
   },
   "scripts": {
     "test": "grunt test",
     "postinstall": "grunt browserify"
+  },
+  "overlay": {
+    "browserify": ["hogan.js", "inherits", "multiline"]
   }
 }

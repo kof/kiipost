@@ -121,7 +121,7 @@ define(function(require, exports, module) {
         }.bind(this))
     }
 
-    Article.prototype._setTextSize = function() {
+    Article.prototype._setTextSize = function() {
         var textHeight = this.textContent.parentNode.clientHeight
         var headerHeight = this.head.getSize()[1]
         var contextHeight = app.context.getSize()[1]
@@ -138,7 +138,7 @@ define(function(require, exports, module) {
         this.kiipost.show()
     }
 
-    Article.prototype._onKiipostHide = function() {
+    Article.prototype._onKiipostHide = function() {
 
     }
 

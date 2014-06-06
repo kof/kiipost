@@ -28,7 +28,7 @@ define(function(require, exports, module) {
                 } else {
                     map[attr].push(el)
                 }
-            } else {
+            } else {
                 map[attr] = el
             }
         })

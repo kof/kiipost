@@ -1,4 +1,4 @@
-define(function(require, exportsm, module) {
+define(function(require, exportsm, module) {
     var server = require('test/server')
 
     server.respondWith('GET', /\/api\/saved/, [

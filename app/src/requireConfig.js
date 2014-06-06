@@ -19,8 +19,7 @@ require.config({
         'images-loader': '../lib/images-loader/build/ImagesLoader',
         multiline: '../lib/multiline/multiline',
         'underscore.string': '../lib/underscore.string/lib/underscore.string',
-        'famous-infinitescroll': '../lib/famous-infinitescroll/infiniteScrollView',
-        sinon: '../lib/sinon/pkg/sinon'
+        'famous-infinitescroll': '../lib/famous-infinitescroll/infiniteScrollView'
     },
     packages: [
 

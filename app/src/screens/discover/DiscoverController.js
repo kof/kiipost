@@ -37,7 +37,7 @@ define(function(require, exports, module) {
         this.view.load()
     }
 
-    DiscoverController.prototype._onMenuChange = function(name) {
+    DiscoverController.prototype._onMenuChange = function(name) {
         this.router.navigate(name, {trigger: true})
 
         // XXX dirty

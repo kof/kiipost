@@ -1,29 +1,22 @@
-var path = require('path'),
-    dependencies = require('../package.json').dependencies,
-    fs = require('fs')
+var path = require('path')
+var browserify = require('../package.json').overlay.browserify
+var fs = require('fs')
 
-var name,
-    main,
-    modulePath,
-    baseDir,
-    destDir,
-    package
+var baseDir = path.join(__dirname, '..')
 
-baseDir = path.join(__dirname, '..')
-
-for (name in dependencies) {
-    modulePath = path.join(baseDir, 'node_modules', name)
-    package = require(path.join(modulePath, 'package.json'))
-    main = package.browser || package.main
+browserify.forEach(function(name) {
+    var modulePath = path.join(baseDir, 'node_modules', name)
+    var package = require(path.join(modulePath, 'package.json'))
+    var main = package.browser || package.main
     if (!main) {
         main = path.join(modulePath, 'index.js')
         if (!fs.existsSync(main)) main = null
     }
-    if (!main) continue;
-    destDir = path.join('app', 'lib', name)
+    if (!main) return;
+    var destDir = path.join('app', 'lib', name)
     module.exports[name] = {
         src: [path.resolve(modulePath, main)],
         dest: path.join(destDir, name + '.js'),
         options: {bundleOptions: {standalone: name}}
     }
-}
+})

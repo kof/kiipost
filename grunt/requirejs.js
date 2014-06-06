@@ -1,11 +1,11 @@
 module.exports =  {
   compile: {
     options: {
-      optimize: 'uglify2',
+      optimize: 'none',
       uglify2: {
         mangler: {
-          toplevel: true
-        }
+          toplevel: true,
+        },
       },
       baseUrl: '<%= config.app %>/src',
       mainConfigFile: '<%= config.app %>/src/requireConfig.js',

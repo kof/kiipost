@@ -24,7 +24,7 @@ define(function(require, exports, module) {
         basePath: null
     }
 
-    Stream.prototype.url = function() {
+    Stream.prototype.url = function() {
         var o = this.options
         var params = _.pick(o, 'skip', 'limit', 'view')
 

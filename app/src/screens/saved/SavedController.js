@@ -36,7 +36,7 @@ define(function(require, exports, module) {
         this.view.load()
     }
 
-    SavedController.prototype._onMenuChange = function(name) {
+    SavedController.prototype._onMenuChange = function(name) {
         this.router.navigate(name, {trigger: true})
         // XXX dirty
         // Wait until animation on the next screen is done.

@@ -1,4 +1,4 @@
-define(function(require, exports, module) {
+define(function(require, exports, module) {
     'use strict'
 
     function Pool() {
@@ -7,7 +7,7 @@ define(function(require, exports, module) {
 
     module.exports = Pool
 
-    Pool.prototype.setCreator = function(fn) {
+    Pool.prototype.setCreator = function(fn) {
         this._creator = fn
     }
 

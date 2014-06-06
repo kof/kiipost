@@ -76,7 +76,7 @@ define(function(require, exports, module) {
         }, this)
     }
 
-    Stream.prototype.addClass = function(name) {
+    Stream.prototype.addClass = function(name) {
         this.scrollview._scroller.group.addClass(name)
     }
 })
