@@ -18,6 +18,12 @@
                             "xml": "false",
                             "count": 1
                         }
+                    ],
+                    "AudioToolbox.framework": [
+                        {
+                            "xml": "true",
+                            "count": 1
+                        }
                     ]
                 }
             },
@@ -27,6 +33,10 @@
                         {
                             "xml": "<feature name=\"SocialAuth\"><param name=\"ios-package\" value=\"SocialAuthPlugin\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Notification\"><param name=\"ios-package\" value=\"CDVNotification\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -35,6 +45,9 @@
     },
     "installed_plugins": {
         "com.danielcwilson.plugins.socialauth": {
+            "PACKAGE_NAME": "Kiipost"
+        },
+        "org.apache.cordova.dialogs": {
             "PACKAGE_NAME": "Kiipost"
         }
     },

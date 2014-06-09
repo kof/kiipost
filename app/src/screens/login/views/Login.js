@@ -49,7 +49,7 @@ define(function(require, exports, module) {
             classes: ['login-button'],
             content: 'Sign in with Twitter'
         })
-        this.button.on('click', this._onSignUp.bind(this))
+        this.button.on('click', this._onSignIn.bind(this))
         this.surfaces.push(this.button)
 
         this.terms = new Surface({
@@ -70,7 +70,7 @@ define(function(require, exports, module) {
         logoWidth: 0.1
     }
 
-    Login.prototype._onSignUp = function() {
-        this._eventOutput.emit('login')
+    Login.prototype._onSignIn = function() {
+        this._eventOutput.emit('signin')
     }
 })

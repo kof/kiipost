@@ -53,6 +53,7 @@
     "koa-route": "^1.1.4",
     "multiline": "~0.3.4",
     "promise": "^5.0.0",
+    "qs": "^0.6.6",
     "sinon": "~1.10.2"
   },
   "scripts": {
@@ -64,7 +65,8 @@
       "hogan.js",
       "inherits",
       "multiline",
-      "promise"
+      "promise",
+      "qs"
     ]
   }
 }

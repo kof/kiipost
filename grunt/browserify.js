@@ -13,7 +13,11 @@ browserify.forEach(function(name) {
         if (!fs.existsSync(main)) main = null
     }
     if (!main) return;
+
+    if (!path.extname(main)) main += '.js'
+
     var destDir = path.join('app', 'lib', name)
+
     module.exports[name] = {
         src: [path.resolve(modulePath, main)],
         dest: path.join(destDir, name + '.js'),

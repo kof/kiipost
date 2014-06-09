@@ -44,6 +44,9 @@
 		E6A937553DE24907A18AA814 /* OAuthCore.m in Sources */ = {isa = PBXBuildFile; fileRef = AA3169E2540942FFB21F46CC /* OAuthCore.m */; };
 		060C291F77DC4C378E715C27 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FECCC6D527D94D7894F98CB9 /* Accounts.framework */; };
 		F8029F1582554014BA6E270D /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA0AD6B7B6B14AC5AA0AE8AF /* Social.framework */; };
+		400D39A7B443466CB25D7EC7 /* CDVNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 5ED565D4146448B1B8E84086 /* CDVNotification.m */; };
+		ADFBD987D3EE43E28CA7965A /* CDVNotification.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1E3E07E2165946A7BB878966 /* CDVNotification.bundle */; };
+		CF4D46A8034C458FA10A9E52 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A5CC52F56CE044A9A609E871 /* AudioToolbox.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -118,6 +121,10 @@
 		30CB62226B0B426CA77BEDBB /* OAuthCore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "OAuthCore.h"; path = "com.danielcwilson.plugins.socialauth/OAuthCore.h"; sourceTree = "<group>"; fileEncoding = 4; };
 		FECCC6D527D94D7894F98CB9 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "Accounts.framework"; path = "System/Library/Frameworks/Accounts.framework"; sourceTree = SDKROOT; fileEncoding = 4; };
 		CA0AD6B7B6B14AC5AA0AE8AF /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "Social.framework"; path = "System/Library/Frameworks/Social.framework"; sourceTree = SDKROOT; fileEncoding = 4; };
+		5ED565D4146448B1B8E84086 /* CDVNotification.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVNotification.m"; path = "org.apache.cordova.dialogs/CDVNotification.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		14C39AF791584BF98B48F69B /* CDVNotification.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVNotification.h"; path = "org.apache.cordova.dialogs/CDVNotification.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		1E3E07E2165946A7BB878966 /* CDVNotification.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = "CDVNotification.bundle"; path = "CDVNotification.bundle"; sourceTree = "<group>"; };
+		A5CC52F56CE044A9A609E871 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "AudioToolbox.framework"; path = "System/Library/Frameworks/AudioToolbox.framework"; sourceTree = SDKROOT; fileEncoding = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +139,7 @@
 				5AEE5B35173C68D80009041E /* CoreLocation.framework in Frameworks */,
 				060C291F77DC4C378E715C27 /* Accounts.framework in Frameworks */,
 				F8029F1582554014BA6E270D /* Social.framework in Frameworks */,
+				CF4D46A8034C458FA10A9E52 /* AudioToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -213,6 +221,7 @@
 				308D052D1370CCF300D202BF /* icons */,
 				308D05311370CCF300D202BF /* splash */,
 				8D1107310486CEB800E47090 /* Kiipost-Info.plist */,
+				1E3E07E2165946A7BB878966 /* CDVNotification.bundle */,
 			);
 			name = Resources;
 			path = "Kiipost/Resources";
@@ -227,6 +236,7 @@
 				305D5FD0115AB8F900A74A75 /* MobileCoreServices.framework */,
 				FECCC6D527D94D7894F98CB9 /* Accounts.framework */,
 				CA0AD6B7B6B14AC5AA0AE8AF /* Social.framework */,
+				A5CC52F56CE044A9A609E871 /* AudioToolbox.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -250,6 +260,8 @@
 				B57138CA04A24D2F8B060AB4 /* NSData+Base64.h */,
 				9F517CFD15574373A9F44F8F /* OAuth+Additions.h */,
 				30CB62226B0B426CA77BEDBB /* OAuthCore.h */,
+				5ED565D4146448B1B8E84086 /* CDVNotification.m */,
+				14C39AF791584BF98B48F69B /* CDVNotification.h */,
 			);
 			name = Plugins;
 			path = "Kiipost/Plugins";
@@ -413,6 +425,7 @@
 				7E7966E11810823500FA85AD /* icon-50@2x.png in Resources */,
 				7E7966E51810823500FA85AD /* icon-76@2x.png in Resources */,
 				30FC414916E50CA1004E6F35 /* icon-72@2x.png in Resources */,
+				ADFBD987D3EE43E28CA7965A /* CDVNotification.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -448,6 +461,7 @@
 				612A126665584B489582FB85 /* NSData+Base64.m in Sources */,
 				DED23F92A13F448B814D86CE /* OAuth+Additions.m in Sources */,
 				E6A937553DE24907A18AA814 /* OAuthCore.m in Sources */,
+				400D39A7B443466CB25D7EC7 /* CDVNotification.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

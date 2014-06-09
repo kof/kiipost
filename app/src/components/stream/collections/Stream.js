@@ -4,7 +4,7 @@ define(function(require, exports, module) {
     var backbone = require('backbone')
     var inherits = require('inherits')
     var _ = require('underscore')
-    var $ = require('jquery')
+    var qs = require('qs')
 
     function Stream(models, options) {
         Stream.super_.apply(this, arguments)
@@ -32,6 +32,6 @@ define(function(require, exports, module) {
         if (o.sort) params.sort = o.sort
         if (o.catId && o.catId != 'all') params.catId = o.catId
 
-        return o.basePath + '?' + $.param(params)
+        return o.basePath + '?' + qs.stringify(params)
     }
 })

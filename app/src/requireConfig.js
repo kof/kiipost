@@ -22,7 +22,8 @@ require.config({
         'famous-infinitescroll': '../lib/famous-infinitescroll/infiniteScrollView',
         sinon: '../lib/sinon/lib/sinon',
         domready: '../lib/domready/ready',
-        promise: '../lib/promise/promise'
+        promise: '../lib/promise/promise',
+        qs: '../lib/qs/qs'
     },
     packages: [
 
