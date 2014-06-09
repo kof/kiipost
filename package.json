@@ -52,6 +52,7 @@
     "koa-compose": "^2.3.0",
     "koa-route": "^1.1.4",
     "multiline": "~0.3.4",
+    "promise": "^5.0.0",
     "sinon": "~1.10.2"
   },
   "scripts": {
@@ -62,7 +63,8 @@
     "browserify": [
       "hogan.js",
       "inherits",
-      "multiline"
+      "multiline",
+      "promise"
     ]
   }
 }

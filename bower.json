@@ -36,6 +36,7 @@
     "backbone.controller": "*",
     "underscore": "~1.6.0",
     "images-loader": "~0.1.1",
-    "underscore.string": "~2.3.3"
+    "underscore.string": "~2.3.3",
+    "domready": "~1.0.5"
   }
 }

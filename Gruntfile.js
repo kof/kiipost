@@ -15,7 +15,8 @@ module.exports = function(grunt) {
       config: {
         // Configurable paths
         app: 'app',
-        dist: 'dist'
+        dist: 'dist',
+        cordova: 'cordova/www'
       }
     }
   });

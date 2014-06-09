@@ -3,6 +3,7 @@ define(function(require, exports, module) {
 
     var backbone = require('backbone')
     var ImagesLoader = require('images-loader')
+    var domready = require('domready')
 
     var Engine = require('famous/core/Engine')
     var RenderController = require('famous/views/RenderController')
@@ -27,18 +28,39 @@ define(function(require, exports, module) {
         app.context.emit('deviceorientation', e)
     })
 
-    var initialized = false
+    app.ready = new Promise(function(fulfill, reject) {
+        var isResized, isDomReady
+        var isDeviceReady = !window.cordova
+
+        app.context.on('resize', function() {
+            isResized = true
+            resolve()
+        })
+
+        domready(function() {
+            isDomReady = true
+            resolve()
+        })
+
+        document.addEventListener('deviceready', function() {
+            isDeviceReady = true
+            resolve()
+        })
+
+        function resolve() {
+            if (isResized && isDomReady && isDeviceReady) fulfill()
+        }
+    })
 
     // Some views require to know the context size immediately.
-    app.context.on('resize', function() {
-        if (initialized) return
+    app.ready.then(function() {
         var options = {router: true}
 
         var login = new LoginController(options)
         var discover = new DiscoverController(options)
         var article = new ArticleController(options)
         var saved = new SavedController(options)
-        initialized = true
+
         backbone.history.start()
     })
 })

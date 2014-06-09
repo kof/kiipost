@@ -20,21 +20,34 @@ module.exports = function (grunt) {
     ]);
   });
 
-  grunt.registerTask('build', [
-    'clean:dist',
-    //'lint',
-    'processhtml:dist',
-    'useminPrepare',
-    'requirejs',
-    'concat',
-    'cssmin',
-    'uglify',
-    'copy:dist',
-    'rev',
-    'usemin',
-    'relativeRoot:dist',
-    'htmlmin'
-  ]);
+  // build - for web
+  // build:cordova - for cordova
+  grunt.registerTask('build', function (target) {
+    var tasks
+
+    tasks = [
+      'clean:dist',
+      //'lint',
+      'processhtml:dist',
+      'useminPrepare',
+      'requirejs',
+      'concat',
+      'cssmin',
+      'uglify',
+      'copy:dist',
+      'rev',
+      'usemin',
+      'relativeRoot:dist',
+      'htmlmin'
+    ];
+
+    // Set dist for cordova
+    if (target == 'cordova') {
+      grunt.config('config.dist', grunt.config('config').cordova);
+    }
+
+    grunt.task.run(tasks);
+  });
 
   grunt.registerTask('lint', [
     'jscs',
