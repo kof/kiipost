@@ -1,7 +1,7 @@
 {
     "lib": {
         "www": {
-            "uri": "../../dist",
+            "uri": "../www",
             "link": true
         }
     }

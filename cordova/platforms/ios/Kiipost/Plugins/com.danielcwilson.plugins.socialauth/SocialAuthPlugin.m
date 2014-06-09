@@ -16,7 +16,7 @@
 // change to your application key
 #define TW_CONSUMER_KEY              @"JmTqJFn47mOp14NpR0UiSdxig"
 #define TW_CONSUMER_SECRET           @"MHTdjpIwfVjcV2rZOyxesl939FqlnIKFzE50DhLZmG5UCwAViI"
-#define FB_APP_ID                    @"6297434"
+#define FB_APP_ID                    @""
 
 @interface SocialAuthPlugin()
 

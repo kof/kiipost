@@ -9,4 +9,7 @@
     </author>
     <content src="index.html" />
     <access origin="*" />
+
+    <!--KeyboardDisplayRequiresUserAction (boolean, defaults to true): Set to false to allow the keyboard to appear when calling focus() on form inputs. -->
+    <preference name="KeyboardDisplayRequiresUserAction" value="false"/>
 </widget>
