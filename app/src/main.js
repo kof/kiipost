@@ -4,6 +4,6 @@ define(function(require, exports, module) {
     require('famous/inputs/FastClick')
     require('components/famous/patches')
     require('./setup')
-    require('./test/apis')
+    require('./test/mocks')
     require('./app')
 })

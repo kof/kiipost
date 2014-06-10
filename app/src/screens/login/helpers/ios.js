@@ -4,23 +4,27 @@ define(function(require, exports, module) {
     var qs = require('qs')
     var transformKeys = require('components/utils/transformKeys')
 
+    exports.isAvailable = function() {
+        var api = window.socialAuth
+
+        return new Promise(function(fulfill, reject) {
+            if (!api) {
+                var err = new Error('Plugin not loaded.')
+                err.type = 'PLUGIN_NOT_LOADED'
+                return reject(err)
+            }
+            api.isTwitterAvailable(fulfill, function() {
+                var err = new Error('App is disabled.')
+                err.type = 'DISABLED'
+                reject(err)
+            })
+        })
+    }
+
     exports.login = function() {
         var api = window.socialAuth
 
         return new Promise(function(fulfill, reject) {
-            function isAvailable() {
-                if (!api) {
-                    var err = new Error('Plugin not loaded.')
-                    err.type = 'PLUGIN_NOT_LOADED'
-                    return reject(err)
-                }
-                api.isTwitterAvailable(getAccount, function() {
-                    var err = new Error('App is disabled.')
-                    err.type = 'DISABLED'
-                    reject(err)
-                })
-            }
-
             function getAccount() {
                 var err = new Error('No accounts connected.')
                 err.type = 'NOT_CONNECTED'
@@ -51,7 +55,9 @@ define(function(require, exports, module) {
                 )
             }
 
-            isAvailable()
+            exports.isAvailable()
+                .then(getAccount)
+                .catch(reject)
         })
     }
 

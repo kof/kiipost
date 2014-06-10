@@ -5,7 +5,7 @@ define(function(require, exports, module) {
 
     /**
      * Alert using cordova notification plugin if installed, otherwise
-     * fallback to alert.
+     * fallback to window.alert.
      */
     module.exports = function(message, callback, title, buttonName) {
         if (navigator.notification){

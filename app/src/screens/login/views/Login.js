@@ -11,6 +11,7 @@ define(function(require, exports, module) {
 
     var BackgroundView = require('components/background/Background')
     var SpinnerView = require('components/spinner/views/Spinner')
+    var alert = require('components/notification/alert')
 
     var app = require('app')
 
@@ -19,6 +20,7 @@ define(function(require, exports, module) {
 
         var size = app.context.getSize()
 
+        this.model = this.options.model
         this.surfaces = []
 
         this.layout = new FlexibleLayout({
@@ -49,7 +51,7 @@ define(function(require, exports, module) {
             classes: ['login-button'],
             content: 'Sign in with Twitter'
         })
-        this.button.on('click', this._onSignIn.bind(this))
+        this.button.on('click', this._onLoginStart.bind(this))
         this.surfaces.push(this.button)
 
         this.terms = new Surface({
@@ -66,11 +68,31 @@ define(function(require, exports, module) {
     module.exports = Login
 
     Login.DEFAULT_OPTIONS = {
-        // Relative to height.
-        logoWidth: 0.1
+        // Relative to context height.
+        logoWidth: 0.1,
+        errors: {
+            DISABLED: 'Please enable Kiipost app in Settings/Twitter.',
+            NOT_CONNECTED: 'Please connect your twitter account in Settings/Twitter.',
+            AUTH: 'Please go to twitter website and authorize iOS app in settings.',
+            UNKNOWN: 'Unknown error.'
+        }
     }
 
-    Login.prototype._onSignIn = function() {
-        this._eventOutput.emit('signin')
+    Login.prototype.error = function(err) {
+        var errs = this.options.errors
+        alert(errs[err.type] || errs.UNKNOWN, 'Error')
+    }
+
+    Login.prototype.load = function(data) {
+        this.spinner.show()
+        this.model.save(data).then(function() {
+            console.log(this.model)
+            this.spinner.hide()
+            this._eventOutput.emit('login:success')
+        }.bind(this))
+    }
+
+    Login.prototype._onLoginStart = function() {
+        this._eventOutput.emit('login:start')
     }
 })
