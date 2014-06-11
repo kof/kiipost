@@ -20,8 +20,8 @@ exports.server = {
 }
 
 exports.session = {
-    secret: '3997pa3NaE',
     key: 'kiipost.sid',
+    prefix: '',
     cookie: {
         path: '/',
         httpOnly: true,
