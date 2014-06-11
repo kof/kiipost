@@ -1,0 +1,2 @@
+export MONGO_URL=mongodb://localhost:27019/kiipost
+export PORT=3000

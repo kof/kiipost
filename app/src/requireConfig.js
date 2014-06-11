@@ -23,7 +23,8 @@ require.config({
         sinon: '../lib/sinon/lib/sinon',
         domready: '../lib/domready/ready',
         promise: '../lib/promise/promise',
-        qs: '../lib/qs/qs'
+        qs: '../lib/qs/qs',
+        log: './components/log/log'
     },
     packages: [
 

@@ -1,6 +1,8 @@
 var route = require('koa-route')
 var compose = require('koa-compose')
-var auth = require('./controllers/auth')
+var iosSession = require('./controllers/iossession')
 
-module.exports = compose([route.get('/', auth.read)])
+module.exports = compose([
+    route.post('/api/twitter/iosSession', iosSession.create)
+])
 

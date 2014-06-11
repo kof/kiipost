@@ -2,13 +2,13 @@ define(function(require, exports, module) {
     'use strict'
 
     var inherits = require('inherits')
-    var backbone = require('backbone')
+    var Model = require('backbone').Model
 
     function IosSession() {
         this.url = '/api/twitter/iossession'
-        IosSession.super_.apply(this, arguments)
+        Model.apply(this, arguments)
     }
 
-    inherits(IosSession, backbone.Model)
+    inherits(IosSession, Model)
     module.exports = IosSession
 })
