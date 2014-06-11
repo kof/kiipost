@@ -2,7 +2,8 @@ define(function(require, exports, module) {
     'use strict'
 
     var qs = require('qs')
-    var transformKeys = require('components/utils/transformKeys')
+    var transformKeys = require('shared/utils/transformKeys')
+    var rename = require('rename-keys')
 
     exports.isAvailable = function() {
         var api = window.socialAuth
@@ -44,7 +45,14 @@ define(function(require, exports, module) {
                 api.performTwitterReverseAuthentication(
                     function success(res) {
                         var params = qs.parse(res)
-                        fulfill(transformKeys(params, 'camelize'))
+                        params = transformKeys(params, 'camelize')
+                        rename(params, function(prop) {
+                            switch(prop) {
+                                case 'oauthToken': return 'accessToken'
+                                case 'oauthTokenSecret': return 'accessTokenSecret'
+                            }
+                        })
+                        fulfill(params)
                     },
                     function error(res) {
                         var err = new Error(res)

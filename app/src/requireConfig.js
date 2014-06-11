@@ -24,7 +24,8 @@ require.config({
         domready: '../lib/domready/ready',
         promise: '../lib/promise/promise',
         qs: '../lib/qs/qs',
-        log: './components/log/log'
+        log: './components/log/log',
+        'rename-keys': '../lib/rename-keys/index'
     },
     packages: [
 

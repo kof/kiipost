@@ -14,8 +14,8 @@ define(function(require, exports, module) {
             fulfill({
                 consumerKey: 'consumerKey',
                 consumerSecret: 'consumerSecret',
-                oauthToken: 'oauthToken',
-                oauthTokenSecret: 'oauthTokenSecret',
+                accessToken: 'accessToken',
+                accessTokenSecret: 'accessTokenSecret',
                 screenName: 'screenName',
                 userId: 'userId'
             })

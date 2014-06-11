@@ -21,17 +21,16 @@ exports.server = {
 
 exports.session = {
     key: 'kiipost.sid',
-    prefix: '',
-    cookie: {
-        path: '/',
-        httpOnly: true,
-        maxage: ms('5d'),
-        rewrite: true,
-        signed: true
-    },
-    store: {
-        expiration: ms('5d')
-    }
+    httpOnly: true,
+    signed: true,
+    overwrite: true,
+    path: '/',
+    maxage: ms('5d')
+}
+
+exports.twitter = {
+    consumerKey: 'JmTqJFn47mOp14NpR0UiSdxig',
+    consumerSecret: 'MHTdjpIwfVjcV2rZOyxesl939FqlnIKFzE50DhLZmG5UCwAViI'
 }
 
 require('deep-freeze')(exports)

@@ -74,7 +74,8 @@ define(function(require, exports, module) {
             DISABLED: 'Please enable Kiipost app in Settings/Twitter.',
             NOT_CONNECTED: 'Please connect your twitter account in Settings/Twitter.',
             AUTH: 'Please go to twitter website and authorize iOS app in settings.',
-            UNKNOWN: 'Unknown error.'
+            UNAUTHORIZED: 'Something went wrong with your twitter authentification.',
+            UNKNOWN: 'Unknown error.',
         }
     }
 
@@ -85,11 +86,16 @@ define(function(require, exports, module) {
 
     Login.prototype.load = function(data) {
         this.spinner.show()
-        this.model.save(data).then(function() {
-            console.log(this.model)
-            this.spinner.hide()
-            this._eventOutput.emit('login:success')
-        }.bind(this))
+        this.model.save(data)
+            .then(function() {
+                this._eventOutput.emit('login:success')
+            }.bind(this))
+            .fail(function(xhr) {
+                if (xhr.statusText == 'Unauthorized') {
+                    this.error({type: 'UNAUTHORIZED'})
+                }
+            }.bind(this))
+            .always(this.spinner.hide.bind(this.spinner))
     }
 
     Login.prototype._onLoginStart = function() {
