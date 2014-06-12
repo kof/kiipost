@@ -71,7 +71,6 @@ define(function(require, exports, module) {
     }
 
     Header.prototype._onAvatarChange = function(model, url) {
-        console.log(url)
         this.setAvatarUrl(url)
     }
 })
