@@ -14,12 +14,12 @@ var db = require('api/db')
 var conf = require('api/conf')
 var log = require('api/log')
 
-var apiModules = ['twitter']
+var apiModules = ['user']
 
 function create(connection) {
     // http://stackoverflow.com/questions/5027705/error-in-chrome-content-type-is-not-allowed-by-access-control-allow-headers
     // https://github.com/evert0n/koa-cors/issues/13
-    app.use(cors({headers: ['accept', 'x-requested-with', 'content-type']}))
+    app.use(cors(conf.cors))
     app.keys = ['632Dv76io', '8X77Zt73K', '7Zx33t38w']
     app.use(session(
         merge({collection: connection.db.collection('sessions')}, conf.session)

@@ -22,7 +22,7 @@ define(function(require, exports, module) {
         })
     }
 
-    exports.login = function() {
+    exports.signin = function() {
         var api = window.socialAuth
 
         return new Promise(function(fulfill, reject) {
@@ -46,6 +46,7 @@ define(function(require, exports, module) {
                     function success(res) {
                         var params = qs.parse(res)
                         params = transformKeys(params, 'camelize')
+                        params.provider = 'twitter'
                         rename(params, function(prop) {
                             switch(prop) {
                                 case 'oauthToken': return 'accessToken'

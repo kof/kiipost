@@ -46,6 +46,7 @@
   },
   "dependencies": {
     "amd-loader": "0.0.5",
+    "co": "^3.0.6",
     "debug": "^1.0.2",
     "deep-freeze": "0.0.1",
     "grunt-relative-root": "^0.2.1",

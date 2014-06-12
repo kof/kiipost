@@ -1,22 +1,22 @@
-.login-logo {
+.signin-logo {
     background: url('/content/images/logo.png') no-repeat center;
 }
-.login-slogan {
+.signin-slogan {
     text-align: center;
     padding: 0 3em;
     color: #fff;
     line-height: 1.4;
 }
-.login-button {
+.signin-button {
     text-align: center;
     color: #fff;
     font-size: 1.3em;
     cursor: pointer;
 }
-.login-terms {
+.signin-terms {
     text-align: center;
 }
-.login-terms span {
+.signin-terms span {
     color: #fff;
     opacity: 0.6;
     font-size: 0.7em;

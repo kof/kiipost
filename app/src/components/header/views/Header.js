@@ -18,6 +18,7 @@ define(function(require, exports, module) {
 
         // Height is the golden ratio.
         this.options.size = [size[0], app.GOLDEN_RATIO * size[0]]
+        this.models = this.options.models
 
         this.surface = new ContainerSurface({
             size: this.options.size,
@@ -48,6 +49,8 @@ define(function(require, exports, module) {
             content: this.options.title
         })
         this.surface.add(this.title)
+
+        this.models.user.on('change:imageUrl', this._onAvatarChange.bind(this))
     }
 
     inherits(Header, View)
@@ -57,9 +60,18 @@ define(function(require, exports, module) {
         title: 'Home'
     }
 
+    Header.prototype.setAvatarUrl = function(url) {
+        this.avatar.setProperties({backgroundImage: 'url(' + url + ')'})
+
+    }
     Header.prototype._onClick = function(e) {
         if (e.target.classList.contains('avatar')) {
             console.log('avatar')
         }
+    }
+
+    Header.prototype._onAvatarChange = function(model, url) {
+        console.log(url)
+        this.setAvatarUrl(url)
     }
 })

@@ -19,6 +19,11 @@ exports.server = {
     port: process.env.PORT
 }
 
+exports.cors = {
+    headers: ['accept', 'x-requested-with', 'content-type'],
+    credentials: true
+}
+
 exports.session = {
     key: 'kiipost.sid',
     httpOnly: true,

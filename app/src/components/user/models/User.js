@@ -4,11 +4,11 @@ define(function(require, exports, module) {
     var inherits = require('inherits')
     var Model = require('backbone').Model
 
-    function IosSession() {
-        this.url = '/api/twitter/iossession'
+    function User() {
+        this.url = '/api/user'
         Model.apply(this, arguments)
     }
 
-    inherits(IosSession, Model)
-    module.exports = IosSession
+    inherits(User, Model)
+    module.exports = User
 })

@@ -14,7 +14,9 @@ define(function(require, exports, module) {
         this.routes = {
             'discover': 'discover'
         }
-        Controller.apply(this, arguments)
+        options = _.extend({}, DiscoverController.DEFAULT_OPTIONS, options)
+        this.models = options.models
+        Controller.call(this, options)
         this.router = this.options.router
     }
     inherits(DiscoverController, Controller)
@@ -26,7 +28,10 @@ define(function(require, exports, module) {
             view: 'discover',
             model: ArticleModel
         })
-        this.view = new DiscoverView({collection: this.collection})
+        this.view = new DiscoverView({
+            collection: this.collection,
+            models: this.models
+        })
         this.view.on('menu:change', this._onMenuChange.bind(this))
     }
 

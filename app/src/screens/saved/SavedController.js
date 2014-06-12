@@ -13,7 +13,9 @@ define(function(require, exports, module) {
         this.routes = {
             'saved': 'saved'
         }
-        Controller.apply(this, arguments)
+        options = _.extend({}, SavedController.DEFAULT_OPTIONS, options)
+        this.models = options.models
+        Controller.call(this, options)
         this.router = this.options.router
     }
     inherits(SavedController, Controller)
@@ -25,7 +27,10 @@ define(function(require, exports, module) {
             view: 'saved',
             model: ArticleModel
         })
-        this.view = new SavedView({collection: this.collection})
+        this.view = new SavedView({
+            collection: this.collection,
+            models: this.models
+        })
         this.view.on('menu:change', this._onMenuChange.bind(this))
     }
 

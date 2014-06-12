@@ -8,6 +8,10 @@ define(function(require, exports, module) {
     var API_BASE_URL = 'http://kiipost.local:3000'
 
     $.ajaxSetup({
+        xhrFields: {
+            withCredentials: true
+        },
+
         beforeSend: function(xhr, opts) {
             if (opts.url.substr(0, 4) != 'http' && typeof API_BASE_URL == 'string') {
                 opts.url = API_BASE_URL + opts.url

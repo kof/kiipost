@@ -8,7 +8,9 @@ define(function(require, exports, module) {
     var Engine = require('famous/core/Engine')
     var RenderController = require('famous/views/RenderController')
 
-    var LoginController = require('./screens/login/LoginController')
+    var UserModel = require('components/user/models/User')
+
+    var SigninController = require('./screens/signin/SigninController')
     var DiscoverController = require('./screens/discover/DiscoverController')
     var ArticleController = require('./screens/article/ArticleController')
     var SavedController = require('./screens/saved/SavedController')
@@ -54,9 +56,11 @@ define(function(require, exports, module) {
 
     // Some views require to know the context size immediately.
     app.ready.then(function() {
-        var options = {router: true}
+        var options = {router: true, models: {}}
 
-        var login = new LoginController(options)
+        options.models.user = new UserModel()
+
+        var signin = new SigninController(options)
         var discover = new DiscoverController(options)
         var article = new ArticleController(options)
         var saved = new SavedController(options)
