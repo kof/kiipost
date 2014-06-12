@@ -15,9 +15,11 @@ var publicPropsKeys = _.keys(publicProps)
  * @param {Boolean} isAuthorized true users session is alive
  */
 module.exports = function signin(auth, isAuthorized) {
-    return function *() {
+    return function* () {
         if (!isAuthorized) yield verify(auth)
+
         var user = yield find(auth)
+
         var res
 
         if (user) {
@@ -36,7 +38,7 @@ module.exports = function signin(auth, isAuthorized) {
  * Verify user credentials.
  */
 function verify(auth) {
-    return function *() {
+    return function* () {
         switch (auth.provider) {
             case 'twitter':
                 return yield twitterClient.create(auth).verifyCredentials()
@@ -45,30 +47,35 @@ function verify(auth) {
 }
 
 /**
- * Find user in the db.
+ * Fetch user data services.
  */
-function find(auth) {
-    return function(callback) {
+function fetch(auth) {
+    return function* () {
         switch (auth.provider) {
             case 'twitter':
-                m.model('user')
-                    .findOne({'twitter.id': auth.userId})
-                    .select(publicProps)
-                    .lean()
-                    .exec(callback)
+                return yield twitterClient.create(auth).showUser({userId: auth.userId})
         }
     }
 }
 
 /**
- * Fetch user data services.
+ * Find user in the db.
  */
-function fetch(auth) {
-    return function *(callback) {
+function find(auth) {
+    var model = m.model('user')
+
+    return function* () {
+        var query
+
         switch (auth.provider) {
             case 'twitter':
-                return yield twitterClient.create(auth).showUser({userId: auth.userId})
+                query = model.findOne({'twitter.id': auth.userId})
         }
+
+        return yield query
+            .select(publicProps)
+            .lean()
+            .exec()
     }
 }
 
@@ -93,7 +100,7 @@ function fromTwitter(auth, data) {
  * Update users credentials and dates.
  */
 function touch(auth) {
-    return function(callback) {
+    return function* () {
         var update = {lastLoginDate: new Date()}
 
         switch (auth.provider) {
@@ -102,24 +109,26 @@ function touch(auth) {
                 update['twitter.accessTokenSecret'] = auth.accessTokenSecret
         }
 
-        m.model('user')
+        return yield m.model('user')
             .update({'twitter.id': auth.userId}, {$set: update})
-            .exec(callback)
+            .exec()
     }
 }
+
 
 /**
  * Create a new user.
  */
 function create(auth, data) {
-    return function(callback) {
-        var user = fromTwitter(auth, data)
-
+    return function* () {
+        var user
+        switch (auth.provider) {
+            case 'twitter':
+                user = fromTwitter(auth, data)
+        }
         user.signupDate = user.lastLoginDate = new Date()
-
-        m.model('user').create(user, function(err, doc) {
-            if (err) return callback(err)
-            callback(null, _.pick(doc, publicPropsKeys))
-        })
+        user = yield m.model('user').create(user)
+        return _.pick(user, publicPropsKeys)
     }
 }
+

@@ -3,7 +3,7 @@
 require('api/error/setup')
 require('amd-loader')
 
-var merge = require('merge')
+var _ = require('underscore')
 var app = require('koa')()
 var cors = require('koa-cors')
 var bodyParser = require('koa-bodyparser')
@@ -13,6 +13,7 @@ var mount = require('koa-mount')
 var db = require('api/db')
 var conf = require('api/conf')
 var log = require('api/log')
+var queue = require('api/queue')
 
 var apiModules = ['user']
 
@@ -22,7 +23,7 @@ function create(connection) {
     app.use(cors(conf.cors))
     app.keys = ['632Dv76io', '8X77Zt73K', '7Zx33t38w']
     app.use(session(
-        merge({collection: connection.db.collection('sessions')}, conf.session)
+        _.defaults({collection: connection.db.collection('sessions')}, conf.session)
     ))
     app.use(bodyParser())
 
@@ -34,8 +35,11 @@ function create(connection) {
     app.on('error', log)
     app.listen(conf.server.port)
     console.log('Listening on port', conf.server.port)
+
+    // Temporary start worker in main process to save money.
+    queue.init()
 }
 
 db.init()
     .then(create)
-    .catch(function(err) {log(err.stack)})
+    .catch(log)

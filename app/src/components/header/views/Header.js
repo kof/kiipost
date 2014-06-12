@@ -62,8 +62,8 @@ define(function(require, exports, module) {
 
     Header.prototype.setAvatarUrl = function(url) {
         this.avatar.setProperties({backgroundImage: 'url(' + url + ')'})
-
     }
+
     Header.prototype._onClick = function(e) {
         if (e.target.classList.contains('avatar')) {
             console.log('avatar')

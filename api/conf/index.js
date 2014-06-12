@@ -38,4 +38,15 @@ exports.twitter = {
     consumerSecret: 'MHTdjpIwfVjcV2rZOyxesl939FqlnIKFzE50DhLZmG5UCwAViI'
 }
 
+exports.queue = {
+    // Time in ms, which will be saved as a timeout in the db
+    // if calling cleanup, timedout jobs will be available again
+    timeout: ms('5m'),
+    // Amount of workers, which are running in parallel in the same process.
+    workers: 5,
+    // Periodically cleanup call 50 sec
+    cleanupInterval: ms('50s')
+}
+
+
 require('deep-freeze')(exports)

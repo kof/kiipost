@@ -5,7 +5,6 @@ var log = require('api/log')
 Error.stackTraceLimit = 20
 
 process.on('uncaughtException', function(err) {
-
     // Use nextTick here because if an error happens at bootstrap,
     // this handler is called before other modules used here are required
     // which leads to uncaughtException inside of uncaughtException.
