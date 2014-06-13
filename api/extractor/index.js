@@ -5,8 +5,10 @@ var _ = require('underscore')
 var _s = require('underscore.string')
 var url = require('url')
 var sax = require('sax')
+var readabilitySax = require('readabilitySAX')
 var retry = require('retry')
 var thunkify = require('thunkify')
+var entities = require('entities')
 
 var conf = require('api/conf')
 
@@ -15,9 +17,8 @@ var isLogo = /logo/i
 var isIco = /\.ico/i // They are too small for our purpose.
 var isDataImage = /data:image\//i
 var isOgImage = /og:image/i
-var isTitle = /title/i
 var isDescription = /description/i
-var isTags = /tags|tag|tags/i
+var isKeywords = /keywords|tag|tags/i
 
 var MIN_IMAGE_WIDTH = 200
 var MAX_IMAGES_AMOUNT = 5
@@ -31,17 +32,19 @@ sax.MAX_BUFFER_LENGTH = Infinity
  * @param {Function} callback
  */
 exports.extract = thunkify(function(url, callback) {
-    fetch(url, function(err, data) {
+    extract(url, function(err, tags, article) {
         var res = {}
 
-        if (err || !data) return callback(err, res)
+        if (err || !tags || !article) return callback(err, res)
 
-        res.icon = findIcon(data, url)
-        res.images = findImages(data, url, MIN_IMAGE_WIDTH, MAX_IMAGES_AMOUNT)
-        res.title = findTitle(data)
-        res.description = findDescription(data)
-        res.tags = findTags(data)
-
+        res = _.pick(article, 'title', 'score', 'html', 'url')
+        res.icon = findIcon(tags, url)
+        res.images = findImages(tags, url, MIN_IMAGE_WIDTH, MAX_IMAGES_AMOUNT)
+        res.description = findDescription(tags)
+        res.tags = findKeywords(tags)
+        _.each(res, function(val, prop) {
+            if (!val) delete res[prop]
+        })
         callback(null, res)
     })
 })
@@ -63,36 +66,15 @@ exports.extractWithRetry = thunkify(function(url, callback) {
 })
 
 /**
- * Fetch website document, serialize img, link, meta tags.
+ * Fetch website document, extract some tags, extract article.
  *
  * @param {String} url
  * @param {Function} callback
  */
-function fetch(url, callback) {
+function extract(url, callback) {
     var req
-    var saxStream
-    var data = {img: [], link: [], meta: []}
 
     callback = _.once(callback)
-
-    saxStream = sax.createStream(false, {lowercase: true})
-        .on('error', function() {
-            saxStream._parser.error = null;
-            saxStream._parser.resume();
-        })
-        .on('opentag', function(node) {
-            if (data[node.name]) {
-                node.attributes || (node.attributes = {})
-                data[node.name].push(node)
-            }
-        })
-        .on('end', function() {
-            _.each(data, function(arr, key) {
-                data[key] = _.compact(arr)
-            })
-
-            callback(null, data)
-        })
 
     // Bad uri emits before error handler is attached.
     try {
@@ -118,16 +100,74 @@ function fetch(url, callback) {
         .on('response', function(res) {
             if (res.statusCode != 200) return this.emit('error', new Error('Bad status code'))
             if (!res.headers || !/html/i.test(res.headers['content-type'])) return callback()
-            this.pipe(saxStream)
+
+            var tags, article
+
+            function done() {
+                if (tags && article) callback(null, tags, article)
+            }
+
+            req
+                .pipe(tagsExtractor(function(data) {
+                    tags = data
+                    done()
+                }))
+                .pipe(articleExtractor(req.uri.href, function(data) {
+                    article = data
+                    done()
+                }))
         })
 }
 
-function findIcon(data, baseUrl) {
+/**
+ * Find tags we need for later extractions.
+ */
+function tagsExtractor(callback) {
+    var data = {img: [], link: [], meta: []}
+
+    return sax.createStream(false, {lowercase: true})
+        .on('error', function() {
+            saxStream._parser.error = null;
+            saxStream._parser.resume();
+        })
+        .on('opentag', function(node) {
+            if (data[node.name]) {
+                node.attributes || (node.attributes = {})
+                data[node.name].push(node)
+            }
+        })
+        .on('end', function() {
+            _.each(data, function(arr, key) {
+                data[key] = _.compact(arr)
+            })
+
+            callback(data)
+        })
+}
+
+/**
+ * Extract article using readabilitySax.
+ */
+function articleExtractor(url, callback) {
+    var options = {pageURL: url, html: true}
+
+    return readabilitySax.createWritableStream(options, function(article) {
+        article.html = entities.decodeHTML5(article.html.replace(/\s+/g, ' '))
+        article.title = entities.decodeHTML5(article.title)
+        article.url = url
+        callback(article)
+    })
+}
+
+/**
+ * Find a site icon.
+ */
+function findIcon(tags, baseUrl) {
     var icons = []
     var icon
 
     // Find links with rel f.e. rel="apple-touch-icon"
-    _.each(data.link, function(link) {
+    _.each(tags.link, function(link) {
         var a = link.attributes
 
         if (a.rel && a.href) {
@@ -142,7 +182,7 @@ function findIcon(data, baseUrl) {
     if (icons.length) icon = icons.pop()
 
     // Find site icon if not already done.
-    _.each(data.img, function(img) {
+    _.each(tags.img, function(img) {
         var a = img.attributes
 
         if (!icon && a.src) {
@@ -161,12 +201,12 @@ function findIcon(data, baseUrl) {
  * Find images with width attribute according minWidth,
  * return them sorted by width descending.
  */
-function findImages(data, baseUrl, minWidth, maxAmount) {
+function findImages(tags, baseUrl, minWidth, maxAmount) {
     var images
 
     // - Filter images without width or width less than min.
     // - Parse width attr to number.
-    images = data.img.filter(function(img) {
+    images = tags.img.filter(function(img) {
         var a = img.attributes
 
         if (a.width) {
@@ -193,7 +233,7 @@ function findImages(data, baseUrl, minWidth, maxAmount) {
 
     // When nothing found, use og:image.
     if (!images.length) {
-        _.find(data.meta, function(meta) {
+        _.find(tags.meta, function(meta) {
             var attr = meta.attributes
             if (isOgImage.test(attr.property)) {
                 images.push(attr.content)
@@ -211,55 +251,49 @@ function findImages(data, baseUrl, minWidth, maxAmount) {
     return images
 }
 
-function findTitle(data) {
-    var title
-
-    _.find(data.meta, function(meta) {
-        var attr = meta.attributes
-        if (isTitle.test(attr.name) || isTitle.test(attr.property)) {
-            title = attr.content
-        }
-    })
-
-    return title
-}
-
-function findDescription(data) {
+/**
+ * Find description using different tags.
+ * f.e.
+ *  - descition tag
+ *  - meta tag with property sailthru:description
+ */
+function findDescription(tags) {
     var descr
 
-    _.find(data.meta, function(meta) {
+    _.find(tags.meta, function(meta) {
         var attr = meta.attributes
         if (isDescription.test(attr.name) || isDescription.test(attr.property)) {
             descr = attr.content
+            return true
         }
     })
 
-    return descr
+    return entities.decodeHTML5(descr).trim()
 }
 
-function findTags(data) {
-    var tags = ''
+/**
+ * Find tags/keywords using different tags
+ * f.e.
+ *  - meta tag keywords
+ *  - meta tag with property sailthru:tags, article:tag
+ */
+function findKeywords(tags) {
+    var keywords = ''
 
-    data.meta.forEach(function(meta) {
+    tags.meta.forEach(function(meta) {
         var attr = meta.attributes
 
         // Collect tags
-        if (isTags.test(attr.name)) {
-            tags += attr.content
+        if (isKeywords.test(attr.name) || isKeywords.test(attr.property)) {
+            keywords += ',' + attr.content
         }
     })
-    tags = tags.split(',')
-    tags = tags.map(_s.trim)
-    tags = _.compact(tags)
-    tags = _.uniq(tags)
 
-    return tags
+    keywords = entities.decodeHTML5(keywords)
+    keywords = keywords.split(',')
+    keywords = keywords.map(_s.trim)
+    keywords = _.compact(keywords)
+    keywords = _.uniq(keywords)
+
+    return keywords
 }
-
-function analyzeTags(url) {
-
-}
-
-
-
-
