@@ -2,7 +2,6 @@
 
 var request = require('request')
 var _ = require('underscore')
-var _s = require('underscore.string')
 var url = require('url')
 var sax = require('sax')
 var readabilitySax = require('readabilitySAX')
@@ -11,6 +10,8 @@ var thunkify = require('thunkify')
 var entities = require('entities')
 
 var conf = require('api/conf')
+
+var CharsetConverter = require('./CharsetConverter')
 
 var isIcon = /icon/i
 var isLogo = /logo/i
@@ -55,7 +56,7 @@ exports.extract = thunkify(function(url, callback) {
  * @see exports.extract
  */
 exports.extractWithRetry = thunkify(function(url, callback) {
-    var op = retry.operation({retries: 3})
+    var op = retry.operation({retries: 2})
 
     op.attempt(function(attempt) {
         exports.extract(url)(function(err, data) {
@@ -98,20 +99,24 @@ function extract(url, callback) {
     req
         .on('error', callback)
         .on('response', function(res) {
-            if (res.statusCode != 200) return this.emit('error', new Error('Bad status code'))
+            if (res.statusCode != 200) return req.emit('error', new Error('Bad status code'))
             if (!res.headers || !/html/i.test(res.headers['content-type'])) return callback()
 
             var tags, article
+            var converter = new CharsetConverter(req, res)
 
             function done() {
                 if (tags && article) callback(null, tags, article)
             }
 
             req
+                .pipe(converter.getStream())
+                .on('error', callback)
                 .pipe(tagsExtractor(function(data) {
                     tags = data
                     done()
                 }))
+                .on('error', callback)
                 .pipe(articleExtractor(req.uri.href, function(data) {
                     article = data
                     done()
@@ -124,11 +129,12 @@ function extract(url, callback) {
  */
 function tagsExtractor(callback) {
     var data = {img: [], link: [], meta: []}
+    var stream
 
-    return sax.createStream(false, {lowercase: true})
+    stream = sax.createStream(false, {lowercase: true})
         .on('error', function() {
-            saxStream._parser.error = null;
-            saxStream._parser.resume();
+            stream._parser.error = null
+            stream._parser.resume()
         })
         .on('opentag', function(node) {
             if (data[node.name]) {
@@ -143,6 +149,8 @@ function tagsExtractor(callback) {
 
             callback(data)
         })
+
+    return stream
 }
 
 /**
@@ -291,7 +299,9 @@ function findKeywords(tags) {
 
     keywords = entities.decodeHTML5(keywords)
     keywords = keywords.split(',')
-    keywords = keywords.map(_s.trim)
+    keywords = keywords.map(function(keyword) {
+        return keyword.trim()
+    })
     keywords = _.compact(keywords)
     keywords = _.uniq(keywords)
 

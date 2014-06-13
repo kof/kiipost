@@ -9,12 +9,17 @@ var sync = require('../../sync')
 db.init()
     .then(function() {
         co(function *(){
+            console.time('sync')
             try {
-                var res = yield sync({userId: '5399bcb42dc63a5df063653c'})
+                yield sync({userId: '5399bcb42dc63a5df063653c'})
             } catch(err) {
+                console.log(err)
                 console.log(err.stack)
             }
-            console.log('sync', res)
+            console.timeEnd('sync')
+            process.exit()
         })()
     })
-    .catch(console.log)
+    .catch(function(err) {
+        console.log(err.stack)
+    })

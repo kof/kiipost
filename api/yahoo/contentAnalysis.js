@@ -58,11 +58,13 @@ exports.analyze = thunkify(function(queryOptions, callback) {
  * @return {Object}
  */
 function format(res) {
-    var ret = {entities: [], categories: []},
-        results = res.query.results,
-        pick = {}
+    var ret = {entities: [], categories: []}
+    var results
+    var pick = {}
 
-    if (!results) return
+    if (!res || !res.query || !res.query.results) return ret
+
+    results = res.query.results
 
     pick.entity = function(entity) {
         ret.entities.push({

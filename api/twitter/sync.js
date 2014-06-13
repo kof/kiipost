@@ -11,6 +11,7 @@ var log = require('api/log')
 var contentAnalysis = require('api/yahoo/contentAnalysis')
 
 var EXTRACT_PARALLEL = 20
+var TWEETS_AMOUNT = 200
 
 /**
  * Get links from users twitter account.
@@ -21,13 +22,14 @@ var EXTRACT_PARALLEL = 20
 module.exports = function(options) {
     return function* () {
         var user = yield findUser(options)
+        var twitterOptions = {count: TWEETS_AMOUNT}
         var latestMemo = yield findLatestMemo(options)
         if (latestMemo && latestMemo.tweetId) {
-            var latestTweetId = latestMemo.tweetId
+            twitterOptions.sinceId = latestMemo.tweetId
         }
 
-        var userTweets = yield fetchUserTweets(user, latestTweetId)
-        var favoriteTweets = yield fetchFavorites(user, latestTweetId)
+        var userTweets = yield fetchUserTweets(user, twitterOptions)
+        var favoriteTweets = yield fetchFavorites(user, twitterOptions)
         var allTweets = [].concat(userTweets).concat(favoriteTweets)
         if (!allTweets.length) return
         allTweets = allTweets.filter(hasLinks)
@@ -68,20 +70,20 @@ function findUser(options) {
 /**
  * Fetch tweets from twitter done by passed user.
  */
-function fetchUserTweets(user, sinceId) {
+function fetchUserTweets(user, options) {
     return function* () {
         return yield client.create(user.twitter)
-            .getHomeTimeline({sinceId: sinceId})
+            .getHomeTimeline(options)
     }
 }
 
 /**
  * Fetch users favorites from twitter.
  */
-function fetchFavorites(user, sinceId) {
+function fetchFavorites(user, options) {
     return function* () {
         return yield client.create(user.twitter)
-            .getFavorites({sinceId: sinceId})
+            .getFavorites(options)
     }
 }
 
@@ -109,14 +111,16 @@ function toMemo(tweet) {
  */
 function addArticles(memos) {
     return function* () {
-        try {
         yield * forEach(memos, function* (memo) {
-            // Take only first url.
-            memo.articles = [yield extractor.extractWithRetry(memo.urls[0])]
+            memo.articles = []
+
+            try {
+                // Take only first url.
+                memo.articles.push(yield extractor.extractWithRetry(memo.urls[0]))
+            } catch(err) {
+                // XXX Should we log all the errors?
+            }
         })
-        } catch(err) {
-            console.log(err)
-        }
     }
 }
 
@@ -130,11 +134,15 @@ function addAnalyzedTags(memos) {
             if (!article || !article.html) return
             var text = _s.stripTags(article.html).trim()
             if (!text) return
-            var data = yield contentAnalysis.analyze({text: text})
-            if (!data) return
-            var entities = _.pluck(data.entities, 'content')
-            var categories = _.pluck(data.categories, 'content')
-            article.tags = article.tags.concat(entities).concat(categories)
+            try {
+                var data = yield contentAnalysis.analyze({text: text})
+            } catch(err) {
+                // XXX Should we log here something?
+                return
+            }
+            article.tags = article.tags
+                .concat(_.pluck(data.entities, 'content'))
+                .concat(_.pluck(data.categories, 'content'))
             article.tags = _.invoke(article.tags, 'toLowerCase')
             article.tags = _.uniq(article.tags)
         })
