@@ -48,5 +48,11 @@ exports.queue = {
     cleanupInterval: ms('50s')
 }
 
+exports.request = {
+    agent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36',
+    accept:'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+    timeout: 10000
+}
+
 
 require('deep-freeze')(exports)

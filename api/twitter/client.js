@@ -24,8 +24,9 @@ wrap('verifyCredentials', 'account/verify_credentials', {
     includeEntities: false,
     skipStatus: true
 })
-
 wrap('showUser', 'users/show', {includeEntities: false})
+wrap('getHomeTimeline', 'statuses/home_timeline', {trimUser: true})
+wrap('getFavorites', 'favorites/list')
 
 exports.create = function(auth) {
     auth = transformKeys(auth, 'underscored')

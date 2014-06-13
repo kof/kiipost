@@ -1,7 +1,7 @@
 'use strict'
 
 var Router = require('koa-router')
-var user = require('./controllers/user')
+var user = require('./controller')
 
 var router = module.exports = new Router()
 

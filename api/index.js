@@ -1,7 +1,6 @@
 'use strict'
 
-require('api/error/setup')
-require('amd-loader')
+require('./setup')
 
 var _ = require('underscore')
 var app = require('koa')()

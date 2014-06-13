@@ -3,7 +3,7 @@
 var m = require('mongoose')
 var _ = require('underscore')
 
-var twitterClient = require('api/twitter-client')
+var twitterClient = require('api/twitter/client')
 var publicProps = require('./publicProps')
 
 var publicPropsKeys = _.keys(publicProps)

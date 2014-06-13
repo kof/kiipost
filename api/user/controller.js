@@ -1,7 +1,8 @@
 'use strict'
 
-var signin = require('../helpers/signin')
 var log = require('api/log')
+
+var signin = require('./signin')
 
 /**
  * Create session for ios user.

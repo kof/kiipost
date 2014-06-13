@@ -1,14 +1,14 @@
-var queue = require('mongo-queue')
+var Template = require('mongo-queue').Template
 var inherits = require('inherits')
 var m = require('mongoose')
 
 var log = require('api/log')
 
 function TwitterSync() {
-    queue.Template.apply(this, arguments)
+    Template.apply(this, arguments)
 }
 
-inherits(TwitterSync, queue.Template)
+inherits(TwitterSync, Template)
 module.exports = TwitterSync
 
 /**
@@ -21,15 +21,6 @@ module.exports = TwitterSync
  * @param {Object} options
  */
 TwitterSync.prototype.perform = function(options) {
-    this.options = options
-
-    sync({user: options.userId})
-        .on('error', this._done.bind(this))
-        .on('complete', function(err, errors) {
-            // We process 1 user at once, so there can be just 1 error.
-            if (!err && errors.length) err = errors[0]
-            this._done(err)
-        }.bind(this))
 }
 
 TwitterSync.prototype._done = function(err) {

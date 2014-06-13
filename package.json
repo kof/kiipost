@@ -42,13 +42,15 @@
     "grunt-browserify": "~2.1.0",
     "requirejs": "~2.1.11",
     "underscore": "~1.6.0",
-    "grunt-umd": "~1.7.4"
+    "grunt-umd": "~1.7.4",
+    "qunit": "^0.6.4"
   },
   "dependencies": {
     "amd-loader": "0.0.5",
     "co": "^3.0.6",
     "debug": "^1.0.2",
     "deep-freeze": "0.0.1",
+    "generator-foreach": "^0.1.0",
     "grunt-relative-root": "^0.2.1",
     "hogan.js": "~2.0.0",
     "inherits": "^2.0.1",
@@ -65,7 +67,11 @@
     "multiline": "~0.3.4",
     "promise": "^5.0.0",
     "qs": "^0.6.6",
+    "readabilitySAX": "^1.6.1",
     "rename-keys": "^0.1.0",
+    "request": "^2.36.0",
+    "retry": "^0.6.0",
+    "sax": "^0.6.0",
     "sinon": "~1.10.2",
     "thunkify": "^2.1.2",
     "twit": "^1.1.15",

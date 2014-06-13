@@ -16,3 +16,4 @@ dist
 app/lib
 .yo-rc.json
 db
+coverage
