@@ -3,14 +3,14 @@
 var m = require('mongoose')
 var _ = require('underscore')
 var _s = require('underscore.string')
-var forEach = require('generator-foreach')
+var Batch = require('batch')
 
 var client = require('api/twitter/client')
 var extractor = require('api/extractor')
 var log = require('api/log')
 var contentAnalysis = require('api/yahoo/contentAnalysis')
 
-var EXTRACT_PARALLEL = 20
+var PARALLEL = 50
 var TWEETS_AMOUNT = 200
 
 /**
@@ -28,12 +28,15 @@ module.exports = function(options) {
             twitterOptions.sinceId = latestMemo.tweetId
         }
 
-        var userTweets = yield fetchUserTweets(user, twitterOptions)
-        var favoriteTweets = yield fetchFavorites(user, twitterOptions)
-        var allTweets = [].concat(userTweets).concat(favoriteTweets)
-        if (!allTweets.length) return
-        allTweets = allTweets.filter(hasLinks)
-        var memos = allTweets.map(toMemo)
+        var tweets
+        tweets = yield [
+            fetchUserTweets(user, twitterOptions),
+            fetchFavorites(user, twitterOptions)
+        ]
+        tweets = [].concat(tweets[0], tweets[1])
+        if (!tweets.length) return
+        tweets = tweets.filter(hasLinks)
+        var memos = tweets.map(toMemo)
         memos.forEach(function(tweet)  {
             tweet.userId = user._id
         })
@@ -110,16 +113,25 @@ function toMemo(tweet) {
  * Extract data from html page behind the first url.
  */
 function addArticles(memos) {
-    return function* () {
-        yield * forEach(memos, function* (memo) {
-            memo.articles = []
+    return function(callback) {
+        var batch = Batch().throws(false).concurrency(PARALLEL)
 
-            try {
-                // Take only first url.
-                memo.articles.push(yield extractor.extractWithRetry(memo.urls[0]))
-            } catch(err) {
-                // XXX Should we log all the errors?
-            }
+        function push(memo) {
+            batch.push(function(done) {
+                memo.articles = []
+                extractor.extractWithRetry(memo.urls[0])(function(err, article) {
+                    if (err) return done(err)
+                    memo.articles.push(article)
+                    done()
+                })
+            })
+        }
+
+        memos.forEach(push)
+
+        batch.end(function(errors) {
+            // XXX Should we log here something?
+            callback()
         })
     }
 }
@@ -128,23 +140,33 @@ function addArticles(memos) {
  * Add tags to the first article by analyzing its text.
  */
 function addAnalyzedTags(memos) {
-    return function* () {
-        yield * forEach(memos, function* (memo) {
-            var article = memo.articles[0] // Analyze only first one.
-            if (!article || !article.html) return
-            var text = _s.stripTags(article.html).trim()
-            if (!text) return
-            try {
-                var data = yield contentAnalysis.analyze({text: text})
-            } catch(err) {
-                // XXX Should we log here something?
-                return
-            }
-            article.tags = article.tags
-                .concat(_.pluck(data.entities, 'content'))
-                .concat(_.pluck(data.categories, 'content'))
-            article.tags = _.invoke(article.tags, 'toLowerCase')
-            article.tags = _.uniq(article.tags)
+    return function(callback) {
+        var batch = Batch().throws(false).concurrency(PARALLEL)
+
+        function push(memo) {
+            batch.push(function(done) {
+                var article = memo.articles[0] // Analyze only first one.
+                if (!article || !article.html) return done()
+                var text = _s.stripTags(article.html).trim()
+                if (!text) return done()
+                contentAnalysis.analyze({text: text})(function(err, data) {
+                    if (err) return done(err)
+
+                    article.tags = article.tags
+                        .concat(_.pluck(data.entities, 'content'))
+                        .concat(_.pluck(data.categories, 'content'))
+                    article.tags = _.invoke(article.tags, 'toLowerCase')
+                    article.tags = _.uniq(article.tags)
+                    done()
+                })
+            })
+        }
+
+        memos.forEach(push)
+
+        batch.end(function(errors) {
+            // XXX Should we log here something?
+            callback()
         })
     }
 }

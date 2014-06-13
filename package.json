@@ -47,6 +47,7 @@
   },
   "dependencies": {
     "amd-loader": "0.0.5",
+    "batch": "^0.5.0",
     "charset": "0.0.2",
     "co": "^3.0.6",
     "debug": "^1.0.2",
