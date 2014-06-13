@@ -4,6 +4,7 @@ var m = require('mongoose')
 var _ = require('underscore')
 
 var twitterClient = require('api/twitter/client')
+var queue = require('api/queue')
 var publicProps = require('./publicProps')
 
 var publicPropsKeys = _.keys(publicProps)
@@ -30,6 +31,8 @@ module.exports = function signin(auth, isAuthorized) {
             res = yield create(auth, user)
         }
 
+        yield queue.enqueue('TwitterSync', {userId: user._id, block: user._id})
+
         return res
     }
 }
@@ -47,7 +50,7 @@ function verify(auth) {
 }
 
 /**
- * Fetch user data services.
+ * Fetch user data from services.
  */
 function fetch(auth) {
     return function* () {
@@ -109,7 +112,7 @@ function touch(auth) {
                 update['twitter.accessTokenSecret'] = auth.accessTokenSecret
         }
 
-        return yield m.model('user')
+        yield m.model('user')
             .update({'twitter.id': auth.userId}, {$set: update})
             .exec()
     }
@@ -128,6 +131,7 @@ function create(auth, data) {
         }
         user.signupDate = user.lastLoginDate = new Date()
         user = yield m.model('user').create(user)
+
         return _.pick(user, publicPropsKeys)
     }
 }

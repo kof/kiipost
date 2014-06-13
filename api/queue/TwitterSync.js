@@ -1,8 +1,10 @@
 var Template = require('mongo-queue').Template
 var inherits = require('inherits')
 var m = require('mongoose')
+var co = require('co')
 
 var log = require('api/log')
+var sync = require('api/twitter/sync')
 
 function TwitterSync() {
     Template.apply(this, arguments)
@@ -21,14 +23,8 @@ module.exports = TwitterSync
  * @param {Object} options
  */
 TwitterSync.prototype.perform = function(options) {
-}
-
-TwitterSync.prototype._done = function(err) {
-    m.model('user').update(
-        {_id: this.options.userId},
-        {$set: {'processing.twitter': false}},
-        function(_err) {
-            this.complete(err || _err)
-        }.bind(this)
-    )
+    co(function* () {
+        yield sync(options)
+        this.complete()
+    }).call(this)
 }
