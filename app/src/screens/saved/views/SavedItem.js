@@ -73,7 +73,8 @@ define(function(require, exports, module) {
             icon = true
         }
         if (imageUrl) {
-            textWidth = this.options.size[0] - this._imageWidth + 'px'
+            if (!this._textOffsetLeft) this._textOffsetLeft = i.text.offsetLeft
+            textWidth = this.options.size[0] - this._imageWidth - this._textOffsetLeft + 'px'
             app.imagesLoader.load(imageUrl, function(err, image) {
                 if (err) return
 
