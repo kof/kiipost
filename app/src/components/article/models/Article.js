@@ -22,7 +22,6 @@ define(function(require, exports, module) {
             data.hostname = url.parse(data.url).hostname
                 .replace(wwwRegexp, '')
         }
-        if (!data.description) console.log(data)
         if (!data.description) data.description = _s.stripTags(data.html)
 
         return data

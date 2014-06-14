@@ -19,6 +19,8 @@ define(function(require, exports, module) {
     function Saved() {
         View.apply(this, arguments)
 
+        this.models = this.options.models
+
         this.background = new BackgroundView()
         this.add(this.background)
 
