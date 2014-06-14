@@ -26,6 +26,7 @@ wrap('verifyCredentials', 'account/verify_credentials', {
 })
 wrap('showUser', 'users/show', {includeEntities: false})
 wrap('getHomeTimeline', 'statuses/home_timeline', {trimUser: true})
+wrap('getUserTimeline', 'statuses/user_timeline', {trimUser: true})
 wrap('getFavorites', 'favorites/list')
 
 exports.create = function(auth) {

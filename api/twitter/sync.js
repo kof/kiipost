@@ -76,7 +76,7 @@ function findUser(options) {
 function fetchUserTweets(user, options) {
     return function* () {
         return yield client.create(user.twitter)
-            .getHomeTimeline(options)
+            .getUserTimeline(options)
     }
 }
 
