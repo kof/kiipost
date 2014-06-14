@@ -39,6 +39,6 @@
     "underscore.string": "~2.3.3",
     "domready": "~1.0.5",
     "rename-keys": "*",
-    "jquery-ajax-retry": "git@github.com:kof/jquery-ajax-retry.git#~0.2.6"
+    "jquery-ajax-retry": "0.2.6"
   }
 }
