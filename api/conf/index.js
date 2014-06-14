@@ -21,6 +21,7 @@ exports.server = {
 
 exports.cors = {
     headers: ['accept', 'x-requested-with', 'content-type'],
+    expose: ['retry-after'],
     credentials: true
 }
 

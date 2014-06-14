@@ -28,6 +28,9 @@ define(function(require, exports, module) {
         this.menu.pipe(this._eventOutput)
         this.header.surface.add(this.menu)
 
+        this.spinner = new SpinnerView()
+        this.add(new Modifier({origin: [0.5, 0.5]})).add(this.spinner)
+
         this.stream = new StreamView({
             ItemView: DiscoverItemView,
             views: [this.header],
@@ -35,14 +38,12 @@ define(function(require, exports, module) {
         })
         this.stream.addClass('discover')
         this.stream.pipe(this._eventOutput)
+        this.stream.on('stream:loadstart', this.spinner.show.bind(this.spinner))
+        this.stream.on('stream:loadend', this.spinner.hide.bind(this.spinner))
         this.add(this.stream)
 
         // Header can scroll the scrollview.
         this.header._eventInput.pipe(this.stream.scrollview)
-
-        this.spinner = new SpinnerView()
-        this.stream.pipe(this.spinner)
-        this.add(new Modifier({origin: [0.5, 0.5]})).add(this.spinner)
 
         this.jumper = new JumperView({scrollview: this.stream.scrollview})
         this.add(new Modifier({origin: [0.5, 0.05]})).add(this.jumper)

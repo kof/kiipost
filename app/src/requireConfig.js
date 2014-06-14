@@ -25,7 +25,8 @@ require.config({
         promise: '../lib/promise/promise',
         qs: '../lib/qs/qs',
         log: './components/log/log',
-        'rename-keys': '../lib/rename-keys/index'
+        'rename-keys': '../lib/rename-keys/index',
+        'jquery-ajax-retry': '../lib/jquery-ajax-retry/src/jquery.ajax-retry'
     },
     packages: [
 

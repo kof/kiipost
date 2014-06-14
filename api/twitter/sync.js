@@ -152,9 +152,7 @@ function addAnalyzedTags(memos) {
                 contentAnalysis.analyze({text: text})(function(err, data) {
                     if (err) return done(err)
 
-                    article.tags = article.tags
-                        .concat(_.pluck(data.entities, 'content'))
-                        .concat(_.pluck(data.categories, 'content'))
+                    article.tags = article.tags.concat(_.pluck(data.entities, 'content'))
                     article.tags = _.invoke(article.tags, 'toLowerCase')
                     article.tags = _.uniq(article.tags)
                     done()

@@ -8,6 +8,7 @@ var cors = require('koa-cors')
 var bodyParser = require('koa-bodyparser')
 var session = require('koa-session-mongodb')
 var mount = require('koa-mount')
+var slow = require('koa-slow')
 
 var db = require('api/db')
 var conf = require('api/conf')
@@ -17,6 +18,9 @@ var queue = require('api/queue')
 var apiModules = ['user', 'saved']
 
 function create(connection) {
+    // !!! Attention never commit this.
+    // app.use(slow({delay: 5000}))
+
     // http://stackoverflow.com/questions/5027705/error-in-chrome-content-type-is-not-allowed-by-access-control-allow-headers
     // https://github.com/evert0n/koa-cors/issues/13
     app.use(cors(conf.cors))
