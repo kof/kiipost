@@ -31,7 +31,8 @@ define(function(require, exports, module) {
         this.stream = new StreamView({
             ItemView: SavedItemView,
             views: [this.header],
-            collection: this.options.collection
+            collection: this.options.collection,
+            models: this.options.models
         })
         this.stream.addClass('discover')
         this.stream.pipe(this._eventOutput)

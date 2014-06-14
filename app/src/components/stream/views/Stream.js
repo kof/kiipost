@@ -23,8 +23,9 @@ define(function(require, exports, module) {
 
         var contextHeight = app.context.getSize()[1]
 
-        this.collection = this.options.collection
+        this.models = this.options.models
         this.views = this.options.views
+        this.collection = this.options.collection
         this._initialViewsAmount = this.views.length
         this.scrollview = new InfiniteScrollView({
             // Trigger infiniteScroll event 5 screens before items actually get rendered.
@@ -70,7 +71,7 @@ define(function(require, exports, module) {
         var ItemView = this.options.ItemView
 
         this.collection.forEach(function(model) {
-            var view = new ItemView({model: model})
+            var view = new ItemView({model: model, models: this.models})
             view._eventInput.pipe(this.scrollview)
             this.views.push(view)
         }, this)

@@ -4,7 +4,7 @@ define(function(require, exports, module) {
 
     var app = require('app')
 
-    var ArticleModel = require('components/article/models/Article')
+    var MemoModel = require('./models/Memo')
     var StreamCollection = require('components/stream/collections/Stream')
 
     var SavedView = require('./views/Saved')
@@ -25,7 +25,7 @@ define(function(require, exports, module) {
         this.collection = new StreamCollection(null, {
             basePath: '/api/saved',
             view: 'saved',
-            model: ArticleModel
+            model: MemoModel
         })
         this.view = new SavedView({
             collection: this.collection,

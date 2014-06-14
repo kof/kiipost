@@ -14,7 +14,7 @@ var conf = require('api/conf')
 var log = require('api/log')
 var queue = require('api/queue')
 
-var apiModules = ['user']
+var apiModules = ['user', 'saved']
 
 function create(connection) {
     // http://stackoverflow.com/questions/5027705/error-in-chrome-content-type-is-not-allowed-by-access-control-allow-headers

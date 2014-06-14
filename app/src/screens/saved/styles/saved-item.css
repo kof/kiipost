@@ -19,12 +19,16 @@
 }
 .saved-item .avatar {
     width: 8em;
-    height: 1.8em;
+    text-align: center;
+}
+.saved-item .avatar span {
     background: url('/content/images/dummy-avatar.png') no-repeat center;
     background-size: contain;
     border-radius: 100%;
-    margin: 0 0.5em;
     line-height: 0;
+    width: 2em;
+    height: 2em;
+    display: inline-block;
 }
 .saved-item h1.memo {
     max-height: 5.6em;

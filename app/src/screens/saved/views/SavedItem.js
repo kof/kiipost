@@ -2,6 +2,7 @@ define(function(require, exports, module) {
     'use strict'
 
     var inherits = require('inherits')
+    var _ = require('underscore')
 
     var Engine = require('famous/core/Engine')
     var View = require('famous/core/View')
@@ -34,10 +35,10 @@ define(function(require, exports, module) {
         var height = width * app.GOLDEN_RATIO
 
         this.model = this.options.model
+        this.models = this.options.models
         this.options.size = [width, height]
         this._imageWidth = Math.round((height - (height * this.options.memoHeight)) * app.GOLDEN_RATIO)
         this._poolItem = pool.get()
-
         this.surface = new Surface({
             size: this.options.size,
             classes: ['saved-item']
@@ -60,17 +61,25 @@ define(function(require, exports, module) {
 
     SavedItem.prototype.setContent = function() {
         var attr = this.model.attributes
+        var article = attr.articles[0] ? attr.articles[0].attributes : {}
         var i = this._poolItem
         var textWidth
 
-        if (attr.image) {
+        var imageUrl, icon
+        if (article.images && article.images[0]) {
+            imageUrl = article.images[0]
+        } else {
+            imageUrl = article.icon
+            icon = true
+        }
+        if (imageUrl) {
             textWidth = this.options.size[0] - this._imageWidth + 'px'
-            app.imagesLoader.load(attr.image.url, function(err, image) {
+            app.imagesLoader.load(imageUrl, function(err, image) {
                 if (err) return
 
-                i.image.style.backgroundImage = 'url(' + attr.image.url + ')'
+                i.image.style.backgroundImage = 'url(' + imageUrl + ')'
                 i.image.style.width = this._imageWidth + 'px'
-                i.image.style.backgroundSize = attr.image.icon ? 'contain' : 'cover'
+                i.image.style.backgroundSize = icon ? 'contain' : 'cover'
                 if (image.width <= this._imageWidth && image.height <= this.options.size[1]) {
                     i.image.style.backgroundSize = 'initial'
                 }
@@ -80,12 +89,13 @@ define(function(require, exports, module) {
             textWidth = '100%'
         }
 
-        i.memo.textContent = attr.memo
+        i.avatar.style.backgroundImage = 'url(' + this.models.user.get('imageUrl') + ')'
+        i.memo.textContent = attr.text
         i.text.style.width = textWidth
-        i.title.textContent = attr.title
-        i.summary.textContent = attr.summary
-        i.link.href = attr.link
-        i.link.textContent = attr.hostname
+        i.title.textContent = article.title || ''
+        i.summary.textContent = article.description || ''
+        i.link.href = article.url || ''
+        i.link.textContent = article.hostname || ''
         i.image.style.display = 'none'
 
         this.surface.setContent(i.container)

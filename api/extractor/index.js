@@ -262,7 +262,7 @@ function findImages(tags, baseUrl, minWidth, maxAmount) {
 /**
  * Find description using different tags.
  * f.e.
- *  - descition tag
+ *  - description tag
  *  - meta tag with property sailthru:description
  */
 function findDescription(tags) {
@@ -276,7 +276,7 @@ function findDescription(tags) {
         }
     })
 
-    return entities.decodeHTML5(descr).trim()
+    return descr && entities.decodeHTML5(descr).trim()
 }
 
 /**

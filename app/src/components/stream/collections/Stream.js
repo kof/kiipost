@@ -17,21 +17,12 @@ define(function(require, exports, module) {
     Stream.DEFAULT_OPTIONS = {
         limit: 30,
         skip: 0,
-        catId: 'all',
-        since: null,
-        sort: null,
-        view: null,
         basePath: null
     }
 
     Stream.prototype.url = function() {
         var o = this.options
-        var params = _.pick(o, 'skip', 'limit', 'view')
-
-        if (o.since) params.since = o.since
-        if (o.sort) params.sort = o.sort
-        if (o.catId && o.catId != 'all') params.catId = o.catId
-
+        var params = _.pick(o, 'skip', 'limit')
         return o.basePath + '?' + qs.stringify(params)
     }
 })

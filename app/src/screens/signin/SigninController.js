@@ -3,6 +3,7 @@ define(function(require, exports, module) {
 
     var Controller = require('controller')
     var inherits = require('inherits')
+    var backbone = require('backbone')
 
     var app = require('app')
 
@@ -46,7 +47,9 @@ define(function(require, exports, module) {
     }
 
     SigninController.prototype._go = function() {
-        this.router.navigate('/discover', {trigger: true})
+        if (!backbone.history.getFragment()) {
+            this.router.navigate('/discover', {trigger: true})
+        }
     }
 
     SigninController.prototype._onSigninStart = _.debounce(function() {

@@ -1,6 +1,6 @@
 define(function(require, exports, module) {
 module.exports = require('multiline')(function() {/*
-<div class="avatar" data-name="avatar"></div>
+<div class="avatar"><span data-name="avatar"></span></div>
 <div class="content">
     <h1 class="memo" data-name="memo"></h1>
     <div class="article">
