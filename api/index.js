@@ -8,7 +8,6 @@ var cors = require('koa-cors')
 var bodyParser = require('koa-bodyparser')
 var session = require('koa-session-mongodb')
 var mount = require('koa-mount')
-var slow = require('koa-slow')
 var compress = require('koa-compress')
 
 var db = require('api/db')
@@ -20,7 +19,8 @@ var apiModules = ['user', 'saved']
 
 function create(connection) {
     // !!! Attention never commit this.
-    // app.use(slow({delay: 5000}))
+
+    // app.use(require('koa-slow')({delay: 5000}))
 
     app.use(compress({level: 5}))
 
