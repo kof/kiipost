@@ -71,6 +71,7 @@
     "sinon": "~1.10.2",
     "thunkify": "^2.1.2",
     "twit": "^1.1.15",
+    "underscore": "^1.6.0",
     "underscore.string": "^2.3.3"
   },
   "scripts": {
