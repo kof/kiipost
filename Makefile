@@ -1,7 +1,7 @@
 ln:
-	ln -svf $(CURDIR)/node_modules/sinon ./app/lib
-	ln -svf $(CURDIR)/api ./node_modules
-	ln -svf $(CURDIR)/shared ./node_modules
+	ln -svf $(CURDIR)/node_modules/sinon $(CURDIR)/app/lib
+	ln -svf $(CURDIR)/api $(CURDIR)/node_modules
+	ln -svf $(CURDIR)/shared $(CURDIR)/node_modules
 
 rundb:
 	ulimit -n 1000 && mongod --port 27019 --dbpath ./db --rest --auth --smallfiles &
