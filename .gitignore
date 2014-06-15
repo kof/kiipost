@@ -15,5 +15,5 @@ dist
 .tmp
 app/lib
 .yo-rc.json
-db
+/db
 coverage
