@@ -73,7 +73,8 @@
     "underscore.string": "^2.3.3"
   },
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt test",
+    "postinstall": "make ln"
   },
   "overlay": {
     "browserify": [
