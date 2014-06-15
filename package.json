@@ -16,7 +16,7 @@
     "url": "https://github.com/kof/kiipost/issues"
   },
   "engines": {
-    "node": ">= 0.10.0"
+    "node": "0.11.13"
   },
   "devDependencies": {
     "browserify": "~4.1.5",
