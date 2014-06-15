@@ -60,7 +60,7 @@ define(function(require, exports, module) {
         title: 'Home'
     }
 
-    Header.prototype.setAvatarUrl = function(url) {
+    Header.prototype.setAvatarUrl = function(url) {
         this.avatar.setProperties({backgroundImage: 'url(' + url + ')'})
     }
 
@@ -70,7 +70,7 @@ define(function(require, exports, module) {
         }
     }
 
-    Header.prototype._onAvatarChange = function(model, url) {
+    Header.prototype._onAvatarChange = function(model, url) {
         this.setAvatarUrl(url)
     }
 })

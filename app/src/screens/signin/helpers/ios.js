@@ -47,7 +47,7 @@ define(function(require, exports, module) {
                         var params = qs.parse(res)
                         params = transformKeys(params, 'camelize')
                         params.provider = 'twitter'
-                        rename(params, function(prop) {
+                        rename(params, function(prop) {
                             switch(prop) {
                                 case 'oauthToken': return 'accessToken'
                                 case 'oauthTokenSecret': return 'accessTokenSecret'

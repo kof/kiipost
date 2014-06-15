@@ -38,7 +38,7 @@
     "images-loader": "~0.1.1",
     "underscore.string": "~2.3.3",
     "domready": "~1.0.5",
-    "rename-keys": "*",
+    "rename-keys": "~0.1.1",
     "jquery-ajax-retry": "0.2.6"
   }
 }

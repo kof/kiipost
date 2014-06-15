@@ -87,7 +87,7 @@ define(function(require, exports, module) {
     Signin.prototype.load = function(data) {
         this.spinner.show()
         this.model.save(data)
-            .then(function() {
+            .then(function() {
                 this._eventOutput.emit('signin:success')
             }.bind(this))
             .fail(function(xhr) {

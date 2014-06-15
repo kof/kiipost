@@ -37,6 +37,7 @@ If you would like to have your server be accessible to other devices on your loc
 ##Cordova build
 - Install cordova `sudo npm i cordova -g`
 - Go to cordova dir
+- Create a build for cordova `grunt build:cordova`
 - Copy files from www dir to platforms `cordova prepare`
 - IOS: open project and run via xcode
 
