@@ -2,19 +2,6 @@
   "name": "kiipost",
   "description": "E.g. Seed project to get started with Famo.us.",
   "version": "0.1.0",
-  "homepage": "https://github.com/kof/kiipost",
-  "author": {
-    "name": "Oleg Slobodskoi",
-    "url": "http://github.com/kof/"
-  },
-  "license": "ISC",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/kof/kiipost.git"
-  },
-  "bugs": {
-    "url": "https://github.com/kof/kiipost/issues"
-  },
   "engines": {
     "node": "0.11.13"
   },
@@ -86,8 +73,7 @@
     "underscore.string": "^2.3.3"
   },
   "scripts": {
-    "test": "grunt test",
-    "postinstall": "grunt browserify"
+    "test": "grunt test"
   },
   "overlay": {
     "browserify": [
@@ -97,5 +83,6 @@
       "promise",
       "qs"
     ]
-  }
+  },
+  "private": true
 }
