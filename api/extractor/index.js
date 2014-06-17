@@ -306,6 +306,10 @@ function findKeywords(tags) {
     })
     keywords = _.compact(keywords)
     keywords = _.uniq(keywords)
+    // Filter too long keywords in case its just text.
+    keywords = keywords.filter(function(keyword) {
+        return keyword.length < 20
+    })
 
     return keywords
 }
