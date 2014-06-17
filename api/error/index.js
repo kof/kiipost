@@ -107,14 +107,7 @@ exports.MultiError.prototype.add = function(err, properties) {
  * Remove all duplicate errors.
  */
 exports.MultiError.prototype.uniq = function() {
-    var index = {}
-
-    if (!this.errors || this.errors.length < 2) return this
-
-    this.errors = _.filter(this.errors, function(err) {
-        if (!index[err.message]) return index[err.message] = true
-        return false
-    })
+    this.errors = exports.uniq(this.errors)
 
     return this
 }
@@ -130,4 +123,20 @@ exports.MultiError.prototype.limit = function(limit) {
     }
 
     return this
+}
+
+/**
+ * Reduce errors array to unique once.
+ *
+ * @param {Array}
+ * @return {Array}
+ */
+exports.uniq = function(errors) {
+    if (!errors || errors.length < 2) return errors
+    var index = {}
+
+    return errors.filter(function(err) {
+        if (!index[err.message]) return index[err.message] = true
+        return false
+    })
 }

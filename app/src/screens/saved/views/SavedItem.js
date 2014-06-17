@@ -94,7 +94,7 @@ define(function(require, exports, module) {
         i.memo.textContent = attr.text
         i.text.style.width = textWidth
         i.title.textContent = article.title || ''
-        i.summary.textContent = article.description || ''
+        i.summary.textContent = article.summary || ''
         i.link.href = article.url || ''
         i.link.textContent = article.hostname || ''
         i.image.style.display = 'none'

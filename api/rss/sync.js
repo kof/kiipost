@@ -63,6 +63,7 @@ module.exports = function(options) {
         var processor = processOneWithRetry
         var feeds
         var query
+        var errors = []
 
         options || (options = {})
         if (options.retry === false) processor = processOne
@@ -83,8 +84,8 @@ module.exports = function(options) {
 
         feeds.forEach(function(feed) {
             batch.push(function(done) {
-                console.log(feed.feed)
-                processor(feed, options, function(err) {
+                if (options.verbose) console.log(feed.feed)
+                processor(feed, options, function(err, _errors) {
                     var update
 
                     if (err) {
@@ -92,6 +93,8 @@ module.exports = function(options) {
                     } else {
                         update = {$set: {failsCounter: 0, lastSync: new Date()}}
                     }
+
+                    errors = errors.concat(_errors)
 
                     m.model('rssfeed')
                         .update({_id: feed._id}, update)
@@ -102,13 +105,14 @@ module.exports = function(options) {
             })
         })
 
-        if (feeds.length) yield (function(callback) {
-            batch.end(function(errors) {
-                // XXX logging?
-                callback()
+        if (feeds.length) return yield (function(callback) {
+            batch.end(function(_errors) {
+                errors = _.compact(errors.concat(_errors))
+                callback(null, errors)
             })
         })
 
+        return errors
     }
 }
 
@@ -120,13 +124,13 @@ module.exports = function(options) {
  */
 function processOne(feed, options, callback) {
     co(function *(){
-        var err
+        var err, errors = []
         try {
             var articles = yield fetch(feed.feed)
             articles = articles.map(normalize)
             articles = yield prefilter(articles)
-            yield addSiteData(articles)
-            yield addAnalyzedTags(articles)
+            errors = errors.concat(yield addSiteData(articles))
+            errors = errors.concat(yield addAnalyzedTags(articles))
             articles = articles.filter(postfilter)
             yield batchInsert('article', articles)
         } catch(_err) {
@@ -135,7 +139,7 @@ function processOne(feed, options, callback) {
             if (!err.level && IGNORE_ERRORS.test(err.message)) err.level = 'trace'
         }
 
-        callback(err)
+        callback(err, errors)
     })()
 }
 
@@ -214,6 +218,8 @@ fetch = thunkify(fetch)
  * Find tags by analyzing description.
  */
 function addAnalyzedTags(articles, callback) {
+    if (!articles.length) return callback()
+
     var batch = Batch().throws(false).concurrency(PARALLEL)
 
     articles.forEach(function(article) {
@@ -221,6 +227,7 @@ function addAnalyzedTags(articles, callback) {
             var text = _s.stripTags(article.description).trim()
             contentAnalysis.analyze({text: text})(function(err, data) {
                 var tags
+                if (err) err.article = article
                 if (err || !data) return done(err)
                 tags = _.pluck(data.entities, 'content')
                 tags = _.pluck(data.categories, 'content')
@@ -234,7 +241,7 @@ function addAnalyzedTags(articles, callback) {
 
     batch.end(function(errors) {
         // XXX Should we log here something?
-        callback()
+        callback(null, errors)
     })
 }
 
@@ -312,12 +319,17 @@ function normalize(article) {
  * Extract data from the site, extend the article.
  */
 function addSiteData(articles, callback) {
+    if (!articles.length) return callback()
+
     var batch = Batch().throws(false).concurrency(PARALLEL)
 
     articles.forEach(function(article) {
         batch.push(function(done) {
             extractor.extractWithRetry(article.url)(function(err, data) {
-                if (err) return done(err)
+                if (err) {
+                    err.url = article.url
+                    return done(err)
+                }
                 _.extend(article, data)
                 done()
             })
@@ -326,7 +338,7 @@ function addSiteData(articles, callback) {
 
     batch.end(function(errors) {
         // XXX Should we log here something?
-        callback()
+        callback(null, errors)
     })
 }
 
