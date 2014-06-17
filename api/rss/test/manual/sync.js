@@ -11,7 +11,7 @@ db.init()
         co(function *(){
             console.time('sync')
             try {
-                yield sync({feed: 'http://rac1.org/elmon/categories/a-cop-de-clic/feed/'})
+                yield sync({feed: 'http://rac1.org/elmon/categories/a-cop-de-clic/feed/', verbose: true})
             } catch(err) {
                 console.log(err)
                 console.log(err.stack)

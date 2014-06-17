@@ -77,7 +77,7 @@ module.exports = function(options) {
 
         feeds = yield m.model('rssfeed')
             .find(query)
-            .select({_id: 1, feed: 1, 'feedly.subscribers': 1, website: 1, icon: 1})
+            .select({_id: 1, feed: 1})
             .lean()
             .limit(options.limit)
             .exec()
@@ -153,9 +153,9 @@ function processOneWithRetry(feed, options, callback) {
     var op = retry.operation({retries: 3})
 
     op.attempt(function(attempt) {
-        processOne(feed, options, function(err, posts) {
+        processOne(feed, options, function(err, errors) {
             if (op.retry(err)) return
-            callback(err ? op.mainError() : null, posts)
+            callback(err ? op.mainError() : null, errors)
         })
     })
 }
