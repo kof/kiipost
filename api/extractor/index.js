@@ -245,8 +245,8 @@ function findImages(tags, baseUrl, minWidth, maxAmount) {
     if (!images.length) {
         _.find(tags.meta, function(meta) {
             var attr = meta.attributes
-            if (isOgImage.test(attr.property)) {
-                images.push(attr.content)
+            if (isOgImage.test(attr.property) && attr.content) {
+                images.push(attr.content.trim())
                 return true
             }
         })
