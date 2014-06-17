@@ -9,6 +9,7 @@ define(function(require, exports, module) {
     function Stream(models, options) {
         Stream.super_.apply(this, arguments)
         this.options = _.extend({}, Stream.DEFAULT_OPTIONS, options)
+        this.urlRoot = this.options.urlRoot
     }
 
     inherits(Stream, backbone.Collection)
@@ -23,6 +24,6 @@ define(function(require, exports, module) {
     Stream.prototype.url = function() {
         var o = this.options
         var params = _.pick(o, 'skip', 'limit')
-        return o.basePath + '?' + qs.stringify(params)
+        return this.urlRoot + '?' + qs.stringify(params)
     }
 })

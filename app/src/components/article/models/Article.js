@@ -10,7 +10,7 @@ define(function(require, exports, module) {
     var wwwRegexp = /^www\./
 
     function Article() {
-        this.url = '/api/article'
+        this.urlRoot = '/api/articles/article'
         Article.super_.apply(this, arguments)
     }
 

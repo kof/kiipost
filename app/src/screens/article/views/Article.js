@@ -75,49 +75,58 @@ define(function(require, exports, module) {
 
     Article.DEFAULT_OPTIONS = {}
 
-    Article.prototype.load = function(articleId) {
-        this.model = new ArticleModel({_id: articleId})
+    Article.prototype.load = function(id) {
+        this.model = new ArticleModel({_id: id})
         this.spinner.show(true)
-        this.model.fetch().then(function() {
-            this.setContent(this.model)
-            this.spinner.hide()
-        }.bind(this))
+        this.model.fetch()
+            .then(this.setContent.bind(this))
+            .always(this.spinner.hide.bind(this.spinner))
     }
 
-    Article.prototype.setContent = function(model) {
-        this.model = model
-        this.title.textContent = model.get('title')
-        this._setImage(model.get('image'))
+    Article.prototype.setContent = function() {
+        this.title.textContent = this.model.get('title')
         // Set class now to avoid white screen artifact during loading.
         this.text.setClasses(['article-text'])
-        this.textContent.innerHTML = model.get('description')
+        this.textContent.innerHTML = this.model.get('description')
+        this._setImage()
         // Wait until text is rendered.
         setTimeout(this._setTextSize.bind(this), 50)
     }
 
-    Article.prototype._setImage = function(image) {
+    Article.prototype._setImage = function() {
         this.image.setProperties({
             backgroundImage: null,
             backgroundSize: 'contain',
             backgroundPosition: 'center top'
         })
 
-        if (!image) return
+        var attr = this.model.attributes
+        var imageUrl, isIcon
 
-        app.imagesLoader.load(image.url, function(err, data) {
+        if (attr.images.length) {
+            imageUrl = attr.images[0]
+        } else if (attr.icon) {
+            isIcon = true
+            imageUrl = attr.icon
+        }
+        if (!imageUrl) return
+
+        app.imagesLoader.load(imageUrl, function(err, data) {
             if (err) return
 
             var size = this.head.getSize()
+            var props = {}
+
+            props.backgroundSize = isIcon ? 'contain' : 'cover'
 
             if (data.width <= size[0] && data.height <= size[1]) {
                 var top = (size[1] + this.image.options.offset * 2 - data.height) / 2
-                this.image.setProperties({
-                    backgroundSize: 'initial',
-                    backgroundPosition: 'center ' + top + 'px'
-                })
+                props.backgroundSize = 'initial'
+                props.backgroundPosition = 'center ' + top + 'px'
             }
 
-            this.image.setContent(image.url)
+            this.image.setProperties(props)
+            this.image.setContent(imageUrl)
         }.bind(this))
     }
 

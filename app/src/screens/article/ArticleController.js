@@ -33,17 +33,13 @@ define(function(require, exports, module) {
         }.bind(this))
     }
 
-    ArticleController.prototype.article = function(model) {
-        if (typeof model == 'string') {
-            this.view.load(model)
-        } else {
-            this.view.setContent(model)
-        }
+    ArticleController.prototype.article = function(id) {
+        this.view.load(id)
         app.controller.show(this.view, this.options)
     }
 
     ArticleController.prototype._onOpen = function(model) {
         this.router.navigate('/article/' + model.id)
-        this.article(model)
+        this.article(model.id)
     }
 })
