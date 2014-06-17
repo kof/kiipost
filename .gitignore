@@ -17,3 +17,4 @@ app/lib
 .yo-rc.json
 /db
 coverage
+/dump
