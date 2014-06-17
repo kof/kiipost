@@ -74,6 +74,7 @@ function format(res) {
     }
 
     pick.yctCategory = function(category) {
+        if (category.content == 'uncategorized') return
         category.score = Number(category.score)
         ret.categories.push(category)
     }
