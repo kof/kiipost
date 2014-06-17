@@ -10,6 +10,7 @@ var extractor = require('api/extractor')
 var log = require('api/log')
 var contentAnalysis = require('api/yahoo/contentAnalysis')
 var batchInsert = require('api/db/batchInsert')
+var filterTags = require('api/tags/filter')
 
 var PARALLEL = 50
 var TWEETS_AMOUNT = 200
@@ -38,11 +39,14 @@ module.exports = function(options) {
         if (!tweets.length) return
         tweets = tweets.filter(hasLinks)
         var memos = tweets.map(toMemo)
-        memos.forEach(function(tweet)  {
-            tweet.userId = user._id
-        })
         yield addArticles(memos)
         yield addAnalyzedTags(memos)
+        memos.forEach(function(memo) {
+            var article = memo.articles[0]
+            if (article) article.tags = article.tags.filter(filterTags)
+            memo.userId = user._id
+        })
+
         yield batchInsert('memo', memos)
     }
 }

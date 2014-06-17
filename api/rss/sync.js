@@ -17,6 +17,7 @@ var extractor = require('api/extractor')
 var CharsetConverter = require('api/extractor/CharsetConverter')
 var batchInsert = require('api/db/batchInsert')
 var ExtError = require('api/error').ExtError
+var filterTags = require('api/tags/filter')
 
 var PARALLEL = 30
 // Posts should be not older than this date.
@@ -132,6 +133,9 @@ function processOne(feed, options, callback) {
             errors = errors.concat(yield addSiteData(articles))
             errors = errors.concat(yield addAnalyzedTags(articles))
             articles = articles.filter(postfilter)
+            articles.forEach(function(article) {
+                article.tags = article.tags.filter(filterTags)
+            })
             yield batchInsert('article', articles)
         } catch(_err) {
             err = _err
