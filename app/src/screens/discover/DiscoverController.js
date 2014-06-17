@@ -24,7 +24,7 @@ define(function(require, exports, module) {
 
     DiscoverController.prototype.initialize = function() {
         this.collection = new StreamCollection(null, {
-            basePath: '/api/rss',
+            basePath: '/api/articles',
             model: ArticleModel
         })
         this.view = new DiscoverView({

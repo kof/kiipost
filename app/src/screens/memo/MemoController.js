@@ -23,7 +23,7 @@ define(function(require, exports, module) {
 
     MemoController.prototype.initialize = function() {
         this.collection = new StreamCollection(null, {
-            basePath: '/api/memo',
+            basePath: '/api/memos',
             model: MemoModel
         })
         this.view = new MemoView({

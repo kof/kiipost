@@ -90,7 +90,7 @@ define(function(require, exports, module) {
         this._setImage(model.get('image'))
         // Set class now to avoid white screen artifact during loading.
         this.text.setClasses(['article-text'])
-        this.textContent.innerHTML = model.get('summary')
+        this.textContent.innerHTML = model.get('description')
         // Wait until text is rendered.
         setTimeout(this._setTextSize.bind(this), 50)
     }
