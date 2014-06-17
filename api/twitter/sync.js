@@ -9,6 +9,7 @@ var client = require('api/twitter/client')
 var extractor = require('api/extractor')
 var log = require('api/log')
 var contentAnalysis = require('api/yahoo/contentAnalysis')
+var batchInsert = require('api/db/batchInsert')
 
 var PARALLEL = 50
 var TWEETS_AMOUNT = 200
@@ -42,7 +43,7 @@ module.exports = function(options) {
         })
         yield addArticles(memos)
         yield addAnalyzedTags(memos)
-        yield save(memos)
+        yield batchInsert('memo', memos)
     }
 }
 
@@ -151,10 +152,10 @@ function addAnalyzedTags(memos) {
                 if (!text) return done()
                 contentAnalysis.analyze({text: text})(function(err, data) {
                     if (err) return done(err)
-
                     article.tags = article.tags.concat(_.pluck(data.entities, 'content'))
                     article.tags = _.invoke(article.tags, 'toLowerCase')
                     article.tags = _.uniq(article.tags)
+                    article.categories = _.pluck(data.categories, 'content')
                     done()
                 })
             })
@@ -166,42 +167,5 @@ function addAnalyzedTags(memos) {
             // XXX Should we log here something?
             callback()
         })
-    }
-}
-
-/**
- * Save memos to the db.
- */
-function save(memos) {
-    return function(callback) {
-        if (!memos.length) return setImmediate(callback)
-
-        callback = _.once(callback)
-
-        var Model = m.model('memo')
-        var newMemos = []
-
-        // Manual validation because batch insert can't.
-        memos.forEach(function(memo) {
-            var doc = new Model()
-
-            doc.set(memo).validate(function(err) {
-                if (err) return callback(err)
-                newMemos.push(doc.toObject())
-                if (newMemos.length == memos.length) insert()
-            })
-        })
-
-        function insert() {
-            m.model('memo').collection.insert(
-                newMemos,
-                {safe: true, continueOnError: true},
-                function(err) {
-                    // Ignore MongoError: E11000 duplicate key error index
-                    if (err && err.code == 11000) err = null
-                    callback(err)
-                }
-            )
-        }
     }
 }

@@ -5,7 +5,7 @@ var _ = require('underscore')
 var conf = require('api/conf')
 var log = require('api/log')
 
-var schemas = ['user', 'memo']
+var schemas = ['user', 'memo', 'rssfeed', 'article']
 
 exports.init = function() {
     return new Promise(function(fulfill, reject) {

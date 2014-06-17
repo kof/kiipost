@@ -2,6 +2,7 @@
 
 var request = require('request')
 var _ = require('underscore')
+var _s = require('underscore.string')
 var url = require('url')
 var sax = require('sax')
 var readabilitySax = require('readabilitySAX')
@@ -33,15 +34,16 @@ sax.MAX_BUFFER_LENGTH = Infinity
  * @param {Function} callback
  */
 exports.extract = thunkify(function(url, callback) {
-    extract(url, function(err, tags, article) {
+    fetchData(url, function(err, tags, article) {
         var res = {}
 
         if (err || !tags || !article) return callback(err, res)
 
-        res = _.pick(article, 'title', 'score', 'html', 'url')
+        res = _.pick(article, 'title', 'score', 'url')
         res.icon = findIcon(tags, url)
         res.images = findImages(tags, url, MIN_IMAGE_WIDTH, MAX_IMAGES_AMOUNT)
-        res.description = findDescription(tags)
+        res.summary = findDescription(tags) || _s.prune(_s.stripTags(article.html), 250, '')
+        res.description = article.html
         res.tags = findKeywords(tags)
         _.each(res, function(val, prop) {
             if (!val) delete res[prop]
@@ -72,7 +74,7 @@ exports.extractWithRetry = thunkify(function(url, callback) {
  * @param {String} url
  * @param {Function} callback
  */
-function extract(url, callback) {
+function fetchData(url, callback) {
     var req
 
     callback = _.once(callback)
@@ -300,7 +302,7 @@ function findKeywords(tags) {
     keywords = entities.decodeHTML5(keywords)
     keywords = keywords.split(',')
     keywords = keywords.map(function(keyword) {
-        return keyword.trim()
+        return keyword.toLowerCase().trim()
     })
     keywords = _.compact(keywords)
     keywords = _.uniq(keywords)

@@ -41,11 +41,11 @@ exports.twitter = {
 
 exports.queue = {
     // Time in ms, which will be saved as a timeout in the db
-    // if calling cleanup, timedout jobs will be available again
+    // if calling cleanup, timedout jobs will be available again.
     timeout: ms('5m'),
     // Amount of workers, which are running in parallel in the same process.
     workers: 5,
-    // Periodically cleanup call 50 sec
+    // Periodically cleanup call 50 sec.
     cleanupInterval: ms('50s')
 }
 
@@ -55,5 +55,9 @@ exports.request = {
     timeout: 5000
 }
 
+exports.article = {
+    // How old can be an in days.
+    maxAge: 60,
+}
 
 require('deep-freeze')(exports)
