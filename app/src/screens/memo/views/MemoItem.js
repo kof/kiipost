@@ -15,7 +15,7 @@ define(function(require, exports, module) {
 
     var app = require('app')
 
-    var tpl = require('../templates/saved-item.html')
+    var tpl = require('../templates/memo-item.html')
 
     var pool = new Pool()
 
@@ -28,7 +28,7 @@ define(function(require, exports, module) {
         return map
     })
 
-    function SavedItem() {
+    function MemoItem() {
         View.apply(this, arguments)
 
         var width = app.context.getSize()[0]
@@ -41,7 +41,7 @@ define(function(require, exports, module) {
         this._poolItem = pool.get()
         this.surface = new Surface({
             size: this.options.size,
-            classes: ['saved-item']
+            classes: ['memo-item']
         })
         this.add(this.surface)
         this.surface.pipe(this)
@@ -51,15 +51,15 @@ define(function(require, exports, module) {
         this.surface.on('deploy',this._onDeploy.bind(this))
     }
 
-    inherits(SavedItem, View)
-    module.exports = SavedItem
+    inherits(MemoItem, View)
+    module.exports = MemoItem
 
-    SavedItem.DEFAULT_OPTIONS = {
+    MemoItem.DEFAULT_OPTIONS = {
         model: null,
         memoHeight: 0.35
     }
 
-    SavedItem.prototype.setContent = function() {
+    MemoItem.prototype.setContent = function() {
         var attr = this.model.attributes
         var article = attr.articles[0] ? attr.articles[0].attributes : {}
         var i = this._poolItem
@@ -102,16 +102,16 @@ define(function(require, exports, module) {
         this.surface.setContent(i.container)
     }
 
-    SavedItem.prototype._onClick = function(e) {
+    MemoItem.prototype._onClick = function(e) {
         if (e.target.classList.contains('source')) return
         e.preventDefault()
     }
 
-    SavedItem.prototype._onRecall = function() {
+    MemoItem.prototype._onRecall = function() {
         pool.release(this._poolItem)
     }
 
-    SavedItem.prototype._onDeploy = function() {
+    MemoItem.prototype._onDeploy = function() {
         // Without nextTick changes will not applied.
         Engine.nextTick(this.setContent.bind(this))
     }

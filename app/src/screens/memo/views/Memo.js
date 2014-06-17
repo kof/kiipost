@@ -14,9 +14,9 @@ define(function(require, exports, module) {
     var SpinnerView = require('components/spinner/views/Spinner')
     var BackgroundView = require('components/background/Background')
 
-    var SavedItemView = require('./SavedItem')
+    var MemoItemView = require('./MemoItem')
 
-    function Saved() {
+    function Memo() {
         View.apply(this, arguments)
 
         this.background = new BackgroundView()
@@ -32,7 +32,7 @@ define(function(require, exports, module) {
         this.add(new Modifier({origin: [0.5, 0.5]})).add(this.spinner)
 
         this.stream = new StreamView({
-            ItemView: SavedItemView,
+            ItemView: MemoItemView,
             views: [this.header],
             collection: this.options.collection,
             models: this.options.models
@@ -50,12 +50,12 @@ define(function(require, exports, module) {
         this.add(new Modifier({origin: [0.5, 0.05]})).add(this.jumper)
     }
 
-    inherits(Saved, View)
-    module.exports = Saved
+    inherits(Memo, View)
+    module.exports = Memo
 
-    Saved.prototype.load = function() {
+    Memo.prototype.load = function() {
         this.stream.load()
     }
 
-    Saved.DEFAULT_OPTIONS = {}
+    Memo.DEFAULT_OPTIONS = {}
 })

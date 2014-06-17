@@ -6,6 +6,6 @@ define(function(require, exports, module) {
     require('screens/signin/mocks/api')
     require('screens/discover/mocks/api')
     require('screens/article/mocks/api')
-    require('screens/saved/mocks/api')
+    require('screens/memo/mocks/api')
 */
 })
