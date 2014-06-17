@@ -7,7 +7,7 @@ rundb:
 	ulimit -n 1000 && mongod --port 27019 --dbpath ./db --rest --auth --smallfiles &
 
 mongo:
-	mongo --port 27019
+	mongo localhost:27019/kiipost
 
 port-redirect:
 	# find and run the appropriate command for Linux / Mac

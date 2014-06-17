@@ -18,10 +18,10 @@ var CharsetConverter = require('api/extractor/CharsetConverter')
 var batchInsert = require('api/db/batchInsert')
 var ExtError = require('api/error').ExtError
 
-var PARALLEL = 50
+var PARALLEL = 30
 // Posts should be not older than this date.
 var MIN_PUB_DATE = moment().subtract('days', conf.article.maxAge).toDate()
-// Reduce dammage from spammy feeds.
+// Reduce damage from spammy feeds.
 var MAX_ITEMS = 200
 
 var IGNORE_ERRORS
@@ -302,7 +302,7 @@ function normalize(article) {
     normalized.url = article.origlink || article.link
     normalized.pubDate = article.pubDate ? new Date(article.pubDate) : new Date()
     normalized.title = article.title
-    normalized.summary = article.summary
+    normalized.summary = _s.prune(_s.stripTags(article.summary), 250, '')
     normalized.description = article.description
     normalized.categories = _.uniq(_.compact(article.categories))
     // Make categories to tags so that article can be found by a category.

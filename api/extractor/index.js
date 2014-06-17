@@ -42,7 +42,7 @@ exports.extract = thunkify(function(url, callback) {
         res = _.pick(article, 'title', 'score', 'url')
         res.icon = findIcon(tags, url)
         res.images = findImages(tags, url, MIN_IMAGE_WIDTH, MAX_IMAGES_AMOUNT)
-        res.summary = findDescription(tags) || _s.prune(_s.stripTags(article.html), 250, '')
+        res.summary = _s.prune(_s.stripTags(findDescription(tags) || article.html), 250, '')
         res.description = article.html
         res.tags = findKeywords(tags)
         _.each(res, function(val, prop) {
