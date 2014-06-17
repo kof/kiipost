@@ -59,15 +59,23 @@ define(function(require, exports, module) {
         var attr = this.model.attributes
         var i = this._poolItem
         var textWidth
+        var imageUrl, isIcon
 
-        if (attr.image) {
+        if (attr.images.length) {
+            imageUrl = attr.images[0]
+        } else if (attr.icon) {
+            isIcon = true
+            imageUrl = attr.icon
+        }
+
+        if (imageUrl) {
             textWidth = this.options.size[0] - this._imageWidth + 'px'
-            app.imagesLoader.load(attr.image.url, function(err, image) {
+            app.imagesLoader.load(imageUrl, function(err, image) {
                 if (err) return
 
-                i.image.style.backgroundImage = 'url(' + attr.image.url + ')'
+                i.image.style.backgroundImage = 'url(' + imageUrl + ')'
                 i.image.style.width = this._imageWidth + 'px'
-                i.image.style.backgroundSize = attr.image.icon ? 'contain' : 'cover'
+                i.image.style.backgroundSize = isIcon ? 'contain' : 'cover'
                 if (image.width <= this._imageWidth && image.height <= this.options.size[1]) {
                     i.image.style.backgroundSize = 'initial'
                 }
@@ -80,7 +88,7 @@ define(function(require, exports, module) {
         i.text.style.width = textWidth
         i.title.textContent = attr.title
         i.summary.textContent = attr.summary
-        i.link.href = attr.link
+        i.link.href = attr.url
         i.link.textContent = attr.hostname
         i.image.style.display = 'none'
 
