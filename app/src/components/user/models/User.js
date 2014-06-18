@@ -5,7 +5,7 @@ define(function(require, exports, module) {
     var Model = require('backbone').Model
 
     function User() {
-        this.url = '/api/user'
+        this.url = '/api/users'
         Model.apply(this, arguments)
         this.isAuthorized = new Promise(function(fulfill, reject) {
             if (this.isNew()) {
