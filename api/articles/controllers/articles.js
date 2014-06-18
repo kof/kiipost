@@ -1,9 +1,10 @@
 'use strict'
 
 var m = require('mongoose')
+var _ = require('underscore')
 
 // Amount of tags we take from each saved article to find new articles.
-var REDUCE_USER_TAGS = 3
+var REDUCE_USER_TAGS = 2
 
 /**
  * Read saved memos.
@@ -27,11 +28,20 @@ exports.read = function *() {
             .select({'articles.tags': 1})
             .exec()
 
-        var query
-        query = {$or: memos.map(function(memo) {
-            var tags = memo.articles[0].tags.splice(0, REDUCE_USER_TAGS)
-            return {tags: {$all: tags}}
-        })}
+        var query = {$or: []}
+        var map = {}
+
+        memos.forEach(function(memo) {
+            var article = memo.articles[0]
+            if (!article || article.tags.length < REDUCE_USER_TAGS) return
+            var tags = article.tags.splice(0, REDUCE_USER_TAGS).sort()
+            // Create map to avoid duplicates
+            map[tags.toString()] = tags
+        })
+
+        _.each(map, function(tags) {
+            query.$or.push({tags: {$all: tags}})
+        })
 
         this.body = yield m.model('article')
             .find(query)
