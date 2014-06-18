@@ -21,19 +21,16 @@ module.exports = function signin(auth, isAuthorized) {
 
         var user = yield find(auth)
 
-        var res
-
         if (user) {
             yield touch(auth)
-            res = user
         } else {
             user = yield fetch(auth)
-            res = yield create(auth, user)
+            user = yield create(auth, user)
         }
 
         if (!isAuthorized) yield queue.enqueue('TwitterSync', {userId: user._id, block: user._id})
 
-        return res
+        return user
     }
 }
 

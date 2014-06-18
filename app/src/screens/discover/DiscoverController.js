@@ -38,7 +38,7 @@ define(function(require, exports, module) {
         app.controller.show(this.view, function() {
             this.view.menu.select('discover')
         }.bind(this))
-        this.view.load()
+        this.models.user.isAuthorized.then(this.view.load.bind(this.view))
     }
 
     DiscoverController.prototype._onMenuChange = function(name) {
