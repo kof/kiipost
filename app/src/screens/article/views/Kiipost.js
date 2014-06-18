@@ -4,18 +4,13 @@ define(function(require, exports, module) {
     var inherits = require('inherits')
     var _ = require('underscore')
 
-    var View = require('famous/core/View')
     var Surface = require('famous/core/Surface')
-    var Modifier = require('famous/core/Modifier')
     var RenderController = require('famous/views/RenderController')
     var FlexibleLayout = require('famous/views/FlexibleLayout')
     var SequentialLayout = require('famous/views/SequentialLayout')
     var ContainerSurface = require('famous/surfaces/ContainerSurface')
     var FormContainerSurface = require('famous/surfaces/FormContainerSurface')
-    var SubmitInputSurface = require('famous/surfaces/SubmitInputSurface')
     var TextareaSurface = require('famous/surfaces/TextareaSurface')
-
-    var SpinnerView = require('components/spinner/views/Spinner')
 
     var app = require('app')
 

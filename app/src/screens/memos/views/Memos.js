@@ -1,3 +1,4 @@
+
 define(function(require, exports, module) {
     'use strict'
 
@@ -14,9 +15,9 @@ define(function(require, exports, module) {
     var SpinnerView = require('components/spinner/views/Spinner')
     var BackgroundView = require('components/background/Background')
 
-    var DiscoverItemView = require('./DiscoverItem')
+    var MemoView = require('./Memo')
 
-    function Discover() {
+    function Memo() {
         View.apply(this, arguments)
 
         this.background = new BackgroundView()
@@ -24,7 +25,7 @@ define(function(require, exports, module) {
 
         this.header = new HeaderView(this.options)
 
-        this.menu = new MenuView()
+        this.menu = new MenuView({selected: 'saved'})
         this.menu.pipe(this._eventOutput)
         this.header.surface.add(this.menu)
 
@@ -32,12 +33,11 @@ define(function(require, exports, module) {
         this.add(new Modifier({origin: [0.5, 0.5]})).add(this.spinner)
 
         this.stream = new StreamView({
-            ItemView: DiscoverItemView,
+            ItemView: MemoView,
             views: [this.header],
-            collection: this.options.collection
+            collection: this.options.collection,
+            models: this.options.models
         })
-        this.stream.addClass('discover')
-        this.stream.pipe(this._eventOutput)
         this.stream.on('stream:loadstart', this.spinner.show.bind(this.spinner))
         this.stream.on('stream:loadend', this.spinner.hide.bind(this.spinner))
         this.add(this.stream)
@@ -49,14 +49,12 @@ define(function(require, exports, module) {
         this.add(new Modifier({origin: [0.5, 0.05]})).add(this.jumper)
     }
 
-    inherits(Discover, View)
-    module.exports = Discover
+    inherits(Memo, View)
+    module.exports = Memo
 
-    Discover.DEFAULT_OPTIONS = {}
-
-
-    Discover.prototype.load = function() {
+    Memo.prototype.load = function() {
         this.stream.load()
     }
 
+    Memo.DEFAULT_OPTIONS = {}
 })

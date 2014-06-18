@@ -9,36 +9,36 @@ define(function(require, exports, module) {
 
     var ArticleView = require('./views/Article')
 
-    function ArticleController() {
+    function Article() {
         this.routes = {
             'article/:id': 'article'
         }
         Controller.apply(this, arguments)
-        this.options = _.extend({}, ArticleController.DEFAULT_OPTIONS, this.options)
+        this.options = _.extend({}, Article.DEFAULT_OPTIONS, this.options)
         this.router = this.options.router
         app.context.on('discover:open', this._onOpen.bind(this))
     }
 
-    inherits(ArticleController, Controller)
-    module.exports = ArticleController
+    inherits(Article, Controller)
+    module.exports = Article
 
-    ArticleController.DEFAULT_OPTIONS = {
+    Article.DEFAULT_OPTIONS = {
         duration: 150
     }
 
-    ArticleController.prototype.initialize = function() {
+    Article.prototype.initialize = function() {
         this.view = new ArticleView()
         this.view.on('close', function() {
             this.router.navigate('discover', {trigger: true})
         }.bind(this))
     }
 
-    ArticleController.prototype.article = function(id) {
+    Article.prototype.article = function(id) {
         this.view.load(id)
         app.controller.show(this.view, this.options)
     }
 
-    ArticleController.prototype._onOpen = function(model) {
+    Article.prototype._onOpen = function(model) {
         this.router.navigate('/article/' + model.id)
         this.article(model.id)
     }

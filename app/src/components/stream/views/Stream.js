@@ -38,8 +38,6 @@ define(function(require, exports, module) {
         this.scrollview.sequenceFrom(this.views)
 
         this.scrollview.on('infiniteScroll', this.load.bind(this))
-        // Make stream emit scrollview events.
-        this.scrollview._eventInput.pipe(this._eventOutput)
     }
 
     inherits(Stream, View)
@@ -69,7 +67,7 @@ define(function(require, exports, module) {
     Stream.prototype.setContent = function() {
         var ItemView = this.options.ItemView
 
-        this.collection.forEach(function(model) {
+        this.collection.each(function(model) {
             var view = new ItemView({model: model, models: this.models})
             view._eventInput.pipe(this.scrollview)
             this.views.push(view)

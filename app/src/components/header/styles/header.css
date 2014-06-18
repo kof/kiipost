@@ -6,8 +6,8 @@
 .header .logo {
     left: 0;
     top: 0;
-    width: 2em;
-    height: 2em;
+    width: 2rem;
+    height: 2rem;
     background: url('/content/images/logo.png') no-repeat;
     background-size: contain;
 }
@@ -21,7 +21,7 @@
     background-size: cover;
 }
 .header .title {
-    font-size: 2em;
+    font-size: 2rem;
     margin-top: 20%;
     text-align: center;
 }

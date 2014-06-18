@@ -1,49 +1,47 @@
 define(function(require, exports, module) {
     var Controller = require('controller')
     var inherits = require('inherits')
-    var _ = require('underscore')
 
     var app = require('app')
 
-    var ArticleModel = require('components/article/models/Article')
+    var MemoModel = require('./models/Memo')
     var StreamCollection = require('components/stream/collections/Stream')
 
-    var DiscoverView = require('./views/Discover')
+    var MemosView = require('./views/Memos')
 
-    function DiscoverController(options) {
+    function Memos(options) {
         this.routes = {
-            'discover': 'discover'
+            'saved': 'saved'
         }
-        options = _.extend({}, DiscoverController.DEFAULT_OPTIONS, options)
+        options = _.extend({}, Memos.DEFAULT_OPTIONS, options)
         this.models = options.models
         Controller.call(this, options)
         this.router = this.options.router
     }
-    inherits(DiscoverController, Controller)
-    module.exports = DiscoverController
+    inherits(Memos, Controller)
+    module.exports = Memos
 
-    DiscoverController.prototype.initialize = function() {
+    Memos.prototype.initialize = function() {
         this.collection = new StreamCollection(null, {
-            urlRoot: '/api/articles',
-            model: ArticleModel
+            urlRoot: '/api/memos',
+            model: MemoModel
         })
-        this.view = new DiscoverView({
+        this.view = new MemosView({
             collection: this.collection,
             models: this.models
         })
         this.view.on('menu:change', this._onMenuChange.bind(this))
     }
 
-    DiscoverController.prototype.discover = function() {
+    Memos.prototype.saved = function() {
         app.controller.show(this.view, function() {
-            this.view.menu.select('discover')
+            this.view.menu.select('saved')
         }.bind(this))
         this.models.user.isAuthorized.then(this.view.load.bind(this.view))
     }
 
-    DiscoverController.prototype._onMenuChange = function(name) {
+    Memos.prototype._onMenuChange = function(name) {
         this.router.navigate(name, {trigger: true})
-
         // XXX dirty
         // Wait until animation on the next screen is done.
         setTimeout(function() {

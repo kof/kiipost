@@ -18,7 +18,7 @@ define(function(require, exports, module) {
     Stream.DEFAULT_OPTIONS = {
         limit: 30,
         skip: 0,
-        basePath: null
+        urlRoot: null
     }
 
     Stream.prototype.url = function() {

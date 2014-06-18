@@ -2,7 +2,6 @@ define(function(require, exports, module) {
     'use strict'
 
     var inherits = require('inherits')
-    var _ = require('underscore')
 
     var Engine = require('famous/core/Engine')
     var View = require('famous/core/View')
@@ -15,7 +14,7 @@ define(function(require, exports, module) {
 
     var app = require('app')
 
-    var tpl = require('../templates/memo-item.html')
+    var tpl = require('../templates/article.html')
 
     var pool = new Pool()
 
@@ -28,20 +27,19 @@ define(function(require, exports, module) {
         return map
     })
 
-    function MemoItem() {
+    function StreamItem() {
         View.apply(this, arguments)
 
         var width = app.context.getSize()[0]
-        var height = width * app.GOLDEN_RATIO
 
         this.model = this.options.model
-        this.models = this.options.models
-        this.options.size = [width, height]
-        this._imageWidth = Math.round((height - (height * this.options.memoHeight)) * app.GOLDEN_RATIO)
+        this.options.size = [width, width * app.GOLDEN_RATIO]
+        this._imageWidth = Math.round(this.options.size[1] * app.GOLDEN_RATIO)
         this._poolItem = pool.get()
+
         this.surface = new Surface({
             size: this.options.size,
-            classes: ['memo-item']
+            classes: ['articles-item']
         })
         this.add(this.surface)
         this.surface.pipe(this)
@@ -51,36 +49,34 @@ define(function(require, exports, module) {
         this.surface.on('deploy',this._onDeploy.bind(this))
     }
 
-    inherits(MemoItem, View)
-    module.exports = MemoItem
+    inherits(StreamItem, View)
+    module.exports = StreamItem
 
-    MemoItem.DEFAULT_OPTIONS = {
-        model: null,
-        memoHeight: 0.35
+    StreamItem.DEFAULT_OPTIONS = {
+        model: null
     }
 
-    MemoItem.prototype.setContent = function() {
+    StreamItem.prototype.setContent = function() {
         var attr = this.model.attributes
-        var article = attr.articles[0] ? attr.articles[0].attributes : {}
         var i = this._poolItem
         var textWidth
+        var imageUrl, isIcon
 
-        var imageUrl, icon
-        if (article.images && article.images[0]) {
-            imageUrl = article.images[0]
-        } else {
-            imageUrl = article.icon
-            icon = true
+        if (attr.images.length) {
+            imageUrl = attr.images[0]
+        } else if (attr.icon) {
+            isIcon = true
+            imageUrl = attr.icon
         }
+
         if (imageUrl) {
-            if (!this._textOffsetLeft) this._textOffsetLeft = i.text.offsetLeft
-            textWidth = this.options.size[0] - this._imageWidth - this._textOffsetLeft + 'px'
+            textWidth = this.options.size[0] - this._imageWidth + 'px'
             app.imagesLoader.load(imageUrl, function(err, image) {
                 if (err) return
 
                 i.image.style.backgroundImage = 'url(' + imageUrl + ')'
                 i.image.style.width = this._imageWidth + 'px'
-                i.image.style.backgroundSize = icon ? 'contain' : 'cover'
+                i.image.style.backgroundSize = isIcon ? 'contain' : 'cover'
                 if (image.width <= this._imageWidth && image.height <= this.options.size[1]) {
                     i.image.style.backgroundSize = 'initial'
                 }
@@ -90,28 +86,27 @@ define(function(require, exports, module) {
             textWidth = '100%'
         }
 
-        i.avatar.style.backgroundImage = 'url(' + this.models.user.get('imageUrl') + ')'
-        i.memo.textContent = attr.text
         i.text.style.width = textWidth
-        i.title.textContent = article.title || ''
-        i.summary.textContent = article.summary || ''
-        i.link.href = article.url || ''
-        i.link.textContent = article.hostname || ''
+        i.title.textContent = attr.title
+        i.summary.textContent = attr.summary
+        i.link.href = attr.url
+        i.link.textContent = attr.hostname
         i.image.style.display = 'none'
 
         this.surface.setContent(i.container)
     }
 
-    MemoItem.prototype._onClick = function(e) {
+    StreamItem.prototype._onClick = function(e) {
         if (e.target.classList.contains('source')) return
         e.preventDefault()
+        app.context.emit('discover:open', this.model)
     }
 
-    MemoItem.prototype._onRecall = function() {
+    StreamItem.prototype._onRecall = function() {
         pool.release(this._poolItem)
     }
 
-    MemoItem.prototype._onDeploy = function() {
+    StreamItem.prototype._onDeploy = function() {
         // Without nextTick changes will not applied.
         Engine.nextTick(this.setContent.bind(this))
     }

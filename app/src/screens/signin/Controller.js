@@ -10,34 +10,34 @@ define(function(require, exports, module) {
     var SigninView = require('./views/Signin')
     var ios = require('./helpers/ios')
 
-    function SigninController(options) {
+    function Signin(options) {
         this.routes = {
             '': 'signin'
         }
 
-        options = _.extend({}, SigninController.DEFAULT_OPTIONS, options)
+        options = _.extend({}, Signin.DEFAULT_OPTIONS, options)
         this.models = options.models
         Controller.call(this, options)
         this.router = this.options.router
     }
 
-    inherits(SigninController, Controller)
-    module.exports = SigninController
+    inherits(Signin, Controller)
+    module.exports = Signin
 
-    SigninController.DEFAULT_OPTIONS = {}
+    Signin.DEFAULT_OPTIONS = {}
 
-    SigninController.prototype.initialize = function() {
+    Signin.prototype.initialize = function() {
         this.view = new SigninView({model: this.models.user})
         this.view.on('signin:start', this._onSigninStart.bind(this))
         this.view.on('signin:success', this._onSigninSuccess.bind(this))
         ios.isAvailable().then(this._signin.bind(this))
     }
 
-    SigninController.prototype.signin = function() {
+    Signin.prototype.signin = function() {
         app.controller.show(this.view, this.options)
     }
 
-    SigninController.prototype._signin = function() {
+    Signin.prototype._signin = function() {
         this.view.spinner.show(true)
         if (ios.isSupported()) {
             ios.signin()
@@ -46,17 +46,17 @@ define(function(require, exports, module) {
         }
     }
 
-    SigninController.prototype._go = function() {
+    Signin.prototype._go = function() {
         if (!backbone.history.getFragment()) {
             this.router.navigate('/discover', {trigger: true})
         }
     }
 
-    SigninController.prototype._onSigninStart = _.debounce(function() {
+    Signin.prototype._onSigninStart = _.debounce(function() {
         this._signin()
     }, 500, true)
 
-    SigninController.prototype._onSigninSuccess = function() {
+    Signin.prototype._onSigninSuccess = function() {
         this._go()
     }
 })
