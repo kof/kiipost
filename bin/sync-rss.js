@@ -33,8 +33,9 @@ db.init()
                 stats.heapUsed = (process.memoryUsage().heapUsed / 1024 / 1024) + 'mb'
                 stats.runtime = (Date.now() - now) / 1000 / 60 + 'min'
                 if (errors.length) {
+                    stats.totalErrors = errors.length
                     errors = error.uniq(errors)
-                    stats.errorsAmount = errors.length
+                    stats.uniqErrors = errors.length
                     stats.errors = errors
                 }
                 log.info('Rss feeds sync', stats, function() {
