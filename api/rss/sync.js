@@ -19,7 +19,7 @@ var batchInsert = require('api/db/batchInsert')
 var ExtError = require('api/error').ExtError
 var filterTags = require('api/tags/filter')
 
-var PARALLEL = 15
+var PARALLEL = 100
 // Posts should be not older than this date.
 var MIN_PUB_DATE = moment().subtract('days', conf.article.maxAge).toDate()
 // Reduce damage from spammy feeds.
