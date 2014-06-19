@@ -11,7 +11,11 @@ db.init()
         co(function *(){
             console.time('sync')
             try {
-                yield sync({feed: 'http://rac1.org/elmon/categories/a-cop-de-clic/feed/', verbose: true})
+                yield sync({
+                    feed: 'http://feeds.feedburner.com/EmergingCivilWar',
+                    verbose: true,
+                    retry: false
+                })
             } catch(err) {
                 console.log(err)
                 console.log(err.stack)

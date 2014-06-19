@@ -207,6 +207,7 @@ function fetch(url, callback) {
                             articles.push(article)
                         } else {
                             exit = true
+                            req.req.abort()
                         }
                     }
                 })
