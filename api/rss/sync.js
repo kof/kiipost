@@ -135,6 +135,7 @@ function processOne(feed, options, callback) {
             articles = articles.filter(postfilter)
             articles.forEach(function(article) {
                 article.tags = article.tags.filter(filterTags)
+                article.feedId = feed._id
             })
             yield batchInsert('article', articles)
         } catch(_err) {
@@ -234,8 +235,7 @@ function addAnalyzedTags(articles, callback) {
                 var tags
                 if (err) err.article = article
                 if (err || !data) return done(err)
-                tags = _.pluck(data.entities, 'content')
-                tags = _.pluck(data.categories, 'content')
+                tags = _.pluck(data.entities.concat(data.categories), 'content')
                 tags = _.invoke(tags, 'toLowerCase')
                 article.tags = article.tags.concat(tags)
                 article.tags = _.uniq(article.tags)
@@ -335,7 +335,11 @@ function addSiteData(articles, callback) {
                     err.url = article.url
                     return done(err)
                 }
+                var tags = article.tags
                 _.extend(article, data)
+                // Merge tags, don't overwrite.
+                article.tags = _.uniq(tags.concat(data.tags))
+
                 done()
             })
         })
