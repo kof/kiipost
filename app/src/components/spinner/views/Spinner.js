@@ -32,9 +32,6 @@ define(function(require, exports, module) {
             }.bind(this)
         })
         this.container.add(this._imageModifier).add(this.image)
-
-        this._eventInput.on('spinner:show', this.show.bind(this))
-        this._eventInput.on('spinner:hide', this.hide.bind(this))
     }
 
     inherits(Spinner, RenderController)

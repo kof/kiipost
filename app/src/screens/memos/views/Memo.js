@@ -44,7 +44,7 @@ define(function(require, exports, module) {
             classes: ['memo']
         })
         this.add(this.surface)
-        this.surface.pipe(this)
+        this.surface.pipe(this._eventOutput)
 
         this.surface.on('click', this._onClick.bind(this))
         this.surface.on('recall', this._onRecall.bind(this))

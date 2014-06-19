@@ -24,7 +24,7 @@ define(function(require, exports, module) {
             size: this.options.size,
             classes: ['header']
         })
-        this.surface.pipe(this)
+        this.surface.pipe(this._eventOutput)
         this.surface.on('click', this._onClick.bind(this))
         this.add(this.surface)
 

@@ -36,5 +36,10 @@ define(function(require, exports, module) {
         })
     }
 
+    // For consistency with famous and node, we use always .emit.
+    backbone.Collection.prototype.emit =
+    backbone.View.prototype.emit =
+    backbone.Model.prototype.emit = backbone.Events.trigger
+
     if (!window.Promise) window.Promise = require('promise')
 })

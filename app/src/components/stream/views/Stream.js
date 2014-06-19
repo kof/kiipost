@@ -27,6 +27,8 @@ define(function(require, exports, module) {
         this.views = this.options.views
         this.collection = this.options.collection
         this._initialViewsAmount = this.views.length
+        this._loading = false
+        this._endReached = false
         this.scrollview = new InfiniteScrollView({
             // Trigger infiniteScroll event 5 screens before items actually get rendered.
             offset: contextHeight * 5,
@@ -37,7 +39,8 @@ define(function(require, exports, module) {
         this.add(this.scrollview)
         this.scrollview.sequenceFrom(this.views)
 
-        this.scrollview.on('infiniteScroll', this.load.bind(this))
+        this.scrollview.on('infiniteScroll', _.debounce(this.load.bind(this), 300, true))
+        this.collection.on('end', this._onEnd.bind(this))
     }
 
     inherits(Stream, View)
@@ -49,16 +52,16 @@ define(function(require, exports, module) {
     }
 
     Stream.prototype.load = function() {
-        if (this.loading) return
+        if (this._loading || this._endReached) return
         this._eventOutput.emit('stream:loadstart')
-        this.loading = true
+        this._loading = true
         this.scrollview.infiniteScrollDisabled = true
         // Minus views added before scroll items.
         this.collection.options.skip = this.views.length - this._initialViewsAmount
         this.collection.fetch()
             .then(this.setContent.bind(this))
             .always(function() {
-                this.loading = false
+                this._loading = false
                 this.scrollview.infiniteScrollDisabled = false
                 this._eventOutput.emit('stream:loadend')
             }.bind(this))
@@ -66,15 +69,18 @@ define(function(require, exports, module) {
 
     Stream.prototype.setContent = function() {
         var ItemView = this.options.ItemView
-
         this.collection.each(function(model) {
             var view = new ItemView({model: model, models: this.models})
-            view._eventInput.pipe(this.scrollview)
+            view.pipe(this.scrollview)
             this.views.push(view)
         }, this)
     }
 
     Stream.prototype.addClass = function(name) {
         this.scrollview._scroller.group.addClass(name)
+    }
+
+    Stream.prototype._onEnd = function() {
+        this._endReached = true
     }
 })
