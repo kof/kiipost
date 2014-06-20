@@ -136,7 +136,7 @@ exports.uniq = function(errors) {
     var index = {}
 
     return errors.filter(function(err) {
-        if (!index[err.message]) return index[err.message] = true
+        if (err && !index[err.message]) return index[err.message] = true
         return false
     })
 }

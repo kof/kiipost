@@ -10,17 +10,20 @@ var ExtError = require('api/error').ExtError
 function CharsetConverter(req, res) {
     this.req = req
     this.res = res
+    this.collector = null
+    this.encoding = null
+    this.iconv = null
 }
 
 module.exports = CharsetConverter
 
 CharsetConverter.prototype.getStream = function() {
-    return this.stream = es.through(this.convert.bind(this))
+    return this.stream = es.through(this._onData.bind(this), this._onEnd.bind(this))
 }
 
-CharsetConverter.prototype.convert = function(data) {
+CharsetConverter.prototype._onData = function(data) {
     if (this.collector) data = Buffer.concat([this.collector, data])
-    if (!this.encoding) this.encoding = this.detectEncoding(data)
+    if (!this.encoding) this.encoding = this._detectEncoding(data)
 
     // Init iconv if encoding is not utf-8.
     if (!this.iconv && this.encoding != 'utf-8') {
@@ -58,6 +61,13 @@ CharsetConverter.prototype.convert = function(data) {
     this.stream.emit('data', data)
 }
 
+CharsetConverter.prototype._onEnd = function() {
+    this.collector = null
+    this.encoding = null
+    this.iconv = null
+    this.stream.emit('end')
+}
+
 /**
  * Get charset from
  * - header
@@ -69,7 +79,7 @@ CharsetConverter.prototype.convert = function(data) {
  * @param {Buffer} data
  * @return {String}
  */
-CharsetConverter.prototype.detectEncoding = function(data) {
+CharsetConverter.prototype._detectEncoding = function(data) {
     var encoding = charset(this.res.headers, data)
     var detected
 

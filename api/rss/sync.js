@@ -7,19 +7,20 @@ var _s = require('underscore.string')
 var m = require('mongoose')
 var moment = require('moment')
 var Batch = require('batch')
-var retry = require('retry')
 var thunkify = require('thunkify')
 var co = require('co')
+var extend = require('extend')
 
 var conf = require('api/conf')
 var contentAnalysis = require('api/yahoo/contentAnalysis')
 var extractor = require('api/extractor')
 var CharsetConverter = require('api/extractor/CharsetConverter')
 var batchInsert = require('api/db/batchInsert')
-var ExtError = require('api/error').ExtError
+var error = require('api/error')
 var filterTags = require('api/tags/filter')
+var ProcessingController = require('api/processing-controller')
 
-var PARALLEL = 100
+var PARALLEL = 50
 // Posts should be not older than this date.
 var MIN_PUB_DATE = moment().subtract('days', conf.article.maxAge).toDate()
 // Reduce damage from spammy feeds.
@@ -45,77 +46,155 @@ IGNORE_ERRORS = new RegExp([
     'Parse Error'
 ].join('|'), 'i')
 
+var ExtError = error.ExtError
+
+function FpsMeter(opts) {
+    opts || (opts = {});
+    this.updateRate = opts.updateRate || 1000;
+    this._tickCounter = 0;
+    this._updateTimeoutId = null;
+}
+
+FpsMeter.prototype.start = function(callback) {
+    var self = this;
+
+    this._startTime = Date.now();
+    this._tickCounter = 0;
+    this._updateTimeoutId = setTimeout(function() {
+        if (self._tickCounter) {
+            callback(Math.round(self.updateRate / ((Date.now() - self._startTime) / self._tickCounter)));
+        }
+        self.start(callback);
+    }, this.updateRate);
+
+    return this;
+};
+
+FpsMeter.prototype.stop = function() {
+    clearTimeout(this._updateTimeoutId);
+
+    return this;
+};
+
+FpsMeter.prototype.tick = function() {
+    ++this._tickCounter;
+
+    return this;
+};
+
+if (global.gc) {
+    setInterval(gc, 2000)
+}
+
+var meter = new FpsMeter({updateRate: 60000})
+meter.start(function(fpm) {
+    console.log('fpm', fpm)
+})
+
+
 /**
  * Process all feeds from the feeds collection.
  *
  * Options:
- *   - `parallel` amount of feeds processed in parallel
+ *   - `maxParallel` max amount of feeds to process in parallel
  *   - `feed` only this specific feed
  *   - `feeds` array of feeds
  *   - `update` update existing posts, defaults to false
- *   - `retry` retry on error, defaults to true
  *
  * @param {Object} [options]
- * @return {Batch}
  */
-module.exports = function(options) {
-    return function* () {
-        var batch
-        var processor = processOneWithRetry
-        var feeds
-        var query
-        var errors = []
+module.exports = thunkify(function(options, callback) {
+    options = extend({
+        maxParallel: 200,
+        update: false,
+        feed: null,
+        feeds: null
+    }, options)
 
-        options || (options = {})
-        if (options.retry === false) processor = processOne
-        batch = Batch().throws(false).concurrency(options.parallel || PARALLEL)
-
-        if (options.query) {
-            query = options.query
-        } else if (options.feed) {
-            query = {feed: options.feed}
-        }
-
-        feeds = yield m.model('rssfeed')
-            .find(query)
-            .select({_id: 1, feed: 1})
-            .lean()
-            .limit(options.limit)
-            .exec()
-
-        feeds.forEach(function(feed) {
-            batch.push(function(done) {
-                if (options.verbose) console.log(feed.feed)
-                processor(feed, options, function(err, _errors) {
-                    var update
-
-                    if (err) {
-                        update = {$inc: {failsCounter: 1}}
-                    } else {
-                        update = {$set: {failsCounter: 0, lastSync: new Date()}}
-                    }
-
-                    errors = errors.concat(_errors)
-
-                    m.model('rssfeed')
-                        .update({_id: feed._id}, update)
-                        .exec(function(_err) {
-                            done(err || _err, feed)
-                        })
-                })
-            })
-        })
-
-        if (feeds.length) return yield (function(callback) {
-            batch.end(function(_errors) {
-                errors = _.compact(errors.concat(_errors))
-                callback(null, errors)
-            })
-        })
-
-        return errors
+    var query
+    if (options.query) {
+        query = options.query
+    } else if (options.feed) {
+        query = {feed: options.feed}
     }
-}
+
+    var feeds
+    feeds = m.model('rssfeed')
+        .find(query)
+        .select({_id: 1, feed: 1})
+        .lean()
+        .limit(options.limit)
+        .stream()
+
+    var errors = []
+    var processing = 0
+    var closed = false
+    var controller = new ProcessingController().start()
+
+    controller.addMetric('parallel', function() {
+        return function() {
+            return {
+                value: processing,
+                ok: processing < options.maxParallel
+            }
+        }
+    })
+
+    feeds.on('data', function(data) {
+        if (controller.check()) {
+            console.log(controller.stats)
+            onData(data)
+        } else {
+            console.log('controller not ok', controller.stats)
+            feeds.pause()
+            controller.once('ok', function() {
+                onData(data)
+                feeds.resume()
+            })
+        }
+    })
+
+    feeds.on('error', function(err) {
+        errors.push(err)
+    })
+
+    feeds.on('close', function() {
+        closed = true
+        complete()
+    })
+
+    function onData(feed) {
+        if (options.verbose) console.log(feed.feed)
+
+        processing++
+        processOne(feed, options, function(err, _errors) {
+            var update
+
+            meter.tick()
+            if (err) {
+                update = {$inc: {failsCounter: 1}}
+                errors.push(err)
+            } else {
+                update = {$set: {failsCounter: 0, lastSync: new Date()}}
+            }
+
+            m.model('rssfeed')
+                .update({_id: feed._id}, update)
+                .exec(function(err) {
+                    if (err) errors.push(err)
+                    errors = error.uniq(errors.concat(_errors))
+                    processing--
+                    complete()
+                })
+        })
+    }
+
+    function complete() {
+        if (processing > 0 || !closed) return
+        controller.stop()
+        callback(null, error.uniq(errors))
+    }
+})
 
 /**
  * Save the posts from 1 feed to the db.
@@ -128,15 +207,12 @@ function processOne(feed, options, callback) {
         var err, errors = []
         try {
             var articles = yield fetch(feed.feed)
-            articles = articles.map(normalize)
+            articles = prenormalize(articles)
             articles = yield prefilter(articles, options)
             errors = errors.concat(yield addSiteData(articles))
             errors = errors.concat(yield addAnalyzedTags(articles))
-            articles = articles.filter(postfilter)
-            articles.forEach(function(article) {
-                article.tags = article.tags.filter(filterTags)
-                article.feedId = feed._id
-            })
+            articles = postfilter(articles)
+            articles = postnormalize(articles, feed)
             yield save(articles, options)
         } catch(_err) {
             err = _err
@@ -148,22 +224,6 @@ function processOne(feed, options, callback) {
     })()
 }
 
-
-/**
- * Process one and retry on fail.
- *
- * @see processOne
- */
-function processOneWithRetry(feed, options, callback) {
-    var op = retry.operation({retries: 3})
-
-    op.attempt(function(attempt) {
-        processOne(feed, options, function(err, errors) {
-            if (op.retry(err)) return
-            callback(err ? op.mainError() : null, errors)
-        })
-    })
-}
 /**
  * Fetch the rss feed, parse and normalize it to json.
  *
@@ -236,9 +296,7 @@ function addAnalyzedTags(articles, callback) {
                 if (err) err.article = article
                 if (err || !data) return done(err)
                 tags = _.pluck(data.entities.concat(data.categories), 'content')
-                tags = _.invoke(tags, 'toLowerCase')
                 article.tags = article.tags.concat(tags)
-                article.tags = _.uniq(article.tags)
                 done()
             })
         })
@@ -290,38 +348,52 @@ function prefilter(articles, options) {
 /**
  * Filter out articles don't fit our criteria.
  */
-function postfilter(article) {
-    // Has no tags - we can't find it.
-    if (_.isEmpty(article.tags)) return false
-    // Has no title - we can't list it.
-    if (!article.title) return false
+function postfilter(articles) {
+    return articles.filter(function(article) {
+        // Has no tags - we can't find it.
+        if (_.isEmpty(article.tags)) return false
+        // Has no title - we can't list it.
+        if (!article.title) return false
 
-    return true
+        return true
+    })
 }
 
 /**
  * Normalize an article to our format.
  */
-function normalize(article) {
-    var normalized = {}
+function prenormalize(articles) {
+    return articles.map(function(article) {
+        var normalized = {}
 
-    // When FeedBurner or Pheedo puts a special tracking url
-    // in the link property, origlink contains the original link.
-    normalized.url = article.origlink || article.link
-    normalized.pubDate = article.pubDate ? new Date(article.pubDate) : new Date()
-    normalized.title = article.title
-    normalized.summary = _s.prune(_s.stripTags(article.summary), 250, '')
-    normalized.description = article.description
-    normalized.categories = _.uniq(_.compact(article.categories))
-    // Make categories to tags so that article can be found by a category.
-    normalized.tags = normalized.categories.map(function(cat) {
-        return cat.toLowerCase().trim()
+        // When FeedBurner or Pheedo puts a special tracking url
+        // in the link property, origlink contains the original link.
+        normalized.url = article.origlink || article.link
+        normalized.pubDate = article.pubDate ? new Date(article.pubDate) : new Date()
+        normalized.title = article.title
+        normalized.summary = _s.prune(_s.stripTags(article.summary), 250, '')
+        normalized.description = article.description
+        normalized.categories = _.uniq(_.compact(article.categories))
+        // Make categories to tags so that article can be found by a category.
+        normalized.tags = normalized.categories.map(function(cat) {
+            return cat.toLowerCase().trim()
+        })
+        normalized.enclosures = _.compact(article.enclosures)
+
+        return normalized
     })
-    normalized.enclosures = _.compact(article.enclosures)
-
-    return normalized
 }
 
+function postnormalize(articles, feed) {
+    return articles.map(function(article) {
+        article.tags = _.invoke(article.tags, 'toLowerCase')
+        article.tags = _.uniq(article.tags)
+        article.tags = _.compact(article.tags)
+        article.tags = article.tags.filter(filterTags)
+        article.feedId = feed._id
+        return article
+    })
+}
 
 /**
  * Extract data from the site, extend the article.
@@ -333,7 +405,7 @@ function addSiteData(articles, callback) {
 
     articles.forEach(function(article) {
         batch.push(function(done) {
-            extractor.extractWithRetry(article.url)(function(err, data) {
+            extractor.extract(article.url)(function(err, data) {
                 if (err) {
                     err.url = article.url
                     return done(err)
@@ -341,7 +413,7 @@ function addSiteData(articles, callback) {
                 var tags = article.tags
                 _.extend(article, data)
                 // Merge tags, don't overwrite.
-                article.tags = _.uniq(tags.concat(data.tags))
+                article.tags = tags.concat(data.tags)
 
                 done()
             })
@@ -370,7 +442,7 @@ function save(articles, options) {
                 })()
             })
         } else {
-            return yield batchInsert('article', articles)
+            yield batchInsert('article', articles)
         }
     }
 }

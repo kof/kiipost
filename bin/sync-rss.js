@@ -14,7 +14,6 @@ program
     .option('-v, --verbose', 'log stuff')
     .option('-u, --update', 'update existing articles')
     .option('-f, --feed [uri]', 'process one feed')
-    .option('-p, --parallel [amount]', 'amount of feeds to process in parallel', Number)
     .option('-l, --limit [limit]', 'limit the for the feeds find query', Number, null)
     .option('-q, --query [query]', 'mongo query to find feeds', function(obj) {
         return eval('(' + obj + ')')
@@ -33,12 +32,8 @@ db.init()
                 errors = yield sync(program)
                 stats.heapUsed = (process.memoryUsage().heapUsed / 1024 / 1024) + 'mb'
                 stats.runtime = (Date.now() - now) / 1000 / 60 + 'min'
-                if (errors.length) {
-                    stats.totalErrors = errors.length
-                    errors = error.uniq(errors)
-                    stats.uniqErrors = errors.length
-                    stats.errors = errors
-                }
+                stats.uniqErrors = errors.length
+                stats.errors = errors
                 log.info('Rss feeds sync', stats, function() {
                     process.exit()
                 })
