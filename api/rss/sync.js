@@ -6,7 +6,6 @@ var _ = require('underscore')
 var _s = require('underscore.string')
 var m = require('mongoose')
 var moment = require('moment')
-var Batch = require('batch')
 var thunkify = require('thunkify')
 var co = require('co')
 var extend = require('extend')
@@ -283,32 +282,28 @@ fetch = thunkify(fetch)
 /**
  * Find tags by analyzing description.
  */
-function addAnalyzedTags(articles, callback) {
-    if (!articles.length) return callback()
+function addAnalyzedTags(articles) {
+    return function* () {
+        var errors = []
 
-    var batch = Batch().throws(false).concurrency(PARALLEL)
-
-    articles.forEach(function(article) {
-        batch.push(function(done) {
-            var text = _s.stripTags(article.description).trim()
-            contentAnalysis.analyze({text: text})(function(err, data) {
-                var tags
-                if (err) err.article = article
-                if (err || !data) return done(err)
-                tags = _.pluck(data.entities.concat(data.categories), 'content')
+        if (!articles.length) return errors
+        for (var i = 0; i < articles.length; i++) {
+            try {
+                var article = articles[i]
+                var text = _s.stripTags(article.description).trim()
+                var data = yield contentAnalysis.analyze({text: text})
+                if (!data) continue
+                var tags = _.pluck(data.entities.concat(data.categories), 'content')
                 article.tags = article.tags.concat(tags)
-                done()
-            })
-        })
-    })
+            } catch(err) {
+                err.article = article
+                errors.push(err)
+            }
+        }
 
-    batch.end(function(errors) {
-        // XXX Should we log here something?
-        callback(null, errors)
-    })
+        return errors
+    }
 }
-
-addAnalyzedTags = thunkify(addAnalyzedTags)
 
 /**
  * Filter out articles without links or those once we have already synced.
@@ -399,34 +394,27 @@ function postnormalize(articles, feed) {
  * Extract data from the site, extend the article.
  */
 function addSiteData(articles, callback) {
-    if (!articles.length) return callback()
+    return function* () {
+        var errors = []
 
-    var batch = Batch().throws(false).concurrency(PARALLEL)
-
-    articles.forEach(function(article) {
-        batch.push(function(done) {
-            extractor.extract(article.url)(function(err, data) {
-                if (err) {
-                    err.url = article.url
-                    return done(err)
-                }
+        if (!articles.length) return errors
+        for (var i = 0; i < articles.length; i++) {
+            try {
+                var article = articles[i]
+                var data = yield extractor.extract(article.url)
                 var tags = article.tags
-                _.extend(article, data)
+                extend(article, data)
                 // Merge tags, don't overwrite.
                 article.tags = tags.concat(data.tags)
+            } catch(err) {
+                err.article = article
+                errors.push(err)
+            }
+        }
 
-                done()
-            })
-        })
-    })
-
-    batch.end(function(errors) {
-        // XXX Should we log here something?
-        callback(null, errors)
-    })
+        return errors
+    }
 }
-
-addSiteData = thunkify(addSiteData)
 
 /**
  * Make a batch insert or update each article.
