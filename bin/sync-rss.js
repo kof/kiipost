@@ -12,6 +12,7 @@ var error = require('api/error')
 
 program
     .option('-v, --verbose', 'log stuff')
+    .option('-u, --update', 'update existing articles')
     .option('-f, --feed [uri]', 'process one feed')
     .option('-p, --parallel [amount]', 'amount of feeds to process in parallel', Number)
     .option('-l, --limit [limit]', 'limit the for the feeds find query', Number, null)

@@ -12,9 +12,11 @@ db.init()
             console.time('sync')
             try {
                 yield sync({
-                    feed: 'http://feeds.feedburner.com/EmergingCivilWar',
+                    feed: 'http://techcrunch.com/startups/feed/',
                     verbose: true,
-                    retry: false
+                    retry: false,
+                    limit: 100,
+                    update: true
                 })
             } catch(err) {
                 console.log(err)
