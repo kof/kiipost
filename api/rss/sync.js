@@ -100,7 +100,6 @@ module.exports = thunkify(function(options, callback) {
         if (controller.check()) {
             onData(data)
         } else {
-            console.log('controller not ok', controller.stats)
             feeds.pause()
             controller.once('ok', function() {
                 onData(data)
