@@ -47,50 +47,6 @@ IGNORE_ERRORS = new RegExp([
 
 var ExtError = error.ExtError
 
-function FpsMeter(opts) {
-    opts || (opts = {});
-    this.updateRate = opts.updateRate || 1000;
-    this._tickCounter = 0;
-    this._updateTimeoutId = null;
-}
-
-FpsMeter.prototype.start = function(callback) {
-    var self = this;
-
-    this._startTime = Date.now();
-    this._tickCounter = 0;
-    this._updateTimeoutId = setTimeout(function() {
-        if (self._tickCounter) {
-            callback(Math.round(self.updateRate / ((Date.now() - self._startTime) / self._tickCounter)));
-        }
-        self.start(callback);
-    }, this.updateRate);
-
-    return this;
-};
-
-FpsMeter.prototype.stop = function() {
-    clearTimeout(this._updateTimeoutId);
-
-    return this;
-};
-
-FpsMeter.prototype.tick = function() {
-    ++this._tickCounter;
-
-    return this;
-};
-
-if (global.gc) {
-    setInterval(gc, 2000)
-}
-
-var meter = new FpsMeter({updateRate: 60000})
-meter.start(function(fpm) {
-    console.log('fpm', fpm)
-})
-
-
 /**
  * Process all feeds from the feeds collection.
  *
@@ -169,7 +125,6 @@ module.exports = thunkify(function(options, callback) {
         processOne(feed, options, function(err, _errors) {
             var update
 
-            meter.tick()
             if (err) {
                 update = {$inc: {failsCounter: 1}}
                 errors.push(err)

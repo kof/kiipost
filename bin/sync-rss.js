@@ -48,3 +48,7 @@ db.init()
         console.log(err.stack)
         process.exit(1)
     })
+
+if (global.gc) {
+    setInterval(gc, 2000)
+}
