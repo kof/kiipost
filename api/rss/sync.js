@@ -96,8 +96,8 @@ module.exports = thunkify(function(options, callback) {
     })
 
     feeds.on('data', function(data) {
+        if (options.verbose) console.log(controller.stats)
         if (controller.check()) {
-            console.log(controller.stats)
             onData(data)
         } else {
             console.log('controller not ok', controller.stats)
