@@ -129,7 +129,7 @@ function processOne(feed, options, callback) {
         try {
             var articles = yield fetch(feed.feed)
             articles = articles.map(normalize)
-            articles = yield prefilter(articles)
+            articles = yield prefilter(articles, options)
             errors = errors.concat(yield addSiteData(articles))
             errors = errors.concat(yield addAnalyzedTags(articles))
             articles = articles.filter(postfilter)
@@ -137,7 +137,7 @@ function processOne(feed, options, callback) {
                 article.tags = article.tags.filter(filterTags)
                 article.feedId = feed._id
             })
-            yield batchInsert('article', articles)
+            yield save(articles, options)
         } catch(_err) {
             err = _err
             err.feed = feed
@@ -255,19 +255,22 @@ addAnalyzedTags = thunkify(addAnalyzedTags)
 /**
  * Filter out articles without links or those once we have already synced.
  */
-function prefilter(articles) {
+function prefilter(articles, options) {
     return function* () {
-        var currArticles, urlsMap
+        var currArticles, urlsMap = {}
 
-        currArticles = yield m.model('article')
-            .find({url: {$in: _.pluck(articles, 'url')}})
-            .select({url: 1})
-            .lean()
-            .exec()
+        // All articles need to be resynced.
+        if (!options.update) {
+            currArticles = yield m.model('article')
+                .find({url: {$in: _.pluck(articles, 'url')}})
+                .select({url: 1})
+                .lean()
+                .exec()
 
-        urlsMap = _.groupBy(currArticles, function(article) {
-            return article.url
-        })
+            urlsMap = _.groupBy(currArticles, function(article) {
+                return article.url
+            })
+        }
 
         return articles.filter(function(article) {
             // Has no link - we can't link to it
@@ -352,3 +355,22 @@ function addSiteData(articles, callback) {
 }
 
 addSiteData = thunkify(addSiteData)
+
+/**
+ * Make a batch insert or update each article.
+ */
+function save(articles, options) {
+    return function* () {
+        if (options.update) {
+            articles.forEach(function(article) {
+                co(function* () {
+                    yield m.model('article')
+                        .update({url: article.url}, {$set: article}, {upsert: true})
+                        .exec()
+                })()
+            })
+        } else {
+            return yield batchInsert('article', articles)
+        }
+    }
+}
