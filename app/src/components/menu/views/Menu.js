@@ -32,8 +32,8 @@ define(function(require, exports, module) {
     Menu.DEFAULT_OPTIONS = {
         size: [undefined, 50],
         items: [
-            {title: 'discover', name: 'discover'},
-            {title: 'saved', name: 'saved'}
+            {title: 'kiiposts', name: 'saved'},
+            {title: 'discover', name: 'discover'}
         ],
         selected: 'discover'
     }
