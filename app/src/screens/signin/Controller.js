@@ -24,7 +24,9 @@ define(function(require, exports, module) {
     inherits(Signin, Controller)
     module.exports = Signin
 
-    Signin.DEFAULT_OPTIONS = {}
+    Signin.DEFAULT_OPTIONS = {
+        defaultScreen: 'saved'
+    }
 
     Signin.prototype.initialize = function() {
         this.view = new SigninView({model: this.models.user})
@@ -48,7 +50,7 @@ define(function(require, exports, module) {
 
     Signin.prototype._go = function() {
         if (!backbone.history.getFragment()) {
-            this.router.navigate('/discover', {trigger: true})
+            this.router.navigate(this.options.defaultScreen, {trigger: true})
         }
     }
 
