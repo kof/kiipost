@@ -103,7 +103,7 @@ define(function(require, exports, module) {
         var attr = this.model.attributes
         var imageUrl, isIcon
 
-        if (attr.images.length) {
+        if (attr.images.length) {
             imageUrl = attr.images[0]
         } else if (attr.icon) {
             isIcon = true
