@@ -7,11 +7,14 @@ var es = require('event-stream')
 
 var ExtError = require('api/error').ExtError
 
+// Map of charset aliases to valid mime types.
+var charsets = require('./iconv-charsets.json')
+
 function CharsetConverter(req, res) {
     this.req = req
     this.res = res
-    this.collector = null
-    this.encoding = null
+    this.data = null
+    this.charset = null
     this.iconv = null
 }
 
@@ -22,17 +25,19 @@ CharsetConverter.prototype.getStream = function() {
 }
 
 CharsetConverter.prototype._onData = function(data) {
-    if (this.collector) data = Buffer.concat([this.collector, data])
-    if (!this.encoding) this.encoding = this._detectEncoding(data)
+    var error
+    if (this.data) data = Buffer.concat([this.data, data])
+    if (!this.charset) this.charset = this._detectCharset(data)
 
     // Init iconv if encoding is not utf-8.
-    if (!this.iconv && this.encoding != 'utf-8') {
+    if (!this.iconv && this.charset != 'utf-8') {
         try {
-            this.iconv = new Iconv(this.encoding, 'utf-8')
+            this.iconv = new Iconv(this.charset, 'utf-8')
         } catch(err) {
-            return this.stream.emit('error', new ExtError(err.message, {
+            error = err
+            this.stream.emit('error', new ExtError(err.message, {
                 err: err,
-                encoding: this.encoding
+                encoding: this.charset
             }))
         }
     }
@@ -40,30 +45,34 @@ CharsetConverter.prototype._onData = function(data) {
     if (this.iconv) {
         try {
             data = this.iconv.convert(data)
-            // We are able to convert, now we can cleanup our data this.collector.
-            this.collector = null
+            // We are able to convert, now we can cleanup our data.
+            this.data = null
         } catch(err) {
-            // In case of f.e. charset big5 or gb2312, we can't stream, so we load
-            // chunks until it is convertable
+            error = err
+            // In case of f.e. charset big5 or gb2312, we need larger chunks to convert
             // Example: http://heaven.branda.to/~thinker/GinGin_CGI.py/rssfeed
             if (err.code == 'EINVAL' || err.code == 'EILSEQ') {
-                this.collector = data
+                this.data = data
             } else {
                 this.stream.emit('error', new ExtError(err.message, {
                     err: err,
-                    data: data.toString()
+                    data: String(data)
                 }))
             }
-            return
         }
     }
 
-    this.stream.emit('data', data)
+    if (!error) this.stream.emit('data', data)
 }
 
 CharsetConverter.prototype._onEnd = function() {
-    this.collector = null
-    this.encoding = null
+    // We have data that hasn't been emited because of conversion issues.
+    // Now we emit it as it is
+    if (this.data && this.data.length) {
+        this.stream.emit('data', this.data)
+    }
+    this.data = null
+    this.charset = null
     this.iconv = null
     this.stream.emit('end')
 }
@@ -79,17 +88,19 @@ CharsetConverter.prototype._onEnd = function() {
  * @param {Buffer} data
  * @return {String}
  */
-CharsetConverter.prototype._detectEncoding = function(data) {
-    var encoding = charset(this.res.headers, data)
-    var detected
+CharsetConverter.prototype._detectCharset = function(data) {
+    var detected = charset(this.res.headers, data)
 
-    if (encoding == 'utf8') encoding = 'utf-8'
+    // Verify what we get from the website is also supported.
+    var supported = detected && charsets[detected.toLowerCase()]
 
     // Detect encoding using text.
-    if (!encoding) {
+    if (!supported) {
         detected = jschardet.detect(data)
-        encoding = detected.confidence > 0.5 ? detected.encoding : 'utf-8'
+        detected = detected.confidence > 0.5 ? detected.encoding : 'utf-8'
     }
 
-    return encoding
+    if (detected == 'utf8') detected = 'utf-8'
+
+    return detected
 }

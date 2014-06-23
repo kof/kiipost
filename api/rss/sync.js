@@ -9,6 +9,7 @@ var moment = require('moment')
 var thunkify = require('thunkify')
 var co = require('co')
 var extend = require('extend')
+var domain = require('domain')
 
 var conf = require('api/conf')
 var contentAnalysis = require('api/yahoo/contentAnalysis')
@@ -19,7 +20,6 @@ var error = require('api/error')
 var filterTags = require('api/tags/filter')
 var ProcessingController = require('api/processing-controller')
 
-var PARALLEL = 50
 // Posts should be not older than this date.
 var MIN_PUB_DATE = moment().subtract('days', conf.article.maxAge).toDate()
 // Reduce damage from spammy feeds.
@@ -53,14 +53,15 @@ var ExtError = error.ExtError
  * Options:
  *   - `maxParallel` max amount of feeds to process in parallel
  *   - `feed` only this specific feed
- *   - `feeds` array of feeds
  *   - `update` update existing posts, defaults to false
+ *   - `query` query of mongo instead of feed
+ *   - `skip` skip of mongo
  *
  * @param {Object} [options]
  */
 module.exports = thunkify(function(options, callback) {
     options = extend({
-        maxParallel: 200,
+        maxParallel: 500,
         update: false,
         feed: null,
         feeds: null
@@ -79,21 +80,25 @@ module.exports = thunkify(function(options, callback) {
         .select({_id: 1, feed: 1})
         .lean()
         .limit(options.limit)
+        .skip(options.skip)
         .stream()
 
     var errors = []
     var processing = 0
     var closed = false
-    var controller = new ProcessingController().start()
+
+    var controller = new ProcessingController({mem: {max: 0.8}})
 
     controller.addMetric('parallel', function() {
         return function() {
             return {
-                value: processing,
-                ok: processing < options.maxParallel
+                ok: processing < options.maxParallel,
+                value: processing
             }
         }
     })
+
+    controller.start()
 
     feeds.on('data', function(data) {
         if (options.verbose) console.log(controller.stats)
@@ -119,23 +124,36 @@ module.exports = thunkify(function(options, callback) {
 
     function onData(feed) {
         if (options.verbose) console.log(feed.feed)
-
         processing++
-        processOne(feed, options, function(err, _errors) {
+        var start = Date.now()
+
+        processOne(feed, options, function(err, stats) {
             var update
 
             if (err) {
-                update = {$inc: {failsCounter: 1}}
+                update = {$inc: {'syncStats.failed': 1}}
                 errors.push(err)
             } else {
-                update = {$set: {failsCounter: 0, lastSync: new Date()}}
+                update = {$set: {
+                    syncStats: {
+                        duration: Date.now() - start,
+                        errors: stats.errors.length,
+                        articlesOk: stats.ok,
+                        articlesTotal: stats.total,
+                        failed: 0,
+                        date: new Date()
+                    }
+                }}
             }
+
+            errors = error.uniq(errors.concat(stats.errors), [
+                /Unexpected end/
+            ])
 
             m.model('rssfeed')
                 .update({_id: feed._id}, update)
                 .exec(function(err) {
                     if (err) errors.push(err)
-                    errors = error.uniq(errors.concat(_errors))
                     processing--
                     complete()
                 })
@@ -145,7 +163,7 @@ module.exports = thunkify(function(options, callback) {
     function complete() {
         if (processing > 0 || !closed) return
         controller.stop()
-        callback(null, error.uniq(errors))
+        callback(null, errors)
     }
 })
 
@@ -156,16 +174,18 @@ module.exports = thunkify(function(options, callback) {
  * @param {Object} options
  */
 function processOne(feed, options, callback) {
-    co(function *(){
-        var err, errors = []
+    co(function* () {
+        var err, stats = {errors: []}
         try {
             var articles = yield fetch(feed.feed)
+            stats.total = articles.length
             articles = prenormalize(articles)
             articles = yield prefilter(articles, options)
-            errors = errors.concat(yield addSiteData(articles))
-            errors = errors.concat(yield addAnalyzedTags(articles))
-            articles = postfilter(articles)
+            stats.errors = stats.errors.concat(yield addSiteData(articles))
+            stats.errors = stats.errors.concat(yield addAnalyzedTags(articles))
             articles = postnormalize(articles, feed)
+            articles = postfilter(articles)
+            stats.ok = articles.length
             yield save(articles, options)
         } catch(_err) {
             err = _err
@@ -173,7 +193,7 @@ function processOne(feed, options, callback) {
             if (!err.level && IGNORE_ERRORS.test(err.message)) err.level = 'trace'
         }
 
-        callback(err, errors)
+        callback(err, stats)
     })()
 }
 
@@ -201,33 +221,35 @@ function fetch(url, callback) {
         .on('error', callback)
         .on('response', function(res) {
             if (res.statusCode != 200) return this.emit('error', new Error('Bad status code'))
+            var d = domain.create()
+            d.on('error', callback)
+            d.run(function() {
+                var converter = new CharsetConverter(req, res)
+                var articles = []
+                var feedParser = new FeedParser()
 
-            var converter = new CharsetConverter(req, res)
-            var articles = []
-            var feedParser = new FeedParser()
+                req
+                    .pipe(converter.getStream())
+                    .on('error', callback)
+                    .pipe(feedParser)
 
-            req
-                .pipe(converter.getStream())
-                .on('error', callback)
-                .pipe(feedParser)
-
-            feedParser
-                .on('error', callback)
-                .on('readable', function() {
-                    var article, exit = false
-
-                    while (!exit && (article = this.read())) {
-                        if (articles.length < MAX_ITEMS) {
-                            articles.push(article)
-                        } else {
-                            exit = true
-                            req.req.abort()
+                feedParser
+                    .on('error', callback)
+                    .on('readable', function() {
+                        var article, exit = false
+                        while (!exit && (article = this.read())) {
+                            if (articles.length < MAX_ITEMS) {
+                                articles.push(article)
+                            } else {
+                                exit = true
+                                req.req.abort()
+                            }
                         }
-                    }
-                })
-                .on('end', function() {
-                    callback(null, articles)
-                })
+                    })
+                    .on('end', function() {
+                        callback(null, articles)
+                    })
+            })
         })
 }
 
@@ -250,7 +272,9 @@ function addAnalyzedTags(articles) {
                 var tags = _.pluck(data.entities.concat(data.categories), 'content')
                 article.tags = article.tags.concat(tags)
             } catch(err) {
-                err.article = article
+                err.type = 'CONTENT_ANALYSIS'
+                err.text = text
+                err.articleUrl = article.url
                 errors.push(err)
             }
         }
@@ -320,13 +344,11 @@ function prenormalize(articles) {
         normalized.url = article.origlink || article.link
         normalized.pubDate = article.pubDate ? new Date(article.pubDate) : new Date()
         normalized.title = article.title
-        normalized.summary = _s.prune(_s.stripTags(article.summary), 250, '')
+        normalized.summary = _s.prune(_s.stripTags(article.summary).trim(), 250, '')
         normalized.description = article.description
         normalized.categories = _.uniq(_.compact(article.categories))
         // Make categories to tags so that article can be found by a category.
-        normalized.tags = normalized.categories.map(function(cat) {
-            return cat.toLowerCase().trim()
-        })
+        normalized.tags = normalized.categories
         normalized.enclosures = _.compact(article.enclosures)
 
         return normalized
@@ -335,10 +357,10 @@ function prenormalize(articles) {
 
 function postnormalize(articles, feed) {
     return articles.map(function(article) {
-        article.tags = _.invoke(article.tags, 'toLowerCase')
-        article.tags = _.uniq(article.tags)
-        article.tags = _.compact(article.tags)
-        article.tags = article.tags.filter(filterTags)
+        article.tags = article.tags.map(function(tag) {
+            return tag && String(tag).trim().toLowerCase()
+        })
+        article.tags = _.compact(_.uniq(article.tags)).filter(filterTags)
         article.feedId = feed._id
         return article
     })
@@ -348,6 +370,11 @@ function postnormalize(articles, feed) {
  * Extract data from the site, extend the article.
  */
 function addSiteData(articles, callback) {
+
+    function len(str) {
+        return str && str.length ? str.length : 0
+    }
+
     return function* () {
         var errors = []
 
@@ -356,12 +383,24 @@ function addSiteData(articles, callback) {
             try {
                 var article = articles[i]
                 var data = yield extractor.extract(article.url)
-                var tags = article.tags
-                extend(article, data)
-                // Merge tags, don't overwrite.
-                article.tags = tags.concat(data.tags)
+
+                if (len(data.title) > len(article.title)) {
+                    article.title = data.title
+                }
+                article.score = data.score
+                article.url = data.url
+                if (data.icon) article.icon = data.icon
+                article.images = data.images
+                if (len(data.summary) > len(article.summary)) {
+                    article.summary = data.summary
+                }
+                if (len(data.description) > len(article.description)) {
+                    article.description = data.description
+                }
+                article.tags = article.tags.concat(data.tags)
             } catch(err) {
-                err.article = article
+                err.type = 'EXTRACTOR'
+                err.articleUrl = article.url
                 errors.push(err)
             }
         }

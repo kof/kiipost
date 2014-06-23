@@ -15,12 +15,18 @@ rssFeed = new m.Schema({
     lang: String,
     descr: String,
     icon: String,
-    failsCounter: Number,
-    lastSync: Date,
     feedly: {
         subscribers: Number,
         estimatedEngagement: Number,
         score: Number
+    },
+    syncStats: {
+        duration: Number,
+        articlesTotal: Number,
+        articlesOk: Number,
+        errors: Number,
+        failed: Number,
+        date: Date
     }
 })
 

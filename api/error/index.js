@@ -127,16 +127,43 @@ exports.MultiError.prototype.limit = function(limit) {
 
 /**
  * Reduce errors array to unique once.
+ * Otionally pass patterns to avoid duplicate errors which are never uniq, like
+ * those containing line numbers or user ids.
  *
- * @param {Array}
+ * @param {Array} errors array of errors
+ * @param {Array} [patterns] array of RegExp
  * @return {Array}
  */
-exports.uniq = function(errors) {
+exports.uniq = function(errors, patterns) {
     if (!errors || errors.length < 2) return errors
     var index = {}
 
     return errors.filter(function(err) {
-        if (err && !index[err.message]) return index[err.message] = true
-        return false
+        // Not an error or message already exist.
+        if (!err) return false
+
+        var found = index[err.message]
+
+        // Found existing message using patterns
+        if (!found && patterns) {
+            patterns.find(function(pattern) {
+                for (var message in index) {
+                    if (pattern.test(message)) {
+                        found = index[message]
+                        return true
+                    }
+                }
+            })
+        }
+
+        if (found) {
+            found.sameErrorsAmount++
+            return false
+        }
+
+        index[err.message] = err
+        err.sameErrorsAmount = 0
+
+        return true
     })
 }

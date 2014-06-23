@@ -9,6 +9,7 @@ var readabilitySax = require('readabilitySAX')
 var retry = require('retry')
 var thunkify = require('thunkify')
 var entities = require('entities')
+var domain = require('domain')
 
 var conf = require('api/conf')
 
@@ -36,13 +37,13 @@ sax.MAX_BUFFER_LENGTH = Infinity
 exports.extract = thunkify(function(url, callback) {
     fetchData(url, function(err, tags, article) {
         var res = {}
-
+        if (err) err.url = url
         if (err || !tags || !article) return callback(err, res)
 
         res = _.pick(article, 'title', 'score', 'url')
         res.icon = findIcon(tags, url)
         res.images = findImages(tags, url, MIN_IMAGE_WIDTH, MAX_IMAGES_AMOUNT)
-        res.summary = _s.prune(_s.stripTags(findDescription(tags) || article.html), 250, '')
+        res.summary = _s.prune(_s.stripTags(findDescription(tags) || article.html).trim(), 250, '')
         res.description = article.html
         res.tags = findKeywords(tags)
         _.each(res, function(val, prop) {
@@ -104,26 +105,51 @@ function fetchData(url, callback) {
             if (res.statusCode != 200) return req.emit('error', new Error('Bad status code'))
             if (!res.headers || !/html/i.test(res.headers['content-type'])) return callback()
 
-            var tags, article
-            var converter = new CharsetConverter(req, res)
+            var d = domain.create()
+            var timeoutId
 
-            function done() {
-                if (tags && article) callback(null, tags, article)
-            }
+            d.on('error', callback)
+            d.run(function() {
+                runExtractors(req, res, function() {
+                    clearTimeout(timeoutId)
+                    callback.apply(this, arguments)
+                })
+            })
 
-            req
-                .pipe(converter.getStream())
-                .on('error', callback)
-                .pipe(tagsExtractor(function(data) {
-                    tags = data
-                    done()
-                }))
-                .on('error', callback)
-                .pipe(articleExtractor(req.uri.href, function(data) {
-                    article = data
-                    done()
-                }))
+            // For the case some extractors stuck.
+            timeoutId = setTimeout(function() {
+                callback(new Error('Extractor timeout'))
+            }, 5000)
         })
+}
+
+/**
+ * Run all converters/extractors.
+  */
+function runExtractors(req, res, callback) {
+    var tagsStream
+    var charsetConverter = new CharsetConverter(req, res).getStream()
+    var tags = [], article
+
+    function done() {
+        if (tags && article) callback(null, tags, article)
+    }
+
+    tagsStream = tagsExtractor(function(data) {
+        tags = data
+        done()
+    })
+
+    req
+        .pipe(charsetConverter)
+        .on('error', callback)
+        .pipe(tagsStream)
+
+    tagsStream
+        .pipe(articleExtractor(req.uri.href, function(data) {
+            article = data
+            done()
+        }))
 }
 
 /**
