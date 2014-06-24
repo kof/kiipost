@@ -10,8 +10,7 @@ var ExtError = require('api/error').ExtError
 // Map of charset aliases to valid mime types.
 var charsets = require('./iconv-charsets.json')
 
-function CharsetConverter(req, res) {
-    this.req = req
+function CharsetConverter(res) {
     this.res = res
     this.data = null
     this.charset = null

@@ -12,7 +12,7 @@ d.on('error', function(err) {
 })
 
 d.run(function() {
-    extractor.extract('http://majornelson.com/cast/2014/06/12/e3-2014-show-far-cry-4-mortal-kombat-x-and-more/')(function() {
+    extractor.extract('http://heaven.branda.to/~thinker/GinGin_CGI.py/show_id_doc/486')(function() {
         console.log('extracted', arguments)
     })
 })

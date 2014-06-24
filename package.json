@@ -74,6 +74,7 @@
     "retry": "^0.6.0",
     "sax": "^0.6.0",
     "sinon": "~1.10.2",
+    "superagent": "^0.18.0",
     "thunkify": "^2.1.2",
     "twit": "^1.1.15",
     "underscore": "^1.6.0",

@@ -1,6 +1,6 @@
 'use strict'
 
-var request = require('request')
+var request = require('superagent')
 var _ = require('underscore')
 var _s = require('underscore.string')
 var url = require('url')
@@ -9,6 +9,7 @@ var readabilitySax = require('readabilitySAX')
 var retry = require('retry')
 var thunkify = require('thunkify')
 var entities = require('entities')
+var es = require('event-stream')
 
 var conf = require('api/conf')
 
@@ -26,6 +27,8 @@ var MIN_IMAGE_WIDTH = 200
 var MAX_IMAGES_AMOUNT = 5
 
 sax.MAX_BUFFER_LENGTH = Infinity
+
+var noop = function() {}
 
 /**
  * Extract icon and a big image from a website.
@@ -82,30 +85,20 @@ function fetchData(url, callback) {
         callback.apply(this, arguments)
     })
 
-    // Bad uri emits before error handler is attached.
-    try {
-        req = request({
-            url: url,
-            // Some feeds do not response without user-agent and accept headers.
-            headers: {
-                'user-agent': conf.request.agent,
-                accept: conf.request.accept
-            },
-            method: 'get',
-            timeout: conf.request.timeout,
-            pool: false
-        })
-    } catch(err) {
-        return setImmediate(done, err)
-    }
-
-    req.setMaxListeners(50)
-
-    req
+    req = request
+        .get(url)
+        .set('user-agent', conf.request.agent)
+        .set('accept', conf.request.accept)
+        .timeout(conf.request.timeout)
+        .buffer(false)
+        // Avoid default parsing to utf-8
+        // TODO charset converter here.
+        .parse(noop)
         .on('error', done)
         .on('response', function(res) {
-            if (res.statusCode != 200) return done(new Error('Bad status code'))
-            if (!res.headers || !/html/i.test(res.headers['content-type'])) return done(new Error('Bad content type'))
+            if (!res.ok) return done(new Error('Bad status code'))
+            if (!/html/i.test(res.type)) return done(new Error('Bad content type'))
+
             var timeoutId
 
             runExtractors(req, res, function() {
@@ -118,32 +111,34 @@ function fetchData(url, callback) {
                 done(new Error('Extractor timeout'))
             }, 5000)
         })
+        .end()
 }
 
 /**
  * Run all converters/extractors.
   */
 function runExtractors(req, res, callback) {
-    var tagsStream
-    var charsetConverter = new CharsetConverter(req, res).getStream()
     var tags = [], article
 
     function done() {
         if (tags && article) callback(null, tags, article)
     }
 
+    var charsetConverter = new CharsetConverter(res).getStream()
+
+    var tagsStream
     tagsStream = tagsExtractor(function(data) {
         tags = data
         done()
     })
 
-    req
+    res
         .pipe(charsetConverter)
         .on('error', callback)
         .pipe(tagsStream)
 
     tagsStream
-        .pipe(articleExtractor(req.uri.href, function(data) {
+        .pipe(articleExtractor(req.url, function(data) {
             article = data
             done()
         }))

@@ -1,7 +1,7 @@
 'use strict'
 
 var FeedParser = require('feedparser')
-var request = require('request')
+var request = require('superagent')
 var _ = require('underscore')
 var _s = require('underscore.string')
 var m = require('mongoose')
@@ -45,6 +45,8 @@ IGNORE_ERRORS = new RegExp([
 ].join('|'), 'i')
 
 var ExtError = error.ExtError
+
+var noop = function() {}
 
 /**
  * Process all feeds from the feeds collection.
@@ -142,9 +144,7 @@ module.exports = thunkify(function(options, callback) {
                     date: new Date()
                 }
             }}
-            errors = error.uniq(errors.concat(stats.errors), [
-                /Unexpected end/
-            ])
+            errors.concat(stats.errors)
         } catch(err) {
             update = {$inc: {'syncStats.failed': 1}}
             errors.push(err)
@@ -161,6 +161,7 @@ module.exports = thunkify(function(options, callback) {
     function complete() {
         if (processing > 0 || !closed) return
         controller.stop()
+        errors = error.uniq(errors, [/Unexpected end/])
         callback(null, errors)
     }
 })
@@ -208,26 +209,25 @@ function fetch(url, callback) {
         callback.apply(this, arguments)
     })
 
-    // Bad uri emits before error handler is attached.
-    try {
-        req = request(url, {timeout: conf.request.timeout, pool: false})
-    } catch(err) {
-        return setImmediate(done, err)
-    }
-
-    req.setMaxListeners(50)
-    req
-        // Some feeds do not response without user-agent and accept headers.
-        .setHeader('user-agent', conf.request.userAgent)
-        .setHeader('accept', conf.request.accept)
+    req = request
+        .get(url)
+        .set('user-agent', conf.request.agent)
+        .set('accept', conf.request.accept)
+        .timeout(conf.request.timeout)
+        .buffer(false)
+        // Avoid default parsing to utf-8
+        // TODO charset converter here.
+        .parse(noop)
         .on('error', done)
         .on('response', function(res) {
-            if (res.statusCode != 200) return done(new Error('Bad status code'))
-            var converter = new CharsetConverter(req, res)
+            if (!res.ok) return done(new Error('Bad status code'))
+
+            var timeoutId
+            var converter = new CharsetConverter(res)
             var articles = []
             var feedParser = new FeedParser()
 
-            req
+            res
                 .pipe(converter.getStream())
                 .on('error', done)
                 .pipe(feedParser)
@@ -248,7 +248,13 @@ function fetch(url, callback) {
                 .on('end', function() {
                     done(null, articles)
                 })
+
+            // For the case some extractors stuck.
+            timeoutId = setTimeout(function() {
+                done(new Error('Feed parse timeout'))
+            }, 5000)
         })
+        .end()
 }
 
 fetch = thunkify(fetch)
