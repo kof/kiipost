@@ -11,7 +11,6 @@
     width: 0;
     height: 100%;
     background: #fff;
-    transition: 250ms;
 }
 .menu .item {
     display: inline-block;

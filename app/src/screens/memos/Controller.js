@@ -41,11 +41,7 @@ define(function(require, exports, module) {
     }
 
     Memos.prototype._onMenuChange = function(name) {
+        this.view.menu.select(name)
         this.router.navigate(name, {trigger: true})
-        // XXX dirty
-        // Wait until animation on the next screen is done.
-        setTimeout(function() {
-            this.view.menu.select(name)
-        }.bind(this), 500)
     }
 })

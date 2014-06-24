@@ -23,7 +23,10 @@ define(function(require, exports, module) {
 
     app.imagesLoader = new ImagesLoader()
 
-    app.controller = new RenderController()
+    app.controller = new RenderController({
+        inTransition: {duration: 50},
+        outTransition: {duration: 100}
+    })
     app.context.add(app.controller)
 
     window.addEventListener('deviceorientation', function(e) {
