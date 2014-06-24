@@ -16,7 +16,7 @@ define(function(require, exports, module) {
                 consumerSecret: 'MHTdjpIwfVjcV2rZOyxesl939FqlnIKFzE50DhLZmG5UCwAViI',
                 accessToken: '69033784-BBVmV09pyHhWrKDmB8G6oBySxOKkM1koM9bphkQlF',
                 accessTokenSecret: 'RH7VOQjjTYtlU0CZ1TRvYjLaF7ZIig4zOnZ4jy0akBnwT',
-                screenName: 'RH7VOQjjTYtlU0CZ1TRvYjLaF7ZIig4zOnZ4jy0akBnwT',
+                screenName: 'Oleg',
                 userId: '69033784',
                 provider: 'twitter'
             })
