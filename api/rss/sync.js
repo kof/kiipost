@@ -142,6 +142,9 @@ module.exports = thunkify(function(options, callback) {
                     date: new Date()
                 }
             }}
+            errors = error.uniq(errors.concat(stats.errors), [
+                /Unexpected end/
+            ])
         } catch(err) {
             update = {$inc: {'syncStats.failed': 1}}
             errors.push(err)
@@ -150,10 +153,6 @@ module.exports = thunkify(function(options, callback) {
         yield m.model('rssfeed')
             .update({_id: feed._id}, update)
             .exec()
-
-        errors = error.uniq(errors.concat(stats.errors), [
-            /Unexpected end/
-        ])
 
         processing--
         complete()
