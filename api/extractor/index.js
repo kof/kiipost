@@ -9,7 +9,6 @@ var readabilitySax = require('readabilitySAX')
 var retry = require('retry')
 var thunkify = require('thunkify')
 var entities = require('entities')
-var domain = require('domain')
 
 var conf = require('api/conf')
 
@@ -76,9 +75,12 @@ exports.extractWithRetry = thunkify(function(url, callback) {
  * @param {Function} callback
  */
 function fetchData(url, callback) {
-    var req
+    var req, done
 
-    callback = _.once(callback)
+    done = _.once(function(err) {
+        if (err && req) req.abort()
+        callback.apply(this, arguments)
+    })
 
     // Bad uri emits before error handler is attached.
     try {
@@ -94,31 +96,26 @@ function fetchData(url, callback) {
             pool: false
         })
     } catch(err) {
-        return setImmediate(callback, err)
+        return setImmediate(done, err)
     }
 
     req.setMaxListeners(50)
 
     req
-        .on('error', callback)
+        .on('error', done)
         .on('response', function(res) {
-            if (res.statusCode != 200) return req.emit('error', new Error('Bad status code'))
-            if (!res.headers || !/html/i.test(res.headers['content-type'])) return callback()
-
-            var d = domain.create()
+            if (res.statusCode != 200) return done(new Error('Bad status code'))
+            if (!res.headers || !/html/i.test(res.headers['content-type'])) return done(new Error('Bad content type'))
             var timeoutId
 
-            d.on('error', callback)
-            d.run(function() {
-                runExtractors(req, res, function() {
-                    clearTimeout(timeoutId)
-                    callback.apply(this, arguments)
-                })
+            runExtractors(req, res, function() {
+                clearTimeout(timeoutId)
+                done.apply(this, arguments)
             })
 
             // For the case some extractors stuck.
             timeoutId = setTimeout(function() {
-                callback(new Error('Extractor timeout'))
+                done(new Error('Extractor timeout'))
             }, 5000)
         })
 }

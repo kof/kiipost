@@ -20,9 +20,10 @@ exports.init = function() {
 
     connection.enqueue = thunkify(connection.enqueue)
 
-    new queue.Worker(connection, jobs, {workers: conf.queue.workers})
-        .on('error', log)
-        .poll()
+    new queue.Worker(connection, jobs, {
+        workers: conf.queue.workers,
+        timeout: conf.queue.workerInterval
+    }).on('error', log).poll()
 
     setInterval(function() {
         connection.cleanup(log)

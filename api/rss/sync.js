@@ -9,7 +9,6 @@ var moment = require('moment')
 var thunkify = require('thunkify')
 var co = require('co')
 var extend = require('extend')
-var domain = require('domain')
 
 var conf = require('api/conf')
 var contentAnalysis = require('api/yahoo/contentAnalysis')
@@ -87,7 +86,7 @@ module.exports = thunkify(function(options, callback) {
     var processing = 0
     var closed = false
 
-    var controller = new ProcessingController({mem: {max: 0.8}})
+    var controller = new ProcessingController()
 
     controller.addMetric('parallel', function() {
         return function() {
@@ -99,6 +98,8 @@ module.exports = thunkify(function(options, callback) {
     })
 
     controller.start()
+
+    var onData
 
     feeds.on('data', function(data) {
         if (options.verbose) console.log(controller.stats)
@@ -122,43 +123,41 @@ module.exports = thunkify(function(options, callback) {
         complete()
     })
 
-    function onData(feed) {
+    onData = co(function* (feed) {
         if (options.verbose) console.log(feed.feed)
         processing++
         var start = Date.now()
+        var update
+        var stats
 
-        processOne(feed, options, function(err, stats) {
-            var update
+        try {
+            stats = yield processOne(feed, options)
+            update = {$set: {
+                syncStats: {
+                    duration: Date.now() - start,
+                    errors: stats.errors.length,
+                    articlesOk: stats.ok,
+                    articlesTotal: stats.total,
+                    failed: 0,
+                    date: new Date()
+                }
+            }}
+        } catch(err) {
+            update = {$inc: {'syncStats.failed': 1}}
+            errors.push(err)
+        }
 
-            if (err) {
-                update = {$inc: {'syncStats.failed': 1}}
-                errors.push(err)
-            } else {
-                update = {$set: {
-                    syncStats: {
-                        duration: Date.now() - start,
-                        errors: stats.errors.length,
-                        articlesOk: stats.ok,
-                        articlesTotal: stats.total,
-                        failed: 0,
-                        date: new Date()
-                    }
-                }}
-            }
+        yield m.model('rssfeed')
+            .update({_id: feed._id}, update)
+            .exec()
 
-            errors = error.uniq(errors.concat(stats.errors), [
-                /Unexpected end/
-            ])
+        errors = error.uniq(errors.concat(stats.errors), [
+            /Unexpected end/
+        ])
 
-            m.model('rssfeed')
-                .update({_id: feed._id}, update)
-                .exec(function(err) {
-                    if (err) errors.push(err)
-                    processing--
-                    complete()
-                })
-        })
-    }
+        processing--
+        complete()
+    })
 
     function complete() {
         if (processing > 0 || !closed) return
@@ -173,28 +172,27 @@ module.exports = thunkify(function(options, callback) {
  * @param {Object} feed
  * @param {Object} options
  */
-function processOne(feed, options, callback) {
-    co(function* () {
-        var err, stats = {errors: []}
-        try {
-            var articles = yield fetch(feed.feed)
-            stats.total = articles.length
-            articles = prenormalize(articles)
-            articles = yield prefilter(articles, options)
-            stats.errors = stats.errors.concat(yield addSiteData(articles))
-            stats.errors = stats.errors.concat(yield addAnalyzedTags(articles))
-            articles = postnormalize(articles, feed)
-            articles = postfilter(articles)
-            stats.ok = articles.length
-            yield save(articles, options)
-        } catch(_err) {
-            err = _err
-            err.feed = feed
-            if (!err.level && IGNORE_ERRORS.test(err.message)) err.level = 'trace'
-        }
+function* processOne (feed, options) {
+    var stats = {errors: []}
 
-        callback(err, stats)
-    })()
+    try {
+        var articles = yield fetch(feed.feed)
+        stats.total = articles.length
+        articles = prenormalize(articles)
+        articles = yield prefilter(articles, options)
+        stats.errors = stats.errors.concat(yield addSiteData(articles))
+        stats.errors = stats.errors.concat(yield addAnalyzedTags(articles))
+        articles = postnormalize(articles, feed)
+        articles = postfilter(articles)
+        stats.ok = articles.length
+        yield save(articles, options)
+    } catch(err) {
+        err.feed = feed
+        if (!err.level && IGNORE_ERRORS.test(err.message)) err.level = 'trace'
+        throw err
+    }
+
+    return stats
 }
 
 /**
@@ -204,13 +202,18 @@ function processOne(feed, options, callback) {
  * @param {Function} callback
  */
 function fetch(url, callback) {
-    var req
+    var req, done
+
+    done = _.once(function(err) {
+        if (err && req) req.abort()
+        callback.apply(this, arguments)
+    })
 
     // Bad uri emits before error handler is attached.
     try {
         req = request(url, {timeout: conf.request.timeout, pool: false})
     } catch(err) {
-        return setImmediate(callback, err)
+        return setImmediate(done, err)
     }
 
     req.setMaxListeners(50)
@@ -218,38 +221,34 @@ function fetch(url, callback) {
         // Some feeds do not response without user-agent and accept headers.
         .setHeader('user-agent', conf.request.userAgent)
         .setHeader('accept', conf.request.accept)
-        .on('error', callback)
+        .on('error', done)
         .on('response', function(res) {
-            if (res.statusCode != 200) return this.emit('error', new Error('Bad status code'))
-            var d = domain.create()
-            d.on('error', callback)
-            d.run(function() {
-                var converter = new CharsetConverter(req, res)
-                var articles = []
-                var feedParser = new FeedParser()
+            if (res.statusCode != 200) return done(new Error('Bad status code'))
+            var converter = new CharsetConverter(req, res)
+            var articles = []
+            var feedParser = new FeedParser()
 
-                req
-                    .pipe(converter.getStream())
-                    .on('error', callback)
-                    .pipe(feedParser)
+            req
+                .pipe(converter.getStream())
+                .on('error', done)
+                .pipe(feedParser)
 
-                feedParser
-                    .on('error', callback)
-                    .on('readable', function() {
-                        var article, exit = false
-                        while (!exit && (article = this.read())) {
-                            if (articles.length < MAX_ITEMS) {
-                                articles.push(article)
-                            } else {
-                                exit = true
-                                req.req.abort()
-                            }
+            feedParser
+                .on('error', done)
+                .on('readable', function() {
+                    var article, exit = false
+                    while (!exit && (article = this.read())) {
+                        if (articles.length < MAX_ITEMS) {
+                            articles.push(article)
+                        } else {
+                            exit = true
+                            req.abort()
                         }
-                    })
-                    .on('end', function() {
-                        callback(null, articles)
-                    })
-            })
+                    }
+                })
+                .on('end', function() {
+                    done(null, articles)
+                })
         })
 }
 

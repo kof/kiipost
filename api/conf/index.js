@@ -45,6 +45,7 @@ exports.queue = {
     timeout: ms('5m'),
     // Amount of workers, which are running in parallel in the same process.
     workers: 5,
+    workerInterval: 1000,
     // Periodically cleanup call 50 sec.
     cleanupInterval: ms('50s')
 }
