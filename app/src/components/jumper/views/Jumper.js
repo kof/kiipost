@@ -24,6 +24,16 @@ define(function(require, exports, module) {
 
         var visibleTransform = Transform.multiply(Transform.scale(1, 1), Transform.inFront)
 
+        var origin = [0.5, 0.5]
+
+        this.inOriginFrom(function() {
+            return origin
+        })
+
+        this.outOriginFrom(function() {
+            return origin
+        })
+
         this.inTransformFrom(function(scale) {
             if (scale == 1) return visibleTransform
             return Transform.multiply(Transform.scale(scale, scale), Transform.inFront)

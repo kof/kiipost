@@ -50,7 +50,7 @@ define(function(require, exports, module) {
             scrollview: this.stream.scrollview,
             context: app.context
         })
-        this.add(new Modifier({origin: [0.5, 0.05]})).add(this.jumper)
+        this.add(this.jumper)
     }
 
     inherits(Articles, View)
