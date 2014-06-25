@@ -15,29 +15,27 @@ define(function(require, exports, module) {
     var FullArticleController = require('./screens/full-article/Controller')
     var MemosController = require('./screens/memos/Controller')
 
-    var app = module.exports
+    exports.GOLDEN_RATIO = 0.618
 
-    app.GOLDEN_RATIO = 0.618
+    var context = exports.context = Engine.createContext()
 
-    app.context = Engine.createContext()
+    exports.imagesLoader = new ImagesLoader()
 
-    app.imagesLoader = new ImagesLoader()
-
-    app.controller = new RenderController({
+    exports.controller = new RenderController({
         inTransition: {duration: 50},
         outTransition: {duration: 100}
     })
-    app.context.add(app.controller)
+    context.add(exports.controller)
 
     window.addEventListener('deviceorientation', function(e) {
-        app.context.emit('deviceorientation', e)
+        context.emit('deviceorientation', e)
     })
 
-    app.ready = new Promise(function(fulfill, reject) {
+    exports.ready = new Promise(function(fulfill, reject) {
         var isResized, isDomReady
         var isDeviceReady = !window.cordova
 
-        app.context.on('resize', function() {
+        context.on('resize', function() {
             isResized = true
             resolve()
         })
@@ -58,7 +56,7 @@ define(function(require, exports, module) {
     })
 
     // Some views require to know the context size immediately.
-    app.ready.then(function() {
+    exports.ready.then(function() {
         var options = {router: true, models: {}}
 
         options.models.user = new UserModel()

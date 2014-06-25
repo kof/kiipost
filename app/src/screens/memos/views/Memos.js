@@ -16,6 +16,7 @@ define(function(require, exports, module) {
     var BackgroundView = require('components/background/Background')
 
     var MemoView = require('./Memo')
+    var app = require('app')
 
     function Memo() {
         View.apply(this, arguments)
@@ -45,7 +46,10 @@ define(function(require, exports, module) {
         // Header can scroll the scrollview.
         this.header.pipe(this.stream.scrollview)
 
-        this.jumper = new JumperView({scrollview: this.stream.scrollview})
+        this.jumper = new JumperView({
+            scrollview: this.stream.scrollview,
+            context: app.context
+        })
         this.add(new Modifier({origin: [0.5, 0.05]})).add(this.jumper)
     }
 

@@ -7,16 +7,14 @@ define(function(require, exports, module) {
     var View = require('famous/core/View')
     var Surface = require('famous/core/Surface')
     var Transform = require('famous/core/Transform')
-    var StateModifier = require('famous/modifiers/StateModifier')
+    var Modifier = require('famous/core/Modifier')
     var RenderController = require('famous/views/RenderController')
-
-    var app = require('app')
 
     function Jumper() {
         RenderController.apply(this, arguments)
         this.scrollview = this.options.scrollview
 
-        this._height = app.context.getSize()[1]
+        this._height = this.options.context.getSize()[1]
 
         this.surface = new Surface({
             content: 'arrowup',
@@ -24,12 +22,15 @@ define(function(require, exports, module) {
             classes: ['jumper', 'icomatic']
         })
 
+        var visibleTransform = Transform.multiply(Transform.scale(1, 1), Transform.inFront)
+
         this.inTransformFrom(function(scale) {
-            if (scale < 1) return Transform.scale(scale, scale)
+            if (scale == 1) return visibleTransform
+            return Transform.multiply(Transform.scale(scale, scale), Transform.inFront)
         })
 
         this.outTransformFrom(function(scale) {
-            if (scale > 0) return Transform.scale(scale, scale)
+            if (scale > 0) return Transform.multiply(Transform.scale(scale, scale), Transform.inFront)
         })
 
         this.surface.on('click', this._onClick.bind(this))
@@ -42,10 +43,11 @@ define(function(require, exports, module) {
     Jumper.DEFAULT_OPTIONS = {
         size: [45, 45],
         scrollview: null,
+        context: null,
         // Min amount of px to scroll back before jumper will be shown.
         scrollBackDelta: 3,
         inTransition: {duration: 200},
-        outTransition: {duration: 200},
+        outTransition: {duration: 200}
     }
 
     Jumper.prototype._onScroll = function(e) {
