@@ -41,16 +41,12 @@ exports.extract = thunkify(function(url, callback) {
         var res = {}
         if (err) err.url = url
         if (err || !tags || !article) return callback(err, res)
-
         res = _.pick(article, 'title', 'score', 'url')
         res.icon = findIcon(tags, url)
         res.images = findImages(tags, url, MIN_IMAGE_WIDTH, MAX_IMAGES_AMOUNT)
         res.summary = _s.prune(_s.stripTags(findDescription(tags) || article.html).trim(), 250, '')
         res.description = article.html
         res.tags = findKeywords(tags)
-        _.each(res, function(val, prop) {
-            if (!val) delete res[prop]
-        })
         callback(null, res)
     })
 })
@@ -97,7 +93,7 @@ function fetchData(url, callback) {
         .on('error', done)
         .on('response', function(res) {
             if (!res.ok) return done(new Error('Bad status code'))
-            if (!/html/i.test(res.type)) return done(new Error('Bad content type'))
+            if (!/text/i.test(res.type)) return done(new Error('Bad content type'))
 
             var timeoutId
 
@@ -109,7 +105,7 @@ function fetchData(url, callback) {
             // For the case some extractors stuck.
             timeoutId = setTimeout(function() {
                 done(new Error('Extractor timeout'))
-            }, 5000)
+            }, conf.request.timeout)
         })
         .end()
 }

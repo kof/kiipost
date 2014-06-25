@@ -19,6 +19,13 @@ tests.push({
     tests: './api/extractor/test/index.js'
 })
 
+tests.push({
+    code: {
+        path: './api/yahoo/contentAnalysis.js'
+    },
+    tests: './api/yahoo/test/contentAnalysis.js'
+})
+
 qunit.setup({
     coverage: true
 })

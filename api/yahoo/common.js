@@ -1,8 +1,9 @@
 var _ = require('underscore')
 var _s = require('underscore.string')
-var request = require('request')
+var request = require('superagent')
 
 var ExtError = require('api/error').ExtError
+var conf = require('api/conf')
 
 var common = require('./common')
 
@@ -50,36 +51,27 @@ exports.buildQuery = function(table, params) {
  * @param {Function} callback
  */
 exports.request = function(method, data, callback) {
-    var options = {timeout: 5000, pool: false, method: method}
-
-    if (method == 'get') options.qs = data
-    else if (method == 'post') options.form = data
-
-    request(
-        exports.BASE_URI,
-        options,
-        function(err, res, body) {
-            var json
-
-            if (err) return callback(err)
-
-            try {
-                json = JSON.parse(body)
-            } catch(err) {
-                return callback(new ExtError('Bad response', {err: err, body: body, data: data}))
+    request
+        [method](exports.BASE_URI)
+        .type('form')
+        .send(data)
+        .timeout(conf.request.timeout)
+        .end(function(err, res) {
+            if (err) {
+                err.data = data
+                return callback(err)
             }
 
-            if (json.error) {
+            if (res.body.error) {
                 return callback(
-                    new ExtError(json.error.description, {
-                        error: json.error,
-                        body: body,
+                    new ExtError(res.body.error.description, {
+                        error: res.body.error,
+                        response: res.text,
                         data: data
                     })
                 )
             }
 
-            callback(null, json)
-        }
-    )
+            callback(null, res.body)
+        })
 }

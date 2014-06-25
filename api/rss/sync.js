@@ -105,6 +105,7 @@ module.exports = thunkify(function(options, callback) {
 
     feeds.on('data', function(data) {
         if (options.verbose) console.log(controller.stats)
+
         if (controller.check()) {
             onData(data)
         } else {
@@ -144,7 +145,8 @@ module.exports = thunkify(function(options, callback) {
                     date: new Date()
                 }
             }}
-            errors.concat(stats.errors)
+            if (options.verbose && stats.errors.length) console.log(stats.errors)
+            errors = errors.concat(stats.errors)
         } catch(err) {
             update = {$inc: {'syncStats.failed': 1}}
             errors.push(err)
@@ -251,8 +253,14 @@ function fetch(url, callback) {
 
             // For the case some extractors stuck.
             timeoutId = setTimeout(function() {
-                done(new Error('Feed parse timeout'))
-            }, 5000)
+                // Sometimes we don't get the end event.
+                // https://github.com/danmactough/node-feedparser/issues/115
+                if (articles.length) {
+                    done(null, articles)
+                } else {
+                    done(new Error('Feed parse timeout'))
+                }
+            }, conf.request.timeout)
         })
         .end()
 }
@@ -419,13 +427,17 @@ function addSiteData(articles, callback) {
 function save(articles, options) {
     return function* () {
         if (options.update) {
-            articles.forEach(function(article) {
-                co(function* () {
+            var errors = []
+            articles.forEach(co(function* (article) {
+                try {
                     yield m.model('article')
                         .update({url: article.url}, {$set: article}, {upsert: true})
                         .exec()
-                })()
-            })
+                } catch(err) {
+                    errors.push(err)
+                }
+            }))
+            if (errors.length) throw new error.ExtError('Articles update', errors)
         } else {
             yield batchInsert('article', articles)
         }
