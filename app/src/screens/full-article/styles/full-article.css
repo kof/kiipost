@@ -1,16 +1,16 @@
-.article-top-btns {
+.full-article-top-btns {
     z-index: 1;
 }
-.article-top-btns span {
+.full-article-top-btns span {
     color: #fff;
     padding: 1rem;
     display: inline-block;
     cursor: pointer;
 }
-.article-top-btns .source {
+.full-article-top-btns .source {
     float: right;
 }
-.article-head h1 {
+.full-article-head h1 {
     font-size: 1rem;
     height: 2.45rem;
     overflow: hidden;
@@ -19,7 +19,7 @@
     margin: 0 0.5rem 0.5rem 0.5rem;
     color: #fff;
 }
-.article-text {
+.full-article-text {
     background: #fff;
     color: #a3a3a3;
     padding: 1rem 1rem 5rem 1rem;
@@ -27,7 +27,7 @@
     font-size: 1.1rem;
     line-height: 1.4;
 }
-.article-kiipost-btn {
+.full-article-kiipost-btn {
     width: 3.5rem;
     height: 3.5rem;
     cursor: pointer;

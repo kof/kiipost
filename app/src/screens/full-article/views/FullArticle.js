@@ -11,11 +11,11 @@ define(function(require, exports, module) {
     var BackgroundView = require('components/background/Background')
     var SpinnerView = require('components/spinner/views/Spinner')
     var KiipostView = require('./Kiipost')
-    var ArticleModel = require('components/article/models/Article')
+    var Article = require('components/article/models/Article')
 
     var app = require('app')
 
-    function Article() {
+    function FullArticle() {
         View.apply(this, arguments)
 
         var size = app.context.getSize()
@@ -32,7 +32,7 @@ define(function(require, exports, module) {
         this.topBtns = new Surface({
             content: '<span class="close icomatic">close</span>' +
                 '<span class="source icomatic">externallink</span>',
-            classes: ['article-top-btns'],
+            classes: ['full-article-top-btns'],
             size: [size[0], true]
         })
         this.topBtns.on('click', this._onTopBtnClick.bind(this))
@@ -41,7 +41,7 @@ define(function(require, exports, module) {
         this.title = document.createElement('h1')
         this.head = new Surface({
             content: this.title,
-            classes: ['article-head'],
+            classes: ['full-article-head'],
             size: [size[0], size[0] * app.GOLDEN_RATIO]
         })
         this.head.pipe(this.scrollview)
@@ -59,7 +59,7 @@ define(function(require, exports, module) {
         this.add(new Modifier({origin: [0.5, 0.5]})).add(this.spinner)
 
         this.kiipostBtn = new Surface({
-            classes: ['article-kiipost-btn'],
+            classes: ['full-article-kiipost-btn'],
             size: [true, true]
         })
         this.kiipostBtn.on('click', this._onKiipost.bind(this))
@@ -70,30 +70,30 @@ define(function(require, exports, module) {
         this.add(this.kiipost)
     }
 
-    inherits(Article, View)
-    module.exports = Article
+    inherits(FullArticle, View)
+    module.exports = FullArticle
 
-    Article.DEFAULT_OPTIONS = {}
+    FullArticle.DEFAULT_OPTIONS = {}
 
-    Article.prototype.load = function(id) {
-        this.model = new ArticleModel({_id: id})
+    FullArticle.prototype.load = function(id) {
+        this.model = new Article({_id: id})
         this.spinner.show(true)
         this.model.fetch()
             .then(this.setContent.bind(this))
             .always(this.spinner.hide.bind(this.spinner))
     }
 
-    Article.prototype.setContent = function() {
+    FullArticle.prototype.setContent = function() {
         this.title.textContent = this.model.get('title')
         // Set class now to avoid white screen artifact during loading.
-        this.text.setClasses(['article-text'])
+        this.text.setClasses(['full-article-text'])
         this.textContent.innerHTML = this.model.get('description')
         this._setImage()
         // Wait until text is rendered.
         setTimeout(this._setTextSize.bind(this), 50)
     }
 
-    Article.prototype._setImage = function() {
+    FullArticle.prototype._setImage = function() {
         this.image.setProperties({
             backgroundImage: null,
             backgroundSize: 'contain',
@@ -130,7 +130,7 @@ define(function(require, exports, module) {
         }.bind(this))
     }
 
-    Article.prototype._setTextSize = function() {
+    FullArticle.prototype._setTextSize = function() {
         var textHeight = this.textContent.parentNode.clientHeight
         var headerHeight = this.head.getSize()[1]
         var contextHeight = app.context.getSize()[1]
@@ -141,17 +141,17 @@ define(function(require, exports, module) {
         this.text.setSize([undefined, textHeight])
     }
 
-    Article.prototype._onKiipost = function(e) {
+    FullArticle.prototype._onKiipost = function(e) {
         e.preventDefault()
         e.stopPropagation()
         this.kiipost.show()
     }
 
-    Article.prototype._onKiipostHide = function() {
+    FullArticle.prototype._onKiipostHide = function() {
 
     }
 
-    Article.prototype._onTopBtnClick = function(e) {
+    FullArticle.prototype._onTopBtnClick = function(e) {
         var cls = e.target.classList
         if (cls.contains('close')) {
             this._eventOutput.emit('close')

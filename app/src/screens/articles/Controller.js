@@ -32,6 +32,9 @@ define(function(require, exports, module) {
             models: this.models
         })
         this.view.on('menu:change', this._onMenuChange.bind(this))
+        this.view.on('article:open', function(id) {
+            this.router.navigate('articles/' + id, {trigger: true})
+        }.bind(this))
     }
 
     Articles.prototype.discover = function() {

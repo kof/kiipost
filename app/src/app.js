@@ -12,7 +12,7 @@ define(function(require, exports, module) {
 
     var SigninController = require('./screens/signin/Controller')
     var ArticlesController = require('./screens/articles/Controller')
-    var ArticleController = require('./screens/article/Controller')
+    var FullArticleController = require('./screens/full-article/Controller')
     var MemosController = require('./screens/memos/Controller')
 
     var app = module.exports
@@ -65,7 +65,7 @@ define(function(require, exports, module) {
 
         var signin = new SigninController(options)
         var articles = new ArticlesController(options)
-        var article = new ArticleController(options)
+        var article = new FullArticleController(options)
         var memos = new MemosController(options)
 
         backbone.history.start()

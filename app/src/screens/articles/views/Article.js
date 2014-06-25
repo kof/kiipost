@@ -99,7 +99,7 @@ define(function(require, exports, module) {
     StreamItem.prototype._onClick = function(e) {
         if (e.target.classList.contains('source')) return
         e.preventDefault()
-        app.context.emit('discover:open', this.model)
+        this._eventOutput.emit('article:open', this.model.id)
     }
 
     StreamItem.prototype._onRecall = function() {

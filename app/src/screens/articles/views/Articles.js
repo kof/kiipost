@@ -36,6 +36,7 @@ define(function(require, exports, module) {
             views: [this.header],
             collection: this.options.collection
         })
+        this.stream.pipe(this._eventOutput)
         this.stream.on('stream:loadstart', this.spinner.show.bind(this.spinner))
         this.stream.on('stream:loadend', this.spinner.hide.bind(this.spinner))
         this.add(this.stream)

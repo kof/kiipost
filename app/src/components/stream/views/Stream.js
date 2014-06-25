@@ -38,7 +38,6 @@ define(function(require, exports, module) {
         })
         this.add(this.scrollview)
         this.scrollview.sequenceFrom(this.views)
-
         this.scrollview.on('infiniteScroll', _.debounce(this.load.bind(this), 300, true))
         this.collection.on('end', this._onEnd.bind(this))
     }
@@ -71,7 +70,7 @@ define(function(require, exports, module) {
         var ItemView = this.options.ItemView
         this.collection.each(function(model) {
             var view = new ItemView({model: model, models: this.models})
-            view.pipe(this.scrollview)
+            view.pipe(this.scrollview).pipe(this._eventOutput)
             this.views.push(view)
         }, this)
     }
