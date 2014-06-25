@@ -31,7 +31,7 @@ define(function(require, exports, module) {
         this.header.surface.add(this.menu)
 
         this.spinner = new SpinnerView()
-        this.add(new Modifier({origin: [0.5, 0.5]})).add(this.spinner)
+        this.add(this.spinner)
 
         this.stream = new StreamView({
             ItemView: MemoView,
@@ -39,8 +39,10 @@ define(function(require, exports, module) {
             collection: this.options.collection,
             models: this.options.models
         })
+
         this.stream.on('stream:loadstart', this.spinner.show.bind(this.spinner))
         this.stream.on('stream:loadend', this.spinner.hide.bind(this.spinner))
+
         this.add(this.stream)
 
         // Header can scroll the scrollview.

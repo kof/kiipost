@@ -15,23 +15,26 @@ define(function(require, exports, module) {
         this.rotate = false
         this.container = new ContainerSurface({
             classes: ['spinner'],
-            size: this.options.containerSize
+            size: this.options.size
         })
 
         this.image = new ImageSurface({
-            size: this.options.imageSize,
+            size: this.options.size,
             content: this.options.content
         })
 
         var angle = 0
-        this._imageModifier = new Modifier({
-            origin: [0.5, 0.5],
+        var imageModifier
+        imageModifier = new Modifier({
+            origin: this.options.origin,
             transform: function(val) {
                 angle += this.options.step
                 return Transform.rotateZ(angle)
             }.bind(this)
         })
-        this.container.add(this._imageModifier).add(this.image)
+        this.spinner = this.add(new Modifier({origin: this.options.origin}))
+        this.spinner.add(this.container)
+        this.container.add(imageModifier).add(this.image)
     }
 
     inherits(Spinner, RenderController)
@@ -45,20 +48,20 @@ define(function(require, exports, module) {
         outTransition: false,
         // Step to rotate in rad.
         step: 0.07,
-        containerSize: [100, 100],
-        imageSize: [50, 50],
+        size: [true, true],
+        origin: [0.5, 0.5],
         content: 'src/components/spinner/images/grey-100.png'
     }
 
     Spinner.prototype.show = function(immediate) {
         clearTimeout(this._timeoutId)
         this._timeoutId = setTimeout(function() {
-            Spinner.super_.prototype.show.call(this, this.container)
+            Spinner.super_.prototype.show.call(this, this.spinner)
         }.bind(this), immediate ? 0 : this.options.delay)
     }
 
     Spinner.prototype.hide = function() {
         clearTimeout(this._timeoutId)
-        Spinner.super_.prototype.hide.call(this, this.container)
+        Spinner.super_.prototype.hide.call(this, this.spinner)
     }
 })

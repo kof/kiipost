@@ -61,7 +61,7 @@ define(function(require, exports, module) {
         this.surfaces.push(this.terms)
 
         this.spinner = new SpinnerView()
-        this.add(new Modifier({origin: [0.5, 0.5]})).add(this.spinner)
+        this.add(this.spinner)
     }
 
     inherits(Signin, View)

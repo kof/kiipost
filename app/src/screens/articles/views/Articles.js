@@ -31,7 +31,7 @@ define(function(require, exports, module) {
         this.header.surface.add(this.menu)
 
         this.spinner = new SpinnerView()
-        this.add(new Modifier({origin: [0.5, 0.5]})).add(this.spinner)
+        this.add(this.spinner)
 
         this.stream = new StreamView({
             ItemView: ArticleView,
