@@ -33,13 +33,13 @@ define(function(require, exports, module) {
         })
         this.view.on('menu:change', this._onMenuChange.bind(this))
         this.view.on('article:open', this._onArticleOpen.bind(this))
-        app.context.on('fullArticle:close', this._onFullArticleClose.bind(this))
+        app.context.on('fullArticle:close', this._onOpen.bind(this))
         app.context.on('articles:open', this._onOpen.bind(this))
     }
 
     Articles.prototype.articles = function() {
         app.controller.show(this.view, function() {
-            this.models.user.isAuthorized.then(this.view.load.bind(this.view))
+            this.models.user.authorize.then(this.view.load.bind(this.view))
         }.bind(this))
     }
 
@@ -49,11 +49,6 @@ define(function(require, exports, module) {
 
     Articles.prototype._onArticleOpen = function(id) {
         app.context.emit('fullArticle:open', id)
-    }
-
-    Articles.prototype._onFullArticleClose = function(id) {
-        app.controller.show(this.view)
-        this.router.navigate('articles')
     }
 
     Articles.prototype._onOpen = function() {

@@ -18,7 +18,7 @@ define(function(require, exports, module) {
     var MemoView = require('./Memo')
     var app = require('app')
 
-    function Memo() {
+    function Memos() {
         View.apply(this, arguments)
 
         this.background = new BackgroundView({context: app.context})
@@ -58,12 +58,14 @@ define(function(require, exports, module) {
         this.add(this.jumper)
     }
 
-    inherits(Memo, View)
-    module.exports = Memo
+    inherits(Memos, View)
+    module.exports = Memos
 
-    Memo.prototype.load = function() {
+    Memos.DEFAULT_OPTIONS = {}
+
+    Memos.prototype.load = function() {
+        if (this._loaded) return
         this.stream.load()
+        this._loaded = true
     }
-
-    Memo.DEFAULT_OPTIONS = {}
 })

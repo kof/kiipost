@@ -40,7 +40,7 @@ define(function(require, exports, module) {
         this.baseTransition.commit(app.controller)
 
         app.controller.show(this.view, function() {
-            this.models.user.isAuthorized.then(this.view.load.bind(this.view))
+            this.models.user.authorize.then(this.view.load.bind(this.view))
         }.bind(this))
     }
 

@@ -7,7 +7,7 @@ define(function(require, exports, module) {
     function User() {
         this.url = '/api/users'
         Model.apply(this, arguments)
-        this.isAuthorized = new Promise(function(fulfill, reject) {
+        this.authorize = new Promise(function(fulfill, reject) {
             if (this.isNew()) {
                 this.once('change:_id', fulfill)
             } else {

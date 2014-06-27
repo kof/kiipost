@@ -63,7 +63,9 @@ define(function(require, exports, module) {
 
 
     Articles.prototype.load = function() {
+        if (this._loaded) return
         this.stream.load()
+        this._loaded = true
     }
 
 })
