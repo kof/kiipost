@@ -9,7 +9,7 @@ define(function(require, exports, module) {
     var Transform = require('famous/core/Transform')
     var ContainerSurface = require('famous/surfaces/ContainerSurface')
 
-    function Background() {
+    function ParallaxedBackground() {
         View.apply(this, arguments)
 
         var o = this.options
@@ -41,10 +41,10 @@ define(function(require, exports, module) {
         this.container.on('recall', this._onRecall.bind(this))
     }
 
-    inherits(Background, View)
-    module.exports = Background
+    inherits(ParallaxedBackground, View)
+    module.exports = ParallaxedBackground
 
-    Background.DEFAULT_OPTIONS = {
+    ParallaxedBackground.DEFAULT_OPTIONS = {
         offset: 20,
         content: 'content/images/background.png',
         properties: {
@@ -57,23 +57,23 @@ define(function(require, exports, module) {
         context: null
     }
 
-    Background.prototype.setContent = function(url) {
+    ParallaxedBackground.prototype.setContent = function(url) {
         this.image.setProperties({backgroundImage: 'url(' + url + ')'})
     }
 
-    Background.prototype.setProperties = function(props) {
+    ParallaxedBackground.prototype.setProperties = function(props) {
         return this.image.setProperties(props)
     }
 
-    Background.prototype._onDeploy = function() {
+    ParallaxedBackground.prototype._onDeploy = function() {
         window.addEventListener('deviceorientation', this._onChange)
     }
 
-    Background.prototype._onRecall = function() {
+    ParallaxedBackground.prototype._onRecall = function() {
         window.removeEventListener('deviceorientation', this._onChange)
     }
 
-    Background.prototype._transform = function(e) {
+    ParallaxedBackground.prototype._transform = function(e) {
         var o = this.options
         var x = e.gamma, y = e.beta
         var set = false

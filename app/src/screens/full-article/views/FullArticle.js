@@ -9,7 +9,7 @@ define(function(require, exports, module) {
     var Transform = require('famous/core/Transform')
     var Scrollview = require('famous/views/Scrollview')
 
-    var BackgroundView = require('components/background/Background')
+    var ParallaxedBackgroundView = require('components/parallaxed-background/ParallaxedBackground')
     var SpinnerView = require('components/spinner/views/Spinner')
     var Article = require('components/article/models/Article')
 
@@ -30,7 +30,7 @@ define(function(require, exports, module) {
         this.add(this.scrollview)
         this.scrollview.sequenceFrom(this.surfaces)
 
-        this.image = new BackgroundView({context: app.context})
+        this.image = new ParallaxedBackgroundView({context: app.context})
         this.add(this.image)
 
         this.topBtns = new Surface({

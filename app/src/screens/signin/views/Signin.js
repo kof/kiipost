@@ -9,7 +9,7 @@ define(function(require, exports, module) {
     var FlexibleLayout = require('famous/views/FlexibleLayout')
     var ImageSurface = require('famous/surfaces/ImageSurface')
 
-    var BackgroundView = require('components/background/Background')
+    var ParallaxedBackgroundView = require('components/parallaxed-background/ParallaxedBackground')
     var SpinnerView = require('components/spinner/views/Spinner')
     var alert = require('components/notification/alert')
 
@@ -30,7 +30,7 @@ define(function(require, exports, module) {
         this.layout.sequenceFrom(this.surfaces)
         this.add(this.layout)
 
-        this.bg = new BackgroundView({context: app.context})
+        this.bg = new ParallaxedBackgroundView({context: app.context})
         this.add(this.bg)
 
         this.logo = new Surface({

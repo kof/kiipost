@@ -12,7 +12,7 @@ define(function(require, exports, module) {
     var MenuView = require('components/menu/views/Menu')
     var JumperView = require('components/jumper/views/Jumper')
     var SpinnerView = require('components/spinner/views/Spinner')
-    var BackgroundView = require('components/background/Background')
+    var ParallaxedBackgroundView = require('components/parallaxed-background/ParallaxedBackground')
 
     var ArticleView = require('./Article')
 
@@ -23,7 +23,7 @@ define(function(require, exports, module) {
 
         this.models = this.options.models
 
-        this.background = new BackgroundView({context: app.context})
+        this.background = new ParallaxedBackgroundView({context: app.context})
         this.add(this.background)
 
         this.header = new HeaderView({
