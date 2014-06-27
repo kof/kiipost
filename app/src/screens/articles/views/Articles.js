@@ -21,10 +21,13 @@ define(function(require, exports, module) {
     function Articles() {
         View.apply(this, arguments)
 
-        this.background = new BackgroundView()
+        this.background = new BackgroundView({context: app.context})
         this.add(this.background)
 
-        this.header = new HeaderView(this.options)
+        this.header = new HeaderView({
+            context: app.context,
+            models: this.options.models
+        })
 
         this.menu = new MenuView({selected: 'articles'})
         this.menu.pipe(this._eventOutput)

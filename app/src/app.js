@@ -16,8 +16,6 @@ define(function(require, exports, module) {
     var FullArticleController = require('./screens/full-article/Controller')
     var MemosController = require('./screens/memos/Controller')
 
-    exports.GOLDEN_RATIO = 0.618
-
     var context = exports.context = Engine.createContext()
 
     exports.imagesLoader = new ImagesLoader()

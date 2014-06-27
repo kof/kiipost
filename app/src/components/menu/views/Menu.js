@@ -6,9 +6,6 @@ define(function(require, exports, module) {
 
     var View = require('famous/core/View')
     var Surface = require('famous/core/Surface')
-    var Engine = require('famous/core/Engine')
-
-    var app = require('app')
 
     function Menu() {
         View.apply(this, arguments)

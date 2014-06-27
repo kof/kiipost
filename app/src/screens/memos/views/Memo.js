@@ -14,6 +14,7 @@ define(function(require, exports, module) {
     var elementsMap = require('components/elements-map/elementsMap')
 
     var app = require('app')
+    var constants = require('constants')
 
     var tpl = require('../templates/memo.html')
 
@@ -32,7 +33,7 @@ define(function(require, exports, module) {
         View.apply(this, arguments)
 
         var width = app.context.getSize()[0]
-        var height = width * app.GOLDEN_RATIO
+        var height = width * constants.GOLDEN_RATIO
 
         this.model = this.options.model
         this.models = this.options.models

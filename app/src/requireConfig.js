@@ -24,9 +24,9 @@ require.config({
         domready: '../lib/domready/ready',
         promise: '../lib/promise/promise',
         qs: '../lib/qs/qs',
-        log: './components/log/log',
         'rename-keys': '../lib/rename-keys/index',
-        'jquery-ajax-retry': '../lib/jquery-ajax-retry/dist/jquery.ajax-retry'
+        'jquery-ajax-retry': '../lib/jquery-ajax-retry/dist/jquery.ajax-retry',
+        'components/log': './components/log/index'
     },
     packages: [
 

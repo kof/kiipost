@@ -7,8 +7,8 @@ define(function(require, exports, module) {
 
     var BaseTransition = require('./BaseTransition')
 
-    function LayeredTransition(options) {
-        BaseTransition.call(this, options)
+    function LayeredTransition() {
+        BaseTransition.apply(this, arguments)
     }
 
     LayeredTransition.DEFAULT_OPTIONS = {

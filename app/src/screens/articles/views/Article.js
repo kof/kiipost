@@ -13,6 +13,7 @@ define(function(require, exports, module) {
     var elementsMap = require('components/elements-map/elementsMap')
 
     var app = require('app')
+    var constants = require('constants')
 
     var tpl = require('../templates/article.html')
 
@@ -33,8 +34,8 @@ define(function(require, exports, module) {
         var width = app.context.getSize()[0]
 
         this.model = this.options.model
-        this.options.size = [width, width * app.GOLDEN_RATIO]
-        this._imageWidth = Math.round(this.options.size[1] * app.GOLDEN_RATIO)
+        this.options.size = [width, width * constants.GOLDEN_RATIO]
+        this._imageWidth = Math.round(this.options.size[1] * constants.GOLDEN_RATIO)
         this._poolItem = pool.get()
 
         this.surface = new Surface({

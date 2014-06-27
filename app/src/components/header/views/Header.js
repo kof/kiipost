@@ -1,23 +1,23 @@
 define(function(require, exports, module) {
     'use strict'
 
+    var inherits = require('inherits')
+
     var View = require('famous/core/View')
     var Surface = require('famous/core/Surface')
     var Modifier  = require('famous/core/Modifier')
     var Transform = require('famous/core/Transform')
     var ContainerSurface = require('famous/surfaces/ContainerSurface')
 
-    var inherits = require('inherits')
-
-    var app = require('app')
+    var constants = require('constants')
 
     function Header() {
         View.apply(this, arguments)
 
-        var size = app.context.getSize()
+        var size = this.options.context.getSize()
 
         // Height is the golden ratio.
-        this.options.size = [size[0], app.GOLDEN_RATIO * size[0]]
+        this.options.size = [size[0], constants.GOLDEN_RATIO * size[0]]
         this.models = this.options.models
 
         this.surface = new ContainerSurface({
@@ -36,10 +36,7 @@ define(function(require, exports, module) {
 
         this.avatar = new Surface({
             classes: ['avatar'],
-            size: [35, 35],
-            properties: {
-                backgroundImage: this.options.avatarImage
-            }
+            size: [35, 35]
         })
         this.surface.add(this.avatar)
 
@@ -57,7 +54,8 @@ define(function(require, exports, module) {
     module.exports = Header
 
     Header.DEFAULT_OPTIONS = {
-        title: 'Home'
+        title: 'Home',
+        models: null
     }
 
     Header.prototype.setAvatarUrl = function(url) {

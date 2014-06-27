@@ -30,7 +30,7 @@ define(function(require, exports, module) {
         this.layout.sequenceFrom(this.surfaces)
         this.add(this.layout)
 
-        this.bg = new BackgroundView()
+        this.bg = new BackgroundView({context: app.context})
         this.add(this.bg)
 
         this.logo = new Surface({

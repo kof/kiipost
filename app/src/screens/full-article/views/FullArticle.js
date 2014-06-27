@@ -11,10 +11,12 @@ define(function(require, exports, module) {
 
     var BackgroundView = require('components/background/Background')
     var SpinnerView = require('components/spinner/views/Spinner')
-    var KiipostView = require('./Kiipost')
     var Article = require('components/article/models/Article')
 
+    var KiipostView = require('./Kiipost')
+
     var app = require('app')
+    var constants = require('constants')
 
     function FullArticle() {
         View.apply(this, arguments)
@@ -27,7 +29,7 @@ define(function(require, exports, module) {
         this.add(this.scrollview)
         this.scrollview.sequenceFrom(this.surfaces)
 
-        this.image = new BackgroundView()
+        this.image = new BackgroundView({context: app.context})
         this.add(this.image)
 
         this.topBtns = new Surface({
@@ -43,7 +45,7 @@ define(function(require, exports, module) {
         this.header = new Surface({
             content: this.title,
             classes: ['full-article-header'],
-            size: [size[0], size[0] * app.GOLDEN_RATIO]
+            size: [size[0], size[0] * constants.GOLDEN_RATIO]
         })
         this.header.pipe(this.scrollview)
         this.surfaces.push(this.header)

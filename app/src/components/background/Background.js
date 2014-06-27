@@ -9,13 +9,11 @@ define(function(require, exports, module) {
     var Transform = require('famous/core/Transform')
     var ContainerSurface = require('famous/surfaces/ContainerSurface')
 
-    var app = require('app')
-
     function Background() {
         View.apply(this, arguments)
 
         var o = this.options
-        var size = o.size || app.context.getSize()
+        var size = o.context.getSize()
 
         this.container = new ContainerSurface({
             classes: ['background'],
@@ -41,14 +39,14 @@ define(function(require, exports, module) {
     Background.DEFAULT_OPTIONS = {
         offset: 20,
         content: 'content/images/background.png',
-        size: null,
         properties: {
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
             backgroundImage: null,
             zIndex: -1
-        }
+        },
+        context: null
     }
 
     Background.prototype.setContent = function(url) {
@@ -64,21 +62,23 @@ define(function(require, exports, module) {
 
         this.x = -o.offset
         this.y = -o.offset
+        o.context.on('deviceorientation', _.throttle(this._onDeviceOrientation.bind(this), 50))
+    }
 
-        app.context.on('deviceorientation', function(e) {
-            var x = e.gamma
-            var y = e.beta
-            var set = false
+    Background.prototype._onDeviceOrientation = function(e) {
+        var o = this.options
+        var x = e.gamma, y = e.beta
+        var set = false
 
-            if (x < o.offset && x > -o.offset && this.x !== -x) {
-                this.x = -x
-                set = true
-            }
-            if (y < o.offset && y > -o.offset && this.y !== -y) {
-                this.y = -y
-                set = true
-            }
-            if (set) this.modifier.transformFrom(Transform.translate(this.x, this.y, 0))
-        }.bind(this));
+        if (x < o.offset && x > -o.offset && this.x !== -x) {
+            this.x = -x
+            set = true
+        }
+        if (y < o.offset && y > -o.offset && this.y !== -y) {
+            this.y = -y
+            set = true
+        }
+
+        if (set) this.modifier.transformFrom(Transform.translate(this.x, this.y, 0))
     }
 })

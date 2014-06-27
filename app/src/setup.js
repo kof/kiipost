@@ -1,7 +1,6 @@
 define(function(require, exports, module) {
     'use strict'
 
-    var log = require('log')
     var $ = require('jquery')
 
     // XXX
