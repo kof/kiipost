@@ -25,10 +25,6 @@ define(function(require, exports, module) {
 
     context.add(exports.controller)
 
-    window.addEventListener('deviceorientation', function(e) {
-        context.emit('deviceorientation', e)
-    })
-
     exports.ready = new Promise(function(fulfill, reject) {
         var isResized, isDomReady
         var isDeviceReady = !window.cordova

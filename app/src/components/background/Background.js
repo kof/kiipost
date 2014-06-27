@@ -15,6 +15,9 @@ define(function(require, exports, module) {
         var o = this.options
         var size = o.context.getSize()
 
+        this.x = -o.offset
+        this.y = -o.offset
+
         this.container = new ContainerSurface({
             classes: ['background'],
             properties: {
@@ -23,14 +26,19 @@ define(function(require, exports, module) {
             }
         })
         this.add(this.container)
+
         this.image = new Surface({
             properties: o.properties,
             size: [size[0] + o.offset * 2, size[1] + o.offset * 2]
         })
         this.modifier = new Modifier({origin: [0.5, 0.5]})
         this.container.add(this.modifier).add(this.image)
+
         if (o.content) this.setContent(o.content)
-        this._initParallax()
+
+        this._onChange = _.throttle(this._transform.bind(this), 50)
+        this.container.on('deploy', this._onDeploy.bind(this))
+        this.container.on('recall', this._onRecall.bind(this))
     }
 
     inherits(Background, View)
@@ -57,15 +65,15 @@ define(function(require, exports, module) {
         return this.image.setProperties(props)
     }
 
-    Background.prototype._initParallax = function() {
-        var o = this.options
-
-        this.x = -o.offset
-        this.y = -o.offset
-        o.context.on('deviceorientation', _.throttle(this._onDeviceOrientation.bind(this), 50))
+    Background.prototype._onDeploy = function() {
+        window.addEventListener('deviceorientation', this._onChange)
     }
 
-    Background.prototype._onDeviceOrientation = function(e) {
+    Background.prototype._onRecall = function() {
+        window.removeEventListener('deviceorientation', this._onChange)
+    }
+
+    Background.prototype._transform = function(e) {
         var o = this.options
         var x = e.gamma, y = e.beta
         var set = false
