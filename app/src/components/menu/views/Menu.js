@@ -83,7 +83,7 @@ define(function(require, exports, module) {
         this._eventOutput.emit('menu:change', name)
     }
 
-    Menu.prototype._onDeploy = function() {
+    Menu.prototype._onDeploy = function() {
         this.select(this.options.selected)
     }
 })

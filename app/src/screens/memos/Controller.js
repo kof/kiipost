@@ -39,7 +39,7 @@ define(function(require, exports, module) {
     Memos.prototype.memos = function() {
         this.baseTransition.commit(app.controller)
 
-        app.controller.show(this.view, function() {
+        app.controller.show(this.view, function() {
             this.models.user.authorize.then(this.view.load.bind(this.view))
         }.bind(this))
     }
@@ -48,7 +48,7 @@ define(function(require, exports, module) {
         app.context.emit(name + ':open')
     }
 
-    Memos.prototype._onOpen = function() {
+    Memos.prototype._onOpen = function() {
         this.router.navigate('memos')
         this.memos()
     }
