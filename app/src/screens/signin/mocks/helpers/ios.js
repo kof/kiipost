@@ -3,7 +3,7 @@ define(function(require, exports, module) {
 
     var ios = require('../../helpers/ios')
 
-    ios.isAvailable = function() {
+    ios.available = function() {
         return new Promise(function(fulfill, reject) {
             fulfill()
         })

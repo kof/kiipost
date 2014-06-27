@@ -38,10 +38,7 @@ define(function(require, exports, module) {
 
     Memos.prototype.memos = function() {
         this.baseTransition.commit(app.controller)
-
-        app.controller.show(this.view, function() {
-            this.models.user.authorize.then(this.view.load.bind(this.view))
-        }.bind(this))
+        app.controller.show(this.view, this.view.load.bind(this.view))
     }
 
     Memos.prototype._onMenuChange = function(name) {

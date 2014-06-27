@@ -11,23 +11,25 @@ define(function(require, exports, module) {
 
     var app = require('app')
 
-    function FullArticle() {
+    function FullArticle(options) {
         this.routes = {
             'articles/:id': 'article'
         }
-        Controller.apply(this, arguments)
-        this.options = _.extend({}, FullArticle.DEFAULT_OPTIONS, this.options)
+
+        options = _.extend({}, FullArticle.DEFAULT_OPTIONS, options)
+        this.models = options.models
+        Controller.call(this, options)
         this.router = this.options.router
     }
 
     inherits(FullArticle, Controller)
     module.exports = FullArticle
 
-    FullArticle.DEFAULT_OPTIONS = {}
+    FullArticle.DEFAULT_OPTIONS = {models: null}
 
     FullArticle.prototype.initialize = function() {
         this.layeredTransition = new LayeredTransition({size: app.context.getSize()})
-        this.view = new FullArticleView()
+        this.view = new FullArticleView({models: this.models})
         this.view.on('close', function() {
             app.context.emit('fullArticle:close')
         }.bind(this))

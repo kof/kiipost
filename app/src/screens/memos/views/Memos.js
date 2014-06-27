@@ -21,12 +21,14 @@ define(function(require, exports, module) {
     function Memos() {
         View.apply(this, arguments)
 
+        this.models = this.options.models
+
         this.background = new BackgroundView({context: app.context})
         this.add(this.background)
 
         this.header = new HeaderView({
             context: app.context,
-            models: this.options.models
+            models: this.models
         })
 
         this.menu = new MenuView({selected: 'memos'})
@@ -40,7 +42,7 @@ define(function(require, exports, module) {
             ItemView: MemoView,
             views: [this.header],
             collection: this.options.collection,
-            models: this.options.models
+            models: this.models
         })
 
         this.stream.on('stream:loadstart', this.spinner.show.bind(this.spinner))
@@ -65,7 +67,8 @@ define(function(require, exports, module) {
 
     Memos.prototype.load = function() {
         if (this._loaded) return
-        this.stream.load()
+        this.spinner.show()
+        this.models.user.authorize.then(this.stream.load.bind(this.stream))
         this._loaded = true
     }
 })

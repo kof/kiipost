@@ -24,6 +24,7 @@ define(function(require, exports, module) {
         var size = app.context.getSize()
 
         this.surfaces = []
+        this.models = this.options.models
 
         this.scrollview = new Scrollview()
         this.add(this.scrollview)
@@ -76,14 +77,16 @@ define(function(require, exports, module) {
     inherits(FullArticle, View)
     module.exports = FullArticle
 
-    FullArticle.DEFAULT_OPTIONS = {}
+    FullArticle.DEFAULT_OPTIONS = {models: null}
 
     FullArticle.prototype.load = function(id) {
         this.model = new Article({_id: id})
         this.spinner.show()
-        this.model.fetch()
-            .then(this.setContent.bind(this))
-            .always(this.spinner.hide.bind(this.spinner))
+        this.models.user.authorize.then(function() {
+            this.model.fetch()
+                .then(this.setContent.bind(this))
+                .always(this.spinner.hide.bind(this.spinner))
+        }.bind(this))
     }
 
     FullArticle.prototype.setContent = function() {

@@ -32,7 +32,7 @@ define(function(require, exports, module) {
         this.view = new SigninView({model: this.models.user})
         this.view.on('signin:start', this._onSigninStart.bind(this))
         this.view.on('signin:success', this._onSigninSuccess.bind(this))
-        ios.isAvailable().then(this._signin.bind(this))
+        ios.available().then(this._signin.bind(this))
     }
 
     Signin.prototype.signin = function() {

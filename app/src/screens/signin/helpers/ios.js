@@ -5,7 +5,7 @@ define(function(require, exports, module) {
     var transformKeys = require('shared/utils/transformKeys')
     var rename = require('rename-keys')
 
-    exports.isAvailable = function() {
+    exports.available = function() {
         var api = window.socialAuth
 
         return new Promise(function(fulfill, reject) {
@@ -64,7 +64,7 @@ define(function(require, exports, module) {
                 )
             }
 
-            exports.isAvailable()
+            exports.available()
                 .then(getAccount)
                 .catch(reject)
         })

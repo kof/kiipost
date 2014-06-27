@@ -21,12 +21,14 @@ define(function(require, exports, module) {
     function Articles() {
         View.apply(this, arguments)
 
+        this.models = this.options.models
+
         this.background = new BackgroundView({context: app.context})
         this.add(this.background)
 
         this.header = new HeaderView({
             context: app.context,
-            models: this.options.models
+            models: this.models
         })
 
         this.menu = new MenuView({selected: 'articles'})
@@ -59,12 +61,16 @@ define(function(require, exports, module) {
     inherits(Articles, View)
     module.exports = Articles
 
-    Articles.DEFAULT_OPTIONS = {}
+    Articles.DEFAULT_OPTIONS = {
+        models: null,
+        collection: null
+    }
 
 
     Articles.prototype.load = function() {
         if (this._loaded) return
-        this.stream.load()
+        this.spinner.show()
+        this.models.user.authorize.then(this.stream.load.bind(this.stream))
         this._loaded = true
     }
 

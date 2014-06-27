@@ -21,7 +21,7 @@ var apiModules = ['users', 'memos', 'articles']
 function create(connection) {
     // !!! Attention never commit this.
 
-    // app.use(require('koa-slow')({delay: 5000}))
+    // app.use(require('koa-slow')({delay: 3000}))
 
     app.use(logger())
     app.use(compress({level: 5}))

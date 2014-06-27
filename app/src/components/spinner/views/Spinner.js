@@ -24,8 +24,8 @@ define(function(require, exports, module) {
         })
 
         var angle = 0
-        var imageModifier
-        imageModifier = new Modifier({
+        var rotationModifier
+        rotationModifier = new Modifier({
             origin: this.options.origin,
             transform: function(val) {
                 angle += this.options.step
@@ -34,7 +34,7 @@ define(function(require, exports, module) {
         })
         this.spinner = this.add(new Modifier({origin: this.options.origin}))
         this.spinner.add(this.container)
-        this.container.add(imageModifier).add(this.image)
+        this.container.add(rotationModifier).add(this.image)
     }
 
     inherits(Spinner, RenderController)
@@ -54,6 +54,7 @@ define(function(require, exports, module) {
     }
 
     Spinner.prototype.show = function(immediate) {
+        if (this._showing >= 0) return
         clearTimeout(this._timeoutId)
         this._timeoutId = setTimeout(function() {
             Spinner.super_.prototype.show.call(this, this.spinner)
