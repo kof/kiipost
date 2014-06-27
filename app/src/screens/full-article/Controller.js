@@ -35,8 +35,9 @@ define(function(require, exports, module) {
     }
 
     FullArticle.prototype.article = function(id) {
-        this.view.load(id)
-        app.controller.show(this.view)
+        app.controller.show(this.view, function() {
+            this.view.load(id)
+        }.bind(this))
     }
 
     FullArticle.prototype._onOpen = function(id) {

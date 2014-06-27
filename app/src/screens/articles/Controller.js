@@ -38,8 +38,9 @@ define(function(require, exports, module) {
     }
 
     Articles.prototype.articles = function() {
-        app.controller.show(this.view)
-        this.models.user.isAuthorized.then(this.view.load.bind(this.view))
+        app.controller.show(this.view, function() {
+            this.models.user.isAuthorized.then(this.view.load.bind(this.view))
+        }.bind(this))
     }
 
     Articles.prototype._onMenuChange = function(name) {

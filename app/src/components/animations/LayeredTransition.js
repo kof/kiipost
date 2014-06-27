@@ -16,7 +16,7 @@ define(function(require, exports, module) {
             duration: 300,
             curve: 'easeIn'
         },
-        outOpacity: 0.5,
+        outOpacity: 0,
         outScale: 0.9,
         outTransition: {
             duration: 300,

@@ -80,7 +80,7 @@ define(function(require, exports, module) {
 
     FullArticle.prototype.load = function(id) {
         this.model = new Article({_id: id})
-        this.spinner.show(true)
+        this.spinner.show()
         this.model.fetch()
             .then(this.setContent.bind(this))
             .always(this.spinner.hide.bind(this.spinner))
