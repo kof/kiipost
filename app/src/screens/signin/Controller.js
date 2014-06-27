@@ -25,7 +25,7 @@ define(function(require, exports, module) {
     module.exports = Signin
 
     Signin.DEFAULT_OPTIONS = {
-        defaultScreen: 'saved'
+        defaultScreen: 'memos'
     }
 
     Signin.prototype.initialize = function() {

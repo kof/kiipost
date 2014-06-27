@@ -5,8 +5,9 @@ define(function(require, exports, module) {
     var $ = require('jquery')
 
     // XXX
-    var API_BASE_URL = 'http://localhost:3000'
+    //var API_BASE_URL = 'http://oleg.localtunnel.me'
     //var API_BASE_URL = 'http://kiipost-dev.herokuapp.com'
+    var API_BASE_URL = 'http://192.168.1.11:3000'
 
     $.ajaxSetup({
         xhrFields: {

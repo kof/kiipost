@@ -7,8 +7,8 @@ define(function(require, exports, module) {
     var View = require('famous/core/View')
     var Surface = require('famous/core/Surface')
     var Transform = require('famous/core/Transform')
-    var Modifier = require('famous/core/Modifier')
     var RenderController = require('famous/views/RenderController')
+    var CachedMap = require('famous/transitions/CachedMap')
 
     function Jumper() {
         RenderController.apply(this, arguments)
@@ -22,26 +22,16 @@ define(function(require, exports, module) {
             classes: ['jumper', 'icomatic']
         })
 
-        var visibleTransform = Transform.multiply(Transform.scale(1, 1), Transform.inFront)
+        var getOrigin = _.identity.bind(_, this.options.origin)
 
-        var origin = [0.5, 0.5]
-
-        this.inOriginFrom(function() {
-            return origin
-        })
-
-        this.outOriginFrom(function() {
-            return origin
-        })
-
-        this.inTransformFrom(function(scale) {
-            if (scale == 1) return visibleTransform
+        this.inOriginFrom(getOrigin)
+        this.outOriginFrom(getOrigin)
+        this.inTransformFrom(CachedMap.create(function(scale) {
             return Transform.multiply(Transform.scale(scale, scale), Transform.inFront)
-        })
-
-        this.outTransformFrom(function(scale) {
-            if (scale > 0) return Transform.multiply(Transform.scale(scale, scale), Transform.inFront)
-        })
+        }))
+        this.outTransformFrom(CachedMap.create(function(scale) {
+            return Transform.multiply(Transform.scale(scale, scale), Transform.inFront)
+        }))
 
         this.surface.on('click', this._onClick.bind(this))
         this.scrollview.sync.on('update', this._onScroll.bind(this))
@@ -51,6 +41,7 @@ define(function(require, exports, module) {
     module.exports = Jumper
 
     Jumper.DEFAULT_OPTIONS = {
+        origin: [0.5, 0.1],
         size: [45, 45],
         scrollview: null,
         context: null,

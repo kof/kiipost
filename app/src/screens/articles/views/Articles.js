@@ -26,7 +26,7 @@ define(function(require, exports, module) {
 
         this.header = new HeaderView(this.options)
 
-        this.menu = new MenuView()
+        this.menu = new MenuView({selected: 'articles'})
         this.menu.pipe(this._eventOutput)
         this.header.surface.add(this.menu)
 

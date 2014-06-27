@@ -7,6 +7,7 @@ define(function(require, exports, module) {
     var Surface = require('famous/core/Surface')
     var Modifier  = require('famous/core/Modifier')
     var Transform = require('famous/core/Transform')
+    var ContainerSurface = require('famous/surfaces/ContainerSurface')
 
     var app = require('app')
 
@@ -16,13 +17,20 @@ define(function(require, exports, module) {
         var o = this.options
         var size = o.size || app.context.getSize()
 
-        this.image = new Surface({
+        this.container = new ContainerSurface({
             classes: ['background'],
+            properties: {
+                zIndex: o.properties.zIndex,
+                overflow: 'hidden'
+            }
+        })
+        this.add(this.container)
+        this.image = new Surface({
             properties: o.properties,
             size: [size[0] + o.offset * 2, size[1] + o.offset * 2]
         })
         this.modifier = new Modifier({origin: [0.5, 0.5]})
-        this.add(this.modifier).add(this.image)
+        this.container.add(this.modifier).add(this.image)
         if (o.content) this.setContent(o.content)
         this._initParallax()
     }

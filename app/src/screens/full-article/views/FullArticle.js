@@ -6,6 +6,7 @@ define(function(require, exports, module) {
     var View = require('famous/core/View')
     var Surface = require('famous/core/Surface')
     var Modifier = require('famous/core/Modifier')
+    var Transform = require('famous/core/Transform')
     var Scrollview = require('famous/views/Scrollview')
 
     var BackgroundView = require('components/background/Background')
@@ -39,13 +40,13 @@ define(function(require, exports, module) {
         this.surfaces.push(this.topBtns)
 
         this.title = document.createElement('h1')
-        this.head = new Surface({
+        this.header = new Surface({
             content: this.title,
-            classes: ['full-article-head'],
+            classes: ['full-article-header'],
             size: [size[0], size[0] * app.GOLDEN_RATIO]
         })
-        this.head.pipe(this.scrollview)
-        this.surfaces.push(this.head)
+        this.header.pipe(this.scrollview)
+        this.surfaces.push(this.header)
 
         this.textContent = document.createElement('div')
         this.text = new Surface({
@@ -114,7 +115,7 @@ define(function(require, exports, module) {
         app.imagesLoader.load(imageUrl, function(err, data) {
             if (err) return
 
-            var size = this.head.getSize()
+            var size = this.header.getSize()
             var props = {}
 
             props.backgroundSize = isIcon ? 'contain' : 'cover'
@@ -132,7 +133,7 @@ define(function(require, exports, module) {
 
     FullArticle.prototype._setTextSize = function() {
         var textHeight = this.textContent.parentNode.clientHeight
-        var headerHeight = this.head.getSize()[1]
+        var headerHeight = this.header.getSize()[1]
         var contextHeight = app.context.getSize()[1]
 
         if (textHeight + headerHeight < contextHeight) {

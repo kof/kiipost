@@ -11,7 +11,7 @@ define(function(require, exports, module) {
 
     function Memos(options) {
         this.routes = {
-            'saved': 'saved'
+            'memos': 'memos'
         }
         options = _.extend({}, Memos.DEFAULT_OPTIONS, options)
         this.models = options.models
@@ -31,17 +31,20 @@ define(function(require, exports, module) {
             models: this.models
         })
         this.view.on('menu:change', this._onMenuChange.bind(this))
+        app.context.on('memos:open', this._onOpen.bind(this))
     }
 
-    Memos.prototype.saved = function() {
-        app.controller.show(this.view, function() {
-            this.view.menu.select('saved')
-        }.bind(this))
+    Memos.prototype.memos = function() {
+        app.controller.show(this.view)
         this.models.user.isAuthorized.then(this.view.load.bind(this.view))
     }
 
     Memos.prototype._onMenuChange = function(name) {
-        this.view.menu.select(name)
-        this.router.navigate(name, {trigger: true})
+        app.context.emit(name + ':open')
+    }
+
+    Memos.prototype._onOpen = function() {
+        this.router.navigate('memos')
+        this.memos()
     }
 })

@@ -1,5 +1,5 @@
 html {
-    background: url('/content/images/background.png') no-repeat;
+    background: #000;
     background-size: cover;
     font-family: Ubuntu;
     -webkit-touch-callout: none; /* prevent callout to copy image, etc when tap to hold */

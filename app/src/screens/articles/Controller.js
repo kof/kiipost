@@ -12,7 +12,7 @@ define(function(require, exports, module) {
 
     function Articles(options) {
         this.routes = {
-            'discover': 'discover'
+            'articles': 'articles'
         }
         options = _.extend({}, Articles.DEFAULT_OPTIONS, options)
         this.models = options.models
@@ -32,20 +32,32 @@ define(function(require, exports, module) {
             models: this.models
         })
         this.view.on('menu:change', this._onMenuChange.bind(this))
-        this.view.on('article:open', function(id) {
-            this.router.navigate('articles/' + id, {trigger: true})
-        }.bind(this))
+        this.view.on('article:open', this._onArticleOpen.bind(this))
+        app.context.on('fullArticle:close', this._onFullArticleClose.bind(this))
+        app.context.on('articles:open', this._onOpen.bind(this))
     }
 
-    Articles.prototype.discover = function() {
-        app.controller.show(this.view, function() {
-            this.view.menu.select('discover')
-        }.bind(this))
+    Articles.prototype.articles = function() {
+        app.controller.show(this.view)
         this.models.user.isAuthorized.then(this.view.load.bind(this.view))
     }
 
     Articles.prototype._onMenuChange = function(name) {
-        this.view.menu.select(name)
-        this.router.navigate(name, {trigger: true})
+        app.context.emit(name + ':open')
+    }
+
+    Articles.prototype._onArticleOpen = function(id) {
+        app.context.emit('fullArticle:open', id)
+    }
+
+    Articles.prototype._onFullArticleClose = function(id) {
+        // replace animation
+        app.controller.show(this.view)
+        this.router.navigate('articles')
+    }
+
+    Articles.prototype._onOpen = function() {
+        this.router.navigate('articles')
+        this.articles()
     }
 })

@@ -6,8 +6,7 @@ define(function(require, exports, module) {
 
     var View = require('famous/core/View')
     var Surface = require('famous/core/Surface')
-    var ContainerSurface = require('famous/surfaces/ContainerSurface')
-    var Utility = require('famous/utilities/Utility')
+    var Engine = require('famous/core/Engine')
 
     var app = require('app')
 
@@ -24,6 +23,7 @@ define(function(require, exports, module) {
         })
         this.add(this.surface)
         this.surface.on('click', this._onClick.bind(this))
+        this.surface.on('deploy', this._onDeploy.bind(this))
     }
 
     inherits(Menu, View)
@@ -32,10 +32,10 @@ define(function(require, exports, module) {
     Menu.DEFAULT_OPTIONS = {
         size: [undefined, 50],
         items: [
-            {title: 'kiiposts', name: 'saved'},
-            {title: 'discover', name: 'discover'}
+            {title: 'kiiposts', name: 'memos'},
+            {title: 'discover', name: 'articles'}
         ],
-        selected: 'discover'
+        selected: 'articles'
     }
 
     Menu.prototype.select = function(name) {
@@ -84,6 +84,10 @@ define(function(require, exports, module) {
         var name = e.target.getAttribute('data-name')
         if (this.selected && this.selected.name == name) return
         this._eventOutput.emit('menu:change', name)
+    }
+
+    Menu.prototype._onDeploy = function() {
+        this.select(this.options.selected)
     }
 })
 
