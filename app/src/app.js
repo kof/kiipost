@@ -9,6 +9,7 @@ define(function(require, exports, module) {
     var RenderController = require('famous/views/RenderController')
 
     var UserModel = require('components/user/models/User')
+    var BaseTransition = require('components/animations/BaseTransition')
 
     var SigninController = require('./screens/signin/Controller')
     var ArticlesController = require('./screens/articles/Controller')
@@ -22,6 +23,8 @@ define(function(require, exports, module) {
     exports.imagesLoader = new ImagesLoader()
 
     exports.controller = new RenderController()
+    new BaseTransition().commit(exports.controller)
+
     context.add(exports.controller)
 
     window.addEventListener('deviceorientation', function(e) {

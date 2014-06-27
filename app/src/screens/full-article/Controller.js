@@ -26,7 +26,7 @@ define(function(require, exports, module) {
     FullArticle.DEFAULT_OPTIONS = {}
 
     FullArticle.prototype.initialize = function() {
-        this.animation = new LayeredTransition({size: app.context.getSize()})
+        this.layeredTransition = new LayeredTransition({size: app.context.getSize()})
         this.view = new FullArticleView()
         this.view.on('close', function() {
             app.context.emit('fullArticle:close')
@@ -36,13 +36,13 @@ define(function(require, exports, module) {
 
     FullArticle.prototype.article = function(id) {
         this.view.load(id)
-        this.animation.commit(app.controller)
         app.controller.show(this.view)
-        this.animation.commit(app.controller, true)
     }
 
     FullArticle.prototype._onOpen = function(id) {
         this.router.navigate('articles/' + id)
+        this.layeredTransition.commit(app.controller)
         this.article(id)
+        this.layeredTransition.commit(app.controller, true)
     }
 })

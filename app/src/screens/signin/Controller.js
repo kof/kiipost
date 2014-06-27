@@ -36,7 +36,7 @@ define(function(require, exports, module) {
     }
 
     Signin.prototype.signin = function() {
-        app.controller.show(this.view, this.options)
+        app.controller.show(this.view)
     }
 
     Signin.prototype._signin = function() {
@@ -48,17 +48,13 @@ define(function(require, exports, module) {
         }
     }
 
-    Signin.prototype._go = function() {
-        if (!backbone.history.getFragment()) {
-            this.router.navigate(this.options.defaultScreen, {trigger: true})
-        }
-    }
-
     Signin.prototype._onSigninStart = _.debounce(function() {
         this._signin()
     }, 500, true)
 
     Signin.prototype._onSigninSuccess = function() {
-        this._go()
+        if (!backbone.history.getFragment()) {
+            this.router.navigate(this.options.defaultScreen, {trigger: true})
+        }
     }
 })

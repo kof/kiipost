@@ -51,7 +51,6 @@ define(function(require, exports, module) {
     }
 
     Articles.prototype._onFullArticleClose = function(id) {
-        // replace animation
         app.controller.show(this.view)
         this.router.navigate('articles')
     }

@@ -2,12 +2,13 @@ define(function(require, exports, module) {
     var Controller = require('controller')
     var inherits = require('inherits')
 
-    var app = require('app')
-
-    var MemoModel = require('./models/Memo')
     var StreamCollection = require('components/stream/collections/Stream')
+    var BaseTransition = require('components/animations/BaseTransition')
 
     var MemosView = require('./views/Memos')
+    var MemoModel = require('./models/Memo')
+
+    var app = require('app')
 
     function Memos(options) {
         this.routes = {
@@ -30,11 +31,13 @@ define(function(require, exports, module) {
             collection: this.collection,
             models: this.models
         })
+        this.baseTransition = new BaseTransition()
         this.view.on('menu:change', this._onMenuChange.bind(this))
         app.context.on('memos:open', this._onOpen.bind(this))
     }
 
     Memos.prototype.memos = function() {
+        this.baseTransition.commit(app.controller)
         app.controller.show(this.view)
         this.models.user.isAuthorized.then(this.view.load.bind(this.view))
     }
