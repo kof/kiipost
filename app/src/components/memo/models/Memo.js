@@ -6,7 +6,8 @@ define(function(require, exports, module) {
     var Article = require('components/article/models/Article')
 
     function Memo() {
-        Model.apply(this, arguments)
+        this.urlRoot = '/api/memos'
+        Memo.super_.apply(this, arguments)
     }
 
     inherits(Memo, Model)

@@ -11,7 +11,6 @@ define(function(require, exports, module) {
 
     var ParallaxedBackgroundView = require('components/parallaxed-background/ParallaxedBackground')
     var SpinnerView = require('components/spinner/views/Spinner')
-    var Article = require('components/article/models/Article')
 
     var KiipostView = require('./Kiipost')
 
@@ -24,7 +23,7 @@ define(function(require, exports, module) {
         var size = app.context.getSize()
 
         this.surfaces = []
-        this.models = this.options.models
+        this.models = _.clone(this.options.models)
 
         this.scrollview = new Scrollview()
         this.add(this.scrollview)
@@ -78,16 +77,6 @@ define(function(require, exports, module) {
     module.exports = FullArticle
 
     FullArticle.DEFAULT_OPTIONS = {models: null}
-
-    FullArticle.prototype.load = function(id) {
-        this.model = new Article({_id: id})
-        this.spinner.show()
-        this.models.user.authorize.then(function() {
-            this.model.fetch()
-                .then(this.setContent.bind(this))
-                .always(this.spinner.hide.bind(this.spinner))
-        }.bind(this))
-    }
 
     FullArticle.prototype.setContent = function() {
         this.title.textContent = this.model.get('title')

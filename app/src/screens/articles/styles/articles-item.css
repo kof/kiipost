@@ -1,7 +1,7 @@
 .articles-item {
     background: #fff;
     border-bottom: 1px solid #ededed;
-    z-index: 1;
+    cursor: pointer;
 }
 .articles-item .inner {
     height: 100%;

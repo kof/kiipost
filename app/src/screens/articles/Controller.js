@@ -33,7 +33,7 @@ define(function(require, exports, module) {
         })
         this.view.on('menu:change', this._onMenuChange.bind(this))
         this.view.on('article:open', this._onArticleOpen.bind(this))
-        app.context.on('fullArticle:close', this._onOpen.bind(this))
+        app.context.on('fullArticle:close', this._onFullArticleClose.bind(this))
         app.context.on('articles:open', this._onOpen.bind(this))
     }
 
@@ -41,12 +41,18 @@ define(function(require, exports, module) {
         app.controller.show(this.view, this.view.load.bind(this.view))
     }
 
-    Articles.prototype._onMenuChange = function(name) {
-        app.context.emit(name + ':open')
+    Articles.prototype._onMenuChange = function(e) {
+        app.context.emit(e.name + ':open')
     }
 
-    Articles.prototype._onArticleOpen = function(id) {
-        app.context.emit('fullArticle:open', id)
+    Articles.prototype._onArticleOpen = function(e) {
+        app.context.emit('fullArticle:open', e)
+    }
+
+    Articles.prototype._onFullArticleClose = function(e) {
+        if (e.isMemo) return
+        this.router.navigate('articles')
+        this.articles()
     }
 
     Articles.prototype._onOpen = function() {

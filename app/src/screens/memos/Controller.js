@@ -4,9 +4,9 @@ define(function(require, exports, module) {
 
     var StreamCollection = require('components/stream/collections/Stream')
     var BaseTransition = require('components/animations/BaseTransition')
+    var MemoModel = require('components/memo/models/Memo')
 
     var MemosView = require('./views/Memos')
-    var MemoModel = require('./models/Memo')
 
     var app = require('app')
 
@@ -34,6 +34,7 @@ define(function(require, exports, module) {
         this.baseTransition = new BaseTransition()
         this.view.on('menu:change', this._onMenuChange.bind(this))
         app.context.on('memos:open', this._onOpen.bind(this))
+        app.context.on('fullArticle:close', this._onFullArticleClose.bind(this))
     }
 
     Memos.prototype.memos = function() {
@@ -41,11 +42,17 @@ define(function(require, exports, module) {
         app.controller.show(this.view, this.view.load.bind(this.view))
     }
 
-    Memos.prototype._onMenuChange = function(name) {
-        app.context.emit(name + ':open')
+    Memos.prototype._onMenuChange = function(e) {
+        app.context.emit(e.name + ':open')
     }
 
     Memos.prototype._onOpen = function() {
+        this.router.navigate('memos')
+        this.memos()
+    }
+
+    Memos.prototype._onFullArticleClose = function(e) {
+        if (!e.isMemo) return
         this.router.navigate('memos')
         this.memos()
     }

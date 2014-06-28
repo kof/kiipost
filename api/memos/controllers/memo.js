@@ -3,14 +3,14 @@
 var m = require('mongoose')
 
 /**
- * Read saved article.
+ * Read saved memo.
  */
 exports.read = function *() {
-    var article
+    var memo
 
-    article = yield m.model('article')
+    memo = yield m.model('memo')
         .findById(this.params.id)
         .exec()
 
-    this.body = article || {}
+    this.body = memo || {}
 }

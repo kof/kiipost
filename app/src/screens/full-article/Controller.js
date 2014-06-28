@@ -6,6 +6,8 @@ define(function(require, exports, module) {
     var _ = require('underscore')
 
     var LayeredTransition = require('components/animations/LayeredTransition')
+    var ArticleModel = require('components/article/models/Article')
+    var MemoModel = require('components/memo/models/Memo')
 
     var FullArticleView = require('./views/FullArticle')
 
@@ -13,7 +15,8 @@ define(function(require, exports, module) {
 
     function FullArticle(options) {
         this.routes = {
-            'articles/:id': 'article'
+            'articles/:id': 'article',
+            'memos/:id': 'memo'
         }
 
         options = _.extend({}, FullArticle.DEFAULT_OPTIONS, options)
@@ -31,21 +34,61 @@ define(function(require, exports, module) {
         this.layeredTransition = new LayeredTransition({size: app.context.getSize()})
         this.view = new FullArticleView({models: this.models})
         this.view.on('close', function() {
-            app.context.emit('fullArticle:close')
+            app.context.emit('fullArticle:close', {isMemo: this.isMemo})
         }.bind(this))
         app.context.on('fullArticle:open', this._onOpen.bind(this))
     }
 
     FullArticle.prototype.article = function(id) {
+        this.isMemo = false
         app.controller.show(this.view, function() {
-            this.view.load(id)
+            this.load(id, this.isMemo)
         }.bind(this))
     }
 
-    FullArticle.prototype._onOpen = function(id) {
-        this.router.navigate('articles/' + id)
+    FullArticle.prototype.memo = function(id) {
+        this.isMemo = true
+        app.controller.show(this.view, function() {
+            this.load(id, this.isMemo)
+        }.bind(this))
+    }
+
+    FullArticle.prototype.load = function(id, isMemo) {
+        var view = this.view
+
+        view.spinner.show()
+        this.models.user.authorize.then(function() {
+            var xhr
+
+            if (isMemo) {
+                var memo = view.models.memo = new MemoModel({_id: id})
+                xhr = memo
+                    .fetch()
+                    .then(function() {
+                        this.model = memo.get('articles')[0]
+                        this.setContent()
+                    }.bind(view))
+            } else {
+                view.model = new ArticleModel({_id: id})
+                xhr = view.model.fetch().then(view.setContent.bind(view))
+            }
+
+            xhr.always(view.spinner.hide.bind(view.spinner))
+        }.bind(this))
+    }
+
+
+    FullArticle.prototype._onOpen = function(model) {
+        var route
         this.layeredTransition.commit(app.controller)
-        this.article(id)
+        if (model.constructor.name == 'Memo') {
+            route = 'memos'
+            this.memo(model.id)
+        } else {
+            route = 'articles'
+            this.article(model.id)
+        }
+        this.router.navigate(route + '/' + model.id)
         this.layeredTransition.commit(app.controller, true)
     }
 })

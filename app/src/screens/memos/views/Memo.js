@@ -3,6 +3,7 @@ define(function(require, exports, module) {
 
     var inherits = require('inherits')
     var _ = require('underscore')
+    var closest = require('closest')
 
     var Engine = require('famous/core/Engine')
     var View = require('famous/core/View')
@@ -104,8 +105,8 @@ define(function(require, exports, module) {
     }
 
     MemoItem.prototype._onClick = function(e) {
-        if (e.target.classList.contains('source')) return
         e.preventDefault()
+        app.context.emit('fullArticle:open', this.model)
     }
 
     MemoItem.prototype._onRecall = function() {

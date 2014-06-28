@@ -26,6 +26,7 @@ require.config({
         qs: '../lib/qs/qs',
         'rename-keys': '../lib/rename-keys/index',
         'jquery-ajax-retry': '../lib/jquery-ajax-retry/dist/jquery.ajax-retry',
+        closest: '../lib/closest/closest',
         'components/log': './components/log/index'
     },
     packages: [

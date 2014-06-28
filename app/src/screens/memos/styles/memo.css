@@ -1,7 +1,7 @@
 .memo {
     background: #fff;
     border-bottom: 1px solid #999;
-    z-index: 1;
+    cursor: pointer;
 }
 .memo .inner {
     display: -webkit-flex;
@@ -66,7 +66,7 @@
     color: #a3a3a3;
 }
 .memo a {
-    display: block;
+    display: inline-block;
     font-size: 0.8rem;
     line-height: 1;
     text-decoration: none;
