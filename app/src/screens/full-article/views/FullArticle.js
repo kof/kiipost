@@ -23,6 +23,7 @@ define(function(require, exports, module) {
         var size = app.context.getSize()
 
         this.surfaces = []
+        this.isMemo = false
         this.models = _.clone(this.options.models)
 
         this.scrollview = new Scrollview()
@@ -76,7 +77,9 @@ define(function(require, exports, module) {
     inherits(FullArticle, View)
     module.exports = FullArticle
 
-    FullArticle.DEFAULT_OPTIONS = {models: null}
+    FullArticle.DEFAULT_OPTIONS = {
+        models: null
+    }
 
     FullArticle.prototype.setContent = function() {
         this.title.textContent = this.model.get('title')
@@ -86,6 +89,7 @@ define(function(require, exports, module) {
         this._setImage()
         // Wait until text is rendered.
         setTimeout(this._setTextSize.bind(this), 50)
+        this.kiipostBtn.setProperties({display: this.isMemo ? 'none' : 'block'})
     }
 
     FullArticle.prototype._setImage = function() {

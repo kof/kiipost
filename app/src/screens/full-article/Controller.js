@@ -34,28 +34,27 @@ define(function(require, exports, module) {
         this.layeredTransition = new LayeredTransition({size: app.context.getSize()})
         this.view = new FullArticleView({models: this.models})
         this.view.on('close', function() {
-            app.context.emit('fullArticle:close', {isMemo: this.isMemo})
+            app.context.emit('fullArticle:close', {isMemo: this.view.isMemo})
         }.bind(this))
         app.context.on('fullArticle:open', this._onOpen.bind(this))
     }
 
     FullArticle.prototype.article = function(id) {
-        this.isMemo = false
         app.controller.show(this.view, function() {
-            this.load(id, this.isMemo)
+            this.load(id, false)
         }.bind(this))
     }
 
     FullArticle.prototype.memo = function(id) {
-        this.isMemo = true
         app.controller.show(this.view, function() {
-            this.load(id, this.isMemo)
+            this.load(id, true)
         }.bind(this))
     }
 
     FullArticle.prototype.load = function(id, isMemo) {
         var view = this.view
 
+        view.isMemo = isMemo
         view.spinner.show()
         this.models.user.authorize.then(function() {
             var xhr
