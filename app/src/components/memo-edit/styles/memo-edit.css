@@ -1,28 +1,28 @@
-.kiipost {
-    z-index: 1;
+.memo-edit {
+    padding: 1rem;
 }
-.kiipost .action-bar {
+.memo-edit .action-bar {
     background: #ededed;
     color: #503c8d;
 }
-.kiipost .counter.error {
+.memo-edit .counter.error {
     color: red;
 }
-.kiipost .submit,
-.kiipost .abort {
+.memo-edit .submit,
+.memo-edit .abort {
     padding: 0 .5em;
     line-height: 3;
     cursor: pointer;
 }
-.kiipost .submit {
+.memo-edit .submit {
     right: 0;
 }
-.kiipost .counter {
+.memo-edit .counter {
     right: 30%;
     color: #999;
     line-height: 3em;
 }
-.kiipost .avatar span {
+.memo-edit .avatar span {
     display: inline-block;
     border-radius: 100%;
     width: 2.5em;
@@ -30,12 +30,12 @@
     background: url('/content/images/dummy-avatar.png') no-repeat;
     background-size: cover;
 }
-.kiipost .memo {
+.memo-edit .memo {
     background: #fff;
     padding: 1em;
     box-sizing: border-box;
 }
-.kiipost textarea {
+.memo-edit textarea {
     outline: none;
     border: none;
     font-size: 1em;

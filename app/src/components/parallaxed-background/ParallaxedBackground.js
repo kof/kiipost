@@ -37,8 +37,8 @@ define(function(require, exports, module) {
         if (o.content) this.setContent(o.content)
 
         this._onChange = _.throttle(this._transform.bind(this), 50)
-        this.container.on('deploy', this._onDeploy.bind(this))
-        this.container.on('recall', this._onRecall.bind(this))
+        this.container.on('deploy', this.resume.bind(this))
+        this.container.on('recall', this.pause.bind(this))
     }
 
     inherits(ParallaxedBackground, View)
@@ -65,12 +65,12 @@ define(function(require, exports, module) {
         return this.image.setProperties(props)
     }
 
-    ParallaxedBackground.prototype._onDeploy = function() {
-        window.addEventListener('deviceorientation', this._onChange)
+    ParallaxedBackground.prototype.pause = function() {
+        window.removeEventListener('deviceorientation', this._onChange)
     }
 
-    ParallaxedBackground.prototype._onRecall = function() {
-        window.removeEventListener('deviceorientation', this._onChange)
+    ParallaxedBackground.prototype.resume = function() {
+        window.addEventListener('deviceorientation', this._onChange)
     }
 
     ParallaxedBackground.prototype._transform = function(e) {

@@ -71,7 +71,7 @@ define(function(require, exports, module) {
     }
 
     Jumper.prototype._hide = function() {
-        if (this._showing > -1) this.hide(this.surface)
+        if (this._showing > -1) this.hide()
     }
 
     Jumper.prototype._show = function() {

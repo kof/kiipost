@@ -34,7 +34,7 @@ define(function(require, exports, module) {
         this.layeredTransition = new LayeredTransition({size: app.context.getSize()})
         this.view = new FullArticleView({models: this.models})
         this.view.on('close', function() {
-            app.context.emit('fullArticle:close', {isMemo: this.view.isMemo})
+            app.context.emit('fullArticle:close', {isMemo: this.isMemo})
         }.bind(this))
         app.context.on('fullArticle:open', this._onOpen.bind(this))
     }
@@ -54,7 +54,8 @@ define(function(require, exports, module) {
     FullArticle.prototype.load = function(id, isMemo) {
         var view = this.view
 
-        view.isMemo = isMemo
+        this.isMemo = isMemo
+        view.setOptions({hasKiipostBtn: !isMemo})
         view.spinner.show()
         this.models.user.authorize.then(function() {
             var xhr

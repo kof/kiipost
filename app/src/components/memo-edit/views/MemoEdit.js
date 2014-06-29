@@ -12,15 +12,16 @@ define(function(require, exports, module) {
     var FormContainerSurface = require('famous/surfaces/FormContainerSurface')
     var TextareaSurface = require('famous/surfaces/TextareaSurface')
 
-    var app = require('app')
+    var SlideDownTransition = require('components/animations/SlideDownTransition')
 
-    function Kiipost() {
+    function MemoEdit() {
         RenderController.apply(this, arguments)
 
-        var size = app.context.getSize()
+        var o = this.options
+        var size = o.context.getSize()
 
         this.container = new ContainerSurface({
-            classes: ['kiipost']
+            classes: ['memo-edit']
         })
         this.add(this.container)
 
@@ -48,7 +49,7 @@ define(function(require, exports, module) {
 
         this.counter = new Surface({
             classes: ['counter'],
-            content: this.options.limit,
+            content: o.limit,
             size: [true, true]
         })
         this.actionBar.add(this.counter)
@@ -61,10 +62,9 @@ define(function(require, exports, module) {
         this.submit.on('click', this._onSubmit.bind(this))
         this.actionBar.add(this.submit)
 
-
         this.memo = new FormContainerSurface({
             classes: ['memo'],
-            size: [undefined, 130]
+            size: [undefined, o.contentSize[1] - this.actionBar.getSize()[1]]
         })
         this.layoutSequence.push(this.memo)
 
@@ -87,29 +87,33 @@ define(function(require, exports, module) {
         })
         this.textarea.on('keydown', this._onType.bind(this))
         this.memoSurfaces.push(this.textarea)
+
+        new SlideDownTransition({size: o.contentSize}).commit(this)
     }
 
-    inherits(Kiipost, RenderController)
-    module.exports = Kiipost
+    inherits(MemoEdit, RenderController)
+    module.exports = MemoEdit
 
-    Kiipost.DEFAULT_OPTIONS = {
-        limit: 130
+    MemoEdit.DEFAULT_OPTIONS = {
+        limit: 130,
+        contentSize: [undefined, 180],
+        context: null
     }
 
-    Kiipost.prototype.show = function() {
-        Kiipost.super_.prototype.show.call(this, this.container, function() {
+    MemoEdit.prototype.show = function() {
+        MemoEdit.super_.prototype.show.call(this, this.container, function() {
             setTimeout(function() {
                 this.textarea.focus()
             }.bind(this), 10)
         }.bind(this))
     }
 
-    Kiipost.prototype.hide = function() {
-        Kiipost.super_.prototype.hide.call(this, this.container)
+    MemoEdit.prototype.hide = function() {
+        MemoEdit.super_.prototype.hide.call(this)
         this._eventOutput.emit('hide')
     }
 
-    Kiipost.prototype._onType = _.throttle(function(e) {
+    MemoEdit.prototype._onType = _.throttle(function(e) {
         var remaining = this.options.limit - this.textarea.getValue().length
 
         this.limitViolation = remaining < 0
@@ -121,7 +125,7 @@ define(function(require, exports, module) {
         this.counter.setContent(remaining)
     }, 100, {leading: false})
 
-    Kiipost.prototype._onSubmit = function() {
+    MemoEdit.prototype._onSubmit = function() {
         alert('submit')
     }
 })

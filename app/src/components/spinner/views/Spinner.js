@@ -63,6 +63,6 @@ define(function(require, exports, module) {
 
     Spinner.prototype.hide = function() {
         clearTimeout(this._timeoutId)
-        Spinner.super_.prototype.hide.call(this, this.spinner)
+        Spinner.super_.prototype.hide.call(this)
     }
 })

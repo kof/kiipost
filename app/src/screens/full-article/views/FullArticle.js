@@ -7,12 +7,13 @@ define(function(require, exports, module) {
     var Surface = require('famous/core/Surface')
     var Modifier = require('famous/core/Modifier')
     var Transform = require('famous/core/Transform')
+    var Group = require('famous/core/Group')
     var Scrollview = require('famous/views/Scrollview')
 
     var ParallaxedBackgroundView = require('components/parallaxed-background/ParallaxedBackground')
     var SpinnerView = require('components/spinner/views/Spinner')
 
-    var KiipostView = require('./Kiipost')
+    var MemoEditView = require('components/memo-edit/views/MemoEdit')
 
     var app = require('app')
     var constants = require('constants')
@@ -23,15 +24,19 @@ define(function(require, exports, module) {
         var size = app.context.getSize()
 
         this.surfaces = []
-        this.isMemo = false
+
         this.models = _.clone(this.options.models)
 
+        this.content = new Group({classes: ['content']})
+        this.contentModifier = new Modifier()
+        this.add(this.contentModifier).add(this.content)
+
         this.scrollview = new Scrollview()
-        this.add(this.scrollview)
+        this.content.add(this.scrollview)
         this.scrollview.sequenceFrom(this.surfaces)
 
-        this.image = new ParallaxedBackgroundView({context: app.context})
-        this.add(this.image)
+        this.bg = new ParallaxedBackgroundView({context: app.context})
+        this.content.add(this.bg)
 
         this.topBtns = new Surface({
             content: '<span class="close icomatic">close</span>' +
@@ -69,16 +74,23 @@ define(function(require, exports, module) {
         this.kiipostBtn.on('click', this._onKiipost.bind(this))
         this.add(new Modifier({origin: [0.5, 0.97]})).add(this.kiipostBtn)
 
-        this.kiipost = new KiipostView()
-        this.kiipost.on('hide', this._onKiipostHide.bind(this))
-        this.add(this.kiipost)
+        this.memoEdit = new MemoEditView({context: app.context})
+        this.memoEdit.on('hide', this._onKiipostHide.bind(this))
+        this.add(this.memoEdit)
+
+        this._optionsManager.on('change', this._onOptionsChange.bind(this))
+        this._toggleKiipostBtn(this.options.hasKiipostBtn, true)
+
     }
 
     inherits(FullArticle, View)
     module.exports = FullArticle
 
     FullArticle.DEFAULT_OPTIONS = {
-        models: null
+        models: null,
+        hasKiipostBtn: true,
+        darkInTransition: {duration: 200},
+        darkOutTransition: {duration: 200},
     }
 
     FullArticle.prototype.setContent = function() {
@@ -89,11 +101,10 @@ define(function(require, exports, module) {
         this._setImage()
         // Wait until text is rendered.
         setTimeout(this._setTextSize.bind(this), 50)
-        this.kiipostBtn.setProperties({display: this.isMemo ? 'none' : 'block'})
     }
 
     FullArticle.prototype._setImage = function() {
-        this.image.setProperties({
+        this.bg.setProperties({
             backgroundImage: null,
             backgroundSize: 'contain',
             backgroundPosition: 'center top'
@@ -119,13 +130,13 @@ define(function(require, exports, module) {
             props.backgroundSize = isIcon ? 'contain' : 'cover'
 
             if (data.width <= size[0] && data.height <= size[1]) {
-                var top = (size[1] + this.image.options.offset * 2 - data.height) / 2
+                var top = (size[1] + this.bg.options.offset * 2 - data.height) / 2
                 props.backgroundSize = 'initial'
                 props.backgroundPosition = 'center ' + top + 'px'
             }
 
-            this.image.setProperties(props)
-            this.image.setContent(imageUrl)
+            this.bg.setProperties(props)
+            this.bg.setContent(imageUrl)
         }.bind(this))
     }
 
@@ -140,14 +151,22 @@ define(function(require, exports, module) {
         this.text.setSize([undefined, textHeight])
     }
 
+    FullArticle.prototype._toggleKiipostBtn = function(show, force) {
+        if (!force && !this.options.hasKiipostBtn) return
+        this.kiipostBtn.setProperties({display: show ? 'block' : 'none'})
+    }
+
     FullArticle.prototype._onKiipost = function(e) {
-        e.preventDefault()
-        e.stopPropagation()
-        this.kiipost.show()
+        this.bg.pause()
+        this.contentModifier.setOpacity(0.3, this.options.darkInTransition)
+        this._toggleKiipostBtn(false)
+        this.memoEdit.show()
     }
 
     FullArticle.prototype._onKiipostHide = function() {
-
+        this.bg.resume()
+        this.contentModifier.setOpacity(1, this.options.darkOutTransition)
+        this._toggleKiipostBtn(true)
     }
 
     FullArticle.prototype._onTopBtnClick = function(e) {
@@ -156,6 +175,12 @@ define(function(require, exports, module) {
             this._eventOutput.emit('close')
         } else if (cls.contains('source')) {
             window.open(this.model.get('link'), 'article')
+        }
+    }
+
+    FullArticle.prototype._onOptionsChange = function(option) {
+        if (option.id == 'hasKiipostBtn') {
+            this._toggleKiipostBtn(option.value, true)
         }
     }
 })
