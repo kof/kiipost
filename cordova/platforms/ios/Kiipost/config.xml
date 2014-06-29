@@ -25,6 +25,9 @@
     <feature name="Notification">
         <param name="ios-package" value="CDVNotification" />
     </feature>
+    <feature name="Keyboard">
+        <param name="ios-package" onload="true" value="CDVKeyboard" />
+    </feature>
     <name>Kiipost</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.

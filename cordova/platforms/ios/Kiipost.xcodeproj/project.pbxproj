@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		060C291F77DC4C378E715C27 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FECCC6D527D94D7894F98CB9 /* Accounts.framework */; };
 		183F75DD6A0642AFB73466FA /* SocialAuthPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = C81B0AAB9D5A46E08C820BF7 /* SocialAuthPlugin.m */; };
@@ -48,6 +47,7 @@
 		DED23F92A13F448B814D86CE /* OAuth+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = A03CCD2DA9A0462FA7635FFD /* OAuth+Additions.m */; };
 		E6A937553DE24907A18AA814 /* OAuthCore.m in Sources */ = {isa = PBXBuildFile; fileRef = AA3169E2540942FFB21F46CC /* OAuthCore.m */; };
 		F8029F1582554014BA6E270D /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA0AD6B7B6B14AC5AA0AE8AF /* Social.framework */; };
+		8E5CC07CB9D4420C8647DD93 /* CDVKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = DE76C5074BE34E2093C6D03E /* CDVKeyboard.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -126,6 +126,8 @@
 		EB87FDF41871DAF40020F90C /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = ../../config.xml; sourceTree = "<group>"; };
 		F840E1F0165FE0F500CFE078 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = Kiipost/config.xml; sourceTree = "<group>"; };
 		FECCC6D527D94D7894F98CB9 /* Accounts.framework */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		DE76C5074BE34E2093C6D03E /* CDVKeyboard.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVKeyboard.m"; path = "com.ben2.cordova.keyboard/CDVKeyboard.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		9E1E5A2A22F74CA0AF93775E /* CDVKeyboard.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVKeyboard.h"; path = "com.ben2.cordova.keyboard/CDVKeyboard.h"; sourceTree = "<group>"; fileEncoding = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -263,6 +265,8 @@
 				30CB62226B0B426CA77BEDBB /* OAuthCore.h */,
 				5ED565D4146448B1B8E84086 /* CDVNotification.m */,
 				14C39AF791584BF98B48F69B /* CDVNotification.h */,
+				DE76C5074BE34E2093C6D03E /* CDVKeyboard.m */,
+				9E1E5A2A22F74CA0AF93775E /* CDVKeyboard.h */,
 			);
 			name = Plugins;
 			path = Kiipost/Plugins;
@@ -468,6 +472,7 @@
 				DED23F92A13F448B814D86CE /* OAuth+Additions.m in Sources */,
 				E6A937553DE24907A18AA814 /* OAuthCore.m in Sources */,
 				400D39A7B443466CB25D7EC7 /* CDVNotification.m in Sources */,
+				8E5CC07CB9D4420C8647DD93 /* CDVKeyboard.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

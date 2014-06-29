@@ -42,4 +42,8 @@ define(function(require, exports, module) {
     backbone.Model.prototype.emit = backbone.Events.trigger
 
     if (!window.Promise) window.Promise = require('promise')
+
+    document.addEventListener('deviceready', function() {
+        if (window.Keyboard) Keyboard.hideFormAccessoryBar(true)
+    })
 })

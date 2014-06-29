@@ -37,6 +37,10 @@
                         {
                             "xml": "<feature name=\"Notification\"><param name=\"ios-package\" value=\"CDVNotification\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Keyboard\"><param name=\"ios-package\" onload=\"true\" value=\"CDVKeyboard\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -48,6 +52,9 @@
             "PACKAGE_NAME": "Kiipost"
         },
         "org.apache.cordova.dialogs": {
+            "PACKAGE_NAME": "Kiipost"
+        },
+        "com.ben2.cordova.keyboard": {
             "PACKAGE_NAME": "Kiipost"
         }
     },

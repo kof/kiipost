@@ -151,21 +151,21 @@ define(function(require, exports, module) {
         this.text.setSize([undefined, textHeight])
     }
 
-    FullArticle.prototype._toggleKiipostBtn = function(show, force) {
+    FullArticle.prototype._toggleKiipostBtn = function(show, force) {
         if (!force && !this.options.hasKiipostBtn) return
         this.kiipostBtn.setProperties({display: show ? 'block' : 'none'})
     }
 
     FullArticle.prototype._onKiipost = function(e) {
         this.bg.pause()
-        this.contentModifier.setOpacity(0.3, this.options.darkInTransition)
+        this.contentModifier.setOpacity(0.3, this.options.darkInTransition)
         this._toggleKiipostBtn(false)
         this.memoEdit.show()
     }
 
     FullArticle.prototype._onKiipostHide = function() {
         this.bg.resume()
-        this.contentModifier.setOpacity(1, this.options.darkOutTransition)
+        this.contentModifier.setOpacity(1, this.options.darkOutTransition)
         this._toggleKiipostBtn(true)
     }
 
