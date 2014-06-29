@@ -27,7 +27,9 @@ require.config({
         'rename-keys': '../lib/rename-keys/index',
         'jquery-ajax-retry': '../lib/jquery-ajax-retry/dist/jquery.ajax-retry',
         closest: '../lib/closest/closest',
-        'components/log': './components/log/index'
+        'components/log': './components/log/index',
+        'components/deviceready': './components/deviceready/index',
+        'components/keyboard': './components/keyboard/index'
     },
     packages: [
 

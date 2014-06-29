@@ -10,6 +10,7 @@ define(function(require, exports, module) {
 
     var UserModel = require('components/user/models/User')
     var BaseTransition = require('components/animations/BaseTransition')
+    var deviceready = require('components/deviceready')
 
     var SigninController = require('./screens/signin/Controller')
     var ArticlesController = require('./screens/articles/Controller')
@@ -39,7 +40,7 @@ define(function(require, exports, module) {
             resolve()
         })
 
-        document.addEventListener('deviceready', function() {
+        deviceready.then(function() {
             isDeviceReady = true
             resolve()
         })

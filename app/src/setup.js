@@ -1,6 +1,7 @@
 define(function(require, exports, module) {
     'use strict'
 
+    if (!window.Promise) window.Promise = require('promise')
     var $ = require('jquery')
 
     // XXX
@@ -40,10 +41,4 @@ define(function(require, exports, module) {
     backbone.Collection.prototype.emit =
     backbone.View.prototype.emit =
     backbone.Model.prototype.emit = backbone.Events.trigger
-
-    if (!window.Promise) window.Promise = require('promise')
-
-    document.addEventListener('deviceready', function() {
-        if (window.Keyboard) Keyboard.hideFormAccessoryBar(true)
-    })
 })

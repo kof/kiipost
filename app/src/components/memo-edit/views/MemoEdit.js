@@ -4,6 +4,7 @@ define(function(require, exports, module) {
     var inherits = require('inherits')
     var _ = require('underscore')
 
+    var Engine = require('famous/core/Engine')
     var Surface = require('famous/core/Surface')
     var RenderController = require('famous/views/RenderController')
     var FlexibleLayout = require('famous/views/FlexibleLayout')
@@ -102,9 +103,7 @@ define(function(require, exports, module) {
 
     MemoEdit.prototype.show = function() {
         MemoEdit.super_.prototype.show.call(this, this.container, function() {
-            setTimeout(function() {
-                this.textarea.focus()
-            }.bind(this), 10)
+            this.textarea.focus()
         }.bind(this))
     }
 
