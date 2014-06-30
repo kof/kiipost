@@ -70,6 +70,11 @@ define(function(require, exports, module) {
     }
 
     ParallaxedBackground.prototype.resume = function() {
+        // Currently disabled.
+        // We need either switch the pattern or create cordova plugin
+        // with performant replacement.
+        // https://bugs.webkit.org/show_bug.cgi?id=134447
+        return;
         window.addEventListener('deviceorientation', this._onChange)
     }
 
