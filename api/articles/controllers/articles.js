@@ -4,7 +4,7 @@ var m = require('mongoose')
 var _ = require('underscore')
 
 // Amount of tags we take from each saved article to find new articles.
-var REDUCE_USER_TAGS = 2
+var REDUCE_USER_TAGS = 3
 
 /**
  * Read saved memos.
