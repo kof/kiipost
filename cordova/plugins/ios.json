@@ -24,6 +24,12 @@
                             "xml": "true",
                             "count": 1
                         }
+                    ],
+                    "CoreGraphics.framework": [
+                        {
+                            "xml": "false",
+                            "count": 1
+                        }
                     ]
                 }
             },
@@ -41,6 +47,10 @@
                         {
                             "xml": "<feature name=\"Keyboard\"><param name=\"ios-package\" onload=\"true\" value=\"CDVKeyboard\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"SplashScreen\"><param name=\"ios-package\" value=\"CDVSplashScreen\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -55,6 +65,9 @@
             "PACKAGE_NAME": "Kiipost"
         },
         "com.ben2.cordova.keyboard": {
+            "PACKAGE_NAME": "Kiipost"
+        },
+        "org.apache.cordova.splashscreen": {
             "PACKAGE_NAME": "Kiipost"
         }
     },

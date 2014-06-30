@@ -36,7 +36,9 @@ define(function(require, exports, module) {
     }
 
     Signin.prototype.signin = function() {
-        app.controller.show(this.view)
+        app.controller.show(this.view, function() {
+            if (navigator.splashscreen) navigator.splashscreen.hide()
+        })
     }
 
     Signin.prototype._signin = function() {

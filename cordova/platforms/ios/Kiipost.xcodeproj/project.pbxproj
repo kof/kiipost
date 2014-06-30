@@ -48,6 +48,7 @@
 		E6A937553DE24907A18AA814 /* OAuthCore.m in Sources */ = {isa = PBXBuildFile; fileRef = AA3169E2540942FFB21F46CC /* OAuthCore.m */; };
 		F8029F1582554014BA6E270D /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA0AD6B7B6B14AC5AA0AE8AF /* Social.framework */; };
 		8E5CC07CB9D4420C8647DD93 /* CDVKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = DE76C5074BE34E2093C6D03E /* CDVKeyboard.m */; };
+		AB693748D7EE44B1B754A3C8 /* CDVSplashScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 16071E1F303F4B4881C16ADA /* CDVSplashScreen.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -128,6 +129,8 @@
 		FECCC6D527D94D7894F98CB9 /* Accounts.framework */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		DE76C5074BE34E2093C6D03E /* CDVKeyboard.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVKeyboard.m"; path = "com.ben2.cordova.keyboard/CDVKeyboard.m"; sourceTree = "<group>"; fileEncoding = 4; };
 		9E1E5A2A22F74CA0AF93775E /* CDVKeyboard.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVKeyboard.h"; path = "com.ben2.cordova.keyboard/CDVKeyboard.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		16071E1F303F4B4881C16ADA /* CDVSplashScreen.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVSplashScreen.m"; path = "org.apache.cordova.splashscreen/CDVSplashScreen.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		D1B8C323D9D541BA8965833B /* CDVSplashScreen.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVSplashScreen.h"; path = "org.apache.cordova.splashscreen/CDVSplashScreen.h"; sourceTree = "<group>"; fileEncoding = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -267,6 +270,8 @@
 				14C39AF791584BF98B48F69B /* CDVNotification.h */,
 				DE76C5074BE34E2093C6D03E /* CDVKeyboard.m */,
 				9E1E5A2A22F74CA0AF93775E /* CDVKeyboard.h */,
+				16071E1F303F4B4881C16ADA /* CDVSplashScreen.m */,
+				D1B8C323D9D541BA8965833B /* CDVSplashScreen.h */,
 			);
 			name = Plugins;
 			path = Kiipost/Plugins;
@@ -473,6 +478,7 @@
 				E6A937553DE24907A18AA814 /* OAuthCore.m in Sources */,
 				400D39A7B443466CB25D7EC7 /* CDVNotification.m in Sources */,
 				8E5CC07CB9D4420C8647DD93 /* CDVKeyboard.m in Sources */,
+				AB693748D7EE44B1B754A3C8 /* CDVSplashScreen.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

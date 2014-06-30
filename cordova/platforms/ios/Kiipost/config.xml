@@ -28,6 +28,10 @@
     <feature name="Keyboard">
         <param name="ios-package" onload="true" value="CDVKeyboard" />
     </feature>
+    <feature name="SplashScreen">
+        <param name="ios-package" value="CDVSplashScreen" />
+        <param name="onload" value="true" />
+    </feature>
     <name>Kiipost</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.
@@ -39,4 +43,5 @@
     <access origin="*" />
     <preference name="KeyboardDisplayRequiresUserAction" value="false" />
     <icon src="www/content/icons/152x152.png" />
+    <preference name="AutoHideSplashScreen" value="false" />
 </widget>
