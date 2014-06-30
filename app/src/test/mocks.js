@@ -1,13 +1,16 @@
 define(function(require, exports, module) {
     'use strict'
 
+    var iosHelper = require('screens/signin/mocks/helpers/ios')
+
     if (!window.cordova) {
-        require('screens/signin/mocks/helpers/ios')
+        iosHelper()
     }
+
 /*
-    require('screens/signin/mocks/api')
-    require('screens/articles/mocks/api')
-    require('screens/article/mocks/api')
-    require('screens/memo/mocks/api')
+    require('screens/signin/mocks/api')()
+    require('screens/articles/mocks/api')()
+    require('screens/full-article/mocks/api')()
+    require('screens/memos/mocks/api')()
 */
 })
