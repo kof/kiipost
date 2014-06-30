@@ -5,7 +5,7 @@ var m = require('mongoose')
 /**
  * Read saved memos.
  */
-exports.read = function *() {
+exports.read = function* () {
     var user
 
     user = yield m.model('user')

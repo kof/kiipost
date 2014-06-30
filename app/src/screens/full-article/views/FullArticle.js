@@ -25,7 +25,7 @@ define(function(require, exports, module) {
 
         this.surfaces = []
 
-        this.models = _.clone(this.options.models)
+        this.models = this.options.models
 
         this.content = new Group({classes: ['content']})
         this.contentModifier = new Modifier()
@@ -75,7 +75,10 @@ define(function(require, exports, module) {
         this.kiipostBtn.on('click', this._onKiipost.bind(this))
         this.add(new Modifier({origin: [0.5, 0.97]})).add(this.kiipostBtn)
 
-        this.memoEdit = new MemoEditView({context: app.context})
+        this.memoEdit = new MemoEditView({
+            context: app.context,
+            model: this.models.memo
+        })
         this.memoEdit.on('hide', this._onKiipostHide.bind(this))
         this.add(this.memoEdit)
 
@@ -182,6 +185,9 @@ define(function(require, exports, module) {
     FullArticle.prototype._onOptionsChange = function(option) {
         if (option.id == 'hasKiipostBtn') {
             this._toggleKiipostBtn(option.value, true)
+        } else if (option.id == 'models') {
+            this.models = option.value
+            this.memoEdit.model = this.models.memo
         }
     }
 

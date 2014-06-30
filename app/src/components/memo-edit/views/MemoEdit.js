@@ -21,6 +21,9 @@ define(function(require, exports, module) {
         var o = this.options
         var size = o.context.getSize()
 
+        this.model = o.model
+        this.models = o.models
+
         this.container = new ContainerSurface({
             classes: ['memo-edit']
         })
@@ -98,7 +101,8 @@ define(function(require, exports, module) {
     MemoEdit.DEFAULT_OPTIONS = {
         limit: 130,
         contentSize: [undefined, 180],
-        context: null
+        context: null,
+        model: null
     }
 
     MemoEdit.prototype.show = function() {
@@ -125,6 +129,8 @@ define(function(require, exports, module) {
     }, 100, {leading: false})
 
     MemoEdit.prototype._onSubmit = function() {
-        alert('submit')
+        this.model.set('text', this.textarea.getValue())
+        this.model.save()
+            .then(this.hide.bind(this))
     }
 })

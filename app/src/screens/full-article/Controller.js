@@ -59,9 +59,10 @@ define(function(require, exports, module) {
         view.spinner.show()
         this.models.user.authorize.then(function() {
             var xhr
+            var memo = new MemoModel(isMemo ? {_id: id} : {userId: this.models.user.id})
+            view.setOptions({models: _.defaults({memo: memo}, view.models)})
 
             if (isMemo) {
-                var memo = view.models.memo = new MemoModel({_id: id})
                 xhr = memo
                     .fetch()
                     .then(function() {
@@ -70,7 +71,10 @@ define(function(require, exports, module) {
                     }.bind(view))
             } else {
                 view.model = new ArticleModel({_id: id})
-                xhr = view.model.fetch().then(view.setContent.bind(view))
+                xhr = view.model.fetch().then(function() {
+                    memo.set('articles', [view.model])
+                    view.setContent()
+                })
             }
 
             xhr.always(view.spinner.hide.bind(view.spinner))

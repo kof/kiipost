@@ -11,4 +11,5 @@ var router = module.exports = new Router()
 
 router.get('/memos', auth.ensure, memos.read)
 router.get('/memos/:id', auth.ensure, memo.read)
+router.post('/memos', auth.ensure, memo.create)
 
