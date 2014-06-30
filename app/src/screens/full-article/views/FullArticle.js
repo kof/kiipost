@@ -62,6 +62,7 @@ define(function(require, exports, module) {
             size: [size[0], true]
         })
         this.text.pipe(this.scrollview)
+        this.textContent.addEventListener('click', this._onTextClick.bind(this))
         this.surfaces.push(this.text)
 
         this.spinner = new SpinnerView()
@@ -182,5 +183,10 @@ define(function(require, exports, module) {
         if (option.id == 'hasKiipostBtn') {
             this._toggleKiipostBtn(option.value, true)
         }
+    }
+
+    FullArticle.prototype._onTextClick = function(e) {
+        // Prevent links from opening!
+        e.preventDefault()
     }
 })

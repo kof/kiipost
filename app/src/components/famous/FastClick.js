@@ -19,41 +19,41 @@ define(function(require, exports, module) {
     if (!window.CustomEvent || !('ontouchstart' in window)) return;
     var clickThreshold = 300;
     var clickWindow = 500;
-    var positionThreshold = 3;
+    // MouseEvent and CustomEvent deliver sometimes slightly different coordinates
+    var positionThreshold = 5;
     var potentialClicks = {};
     var recentlyDispatched = {};
     var _now = Date.now;
 
     window.addEventListener('touchstart', function(event) {
+        // multiple touches should not lead to a click
+        if (event.changedTouches.length > 1) return;
         var timestamp = _now();
-        for (var i = 0; i < event.changedTouches.length; i++) {
-            var touch = event.changedTouches[i];
-            potentialClicks[touch.identifier] = timestamp;
-        }
+        var touch = event.changedTouches[0]
+        potentialClicks[touch.identifier] = timestamp;
     });
 
     window.addEventListener('touchmove', function(event) {
-        for (var i = 0; i < event.changedTouches.length; i++) {
-            var touch = event.changedTouches[i];
-            delete potentialClicks[touch.identifier];
-        }
+        if (event.changedTouches.length > 1) return;
+        var touch = event.changedTouches[0];
+        delete potentialClicks[touch.identifier];
     });
 
     window.addEventListener('touchend', function(event) {
+        if (event.changedTouches.length > 1) return;
         var currTime = _now();
-        for (var i = 0; i < event.changedTouches.length; i++) {
-            var touch = event.changedTouches[i];
-            var startTime = potentialClicks[touch.identifier];
-            if (startTime && currTime - startTime < clickThreshold) {
-                var clickEvt = new window.CustomEvent('click', {
-                    bubbles: true,
-                    detail: touch
-                });
-                recentlyDispatched[currTime] = clickEvt;
-                event.target.dispatchEvent(clickEvt);
-            }
-            delete potentialClicks[touch.identifier];
+        var touch = event.changedTouches[0];
+        var startTime = potentialClicks[touch.identifier];
+        if (startTime && currTime - startTime < clickThreshold) {
+            var clickEvt = new window.CustomEvent('click', {
+                bubbles: true,
+                cancelable: true,
+                detail: event
+            });
+            recentlyDispatched[currTime] = clickEvt;
+            event.target.dispatchEvent(clickEvt);
         }
+        delete potentialClicks[touch.identifier];
     });
 
     window.addEventListener('click', function(event) {
@@ -62,6 +62,7 @@ define(function(require, exports, module) {
             var previousEvent = recentlyDispatched[i];
             if (currTime - i < clickWindow) {
                 if (event instanceof window.MouseEvent && _sameTarget(event, previousEvent)) {
+                    if (previousEvent.defaultPrevented) event.preventDefault()
                     event.stopPropagation();
                 }
             }
@@ -70,20 +71,14 @@ define(function(require, exports, module) {
     }, true);
 
     function _sameTarget(event, previousEvent) {
+        if (previousEvent.detail.changedTouches.length > 1) return false;
         if (event.target === previousEvent.target) return true;
 
-        if (previousEvent.screenX != null && previousEvent.screenY != null) {
-            var detail = previousEvent;
-        } else {
-            var detail = previousEvent.detail;
-        }
-
-        if (detail &&
-            Math.abs(detail.screenX - event.screenX) < positionThreshold &&
-            Math.abs(detail.screenY - event.screenY) < positionThreshold) {
+        var touch = previousEvent.detail.changedTouches[0]
+        if (event.screenX - touch.screenX < positionThreshold &&
+            event.screenY - touch.screenY < positionThreshold) {
             return true;
         }
-
         return false;
     }
 });

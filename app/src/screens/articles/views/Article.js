@@ -98,7 +98,6 @@ define(function(require, exports, module) {
     }
 
     StreamItem.prototype._onClick = function(e) {
-        if (e.target.classList.contains('source')) return
         e.preventDefault()
         this._eventOutput.emit('article:open', this.model)
     }
