@@ -29,7 +29,7 @@ define(function(require, exports, module) {
         // multiple touches should not lead to a click
         if (event.changedTouches.length > 1) return;
         var timestamp = _now();
-        var touch = event.changedTouches[0]
+        var touch = event.changedTouches[0];
         potentialClicks[touch.identifier] = timestamp;
     });
 
@@ -62,7 +62,7 @@ define(function(require, exports, module) {
             var previousEvent = recentlyDispatched[i];
             if (currTime - i < clickWindow) {
                 if (event instanceof window.MouseEvent && _sameTarget(event, previousEvent)) {
-                    if (previousEvent.defaultPrevented) event.preventDefault()
+                    if (previousEvent.defaultPrevented) event.preventDefault();
                     event.stopPropagation();
                 }
             }
@@ -74,7 +74,7 @@ define(function(require, exports, module) {
         if (previousEvent.detail.changedTouches.length > 1) return false;
         if (event.target === previousEvent.target) return true;
 
-        var touch = previousEvent.detail.changedTouches[0]
+        var touch = previousEvent.detail.changedTouches[0];
         if (event.screenX - touch.screenX < positionThreshold &&
             event.screenY - touch.screenY < positionThreshold) {
             return true;
