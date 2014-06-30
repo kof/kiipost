@@ -36,6 +36,7 @@ define(function(require, exports, module) {
         this.scrollview.sequenceFrom(this.surfaces)
 
         this.bg = new ParallaxedBackgroundView({context: app.context})
+        this.bg.pause()
         this.content.add(this.bg)
 
         this.topBtns = new Surface({
@@ -105,6 +106,7 @@ define(function(require, exports, module) {
         this._setImage()
         // Wait until text is rendered.
         setTimeout(this._setTextSize.bind(this), 50)
+        this.bg.resume()
     }
 
     FullArticle.prototype._setImage = function() {

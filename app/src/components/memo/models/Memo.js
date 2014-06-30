@@ -16,7 +16,7 @@ define(function(require, exports, module) {
     inherits(Memo, Model)
     module.exports = Memo
 
-    Memo.prototype.initialize = function() {
+    Memo.prototype.initialize = function() {
         this.on('change:articles', this._onArticlesChange.bind(this))
     }
 
