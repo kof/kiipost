@@ -50,5 +50,5 @@ db.init()
     })
 
 if (global.gc) {
-    setInterval(gc, 2000)
+    setInterval(gc, 5000)
 }
