@@ -398,7 +398,7 @@ function addSiteData(articles, callback) {
         for (var i = 0; i < articles.length; i++) {
             try {
                 var article = articles[i]
-                var data = yield extractor.extract(article.url)
+                var data = yield extractor.extractWithRetry(article.url)
 
                 if (len(data.title) > len(article.title)) {
                     article.title = data.title
