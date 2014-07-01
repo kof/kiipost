@@ -35,6 +35,12 @@ Controller.prototype.start = function() {
         if (this.ok && ok === false) this.emit('ok')
     }.bind(this), this.options.interval)
 
+    for (var name in this.metrics) {
+        if (typeof this.metrics[name].start == 'function') {
+            this.metrics[name].start()
+        }
+    }
+
     this.check()
 
     return this
@@ -42,6 +48,12 @@ Controller.prototype.start = function() {
 
 Controller.prototype.stop = function() {
     clearInterval(this._intervalId)
+
+    for (var name in this.metrics) {
+        if (typeof this.metrics[name].stop == 'function') {
+            this.metrics[name].stop()
+        }
+    }
 
     return this
 }

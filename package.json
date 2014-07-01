@@ -67,6 +67,7 @@
     "mongoose-types": "^1.0.3",
     "ms": "^0.6.2",
     "multiline": "~0.3.4",
+    "os-utils": "0.0.14",
     "promise": "^5.0.0",
     "qs": "^0.6.6",
     "readabilitySAX": "^1.6.1",

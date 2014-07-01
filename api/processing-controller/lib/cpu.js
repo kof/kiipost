@@ -1,7 +1,6 @@
 'use strict'
 
-var os = require('os')
-var cpusAmount = os.cpus().length
+var os  = require('os-utils')
 
 /**
  * Ensures cpu load doesn't go too high.
@@ -12,15 +11,33 @@ var cpusAmount = os.cpus().length
  * @return {Object} `ok` is true if current usage is ok.
  */
 module.exports = function(options) {
+    var intervalId, value = 0
+
     options || (options = {})
     options.max || (options.max = 0.8)
 
-    return function() {
-        var value = os.loadavg()[0] / cpusAmount
-
+    function get() {
         return {
             ok: value < options.max,
             value: value
         }
     }
+
+    get.start = function() {
+        function get() {
+            os.cpuUsage(function(v){
+                value = v
+            })
+        }
+
+        intervalId = setInterval(get, 1000)
+        get()
+    }
+
+    get.stop = function() {
+        clearInterval(intervalId)
+    }
+
+    return get
 }
+
