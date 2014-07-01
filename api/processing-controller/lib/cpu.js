@@ -25,7 +25,7 @@ module.exports = function(options) {
 
     get.start = function() {
         function get() {
-            os.cpuUsage(function(v){
+            os.cpuUsage(function(v) {
                 value = v
             })
         }
