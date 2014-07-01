@@ -34,9 +34,9 @@ exports.buildQuery = function(table, params) {
     _.each(params, function(val, name) {
         if (!val) return
         if (i) query += ' and'
-        val = String(val).replace(/([\\"])/g, '\\$1')
-        name = _s.underscored(name)
-        query += ' ' + name +'="' + val + '"'
+        name = encodeURIComponent(_s.underscored(name))
+        val = encodeURIComponent(val)
+        query += ' ' + name + '="' + val + '"'
         i++
     })
 

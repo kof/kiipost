@@ -9,6 +9,7 @@ var moment = require('moment')
 var thunkify = require('thunkify')
 var co = require('co')
 var extend = require('extend')
+var url = require('url')
 
 var conf = require('api/conf')
 var contentAnalysis = require('api/yahoo/contentAnalysis')
@@ -180,7 +181,7 @@ function* processOne (feed, options) {
     try {
         var articles = yield fetch(feed.feed)
         stats.total = articles.length
-        articles = prenormalize(articles)
+        articles = prenormalize(articles, feed.feed)
         articles = yield prefilter(articles, options)
         stats.errors = stats.errors.concat(yield addSiteData(articles))
         stats.errors = stats.errors.concat(yield addAnalyzedTags(articles))
@@ -263,6 +264,8 @@ function fetch(url, callback) {
             }, conf.request.timeout)
         })
         .end()
+
+    req.agent()
 }
 
 fetch = thunkify(fetch)
@@ -347,13 +350,15 @@ function postfilter(articles) {
 /**
  * Normalize an article to our format.
  */
-function prenormalize(articles) {
+function prenormalize(articles, feedUrl) {
     return articles.map(function(article) {
         var normalized = {}
-
         // When FeedBurner or Pheedo puts a special tracking url
         // in the link property, origlink contains the original link.
         normalized.url = article.origlink || article.link
+        if (!url.parse(normalized.url).host) {
+            normalized.url = url.resolve(feedUrl, normalized.url)
+        }
         normalized.pubDate = article.pubDate ? new Date(article.pubDate) : new Date()
         normalized.title = article.title
         normalized.summary = _s.prune(_s.stripTags(article.summary).trim(), 250, '')
@@ -362,7 +367,6 @@ function prenormalize(articles) {
         // Make categories to tags so that article can be found by a category.
         normalized.tags = normalized.categories
         normalized.enclosures = _.compact(article.enclosures)
-
         return normalized
     })
 }

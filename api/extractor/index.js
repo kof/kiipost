@@ -108,6 +108,8 @@ function fetchData(url, callback) {
             }, conf.request.timeout)
         })
         .end()
+
+    req.agent()
 }
 
 /**
