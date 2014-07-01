@@ -261,7 +261,7 @@ function fetch(url, callback) {
                 } else {
                     done(new Error('Feed parse timeout'))
                 }
-            }, conf.request.timeout)
+            }, 100000)
         })
         .end()
 

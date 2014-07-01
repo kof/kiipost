@@ -105,7 +105,7 @@ function fetchData(url, callback) {
             // For the case some extractors stuck.
             timeoutId = setTimeout(function() {
                 done(new Error('Extractor timeout'))
-            }, conf.request.timeout)
+            }, 100000)
         })
         .end()
 
