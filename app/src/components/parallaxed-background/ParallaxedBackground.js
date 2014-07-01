@@ -58,6 +58,7 @@ define(function(require, exports, module) {
     }
 
     ParallaxedBackground.prototype.setContent = function(url) {
+        if (!url) url = this.options.content
         this.image.setProperties({backgroundImage: 'url(' + url + ')'})
     }
 

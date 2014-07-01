@@ -109,15 +109,25 @@ define(function(require, exports, module) {
         this.bg.resume()
     }
 
-    FullArticle.prototype._setImage = function() {
+    FullArticle.prototype.cleanup = function() {
+        this.title.textContent = ''
+        this.textContent.textContent = ''
+        this._resetImage()
+        this.bg.setContent()
+    }
+
+    FullArticle.prototype._resetImage = function() {
         this.bg.setProperties({
-            backgroundImage: null,
             backgroundSize: 'contain',
             backgroundPosition: 'center top'
         })
+    }
 
+    FullArticle.prototype._setImage = function() {
         var attr = this.model.attributes
         var imageUrl, isIcon
+
+        this._resetImage()
 
         if (attr.images.length) {
             imageUrl = attr.images[0]

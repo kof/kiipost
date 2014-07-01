@@ -40,18 +40,23 @@ define(function(require, exports, module) {
     }
 
     FullArticle.prototype.article = function(id) {
-        app.controller.show(this.view, function() {
-            this.load(id, false)
-        }.bind(this))
+        this._show(id, false)
     }
 
     FullArticle.prototype.memo = function(id) {
+        this._show(id, true)
+    }
+
+    FullArticle.prototype._show = function(id, isMemo) {
+        var prev = this.current
+        this.current = id
+        if (id != prev) this.view.cleanup()
         app.controller.show(this.view, function() {
-            this.load(id, true)
+            if (id != prev) this._load(id, isMemo)
         }.bind(this))
     }
 
-    FullArticle.prototype.load = function(id, isMemo) {
+    FullArticle.prototype._load = function(id, isMemo) {
         var view = this.view
 
         this.isMemo = isMemo
@@ -83,16 +88,11 @@ define(function(require, exports, module) {
 
 
     FullArticle.prototype._onOpen = function(model) {
-        var route
+        var isMemo = model.constructor.name == 'Memo'
+
         this.layeredTransition.commit(app.controller)
-        if (model.constructor.name == 'Memo') {
-            route = 'memos'
-            this.memo(model.id)
-        } else {
-            route = 'articles'
-            this.article(model.id)
-        }
-        this.router.navigate(route + '/' + model.id)
+        this._show(model.id, isMemo)
+        this.router.navigate((isMemo ? 'memos' : 'articles') + '/' + model.id)
         this.layeredTransition.commit(app.controller, true)
     }
 })
