@@ -129,6 +129,7 @@ define(function(require, exports, module) {
     }, 100, {leading: false})
 
     MemoEdit.prototype._onSubmit = function() {
+        if (this.limitViolation) return
         this.model.set('text', this.textarea.getValue())
         this.model.save()
             .then(this.hide.bind(this))
