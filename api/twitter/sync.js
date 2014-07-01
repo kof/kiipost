@@ -35,8 +35,7 @@ module.exports = function(options) {
         var tweets
         tweets = yield [
             fetchUserTweets(user, twitterOptions),
-            //fetchFavorites(user, twitterOptions)
-            []
+            fetchFavorites(user, twitterOptions)
         ]
         tweets = [].concat(tweets[0], tweets[1])
 
