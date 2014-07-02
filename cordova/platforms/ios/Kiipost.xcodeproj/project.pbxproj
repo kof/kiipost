@@ -49,6 +49,7 @@
 		F8029F1582554014BA6E270D /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA0AD6B7B6B14AC5AA0AE8AF /* Social.framework */; };
 		8E5CC07CB9D4420C8647DD93 /* CDVKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = DE76C5074BE34E2093C6D03E /* CDVKeyboard.m */; };
 		AB693748D7EE44B1B754A3C8 /* CDVSplashScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 16071E1F303F4B4881C16ADA /* CDVSplashScreen.m */; };
+		7128D172A1724911A91BBB40 /* CDVInAppBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 16599CDD83954195A22900CD /* CDVInAppBrowser.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -131,6 +132,8 @@
 		9E1E5A2A22F74CA0AF93775E /* CDVKeyboard.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVKeyboard.h"; path = "com.ben2.cordova.keyboard/CDVKeyboard.h"; sourceTree = "<group>"; fileEncoding = 4; };
 		16071E1F303F4B4881C16ADA /* CDVSplashScreen.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVSplashScreen.m"; path = "org.apache.cordova.splashscreen/CDVSplashScreen.m"; sourceTree = "<group>"; fileEncoding = 4; };
 		D1B8C323D9D541BA8965833B /* CDVSplashScreen.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVSplashScreen.h"; path = "org.apache.cordova.splashscreen/CDVSplashScreen.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		16599CDD83954195A22900CD /* CDVInAppBrowser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVInAppBrowser.m"; path = "org.apache.cordova.inappbrowser/CDVInAppBrowser.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		86C06C7759B14C6EA146D6F9 /* CDVInAppBrowser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVInAppBrowser.h"; path = "org.apache.cordova.inappbrowser/CDVInAppBrowser.h"; sourceTree = "<group>"; fileEncoding = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -272,6 +275,8 @@
 				9E1E5A2A22F74CA0AF93775E /* CDVKeyboard.h */,
 				16071E1F303F4B4881C16ADA /* CDVSplashScreen.m */,
 				D1B8C323D9D541BA8965833B /* CDVSplashScreen.h */,
+				16599CDD83954195A22900CD /* CDVInAppBrowser.m */,
+				86C06C7759B14C6EA146D6F9 /* CDVInAppBrowser.h */,
 			);
 			name = Plugins;
 			path = Kiipost/Plugins;
@@ -479,6 +484,7 @@
 				400D39A7B443466CB25D7EC7 /* CDVNotification.m in Sources */,
 				8E5CC07CB9D4420C8647DD93 /* CDVKeyboard.m in Sources */,
 				AB693748D7EE44B1B754A3C8 /* CDVSplashScreen.m in Sources */,
+				7128D172A1724911A91BBB40 /* CDVInAppBrowser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

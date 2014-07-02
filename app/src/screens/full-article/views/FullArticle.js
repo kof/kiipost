@@ -190,7 +190,12 @@ define(function(require, exports, module) {
         if (cls.contains('close')) {
             this._eventOutput.emit('close')
         } else if (cls.contains('source')) {
-            window.open(this.model.get('link'), 'article')
+            window.open(this.model.get('url'), '_blank', [
+                'location=yes',
+                'enableViewportScale=yes',
+                'allowInlineMediaPlayback=yes',
+                'transitionstyle=fliphorizontal'
+            ].join(','))
         }
     }
 
