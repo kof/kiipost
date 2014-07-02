@@ -28,22 +28,22 @@ define(function(require, exports, module) {
 
         this.models = this.options.models
 
-        this.content = new Group({classes: ['content']})
-        this.contentModifier = new Modifier()
-        this.add(this.contentModifier).add(this.content)
+        this.article = new Group({classes: ['full-article']})
+        this.articleModifier = new Modifier()
+        this.add(this.articleModifier).add(this.article)
 
         this.scrollview = new Scrollview()
-        this.content.add(this.scrollview)
+        this.article.add(this.scrollview)
         this.scrollview.sequenceFrom(this.surfaces)
 
         this.bg = new ParallaxedBackgroundView({context: app.context})
         this.bg.pause()
-        this.content.add(this.bg)
+        this.article.add(this.bg)
 
         this.topBtns = new Surface({
             content: '<span class="close icomatic">close</span>' +
                 '<span class="source icomatic">externallink</span>',
-            classes: ['full-article-top-btns'],
+            classes: ['top-btns'],
             size: [this._size[0], true]
         })
         this.topBtns.on('click', this._onTopBtnClick.bind(this))
@@ -53,7 +53,7 @@ define(function(require, exports, module) {
         this._headerSize = [this._size[0], this._size[0] * constants.GOLDEN_RATIO]
         this.header = new Surface({
             content: this.title,
-            classes: ['full-article-header'],
+            classes: ['header'],
             size: this._headerSize
         })
         this.header.pipe(this.scrollview)
@@ -64,7 +64,7 @@ define(function(require, exports, module) {
         this.text = new Surface({
             content: this.textContent,
             size: [this._size[0], this._size[1] - this._headerSize[1]],
-            classes: ['full-article-text']
+            classes: ['text']
         })
 
         this.text.pipe(this.scrollview)
@@ -75,7 +75,7 @@ define(function(require, exports, module) {
         this.add(this.spinner)
 
         this.kiipostBtn = new Surface({
-            classes: ['full-article-kiipost-btn'],
+            classes: ['kiipost-btn'],
             size: [true, true]
         })
         this.kiipostBtn.on('click', this._onKiipost.bind(this))
@@ -91,7 +91,7 @@ define(function(require, exports, module) {
         this._optionsManager.on('change', this._onOptionsChange.bind(this))
         this._toggleKiipostBtn(this.options.hasKiipostBtn, true)
 
-        this.content.on('recall', this._onRecall.bind(this))
+        this.article.on('recall', this._onRecall.bind(this))
     }
 
     inherits(FullArticle, View)
@@ -186,14 +186,14 @@ define(function(require, exports, module) {
 
     FullArticle.prototype._onKiipost = function(e) {
         this.bg.pause()
-        this.contentModifier.setOpacity(0.3, this.options.darkInTransition)
+        this.articleModifier.setOpacity(0.3, this.options.darkInTransition)
         this._toggleKiipostBtn(false)
         this.memoEdit.show()
     }
 
     FullArticle.prototype._onKiipostHide = function() {
         this.bg.resume()
-        this.contentModifier.setOpacity(1, this.options.darkOutTransition)
+        this.articleModifier.setOpacity(1, this.options.darkOutTransition)
         this._toggleKiipostBtn(true)
     }
 

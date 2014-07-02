@@ -1,16 +1,16 @@
-.full-article-top-btns {
+.full-article .top-btns {
     z-index: 1;
 }
-.full-article-top-btns span {
+.full-article .top-btns span {
     color: #fff;
     padding: 1rem;
     display: inline-block;
     cursor: pointer;
 }
-.full-article-top-btns .source {
+.full-article .top-btns .source {
     float: right;
 }
-.full-article-header h1 {
+.full-article .header h1 {
     font-size: 1rem;
     height: 2.45rem;
     overflow: hidden;
@@ -19,17 +19,18 @@
     margin: 0 0.5rem 0.5rem 0.5rem;
     color: #fff;
 }
-.full-article-text {
+.full-article .text {
     background: #fff;
     color: #a3a3a3;
     font-size: 1.1rem;
     line-height: 1.4;
 }
-.full-article-text .content {
+.full-article .text,
+.full-article .content {
     padding: 1rem 1rem 5rem 1rem;
     box-sizing: border-box;
 }
-.full-article-kiipost-btn {
+.full-article .kiipost-btn {
     width: 3.5rem;
     height: 3.5rem;
     cursor: pointer;
