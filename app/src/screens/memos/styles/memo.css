@@ -1,6 +1,5 @@
 .memo {
     background: #fff;
-    border-bottom: 1px solid #999;
     cursor: pointer;
 }
 .memo .inner {
@@ -8,6 +7,13 @@
     height: 100%;
     padding-top: 1rem;
     box-sizing: border-box;
+    border-bottom: 1px solid #999;
+}
+.memo .dummy {
+    border: none;
+}
+.memo .dummy > * {
+    display: none;
 }
 .memo .avatar {
     -webkit-flex: none;

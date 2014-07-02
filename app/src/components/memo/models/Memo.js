@@ -8,7 +8,8 @@ define(function(require, exports, module) {
     function Memo() {
         this.urlRoot = '/api/memos'
         this.defaults = {
-            createdAt: new Date()
+            createdAt: new Date(),
+            articles: []
         }
         Memo.super_.apply(this, arguments)
     }

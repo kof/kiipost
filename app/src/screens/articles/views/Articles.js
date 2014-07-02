@@ -41,7 +41,8 @@ define(function(require, exports, module) {
         this.stream = new StreamView({
             ItemView: ArticleView,
             views: [this.header],
-            collection: this.options.collection
+            collection: this.options.collection,
+            classes: ['articles']
         })
         this.stream.pipe(this._eventOutput)
         this.stream.on('stream:loadstart', this.spinner.show.bind(this.spinner))

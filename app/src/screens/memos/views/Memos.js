@@ -42,7 +42,8 @@ define(function(require, exports, module) {
             ItemView: MemoView,
             views: [this.header],
             collection: this.options.collection,
-            models: this.models
+            models: this.models,
+            classes: ['memos']
         })
         this.stream.pipe(this._eventOutput)
         this.stream.on('stream:loadstart', this.spinner.show.bind(this.spinner))

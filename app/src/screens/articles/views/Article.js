@@ -21,7 +21,6 @@ define(function(require, exports, module) {
 
     pool.setCreator(function() {
         var container = document.createElement('div')
-        container.className = 'inner'
         container.innerHTML = tpl
         var map = elementsMap(container)
         map.container = container
@@ -34,7 +33,7 @@ define(function(require, exports, module) {
         var width = app.context.getSize()[0]
 
         this.model = this.options.model
-        this.options.size = [width, width * constants.GOLDEN_RATIO]
+        this.options.size = [width, Math.round(width * constants.GOLDEN_RATIO)]
         this._imageWidth = Math.round(this.options.size[1] * constants.GOLDEN_RATIO)
         this._poolItem = pool.get()
 
@@ -93,6 +92,7 @@ define(function(require, exports, module) {
         i.link.href = attr.url
         i.link.textContent = attr.hostname
         i.image.style.display = 'none'
+        i.container.className = 'inner' +  (attr.dummy ? ' dummy' : '')
 
         this.surface.setContent(i.container)
     }

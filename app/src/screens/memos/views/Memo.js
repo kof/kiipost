@@ -23,7 +23,6 @@ define(function(require, exports, module) {
 
     pool.setCreator(function() {
         var container = document.createElement('div')
-        container.className = 'inner'
         container.innerHTML = tpl
         var map = elementsMap(container)
         map.container = container
@@ -34,7 +33,7 @@ define(function(require, exports, module) {
         View.apply(this, arguments)
 
         var width = app.context.getSize()[0]
-        var height = width * constants.GOLDEN_RATIO
+        var height = Math.round(width * constants.GOLDEN_RATIO)
 
         this.model = this.options.model
         this.models = this.options.models
@@ -92,14 +91,15 @@ define(function(require, exports, module) {
             textWidth = '100%'
         }
 
-        i.avatar.style.backgroundImage = 'url(' + this.models.user.get('imageUrl') + ')'
-        i.text.textContent = attr.text
+        i.avatar.style.backgroundImage = attr.dummy ? 'none' : 'url(' + this.models.user.get('imageUrl') + ')'
+        i.text.textContent = attr.text || ''
         i.content.style.width = textWidth
         i.title.textContent = article.title || ''
         i.summary.textContent = article.summary || ''
         i.link.href = article.url || ''
         i.link.textContent = article.hostname || ''
         i.image.style.display = 'none'
+        i.container.className = 'inner' +  (attr.dummy ? ' dummy' : '')
 
         this.surface.setContent(i.container)
     }

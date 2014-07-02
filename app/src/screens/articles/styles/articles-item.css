@@ -1,10 +1,17 @@
 .articles-item {
     background: #fff;
-    border-bottom: 1px solid #ededed;
     cursor: pointer;
 }
+
 .articles-item .inner {
     height: 100%;
+    border-bottom: 1px solid #999;
+}
+.articles-item .dummy {
+    border: none;
+}
+.articles-item .dummy > * {
+    display: none;
 }
 .articles-item .text {
     float: left;
@@ -35,7 +42,6 @@
     overflow: hidden;
     color: #a3a3a3;
 }
-
 .articles-item a {
     display: block;
     font-size: 0.8rem;

@@ -11,6 +11,9 @@ define(function(require, exports, module) {
 
     function Article() {
         this.urlRoot = '/api/articles'
+        this.defaults = {
+            images: []
+        }
         Article.super_.apply(this, arguments)
     }
 

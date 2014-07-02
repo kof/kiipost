@@ -9,6 +9,7 @@ define(function(require, exports, module) {
     var View = require('famous/core/View')
     var Surface = require('famous/core/Surface')
     var InfiniteScrollView  = require('famous-infinitescroll')
+    var Group = require('famous/core/Group')
 
     var app = require('app')
 
@@ -29,6 +30,10 @@ define(function(require, exports, module) {
         this._initialViewsAmount = this.views.length
         this._loading = false
         this._endReached = false
+
+        this.stream = new Group({classes: this.options.classes})
+        this.add(this.stream)
+
         this.scrollview = new InfiniteScrollView({
             // Trigger infiniteScroll event 5 screens before items actually get rendered.
             offset: contextHeight * 5,
@@ -36,7 +41,7 @@ define(function(require, exports, module) {
             // before they get shown.
             margin: contextHeight * 2
         })
-        this.add(this.scrollview)
+        this.stream.add(this.scrollview)
         this.scrollview.sequenceFrom(this.views)
         this.scrollview.on('infiniteScroll', _.debounce(this.load.bind(this), 300, true))
         this.collection.on('end', this._onEnd.bind(this))
@@ -47,7 +52,9 @@ define(function(require, exports, module) {
 
     Stream.DEFAULT_OPTIONS = {
         ItemView: null,
-        views: null
+        views: null,
+        classes: null,
+        minItems: 3
     }
 
     Stream.prototype.load = function() {
@@ -67,8 +74,18 @@ define(function(require, exports, module) {
     }
 
     Stream.prototype.setContent = function() {
-        var ItemView = this.options.ItemView
-        this.collection.each(function(model) {
+        var o = this.options
+        var ItemView = o.ItemView
+        var items = this.collection
+
+        if (items.length < o.minItems) {
+            items = items.clone()
+            _.times(o.minItems - items.length, function() {
+                items.add(new this.collection.model({dummy: true}))
+            }.bind(this))
+        }
+
+        items.each(function(model) {
             var view = new ItemView({model: model, models: this.models})
             view.pipe(this.scrollview).pipe(this._eventOutput)
             this.views.push(view)
