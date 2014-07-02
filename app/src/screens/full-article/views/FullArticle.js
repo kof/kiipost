@@ -21,7 +21,8 @@ define(function(require, exports, module) {
     function FullArticle() {
         View.apply(this, arguments)
 
-        var size = app.context.getSize()
+        this._size = app.context.getSize()
+        this._textSize = [undefined, undefined]
 
         this.surfaces = []
 
@@ -43,25 +44,29 @@ define(function(require, exports, module) {
             content: '<span class="close icomatic">close</span>' +
                 '<span class="source icomatic">externallink</span>',
             classes: ['full-article-top-btns'],
-            size: [size[0], true]
+            size: [this._size[0], true]
         })
         this.topBtns.on('click', this._onTopBtnClick.bind(this))
         this.surfaces.push(this.topBtns)
 
         this.title = document.createElement('h1')
+        this._headerSize = [this._size[0], this._size[0] * constants.GOLDEN_RATIO]
         this.header = new Surface({
             content: this.title,
             classes: ['full-article-header'],
-            size: [size[0], size[0] * constants.GOLDEN_RATIO]
+            size: this._headerSize
         })
         this.header.pipe(this.scrollview)
         this.surfaces.push(this.header)
 
         this.textContent = document.createElement('div')
+        this.textContent.className = 'content'
         this.text = new Surface({
             content: this.textContent,
-            size: [size[0], true]
+            size: [this._size[0], this._size[1] - this._headerSize[1]],
+            classes: ['full-article-text']
         })
+
         this.text.pipe(this.scrollview)
         this.textContent.addEventListener('click', this._onTextClick.bind(this))
         this.surfaces.push(this.text)
@@ -86,6 +91,7 @@ define(function(require, exports, module) {
         this._optionsManager.on('change', this._onOptionsChange.bind(this))
         this._toggleKiipostBtn(this.options.hasKiipostBtn, true)
 
+        this.content.on('recall', this._onRecall.bind(this))
     }
 
     inherits(FullArticle, View)
@@ -100,13 +106,11 @@ define(function(require, exports, module) {
 
     FullArticle.prototype.setContent = function() {
         this.title.textContent = this.model.get('title')
-        // Set class now to avoid white screen artifact during loading.
-        this.text.setClasses(['full-article-text'])
         this.textContent.innerHTML = this.model.get('description')
         this._setImage()
-        // Wait until text is rendered.
-        setTimeout(this._setTextSize.bind(this), 50)
         this.bg.resume()
+        // We need to check periodicaly the height because of images in the content.
+        this._textHeightIntervalId = setInterval(this._setTextHeight.bind(this), 500)
     }
 
     FullArticle.prototype.cleanup = function() {
@@ -140,7 +144,7 @@ define(function(require, exports, module) {
         app.imagesLoader.load(imageUrl, function(err, data) {
             if (err) return
 
-            var size = this.header.getSize()
+            var size = this._headerSize
             var props = {}
 
             props.backgroundSize = isIcon ? 'contain' : 'cover'
@@ -156,20 +160,28 @@ define(function(require, exports, module) {
         }.bind(this))
     }
 
-    FullArticle.prototype._setTextSize = function() {
-        var textHeight = this.textContent.parentNode.clientHeight
-        var headerHeight = this.header.getSize()[1]
-        var contextHeight = app.context.getSize()[1]
+    FullArticle.prototype._setTextHeight = function() {
+        var textHeight = this.textContent.offsetHeight
+        var headerHeight = this._headerSize[1]
+        var contextHeight = this._size[1]
 
         if (textHeight + headerHeight < contextHeight) {
             textHeight = contextHeight - headerHeight
         }
-        this.text.setSize([undefined, textHeight])
+
+        if (this._textSize[1] != textHeight) {
+            this._textSize[1] = textHeight
+            this.text.setSize(this._textSize)
+        }
     }
 
     FullArticle.prototype._toggleKiipostBtn = function(show, force) {
         if (!force && !this.options.hasKiipostBtn) return
         this.kiipostBtn.setProperties({display: show ? 'block' : 'none'})
+    }
+
+    FullArticle.prototype._onRecall = function() {
+        clearInterval(this._textHeightIntervalId)
     }
 
     FullArticle.prototype._onKiipost = function(e) {
