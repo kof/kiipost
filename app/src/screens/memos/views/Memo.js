@@ -106,7 +106,7 @@ define(function(require, exports, module) {
 
     MemoItem.prototype._onClick = function(e) {
         e.preventDefault()
-        app.context.emit('fullArticle:open', this.model)
+        this._eventOutput.emit('memo:open', this.model)
     }
 
     MemoItem.prototype._onRecall = function() {

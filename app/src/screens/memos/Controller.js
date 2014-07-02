@@ -33,12 +33,12 @@ define(function(require, exports, module) {
         })
         this.baseTransition = new BaseTransition()
         this.view.on('menu:change', this._onMenuChange.bind(this))
+        this.view.on('memo:open', this._onMemoOpen.bind(this))
         app.context.on('memos:open', this._onOpen.bind(this))
         app.context.on('fullArticle:close', this._onFullArticleClose.bind(this))
     }
 
     Memos.prototype.memos = function() {
-        this.baseTransition.commit(app.controller)
         app.controller.show(this.view, this.view.load.bind(this.view))
     }
 
@@ -48,12 +48,18 @@ define(function(require, exports, module) {
 
     Memos.prototype._onOpen = function() {
         this.router.navigate('memos')
+        this.baseTransition.commit(app.controller)
         this.memos()
+    }
+
+    Memos.prototype._onMemoOpen = function(e) {
+        app.context.emit('fullArticle:open', e)
     }
 
     Memos.prototype._onFullArticleClose = function(e) {
         if (!e.isMemo) return
         this.router.navigate('memos')
         this.memos()
+        this.baseTransition.commit(app.controller)
     }
 })
