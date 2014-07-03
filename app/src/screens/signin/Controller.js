@@ -5,10 +5,11 @@ define(function(require, exports, module) {
     var inherits = require('inherits')
     var backbone = require('backbone')
 
-    var app = require('app')
-
+    var log = require('components/log')
     var SigninView = require('./views/Signin')
     var ios = require('./helpers/ios')
+
+    var app = require('app')
 
     function Signin(options) {
         this.routes = {
@@ -54,9 +55,12 @@ define(function(require, exports, module) {
         this._signin()
     }, 500, true)
 
-    Signin.prototype._onSigninSuccess = function() {
+    Signin.prototype._onSigninSuccess = function(user) {
         if (!backbone.history.getFragment()) {
             this.router.navigate(this.options.defaultScreen, {trigger: true})
         }
+        log.setUser(user)
+
+        throw new Error('front err')
     }
 })

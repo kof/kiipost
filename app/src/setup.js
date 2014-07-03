@@ -8,6 +8,7 @@ define(function(require, exports, module) {
     //var API_BASE_URL = 'http://oleg.localtunnel.me'
     var API_BASE_URL = 'http://kiipost-dev.herokuapp.com'
     //var API_BASE_URL = 'http://192.168.1.11:3000'
+    var SENTRY_DSN = 'https://16045f69f28a46aea86e6dc7ac253aa5@app.getsentry.com/26904'
 
     $.ajaxSetup({
         xhrFields: {
@@ -41,4 +42,9 @@ define(function(require, exports, module) {
     backbone.Collection.prototype.emit =
     backbone.View.prototype.emit =
     backbone.Model.prototype.emit = backbone.Events.trigger
+
+    require('components/log').setup({
+        reload: false,
+        sentryDsn: SENTRY_DSN
+    })
 })

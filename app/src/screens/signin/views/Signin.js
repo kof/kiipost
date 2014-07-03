@@ -87,8 +87,8 @@ define(function(require, exports, module) {
     Signin.prototype.load = function(data) {
         this.spinner.show()
         this.model.save(data)
-            .then(function() {
-                this._eventOutput.emit('signin:success')
+            .then(function(data) {
+                this._eventOutput.emit('signin:success', data)
             }.bind(this))
             .fail(function(xhr) {
                 if (xhr.statusText == 'Unauthorized') {

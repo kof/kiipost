@@ -29,7 +29,8 @@ require.config({
         closest: '../lib/closest/closest',
         'components/log': './components/log/index',
         'components/deviceready': './components/deviceready/index',
-        'components/keyboard': './components/keyboard/index'
+        'components/keyboard': './components/keyboard/index',
+        raven: '../lib/raven-js/dist/raven'
     },
     packages: [
 
