@@ -1,7 +1,9 @@
 var ms = require('ms')
 
+var env = process.env
+
 exports.db = {
-    url: process.env.MONGO_URL,
+    url: env.MONGO_URL,
     options: {
         db: {
             // Default write concern: expect confirmation by primary.
@@ -16,7 +18,10 @@ exports.db = {
 }
 
 exports.server = {
-    port: process.env.PORT
+    port: env.PORT,
+    stdout: true,
+    stderr: true,
+    sentryDsn: env.SENTRY_DSN
 }
 
 exports.cors = {
