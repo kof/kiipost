@@ -43,10 +43,11 @@ define(function(require, exports, module) {
             views: [this.header],
             collection: this.options.collection,
             models: this.models,
-            classes: ['memos']
+            classes: ['memos'],
+            backTop: this.header.getSize()[1]
         })
         this.stream.pipe(this._eventOutput)
-        this.stream.on('stream:loadstart', this.spinner.show.bind(this.spinner))
+            .on('stream:loadstart', this.spinner.show.bind(this.spinner))
         this.stream.on('stream:loadend', this.spinner.hide.bind(this.spinner))
         this.add(this.stream)
 
@@ -65,10 +66,12 @@ define(function(require, exports, module) {
 
     Memos.DEFAULT_OPTIONS = {}
 
-    Memos.prototype.load = function() {
-        if (this._loaded) return
+    Memos.prototype.load = function(options) {
+        if (this.loaded) return
         this.spinner.show()
-        this.models.user.authorize.then(this.stream.load.bind(this.stream))
-        this._loaded = true
+        this.models.user.authorize.then(function() {
+            this.stream.load(options)
+        }.bind(this))
+        this.loaded = true
     }
 })

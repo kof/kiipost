@@ -21,6 +21,7 @@ define(function(require, exports, module) {
 
     pool.setCreator(function() {
         var container = document.createElement('div')
+        container.className = 'inner'
         container.innerHTML = tpl
         var map = elementsMap(container)
         map.container = container
@@ -92,7 +93,6 @@ define(function(require, exports, module) {
         i.link.href = attr.url
         i.link.textContent = attr.hostname
         i.image.style.display = 'none'
-        i.container.className = 'inner' +  (attr.dummy ? ' dummy' : '')
 
         this.surface.setContent(i.container)
     }

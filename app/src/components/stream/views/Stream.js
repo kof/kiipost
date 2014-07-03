@@ -10,6 +10,8 @@ define(function(require, exports, module) {
     var Surface = require('famous/core/Surface')
     var InfiniteScrollView  = require('famous-infinitescroll')
     var Group = require('famous/core/Group')
+    var Transform = require('famous/core/Transform')
+    var Modifier = require('famous/core/Modifier')
 
     var app = require('app')
 
@@ -32,7 +34,7 @@ define(function(require, exports, module) {
         this._endReached = false
 
         this.stream = new Group({classes: this.options.classes})
-        this.add(this.stream)
+        this.add(new Modifier({transform: Transform.inFront})).add(this.stream)
 
         this.scrollview = new InfiniteScrollView({
             // Trigger infiniteScroll event 5 screens before items actually get rendered.
@@ -45,6 +47,16 @@ define(function(require, exports, module) {
         this.scrollview.sequenceFrom(this.views)
         this.scrollview.on('infiniteScroll', _.debounce(this.load.bind(this), 300, true))
         this.collection.on('end', this._onEnd.bind(this))
+        this.back = new Surface({
+            classes: ['back'],
+            properties: {backgroundColor: '#fff'}
+        })
+        this.stream.add(new Modifier({
+            transform: Transform.multiply(
+                Transform.behind,
+                Transform.translate(0, this.options.backTop)
+            )
+        })).add(this.back)
     }
 
     inherits(Stream, View)
@@ -54,16 +66,22 @@ define(function(require, exports, module) {
         ItemView: null,
         views: null,
         classes: null,
-        minItems: 3
+        backTop: null
     }
 
-    Stream.prototype.load = function() {
+    Stream.prototype.load = function(options) {
+        if (!options) options = {}
         if (this._loading || this._endReached) return
         this._eventOutput.emit('stream:loadstart')
         this._loading = true
         this.scrollview.infiniteScrollDisabled = true
-        // Minus views added before scroll items.
-        this.collection.options.skip = this.views.length - this._initialViewsAmount
+        if (options.reset) {
+            this.views.splice(this._initialViewsAmount, this.views.length)
+            this.collection.options.skip = 0
+        } else {
+            // Minus views added before scroll items.
+            this.collection.options.skip = this.views.length - this._initialViewsAmount
+        }
         this.collection.fetch()
             .then(this.setContent.bind(this))
             .always(function() {
@@ -74,18 +92,9 @@ define(function(require, exports, module) {
     }
 
     Stream.prototype.setContent = function() {
-        var o = this.options
-        var ItemView = o.ItemView
-        var items = this.collection
+        var ItemView = this.options.ItemView
 
-        if (items.length < o.minItems) {
-            items = items.clone()
-            _.times(o.minItems - items.length, function() {
-                items.add(new this.collection.model({dummy: true}))
-            }.bind(this))
-        }
-
-        items.each(function(model) {
+        this.collection.each(function(model) {
             var view = new ItemView({model: model, models: this.models})
             view.pipe(this.scrollview).pipe(this._eventOutput)
             this.views.push(view)

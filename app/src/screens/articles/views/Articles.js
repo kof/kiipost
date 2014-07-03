@@ -42,7 +42,8 @@ define(function(require, exports, module) {
             ItemView: ArticleView,
             views: [this.header],
             collection: this.options.collection,
-            classes: ['articles']
+            classes: ['articles'],
+            backTop: this.header.getSize()[1]
         })
         this.stream.pipe(this._eventOutput)
         this.stream.on('stream:loadstart', this.spinner.show.bind(this.spinner))

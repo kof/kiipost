@@ -18,6 +18,7 @@ define(function(require, exports, module) {
         this.models = options.models
         Controller.call(this, options)
         this.router = this.options.router
+        this._reset = false
     }
     inherits(Memos, Controller)
     module.exports = Memos
@@ -34,12 +35,17 @@ define(function(require, exports, module) {
         this.baseTransition = new BaseTransition()
         this.view.on('menu:change', this._onMenuChange.bind(this))
         this.view.on('memo:open', this._onMemoOpen.bind(this))
-        app.context.on('memos:open', this._onOpen.bind(this))
-        app.context.on('fullArticle:close', this._onFullArticleClose.bind(this))
+        app.context
+            .on('memos:open', this._onOpen.bind(this))
+            .on('fullArticle:close', this._onFullArticleClose.bind(this))
+            .on('fullArticle:kiiposted', this._onFullArticleKiiposted.bind(this))
     }
 
     Memos.prototype.memos = function() {
-        app.controller.show(this.view, this.view.load.bind(this.view))
+        app.controller.show(this.view, function() {
+            this.view.load({reset: this._reset})
+            this._reset = false
+        }.bind(this))
     }
 
     Memos.prototype._onMenuChange = function(e) {
@@ -61,5 +67,10 @@ define(function(require, exports, module) {
         this.router.navigate('memos')
         this.memos()
         this.baseTransition.commit(app.controller)
+    }
+
+    Memos.prototype._onFullArticleKiiposted = function(e) {
+        this._reset = true
+        this.view.loaded = false
     }
 })

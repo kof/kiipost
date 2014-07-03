@@ -9,12 +9,6 @@
     box-sizing: border-box;
     border-bottom: 1px solid #999;
 }
-.memo .dummy {
-    border: none;
-}
-.memo .dummy > * {
-    display: none;
-}
 .memo .avatar {
     -webkit-flex: none;
     width: 3rem;

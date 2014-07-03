@@ -78,14 +78,16 @@ define(function(require, exports, module) {
             classes: ['kiipost-btn'],
             size: [true, true]
         })
-        this.kiipostBtn.on('click', this._onKiipost.bind(this))
-        this.add(new Modifier({origin: [0.5, 0.97]})).add(this.kiipostBtn)
+        this.kiipostBtn.on('click', this._onKiipostOpen.bind(this))
+        this.article.add(new Modifier({origin: [0.5, 0.97]})).add(this.kiipostBtn)
 
         this.memoEdit = new MemoEditView({
             context: app.context,
             model: this.models.memo
         })
-        this.memoEdit.on('hide', this._onKiipostHide.bind(this))
+        this.memoEdit
+            .on('hide', this._onKiipostHide.bind(this))
+            .on('saved', this._onKiipostSaved.bind(this))
         this.add(this.memoEdit)
 
         this._optionsManager.on('change', this._onOptionsChange.bind(this))
@@ -184,7 +186,7 @@ define(function(require, exports, module) {
         clearInterval(this._textHeightIntervalId)
     }
 
-    FullArticle.prototype._onKiipost = function(e) {
+    FullArticle.prototype._onKiipostOpen = function(e) {
         this.bg.pause()
         this.articleModifier.setOpacity(0.3, this.options.darkInTransition)
         this._toggleKiipostBtn(false)
@@ -195,6 +197,10 @@ define(function(require, exports, module) {
         this.bg.resume()
         this.articleModifier.setOpacity(1, this.options.darkOutTransition)
         this._toggleKiipostBtn(true)
+    }
+
+    FullArticle.prototype._onKiipostSaved = function() {
+        app.context.emit('fullArticle:kiiposted', this.model)
     }
 
     FullArticle.prototype._onTopBtnClick = function(e) {

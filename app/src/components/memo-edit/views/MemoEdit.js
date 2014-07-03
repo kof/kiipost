@@ -63,7 +63,7 @@ define(function(require, exports, module) {
             classes: ['submit'],
             size: [true, undefined]
         })
-        this.submit.on('click', this._onSubmit.bind(this))
+        this.submit.on('click', this._onSave.bind(this))
         this.actionBar.add(this.submit)
 
         this.memo = new FormContainerSurface({
@@ -128,10 +128,13 @@ define(function(require, exports, module) {
         this.counter.setContent(remaining)
     }, 100, {leading: false})
 
-    MemoEdit.prototype._onSubmit = function() {
+    MemoEdit.prototype._onSave = _.debounce(function() {
         if (this.limitViolation) return
         this.model.set('text', this.textarea.getValue())
         this.model.save()
-            .then(this.hide.bind(this))
-    }
+            .then(function() {
+                this._eventOutput.emit('saved')
+                this.hide()
+            }.bind(this))
+    }, 1000, true)
 })

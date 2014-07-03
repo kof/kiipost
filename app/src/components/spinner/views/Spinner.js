@@ -12,7 +12,6 @@ define(function(require, exports, module) {
     function Spinner() {
         RenderController.apply(this, arguments)
 
-        this.rotate = false
         this.container = new ContainerSurface({
             classes: ['spinner'],
             size: this.options.size
@@ -32,7 +31,10 @@ define(function(require, exports, module) {
                 return Transform.rotateZ(angle)
             }.bind(this)
         })
-        this.spinner = this.add(new Modifier({origin: this.options.origin}))
+        this.spinner = this.add(new Modifier({
+            origin: this.options.origin,
+            transform: Transform.inFront
+        }))
         this.spinner.add(this.container)
         this.container.add(rotationModifier).add(this.image)
     }
