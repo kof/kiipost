@@ -128,13 +128,17 @@ define(function(require, exports, module) {
         this.counter.setContent(remaining)
     }, 100, {leading: false})
 
-    MemoEdit.prototype._onSave = _.debounce(function() {
-        if (this.limitViolation) return
+    MemoEdit.prototype._onSave = function() {
+        if (this.limitViolation || this._saving) return
+        this._saving = true
         this.model.set('text', this.textarea.getValue())
         this.model.save()
             .then(function() {
                 this._eventOutput.emit('saved')
                 this.hide()
             }.bind(this))
-    }, 1000, true)
+            .always(function() {
+                this._saving = false
+            }.bind(this))
+    }
 })
