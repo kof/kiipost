@@ -182,6 +182,15 @@ define(function(require, exports, module) {
         this.kiipostBtn.setProperties({display: show ? 'block' : 'none'})
     }
 
+    FullArticle.prototype._open = function(url) {
+        window.open(url, '_blank', [
+            'location=yes',
+            'enableViewportScale=yes',
+            'allowInlineMediaPlayback=yes',
+            'transitionstyle=fliphorizontal'
+        ].join(','))
+    }
+
     FullArticle.prototype._onRecall = function() {
         clearInterval(this._textHeightIntervalId)
     }
@@ -208,12 +217,7 @@ define(function(require, exports, module) {
         if (cls.contains('close')) {
             this._eventOutput.emit('close')
         } else if (cls.contains('source')) {
-            window.open(this.model.get('url'), '_blank', [
-                'location=yes',
-                'enableViewportScale=yes',
-                'allowInlineMediaPlayback=yes',
-                'transitionstyle=fliphorizontal'
-            ].join(','))
+            this._open(this.model.get('url'))
         }
     }
 
@@ -229,5 +233,7 @@ define(function(require, exports, module) {
     FullArticle.prototype._onTextClick = function(e) {
         // Prevent links from opening!
         e.preventDefault()
+        var href = e.target.href
+        if (href) this._open(href)
     }
 })
