@@ -88,7 +88,7 @@ define(function(require, exports, module) {
         this.spinner.show()
         this.model.save(data)
             .then(function(data) {
-                this._eventOutput.emit('signin:success', data)
+                this._eventOutput.emit('success', data)
             }.bind(this))
             .fail(function(xhr) {
                 if (xhr.statusText == 'Unauthorized') {
@@ -101,6 +101,6 @@ define(function(require, exports, module) {
     }
 
     Signin.prototype._onSigninStart = function() {
-        this._eventOutput.emit('signin:start')
+        this._eventOutput.emit('start')
     }
 })

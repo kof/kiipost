@@ -34,7 +34,9 @@ define(function(require, exports, module) {
         })
         this.baseTransition = new BaseTransition()
         this.view.on('menu:change', this._onMenuChange.bind(this))
-        this.view.on('memo:open', this._onMemoOpen.bind(this))
+        // XXX
+        // Fix EventProxy
+        this.view.on('open', this._onMemoOpen.bind(this))
         app.context
             .on('memos:open', this._onOpen.bind(this))
             .on('fullArticle:close', this._onFullArticleClose.bind(this))

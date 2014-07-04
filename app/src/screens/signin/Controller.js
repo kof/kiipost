@@ -31,8 +31,8 @@ define(function(require, exports, module) {
 
     Signin.prototype.initialize = function() {
         this.view = new SigninView({model: this.models.user})
-        this.view.on('signin:start', this._onSigninStart.bind(this))
-        this.view.on('signin:success', this._onSigninSuccess.bind(this))
+        this.view.on('start', this._onSigninStart.bind(this))
+        this.view.on('success', this._onSigninSuccess.bind(this))
         ios.available().then(this._signin.bind(this))
     }
 
@@ -60,7 +60,5 @@ define(function(require, exports, module) {
             this.router.navigate(this.options.defaultScreen, {trigger: true})
         }
         log.setUser(user)
-
-        throw new Error('front err')
     }
 })

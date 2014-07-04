@@ -6,6 +6,7 @@ define(function(require, exports, module) {
     var inherits = require('inherits')
     var _ = require('underscore')
 
+    var EventProxy = require('components/famous/EventProxy')
     var View = require('famous/core/View')
     var Surface = require('famous/core/Surface')
     var InfiniteScrollView  = require('famous-infinitescroll')
@@ -62,6 +63,11 @@ define(function(require, exports, module) {
     inherits(Stream, View)
     module.exports = Stream
 
+    Stream.EVENTS = {
+        loadStart: true,
+        loadEnd: true
+    }
+
     Stream.DEFAULT_OPTIONS = {
         ItemView: null,
         views: null,
@@ -72,7 +78,7 @@ define(function(require, exports, module) {
     Stream.prototype.load = function(options) {
         if (!options) options = {}
         if (this._loading || this._endReached) return
-        this._eventOutput.emit('stream:loadstart')
+        this._eventOutput.emit('loadStart')
         this._loading = true
         this.scrollview.infiniteScrollDisabled = true
         if (options.reset) {
@@ -87,7 +93,7 @@ define(function(require, exports, module) {
             .always(function() {
                 this._loading = false
                 this.scrollview.infiniteScrollDisabled = false
-                this._eventOutput.emit('stream:loadend')
+                this._eventOutput.emit('loadEnd')
             }.bind(this))
     }
 
@@ -96,7 +102,8 @@ define(function(require, exports, module) {
 
         this.collection.each(function(model) {
             var view = new ItemView({model: model, models: this.models})
-            view.pipe(this.scrollview).pipe(this._eventOutput)
+            view.surface.pipe(this.scrollview)
+            view.pipe(this._eventOutput)
             this.views.push(view)
         }, this)
     }

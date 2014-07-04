@@ -28,7 +28,7 @@ define(function(require, exports, module) {
         return map
     })
 
-    function StreamItem() {
+    function Article() {
         View.apply(this, arguments)
 
         var width = app.context.getSize()[0]
@@ -43,21 +43,24 @@ define(function(require, exports, module) {
             classes: ['articles-item']
         })
         this.add(this.surface)
-        this.surface.pipe(this._eventOutput)
 
         this.surface.on('click', this._onClick.bind(this))
         this.surface.on('recall', this._onRecall.bind(this))
         this.surface.on('deploy',this._onDeploy.bind(this))
     }
 
-    inherits(StreamItem, View)
-    module.exports = StreamItem
+    inherits(Article, View)
+    module.exports = Article
 
-    StreamItem.DEFAULT_OPTIONS = {
+    Article.EVENTS = {
+        open: true
+    }
+
+    Article.DEFAULT_OPTIONS = {
         model: null
     }
 
-    StreamItem.prototype.setContent = function() {
+    Article.prototype.setContent = function() {
         var attr = this.model.attributes
         var i = this._poolItem
         var textWidth
@@ -97,16 +100,16 @@ define(function(require, exports, module) {
         this.surface.setContent(i.container)
     }
 
-    StreamItem.prototype._onClick = function(e) {
+    Article.prototype._onClick = function(e) {
         e.preventDefault()
-        this._eventOutput.emit('article:open', this.model)
+        this._eventOutput.emit('open', this.model)
     }
 
-    StreamItem.prototype._onRecall = function() {
+    Article.prototype._onRecall = function() {
         pool.release(this._poolItem)
     }
 
-    StreamItem.prototype._onDeploy = function() {
+    Article.prototype._onDeploy = function() {
         // Without nextTick changes will not applied.
         Engine.nextTick(this.setContent.bind(this))
     }

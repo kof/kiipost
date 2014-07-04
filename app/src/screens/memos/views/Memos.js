@@ -8,6 +8,7 @@ define(function(require, exports, module) {
     var Surface = require('famous/core/Surface')
     var Modifier = require('famous/core/Modifier')
 
+    var EventProxy = require('components/famous/EventProxy')
     var HeaderView = require('components/header/views/Header')
     var StreamView = require('components/stream/views/Stream')
     var MenuView = require('components/menu/views/Menu')
@@ -32,7 +33,9 @@ define(function(require, exports, module) {
         })
 
         this.menu = new MenuView({selected: 'memos'})
-        this.menu.pipe(this._eventOutput)
+        this.menu.pipe(new EventProxy(function(name, data, emit) {
+            emit('menu:' + name, data)
+        })).pipe(this._eventOutput)
         this.header.surface.add(this.menu)
 
         this.spinner = new SpinnerView()
@@ -46,9 +49,10 @@ define(function(require, exports, module) {
             classes: ['memos'],
             backTop: this.header.getSize()[1]
         })
-        this.stream.pipe(this._eventOutput)
-            .on('stream:loadstart', this.spinner.show.bind(this.spinner))
-        this.stream.on('stream:loadend', this.spinner.hide.bind(this.spinner))
+        this.stream
+            .on('loadStart', this.spinner.show.bind(this.spinner))
+            .on('loadEnd', this.spinner.hide.bind(this.spinner))
+            .pipe(this._eventOutput)
         this.add(this.stream)
 
         // Header can scroll the scrollview.

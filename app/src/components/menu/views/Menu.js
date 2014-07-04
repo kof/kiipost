@@ -80,7 +80,7 @@ define(function(require, exports, module) {
         if (!e.target.classList.contains('item')) return
         var name = e.target.getAttribute('data-name')
         if (this.selected && this.selected.name == name) return
-        this._eventOutput.emit('menu:change', {name: name})
+        this._eventOutput.emit('change', {name: name})
     }
 
     Menu.prototype._onDeploy = function() {

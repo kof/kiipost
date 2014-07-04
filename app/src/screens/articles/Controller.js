@@ -32,9 +32,12 @@ define(function(require, exports, module) {
             models: this.models
         })
         this.view.on('menu:change', this._onMenuChange.bind(this))
-        this.view.on('article:open', this._onArticleOpen.bind(this))
-        app.context.on('fullArticle:close', this._onFullArticleClose.bind(this))
-        app.context.on('articles:open', this._onOpen.bind(this))
+        // XXX
+        // Fix EventProxy
+        this.view.on('open', this._onArticleOpen.bind(this))
+        app.context
+            .on('fullArticle:close', this._onFullArticleClose.bind(this))
+            .on('articles:open', this._onOpen.bind(this))
     }
 
     Articles.prototype.articles = function() {
