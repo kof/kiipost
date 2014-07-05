@@ -15,7 +15,11 @@ module.exports = {
     score: Number,
     tags: [String],
     categories: [String],
-    images: [String],
+    images: [new m.Schema({
+        url: String,
+        width: Number,
+        height: Number
+    }, {_id: false})],
     enclosures: [new m.Schema({
         url: String,
         type: String,

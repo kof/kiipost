@@ -27,7 +27,7 @@ tests.push({
 })
 
 qunit.setup({
-    coverage: true
+    coverage: false
 })
 
 qunit.run(tests, function(err) {

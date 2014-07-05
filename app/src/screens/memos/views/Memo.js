@@ -66,28 +66,34 @@ define(function(require, exports, module) {
         var article = attr.articles[0] ? attr.articles[0].attributes : {}
         var i = this._poolItem
         var textWidth
+        var image
 
-        var imageUrl, icon
         if (article.images && article.images[0]) {
-            imageUrl = article.images[0]
+            image = article.images[0]
         } else {
-            imageUrl = article.icon
-            icon = true
+            image = {url: article.icon, isIcon: true}
         }
-        if (imageUrl) {
-            if (!this._textOffsetLeft) this._textOffsetLeft = i.content.offsetLeft
-            textWidth = this.options.size[0] - this._imageWidth - this._textOffsetLeft + 'px'
-            app.imagesLoader.load(imageUrl, function(err, image) {
-                if (err) return
 
-                i.image.style.backgroundImage = 'url(' + imageUrl + ')'
-                i.image.style.width = this._imageWidth + 'px'
-                i.image.style.backgroundSize = icon ? 'contain' : 'cover'
-                if (image.width <= this._imageWidth && image.height <= this.options.size[1]) {
-                    i.image.style.backgroundSize = 'initial'
-                }
-                i.image.style.display = 'block'
-            }.bind(this))
+        function setImage(err, size) {
+            if (err) return
+
+            i.image.style.backgroundImage = 'url(' + image.url + ')'
+            i.image.style.width = this._imageWidth + 'px'
+            i.image.style.backgroundSize = image.isIcon ? 'contain' : 'cover'
+            if (size.width <= this._imageWidth && size.height <= this.options.size[1]) {
+                i.image.style.backgroundSize = 'initial'
+            }
+            i.image.style.display = 'block'
+        }
+
+        if (image) {
+            if (!this._textOffsetLeft) this._textOffsetLeft = i.content.offsetLeft
+            textWidth = this.options.size[0] - this._imageWidth + 'px'
+            if (image.width && image.height) {
+                setImage.call(this, null, image)
+            } else {
+                app.imagesLoader.load(image.url, setImage.bind(this))
+            }
         } else {
             textWidth = '100%'
         }

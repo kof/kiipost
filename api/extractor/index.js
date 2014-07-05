@@ -10,6 +10,7 @@ var retry = require('retry')
 var thunkify = require('thunkify')
 var entities = require('entities')
 var es = require('event-stream')
+var co = require('co')
 
 var conf = require('api/conf')
 
@@ -34,19 +35,17 @@ var noop = function() {}
  * @param {String} url
  * @param {Function} callback
  */
-exports.extract = thunkify(function(url, callback) {
-    fetchData(url, function(err, tags, article) {
-        var res = {}
-        if (err) err.url = url
-        if (err || !tags || !article) return callback(err, res)
-        res = _.pick(article, 'title', 'score', 'url')
-        res.icon = findIcon(tags, url)
-        res.images = findImages(tags, url, MIN_IMAGE_WIDTH, MAX_IMAGES_AMOUNT)
-        res.summary = _s.prune(_s.stripTags(findDescription(tags) || article.html).trim(), 250, '')
-        res.description = article.html
-        res.tags = findKeywords(tags)
-        callback(null, res)
-    })
+exports.extract = co(function* (url) {
+    var data = yield fetchData(url)
+    var res = {}
+    if (!data.tags || !data.article) return res
+    res = _.pick(data.article, 'title', 'score', 'url')
+    res.icon = findIcon(data.tags, url)
+    res.images = findImages(data.tags, url, MIN_IMAGE_WIDTH, MAX_IMAGES_AMOUNT)
+    res.summary = _s.prune(_s.stripTags(findDescription(data.tags) || data.article.html).trim(), 250, '')
+    res.description = data.article.html
+    res.tags = findKeywords(data.tags)
+    return res
 })
 
 /**
@@ -58,7 +57,7 @@ exports.extractWithRetry = thunkify(function(url, callback) {
     var op = retry.operation({retries: 2})
 
     op.attempt(function(attempt) {
-        exports.extract(url)(function(err, data) {
+        exports.extract(url, function(err, data) {
             if (op.retry(err)) return
             callback(err ? op.mainError() : null, data)
         })
@@ -110,27 +109,29 @@ function fetchData(url, callback) {
     req.agent()
 }
 
+fetchData = thunkify(fetchData)
+
 /**
  * Run all converters/extractors.
   */
 function runExtractors(req, res, callback) {
-    var tags = [], article
+    var data = {}
 
     function done() {
-        if (tags && article) callback(null, tags, article)
+        if (data.tags && data.article) callback(null, data)
     }
 
     var charsetConverter = new CharsetConverter(res).getStream()
 
     var tagsStream
-    tagsStream = tagsExtractor(function(data) {
-        tags = data
+    tagsStream = tagsExtractor(function(tags) {
+        data.tags = tags
         done()
     })
 
     var readabilityStream
-    readabilityStream = articleExtractor(req.url, function(data) {
-        article = data
+    readabilityStream = articleExtractor(req.url, function(article) {
+        data.article = article
         done()
     })
 
@@ -249,51 +250,63 @@ function findIcon(tags, baseUrl) {
 function findImages(tags, baseUrl, minWidth, maxAmount) {
     var images
 
-    // - Filter images without width or width less than min.
-    // - Parse width attr to number.
-    images = tags.img.filter(function(img) {
-        var a = img.attributes
+    function parseNumber(num) {
+        var num = parseInt(num, 10)
+        return isNaN(num) ? 0 : num
+    }
 
-        if (a.width) {
-            a.width = parseInt(a.width.trim() || 0, 10)
-            if (a.width >= minWidth &&
-                a.src &&
-                !isDataImage.test(a.src)) {
-                return true
-            }
+    // - Create image objects.
+    // - Parse width attr to number.
+    images = tags.img.map(function(image) {
+        var a = image.attributes
+
+        return {
+            url: a.src.trim(),
+            width: parseNumber(a.width),
+            height: parseNumber(a.height)
         }
     })
 
+    // - Filter small images
+    // - Filter data urls
+    images = images.filter(function(img) {
+        if (img.width >= minWidth &&
+            img.url &&
+            !isDataImage.test(img.url)) {
+            return true
+        }
+    })
+
+    // Add from meta og:image.
+    _(tags.meta).find(function(meta) {
+        var a = meta.attributes
+        if (isOgImage.test(a.property) && a.content) {
+            // We don't know the size yet.
+            images.push({
+                url: a.content.trim(),
+                width: 0,
+                height: 0
+            })
+            return true
+        }
+    })
+
+    // Resolve urls.
+    images.forEach(function(image) {
+        image.url = url.resolve(baseUrl, image.url)
+    })
+
     // Sort images by width ascending.
-    images = _.sortBy(images, function(img) {
-        return img.attributes.width
+    images = _(images).sortBy(function(img) {
+        return -img.width
     })
 
-    // Leave the urls only.
-    images = images.map(function(image) {
-        return image.attributes.src.trim()
+    // Remove duplicates.
+    images = _(images).uniq(function(img) {
+        return img.url
     })
 
-    images = _.uniq(images)
-
-    // When nothing found, use og:image.
-    if (!images.length) {
-        _.find(tags.meta, function(meta) {
-            var attr = meta.attributes
-            if (isOgImage.test(attr.property) && attr.content) {
-                images.push(attr.content.trim())
-                return true
-            }
-        })
-    }
-
-    images = images.map(function(imageUrl) {
-        return url.resolve(baseUrl, imageUrl)
-    })
-
-    images.splice(0, maxAmount)
-
-    return images
+    return _(images).first(maxAmount)
 }
 
 /**

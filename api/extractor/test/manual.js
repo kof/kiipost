@@ -12,8 +12,6 @@ d.on('error', function(err) {
 })
 
 d.run(function() {
-    extractor.extract('http://heaven.branda.to/~thinker/GinGin_CGI.py/show_id_doc/486')(function() {
-        console.log('extracted', arguments)
-    })
+    extractor.extract('http://thepioneerwoman.com/blog/2014/06/saturday-gathering/', console.log)
 })
 

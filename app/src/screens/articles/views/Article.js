@@ -64,28 +64,33 @@ define(function(require, exports, module) {
         var attr = this.model.attributes
         var i = this._poolItem
         var textWidth
-        var imageUrl, isIcon
+        var image
 
         if (attr.images.length) {
-            imageUrl = attr.images[0]
+            image = attr.images[0]
         } else if (attr.icon) {
-            isIcon = true
-            imageUrl = attr.icon
+            image = {url: attr.icon, isIcon: true}
         }
 
-        if (imageUrl) {
-            textWidth = this.options.size[0] - this._imageWidth + 'px'
-            app.imagesLoader.load(imageUrl, function(err, image) {
-                if (err) return
+        function setImage(err, size) {
+            if (err) return
 
-                i.image.style.backgroundImage = 'url(' + imageUrl + ')'
-                i.image.style.width = this._imageWidth + 'px'
-                i.image.style.backgroundSize = isIcon ? 'contain' : 'cover'
-                if (image.width <= this._imageWidth && image.height <= this.options.size[1]) {
-                    i.image.style.backgroundSize = 'initial'
-                }
-                i.image.style.display = 'block'
-            }.bind(this))
+            i.image.style.backgroundImage = 'url(' + image.url + ')'
+            i.image.style.width = this._imageWidth + 'px'
+            i.image.style.backgroundSize = image.isIcon ? 'contain' : 'cover'
+            if (size.width <= this._imageWidth && size.height <= this.options.size[1]) {
+                i.image.style.backgroundSize = 'initial'
+            }
+            i.image.style.display = 'block'
+        }
+
+        if (image) {
+            textWidth = this.options.size[0] - this._imageWidth + 'px'
+            if (image.width && image.height) {
+                setImage.call(this, null, image)
+            } else {
+                app.imagesLoader.load(image.url, setImage.bind(this))
+            }
         } else {
             textWidth = '100%'
         }
