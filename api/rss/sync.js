@@ -385,7 +385,7 @@ function postnormalize(articles, feed) {
 /**
  * Extract data from the site, extend the article.
  */
-function addSiteData(articles, callback) {
+function addSiteData(articles) {
 
     function len(str) {
         return str && str.length ? str.length : 0

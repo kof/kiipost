@@ -4,7 +4,7 @@ var request = require('superagent')
 var _ = require('underscore')
 var _s = require('underscore.string')
 var url = require('url')
-var sax = require('sax')
+var htmlParser = require('htmlparser2')
 var readabilitySax = require('readabilitySAX')
 var retry = require('retry')
 var thunkify = require('thunkify')
@@ -25,8 +25,6 @@ var isKeywords = /keywords|tag|tags/i
 
 var MIN_IMAGE_WIDTH = 200
 var MAX_IMAGES_AMOUNT = 5
-
-sax.MAX_BUFFER_LENGTH = Infinity
 
 var noop = function() {}
 
@@ -130,59 +128,80 @@ function runExtractors(req, res, callback) {
         done()
     })
 
+    var readabilityStream
+    readabilityStream = articleExtractor(req.url, function(data) {
+        article = data
+        done()
+    })
+
     res
         .pipe(charsetConverter)
         .on('error', callback)
         .pipe(tagsStream)
-
-    tagsStream
-        .pipe(articleExtractor(req.url, function(data) {
-            article = data
-            done()
-        }))
+        .pipe(readabilityStream)
 }
 
 /**
  * Find tags we need for later extractions.
  */
-function tagsExtractor(callback) {
+function tagsExtractor(callback) {
     var data = {img: [], link: [], meta: []}
-    var stream
+    var parser
 
-    stream = sax.createStream(false, {lowercase: true})
-        .on('error', function() {
-            stream._parser.error = null
-            stream._parser.resume()
-        })
-        .on('opentag', function(node) {
-            if (data[node.name]) {
-                node.attributes || (node.attributes = {})
-                data[node.name].push(node)
+    parser = new htmlParser.Parser({
+        onopentag: function(name, attr){
+            if (data[name]) {
+                data[name].push({attributes: attr || {}})
             }
-        })
-        .on('end', function() {
-            _.each(data, function(arr, key) {
-                data[key] = _.compact(arr)
-            })
+        }
+    })
 
+    return es.through(
+        function(data) {
+            parser.write(data)
+            this.emit('data', data)
+        },
+        function() {
             callback(data)
-        })
-
-    return stream
+            this.emit('end')
+        }
+    )
 }
-
 /**
  * Extract article using readabilitySax.
  */
 function articleExtractor(url, callback) {
-    var options = {pageURL: url, html: true}
+    var Readability = readabilitySax.Readability
+    var Parser = htmlParser.Parser
+    var CollectingHandler = htmlParser.CollectingHandler
 
-    return readabilitySax.createWritableStream(options, function(article) {
-        article.html = entities.decodeHTML5(article.html.replace(/\s+/g, ' '))
-        article.title = entities.decodeHTML5(article.title)
-        article.url = url
-        callback(article)
-    })
+    var readability = new Readability({pageURL: url, type: 'html'})
+    var handler = new CollectingHandler(readability)
+    var parser = new Parser(handler, {lowerCaseTags: true})
+
+    return es.through(
+        function(data) {
+            parser.write(data)
+            this.emit('data', data)
+        },
+        function() {
+            for(
+                var skipLevel = 1;
+                readability._getCandidateNode().info.textLength < 250 && skipLevel < 4;
+                skipLevel++
+            ){
+                readability.setSkipLevel(skipLevel)
+                handler.restart()
+            }
+
+            var article = readability.getArticle()
+            article.html = entities.decodeHTML5(article.html.replace(/\s+/g, ' '))
+            article.title = entities.decodeHTML5(article.title)
+            article.url = url
+            callback(article)
+            this.emit('end')
+        }
+    )
 }
 
 /**
