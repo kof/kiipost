@@ -69,26 +69,26 @@ define(function(require, exports, module) {
         var image = attr.articles[0] ? attr.articles[0].getImage() : null
 
         function setImage(err, size) {
-            if (err) return
-
+            if (err) return i.image.style.display = 'none'
             i.image.style.backgroundImage = 'url(' + image.url + ')'
             i.image.style.width = this._imageWidth + 'px'
             i.image.style.backgroundSize = image.isIcon ? 'contain' : 'cover'
             if (size.width <= this._imageWidth && size.height <= this.options.size[1]) {
                 i.image.style.backgroundSize = 'initial'
             }
-            i.image.style.display = 'block'
         }
 
         if (image) {
             if (!this._textOffsetLeft) this._textOffsetLeft = i.content.offsetLeft
             textWidth = this.options.size[0] - this._textOffsetLeft - this._imageWidth + 'px'
+            i.image.style.display = 'block'
             if (image.width && image.height) {
                 setImage.call(this, null, image)
             } else {
                 app.imagesLoader.load(image.url, setImage.bind(this))
             }
         } else {
+            i.image.style.display = 'none'
             textWidth = '100%'
         }
 
@@ -99,7 +99,6 @@ define(function(require, exports, module) {
         i.summary.textContent = article.summary || ''
         i.link.href = article.url || ''
         i.link.textContent = article.hostname || ''
-        i.image.style.display = 'none'
 
         this.surface.setContent(i.container)
     }

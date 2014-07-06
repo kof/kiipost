@@ -67,25 +67,25 @@ define(function(require, exports, module) {
         var image = this.model.getImage()
 
         function setImage(err, size) {
-            if (err) return
-
+            if (err) return i.image.style.display = 'none'
             i.image.style.backgroundImage = 'url(' + image.url + ')'
             i.image.style.width = this._imageWidth + 'px'
             i.image.style.backgroundSize = image.isIcon ? 'contain' : 'cover'
             if (size.width <= this._imageWidth && size.height <= this.options.size[1]) {
                 i.image.style.backgroundSize = 'initial'
             }
-            i.image.style.display = 'block'
         }
 
         if (image) {
             textWidth = this.options.size[0] - this._imageWidth + 'px'
+            i.image.style.display = 'block'
             if (image.width && image.height) {
                 setImage.call(this, null, image)
             } else {
                 app.imagesLoader.load(image.url, setImage.bind(this))
             }
         } else {
+            i.image.style.display = 'none'
             textWidth = '100%'
         }
 
@@ -94,7 +94,6 @@ define(function(require, exports, module) {
         i.summary.textContent = attr.summary
         i.link.href = attr.url
         i.link.textContent = attr.hostname
-        i.image.style.display = 'none'
 
         this.surface.setContent(i.container)
     }
