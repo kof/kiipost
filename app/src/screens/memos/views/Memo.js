@@ -68,15 +68,6 @@ define(function(require, exports, module) {
         var textWidth
         var image = attr.articles[0] ? attr.articles[0].getImage() : null
 
-        i.avatar.style.backgroundImage = 'url(' + this.models.user.get('imageUrl') + ')'
-        i.text.textContent = attr.text || ''
-        i.content.style.width = textWidth
-        i.title.textContent = article.title || ''
-        i.summary.textContent = article.summary || ''
-        i.link.href = article.url || ''
-        i.link.textContent = article.hostname || ''
-        i.image.style.display = 'none'
-
         function setImage(err, size) {
             if (err) return
 
@@ -91,7 +82,7 @@ define(function(require, exports, module) {
 
         if (image) {
             if (!this._textOffsetLeft) this._textOffsetLeft = i.content.offsetLeft
-            textWidth = this.options.size[0] - this._imageWidth + 'px'
+            textWidth = this.options.size[0] - this._textOffsetLeft - this._imageWidth + 'px'
             if (image.width && image.height) {
                 setImage.call(this, null, image)
             } else {
@@ -100,6 +91,15 @@ define(function(require, exports, module) {
         } else {
             textWidth = '100%'
         }
+
+        i.avatar.style.backgroundImage = 'url(' + this.models.user.get('imageUrl') + ')'
+        i.text.textContent = attr.text || ''
+        i.content.style.width = textWidth
+        i.title.textContent = article.title || ''
+        i.summary.textContent = article.summary || ''
+        i.link.href = article.url || ''
+        i.link.textContent = article.hostname || ''
+        i.image.style.display = 'none'
 
         this.surface.setContent(i.container)
     }

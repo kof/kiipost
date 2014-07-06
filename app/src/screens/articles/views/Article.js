@@ -66,14 +66,6 @@ define(function(require, exports, module) {
         var textWidth
         var image = this.model.getImage()
 
-        i.text.style.width = textWidth
-        i.title.textContent = attr.title
-        i.summary.textContent = attr.summary
-        i.link.href = attr.url
-        i.link.textContent = attr.hostname
-        i.image.style.display = 'none'
-
-
         function setImage(err, size) {
             if (err) return
 
@@ -97,6 +89,12 @@ define(function(require, exports, module) {
             textWidth = '100%'
         }
 
+        i.text.style.width = textWidth
+        i.title.textContent = attr.title
+        i.summary.textContent = attr.summary
+        i.link.href = attr.url
+        i.link.textContent = attr.hostname
+        i.image.style.display = 'none'
 
         this.surface.setContent(i.container)
     }
