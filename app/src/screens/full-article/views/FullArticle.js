@@ -131,35 +131,41 @@ define(function(require, exports, module) {
 
     FullArticle.prototype._setImage = function() {
         var attr = this.model.attributes
-        var imageUrl, isIcon
+        var image
 
         this._resetImage()
 
         if (attr.images.length) {
-            imageUrl = attr.images[0]
+            image = attr.images[0]
         } else if (attr.icon) {
-            isIcon = true
-            imageUrl = attr.icon
+            image = {url: attr.icon, isIcon: true}
         }
-        if (!imageUrl) return
 
-        app.imagesLoader.load(imageUrl, function(err, data) {
+        if (!image) return
+
+        function setImage(err, size) {
             if (err) return
 
-            var size = this._headerSize
             var props = {}
 
-            props.backgroundSize = isIcon ? 'contain' : 'cover'
+            props.backgroundSize = image.isIcon ? 'contain' : 'cover'
 
-            if (data.width <= size[0] && data.height <= size[1]) {
-                var top = (size[1] + this.bg.options.offset * 2 - data.height) / 2
+            if (size.width <= this._headerSize[0] && size.height <= this._headerSize[1]) {
+                var top = (this._headerSize[1] + this.bg.options.offset * 2 - size.height) / 2
                 props.backgroundSize = 'initial'
                 props.backgroundPosition = 'center ' + top + 'px'
             }
 
             this.bg.setProperties(props)
-            this.bg.setContent(imageUrl)
-        }.bind(this))
+            this.bg.setContent(image.url)
+        }
+
+
+        if (image.width && image.height) {
+            setImage.call(this, null, image)
+        } else {
+            app.imagesLoader.load(image.url, setImage.bind(this))
+        }
     }
 
     FullArticle.prototype._setTextHeight = function() {
@@ -232,8 +238,10 @@ define(function(require, exports, module) {
 
     FullArticle.prototype._onTextClick = function(e) {
         // Prevent links from opening!
-        e.preventDefault()
         var href = e.target.href
+        // Allow mailto links to open the mail program.
+        if (href && href.trim().indexOf('mailto:') == 0) return
+        e.preventDefault()
         if (href) this._open(href)
     }
 })
