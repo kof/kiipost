@@ -45,7 +45,7 @@ define(function(require, exports, module) {
         if (!_.isEmpty(a.images)) {
             this._image = a.images[0]
         } else if (!_.isEmpty(a.enclosures)) {
-            this._image = _(a.enclosures).find(function(enclosure) {
+            this._image = _(a.enclosures).find(function(enclosure) {
                 return enclosure.type == 'image'
             })
         }
