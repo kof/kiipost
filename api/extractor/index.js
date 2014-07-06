@@ -261,7 +261,7 @@ function findImages(tags, baseUrl, minWidth, maxAmount) {
         var a = image.attributes
 
         return {
-            url: a.src.trim(),
+            url: a.src ? a.src.trim() : '',
             width: parseNumber(a.width),
             height: parseNumber(a.height)
         }
