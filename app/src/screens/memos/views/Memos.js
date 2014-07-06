@@ -33,7 +33,7 @@ define(function(require, exports, module) {
         })
 
         this.menu = new MenuView({selected: 'memos'})
-        this.menu.pipe(new EventProxy(function(name, data, emit) {
+        this.menu.pipe(new EventProxy(function(name, data, emit) {
             emit('menu:' + name, data)
         })).pipe(this._eventOutput)
         this.header.surface.add(this.menu)
