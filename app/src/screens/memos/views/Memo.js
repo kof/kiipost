@@ -39,7 +39,7 @@ define(function(require, exports, module) {
         this.model = this.options.model
         this.models = this.options.models
         this.options.size = [width, height]
-        this._imageWidth = Math.round((height - (height * this.options.memoHeight)) * app.GOLDEN_RATIO)
+        this._imageWidth = Math.round((height - (height * this.options.memoHeight)) * constants.GOLDEN_RATIO)
         this._poolItem = pool.get()
         this.surface = new Surface({
             size: this.options.size,
@@ -66,7 +66,16 @@ define(function(require, exports, module) {
         var article = attr.articles[0] ? attr.articles[0].attributes : {}
         var i = this._poolItem
         var textWidth
-        var image = article.getImage ? article.getImage() : null
+        var image = attr.articles[0] ? attr.articles[0].getImage() : null
+
+        i.avatar.style.backgroundImage = 'url(' + this.models.user.get('imageUrl') + ')'
+        i.text.textContent = attr.text || ''
+        i.content.style.width = textWidth
+        i.title.textContent = article.title || ''
+        i.summary.textContent = article.summary || ''
+        i.link.href = article.url || ''
+        i.link.textContent = article.hostname || ''
+        i.image.style.display = 'none'
 
         function setImage(err, size) {
             if (err) return
@@ -91,15 +100,6 @@ define(function(require, exports, module) {
         } else {
             textWidth = '100%'
         }
-
-        i.avatar.style.backgroundImage = 'url(' + this.models.user.get('imageUrl') + ')'
-        i.text.textContent = attr.text || ''
-        i.content.style.width = textWidth
-        i.title.textContent = article.title || ''
-        i.summary.textContent = article.summary || ''
-        i.link.href = article.url || ''
-        i.link.textContent = article.hostname || ''
-        i.image.style.display = 'none'
 
         this.surface.setContent(i.container)
     }
