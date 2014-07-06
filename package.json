@@ -78,7 +78,7 @@
     "retry": "^0.6.0",
     "sax": "https://github.com/kof/sax-js/tarball/issue-116",
     "sinon": "~1.10.2",
-    "superagent": "^0.18.0",
+    "superagent": "https://github.com/kiipost/superagent/tarball/zlib",
     "thunkify": "^2.1.2",
     "twit": "^1.1.15",
     "underscore": "^1.6.0",
