@@ -131,15 +131,9 @@ define(function(require, exports, module) {
 
     FullArticle.prototype._setImage = function() {
         var attr = this.model.attributes
-        var image
+        var image = this.model.getImage()
 
         this._resetImage()
-
-        if (attr.images.length) {
-            image = attr.images[0]
-        } else if (attr.icon) {
-            image = {url: attr.icon, isIcon: true}
-        }
 
         if (!image) return
 
@@ -147,7 +141,6 @@ define(function(require, exports, module) {
             if (err) return
 
             var props = {}
-
             props.backgroundSize = image.isIcon ? 'contain' : 'cover'
 
             if (size.width <= this._headerSize[0] && size.height <= this._headerSize[1]) {

@@ -48,7 +48,7 @@ exports.read = function *() {
             .sort({pubDate: -1})
             .skip(this.query.skip)
             .limit(this.query.limit)
-            .select({summary: 1, pubDate: 1, title: 1, url: 1, images: 1, icon: 1})
+            .select({summary: 1, pubDate: 1, title: 1, url: 1, images: 1, icon: 1, enclosures: 1})
             .exec()
     }
 }

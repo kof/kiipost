@@ -64,13 +64,7 @@ define(function(require, exports, module) {
         var attr = this.model.attributes
         var i = this._poolItem
         var textWidth
-        var image
-
-        if (attr.images.length) {
-            image = attr.images[0]
-        } else if (attr.icon) {
-            image = {url: attr.icon, isIcon: true}
-        }
+        var image = this.model.getImage()
 
         function setImage(err, size) {
             if (err) return

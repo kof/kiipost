@@ -66,13 +66,7 @@ define(function(require, exports, module) {
         var article = attr.articles[0] ? attr.articles[0].attributes : {}
         var i = this._poolItem
         var textWidth
-        var image
-
-        if (article.images && article.images[0]) {
-            image = article.images[0]
-        } else {
-            image = {url: article.icon, isIcon: true}
-        }
+        var image = article.getImage ? article.getImage() : null
 
         function setImage(err, size) {
             if (err) return
