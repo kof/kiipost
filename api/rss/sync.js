@@ -64,7 +64,7 @@ var noop = function() {}
  */
 module.exports = thunkify(function(options, callback) {
     options = extend({
-        maxParallel: 500,
+        maxParallel: 200,
         update: false,
         feed: null,
         feeds: null
@@ -209,10 +209,7 @@ function fetch(url, callback) {
     var req, done
     var timeoutId
 
-    done = _.once(function(err) {
-        if (err && req) req.abort()
-        callback.apply(this, arguments)
-    })
+    done = _.once(callback)
 
     req = request
         .get(url)
