@@ -64,7 +64,7 @@ var noop = function() {}
  */
 module.exports = thunkify(function(options, callback) {
     options = extend({
-        maxParallel: 200,
+        maxParallel: 100,
         update: false,
         feed: null,
         feeds: null
@@ -81,6 +81,7 @@ module.exports = thunkify(function(options, callback) {
     feeds = m.model('rssfeed')
         .find(query)
         .select({_id: 1, feed: 1})
+        .sort({'syncStats.date': 1})
         .lean()
         .limit(options.limit)
         .skip(options.skip)
@@ -90,7 +91,7 @@ module.exports = thunkify(function(options, callback) {
     var processing = 0
     var closed = false
 
-    var controller = new ProcessingController({mem: {max: 1}})
+    var controller = new ProcessingController()
 
     controller.addMetric('parallel', function() {
         return function() {

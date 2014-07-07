@@ -30,6 +30,7 @@ rssFeed = new m.Schema({
     }
 })
 
-rssFeed.index({feed: 1}, {unique: true});
+rssFeed.index({feed: 1}, {unique: true})
+rssFeed.index({'syncStats.date': 1})
 
 module.exports = rssFeed

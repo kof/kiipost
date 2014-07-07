@@ -1,8 +1,5 @@
 'use strict'
 
-var os = require('os')
-var total = os.totalmem()
-
 /**
  * Ensures that free memory in the os doesn't go below some value.
  *
@@ -13,10 +10,10 @@ var total = os.totalmem()
  */
 module.exports = function(options) {
     options || (options = {})
-    options.max || (options.max = 0.8)
+    options.max || (options.max = 1000)
 
     return function() {
-        var value = (total - os.freemem()) / total
+        var value = process.memoryUsage().rss / 1024 / 1024
 
         return {
             ok: value < options.max,
