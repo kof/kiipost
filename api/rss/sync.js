@@ -335,7 +335,7 @@ function prenormalize(articles, feedUrl) {
         // When FeedBurner or Pheedo puts a special tracking url
         // in the link property, origlink contains the original link.
         normalized.url = article.origlink || article.link
-        if (!url.parse(normalized.url).host) {
+        if (normalized.url && !url.parse(normalized.url).host) {
             normalized.url = url.resolve(feedUrl, normalized.url)
         }
         normalized.pubDate = article.pubDate ? new Date(article.pubDate) : new Date()
