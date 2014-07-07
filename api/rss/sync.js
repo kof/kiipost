@@ -207,7 +207,6 @@ function* processOne (feed, options) {
  */
 function fetch(url, callback) {
     var req, done
-    var timeoutId
 
     done = _.once(callback)
 
@@ -225,6 +224,8 @@ function fetch(url, callback) {
 
             var data = convertCharset(res, res.body)
             var articles = []
+            var timeoutId
+
             new FeedParser({feedurl: req.url})
                 .on('error', done)
                 .on('readable', function() {
@@ -236,15 +237,18 @@ function fetch(url, callback) {
                             exit = true
                         }
                     }
-
+                })
+                .on('end', function() {
                     done(null, articles)
-                }).end(data)
+                })
+                .end(data)
+
+            // For the case some extractors stuck.
+            timeoutId = setTimeout(function() {
+                done(new Error('Feed parse timeout'))
+            }, 10000)
         })
 
-    // For the case some extractors stuck.
-    timeoutId = setTimeout(function() {
-        done(new Error('Feed parse timeout'))
-    }, conf.request.timeout + 10000)
 }
 
 fetch = thunkify(fetch)
