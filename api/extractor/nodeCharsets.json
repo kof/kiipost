@@ -1,0 +1,9 @@
+{
+    "ascii": true,
+    "utf-8": true,
+    "utf16le": true,
+    "ucs2": true,
+    "base64": true,
+    "binary": true,
+    "hex": true
+}

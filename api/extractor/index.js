@@ -14,7 +14,8 @@ var co = require('co')
 
 var conf = require('api/conf')
 
-var CharsetConverter = require('./CharsetConverter')
+var convertCharset = require('./convertCharset')
+var bufferParser = require('./bufferParser')
 
 var isIcon = /icon/i
 var isLogo = /logo/i
@@ -72,6 +73,7 @@ exports.extractWithRetry = thunkify(function(url, callback) {
  */
 function fetchData(url, callback) {
     var req, done
+    var timeoutId
 
     done = _.once(function(err) {
         if (err && req) req.abort()
@@ -83,95 +85,52 @@ function fetchData(url, callback) {
         .set('user-agent', conf.request.agent)
         .set('accept', conf.request.accept)
         .timeout(conf.request.timeout)
-        .buffer(false)
-        // Avoid default parsing to utf-8
-        // TODO charset converter here.
-        .parse(noop)
+        .parse(bufferParser)
+        .agent(undefined)
+        .buffer(true)
         .on('error', done)
-        .on('response', function(res) {
+        .end(function(res) {
             if (!res.ok) return done(new Error('Bad status code'))
             if (!/text/i.test(res.type)) return done(new Error('Bad content type'))
 
-            var timeoutId
-
-            runExtractors(req, res, function() {
-                clearTimeout(timeoutId)
-                done.apply(this, arguments)
-            })
-
-            // For the case some extractors stuck.
-            timeoutId = setTimeout(function() {
-                done(new Error('Extractor timeout'))
-            }, 100000)
+            var data = {}
+            res.body = convertCharset(res, res.body)
+            data.tags = tagsExtractor(res.body)
+            data.article = articleExtractor(req.url, res.body)
+            clearTimeout(timeoutId)
+            done(null, data)
         })
-        .end()
 
-    req.agent()
+    // For the case some extractors stuck.
+    timeoutId = setTimeout(function() {
+        done(new Error('Extractor timeout'))
+    }, conf.request.timeout + 10000)
 }
 
 fetchData = thunkify(fetchData)
 
-/**
- * Run all converters/extractors.
-  */
-function runExtractors(req, res, callback) {
-    var data = {}
-
-    function done() {
-        if (data.tags && data.article) callback(null, data)
-    }
-
-    var charsetConverter = new CharsetConverter(res).getStream()
-
-    var tagsStream
-    tagsStream = tagsExtractor(function(tags) {
-        data.tags = tags
-        done()
-    })
-
-    var readabilityStream
-    readabilityStream = articleExtractor(req.url, function(article) {
-        data.article = article
-        done()
-    })
-
-    res
-        .pipe(charsetConverter)
-        .on('error', callback)
-        .pipe(tagsStream)
-        .pipe(readabilityStream)
-}
 
 /**
  * Find tags we need for later extractions.
  */
-function tagsExtractor(callback) {
+function tagsExtractor(html) {
     var data = {img: [], link: [], meta: []}
-    var parser
 
-    parser = new htmlParser.Parser({
+    new htmlParser.Parser({
         onopentag: function(name, attr){
             if (data[name]) {
                 data[name].push({attributes: attr || {}})
             }
         }
-    })
+    }).write(html)
 
-    return es.through(
-        function(data) {
-            parser.write(data)
-            this.emit('data', data)
-        },
-        function() {
-            callback(data)
-            this.emit('end')
-        }
-    )
+    return data
 }
+
 /**
  * Extract article using readabilitySax.
  */
-function articleExtractor(url, callback) {
+function articleExtractor(url, data) {
     var Readability = readabilitySax.Readability
     var Parser = htmlParser.Parser
     var CollectingHandler = htmlParser.CollectingHandler
@@ -180,29 +139,23 @@ function articleExtractor(url, callback) {
     var handler = new CollectingHandler(readability)
     var parser = new Parser(handler, {lowerCaseTags: true})
 
-    return es.through(
-        function(data) {
-            parser.write(data)
-            this.emit('data', data)
-        },
-        function() {
-            for(
-                var skipLevel = 1;
-                readability._getCandidateNode().info.textLength < 250 && skipLevel < 4;
-                skipLevel++
-            ){
-                readability.setSkipLevel(skipLevel)
-                handler.restart()
-            }
+    parser.write(data)
 
-            var article = readability.getArticle()
-            article.html = entities.decodeHTML5(article.html.replace(/\s+/g, ' '))
-            article.title = entities.decodeHTML5(article.title)
-            article.url = url
-            callback(article)
-            this.emit('end')
-        }
-    )
+    for(
+        var skipLevel = 1;
+        readability._getCandidateNode().info.textLength < 250 && skipLevel < 4;
+        skipLevel++
+    ){
+        readability.setSkipLevel(skipLevel)
+        handler.restart()
+    }
+
+    var article = readability.getArticle()
+    article.html = entities.decodeHTML5(article.html.replace(/\s+/g, ' '))
+    article.title = entities.decodeHTML5(article.title)
+    article.url = url
+
+    return article
 }
 
 /**

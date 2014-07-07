@@ -14,7 +14,8 @@ var url = require('url')
 var conf = require('api/conf')
 var contentAnalysis = require('api/yahoo/contentAnalysis')
 var extractor = require('api/extractor')
-var CharsetConverter = require('api/extractor/CharsetConverter')
+var convertCharset = require('api/extractor/convertCharset')
+var bufferParser = require('api/extractor/bufferParser')
 var batchInsert = require('api/db/batchInsert')
 var error = require('api/error')
 var filterTags = require('api/tags/filter')
@@ -206,6 +207,7 @@ function* processOne (feed, options) {
  */
 function fetch(url, callback) {
     var req, done
+    var timeoutId
 
     done = _.once(function(err) {
         if (err && req) req.abort()
@@ -217,25 +219,16 @@ function fetch(url, callback) {
         .set('user-agent', conf.request.agent)
         .set('accept', conf.request.accept)
         .timeout(conf.request.timeout)
-        .buffer(false)
-        // Avoid default parsing to utf-8
-        // TODO charset converter here.
-        .parse(noop)
+        .parse(bufferParser)
+        .agent(undefined)
+        .buffer(true)
         .on('error', done)
-        .on('response', function(res) {
+        .end(function(res) {
             if (!res.ok) return done(new Error('Bad status code'))
 
-            var timeoutId
-            var converter = new CharsetConverter(res)
+            var data = convertCharset(res, res.body)
             var articles = []
-            var feedParser = new FeedParser()
-
-            res
-                .pipe(converter.getStream())
-                .on('error', done)
-                .pipe(feedParser)
-
-            feedParser
+            new FeedParser({feedurl: req.url})
                 .on('error', done)
                 .on('readable', function() {
                     var article, exit = false
@@ -244,28 +237,17 @@ function fetch(url, callback) {
                             articles.push(article)
                         } else {
                             exit = true
-                            req.abort()
                         }
                     }
-                })
-                .on('end', function() {
-                    done(null, articles)
-                })
 
-            // For the case some extractors stuck.
-            timeoutId = setTimeout(function() {
-                // Sometimes we don't get the end event.
-                // https://github.com/danmactough/node-feedparser/issues/115
-                if (articles.length) {
                     done(null, articles)
-                } else {
-                    done(new Error('Feed parse timeout'))
-                }
-            }, 100000)
+                }).end(data)
         })
-        .end()
 
-    req.agent()
+    // For the case some extractors stuck.
+    timeoutId = setTimeout(function() {
+        done(new Error('Feed parse timeout'))
+    }, conf.request.timeout + 10000)
 }
 
 fetch = thunkify(fetch)
