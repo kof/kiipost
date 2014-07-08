@@ -18,20 +18,19 @@ program
     .option('-q, --query [query]', 'mongo query to find feeds', function(obj) {
         return eval('(' + obj + ')')
     })
+    .option('-r, --rest', 'enable rest interface')
     .parse(process.argv)
 
 db.init()
     .then(function() {
         co(function *(){
-            var now = Date.now()
             var errors = []
-            var stats = {}
+            var stats
             var multiError
 
             try {
                 errors = yield sync(program)
-                stats.heapUsed = (process.memoryUsage().heapUsed / 1024 / 1024) + 'mb'
-                stats.runtime = (Date.now() - now) / 1000 / 60 + 'min'
+                stats = getStats()
                 stats.uniqErrors = errors.length
                 stats.errors = errors
                 log.info('Rss feeds sync', stats, function() {
@@ -43,6 +42,8 @@ db.init()
                 })
             }
         })()
+
+        if (program.rest) createServer()
     })
     .catch(function(err) {
         console.log(err.stack)
@@ -51,4 +52,27 @@ db.init()
 
 if (global.gc) {
     setInterval(gc, 5000)
+}
+
+var now = Date.now()
+
+function getStats() {
+    var stats = {}
+
+    stats.heapUsed = (process.memoryUsage().heapUsed / 1024 / 1024) + 'mb'
+    stats.runtime = (Date.now() - now) / 1000 / 60 + 'min'
+    return stats
+}
+
+var koa = require('koa')
+
+var conf = require('api/conf')
+
+function createServer() {
+    var app = koa()
+    app.use(function* () {
+        this.body = getStats()
+    })
+    app.listen(conf.server.port)
+    console.log('Listening on port', conf.server.port)
 }
