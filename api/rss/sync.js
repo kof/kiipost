@@ -54,7 +54,7 @@ var noop = function() {}
  * Process all feeds from the feeds collection.
  *
  * Options:
- *   - `maxParallel` max amount of feeds to process in parallel
+ *   - `parallel` max amount of feeds to process in parallel
  *   - `feed` only this specific feed
  *   - `update` update existing posts, defaults to false
  *   - `query` query of mongo instead of feed
@@ -64,7 +64,7 @@ var noop = function() {}
  */
 module.exports = thunkify(function(options, callback) {
     options = extend({
-        maxParallel: 100,
+        parallel: 100,
         update: false,
         feed: null,
         feeds: null
@@ -96,7 +96,7 @@ module.exports = thunkify(function(options, callback) {
     controller.addMetric('parallel', function() {
         return function() {
             return {
-                ok: processing < options.maxParallel,
+                ok: processing < options.parallel,
                 value: processing
             }
         }
