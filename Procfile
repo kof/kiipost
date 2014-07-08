@@ -1,1 +1,1 @@
-web: node --harmony bin/sync-rss
+web: node --harmony -v -u bin/sync-rss
