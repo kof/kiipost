@@ -1,1 +1,1 @@
-web: node --harmony --expose_gc -v -r -u bin/sync-rss
+web: node --harmony --expose_gc bin/sync-rss -v -r -u
