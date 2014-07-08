@@ -3,6 +3,7 @@
 var EventEmitter = require('events').EventEmitter
 var inherits = require('inherits')
 var extend = require('extend')
+var ms = require('ms')
 
 function Controller(options) {
     this.options = extend(true, {}, Controller.defaults, options)
@@ -18,7 +19,8 @@ module.exports = Controller
 
 Controller.defaults = {
     metrics: {},
-    interval: 200
+    interval: 200,
+    maxNotOkTime: ms('5m')
 }
 
 Controller.prototype.addMetric = function(name, fn, options) {
@@ -28,11 +30,19 @@ Controller.prototype.addMetric = function(name, fn, options) {
 }
 
 Controller.prototype.start = function() {
+    this._lastOkAt = Date.now()
     this._intervalId = setInterval(function() {
         var ok = this.ok
         this.check()
         // Status is ok and it has changed, emit 'ok'.
-        if (this.ok && ok === false) this.emit('ok')
+        if (this.ok) {
+            this._lastOkAt = Date.now()
+
+            // Emit only if it has changed.
+            if (ok === false) this.emit('ok')
+        } else if (Date.now() - this._lastOkAt > this.options.maxNotOkTime) {
+            this.emit('tooLongNok')
+        }
     }.bind(this), this.options.interval)
 
     for (var name in this.metrics) {

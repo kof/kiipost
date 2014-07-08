@@ -102,7 +102,9 @@ module.exports = thunkify(function(options, callback) {
         }
     })
 
-    controller.start()
+    controller.once('tooLongNok', function() {
+        feeds.emit('close')
+    }).start()
 
     var onData
 
