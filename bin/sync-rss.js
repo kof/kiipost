@@ -13,7 +13,7 @@ var error = require('api/error')
 program
     .option('-v, --verbose', 'log stuff')
     .option('-u, --update', 'update existing articles')
-    .option('-p, --parallel', 'max parallel feeds', Number)
+    .option('-p, --parallel [parallel]', 'max parallel feeds', Number, null)
     .option('-f, --feed [uri]', 'process one feed')
     .option('-l, --limit [limit]', 'limit the for the feeds find query', Number, null)
     .option('-q, --query [query]', 'mongo query to find feeds', function(obj) {
