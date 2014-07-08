@@ -21,6 +21,14 @@ tests.push({
 
 tests.push({
     code: {
+        path: './api/extractor/getImageSize.js',
+        namespace: 'getImageSize'
+    },
+    tests: './api/extractor/test/getImageSize.js'
+})
+
+tests.push({
+    code: {
         path: './api/yahoo/contentAnalysis.js'
     },
     tests: './api/yahoo/test/contentAnalysis.js'

@@ -9,13 +9,13 @@ var readabilitySax = require('readabilitySAX')
 var retry = require('retry')
 var thunkify = require('thunkify')
 var entities = require('entities')
-var es = require('event-stream')
 var co = require('co')
 
 var conf = require('api/conf')
 
 var convertCharset = require('./convertCharset')
 var bufferParser = require('./bufferParser')
+var getImageSize = require('./getImageSize')
 
 var isIcon = /icon/i
 var isLogo = /logo/i
@@ -43,6 +43,7 @@ exports.extract = co(function* (url) {
     res = _.pick(data.article, 'title', 'score', 'url')
     res.icon = findIcon(data.tags, url)
     res.images = findImages(data.tags, url, MIN_IMAGE_WIDTH, MAX_IMAGES_AMOUNT)
+    yield largeImageFirst(res.images)
     res.summary = _s.prune(_s.stripTags(findDescription(data.tags) || data.article.html).trim(), 250, '')
     res.description = data.article.html
     res.tags = findKeywords(data.tags)
@@ -217,8 +218,8 @@ function findImages(tags, baseUrl, minWidth, maxAmount) {
         }
     })
 
-    // - Filter small images
-    // - Filter data urls
+    // - Filter small images.
+    // - Filter data urls.
     images = images.filter(function(img) {
         if (img.width >= minWidth &&
             img.url &&
@@ -248,7 +249,7 @@ function findImages(tags, baseUrl, minWidth, maxAmount) {
 
     // Sort images by width ascending.
     images = _(images).sortBy(function(img) {
-        return -img.width
+        return -(img.width + img.height)
     })
 
     // Remove duplicates.
@@ -311,3 +312,29 @@ function findKeywords(tags) {
 
     return keywords
 }
+
+/**
+ * Find an image which is big enough by checking real size.
+ * Put it at first position to be used as main article image.
+ *
+ * @param {Array} images
+ */
+function largeImageFirst(images) {
+    return function* () {
+        for (var i = 0; i < images.length; i++) {
+            var image = images[i]
+            try {
+                var size = yield getImageSize(image.url)
+                if (size.width >= MIN_IMAGE_WIDTH) {
+                    images.splice(i, 1)
+                    size.url = image.url
+                    images.unshift(size)
+                    break;
+                }
+            // We ignore errors here because its optional.
+            } catch(err) {}
+        }
+    }
+}
+
+
