@@ -67,7 +67,8 @@ module.exports = thunkify(function(options, callback) {
         parallel: 100,
         update: false,
         feed: null,
-        feeds: null
+        feeds: null,
+        memory: null
     }, options)
 
     var query
@@ -91,7 +92,7 @@ module.exports = thunkify(function(options, callback) {
     var processing = 0
     var closed = false
 
-    var controller = new ProcessingController()
+    var controller = new ProcessingController({mem: {max: options.memory}})
 
     controller.addMetric('parallel', function() {
         return function() {
