@@ -1,1 +1,1 @@
-web: node --harmony api
+web: node --harmony bin/sync-rss
