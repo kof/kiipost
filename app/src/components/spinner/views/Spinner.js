@@ -25,7 +25,7 @@ define(function(require, exports, module) {
         var angle = 0
         var rotationModifier
         rotationModifier = new Modifier({
-            origin: this.options.origin,
+            origin: [0.5, 0.5],
             transform: function(val) {
                 angle += this.options.step
                 return Transform.rotateZ(angle)

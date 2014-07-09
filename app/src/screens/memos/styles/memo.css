@@ -11,7 +11,7 @@
 }
 .memo .avatar {
     -webkit-flex: none;
-    width: 5rem;
+    width: 4rem;
     text-align: center;
 }
 .memo .avatar span {
@@ -30,7 +30,7 @@
 }
 .memo h1.text {
     height: 3.6rem;
-    border-bottom: 1px solid #d4d4d4;
+    border-bottom: 1px solid #979797;
     padding: 0 0.5rem 0.5rem 0;
     color: #000;
     margin: 0;

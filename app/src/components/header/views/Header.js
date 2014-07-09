@@ -33,12 +33,13 @@ define(function(require, exports, module) {
             size: [true, true]
         })
         this.surface.add(this.logo)
-
+        /*
         this.avatar = new Surface({
             classes: ['avatar'],
             size: [true, true]
         })
         this.surface.add(this.avatar)
+        */
 
         this.title = new Surface({
             classes: ['title'],
@@ -59,7 +60,7 @@ define(function(require, exports, module) {
     }
 
     Header.prototype.setAvatarUrl = function(url) {
-        this.avatar.setProperties({backgroundImage: 'url(' + url + ')'})
+        //this.avatar.setProperties({backgroundImage: 'url(' + url + ')'})
     }
 
     Header.prototype._onClick = function(e) {

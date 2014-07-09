@@ -29,7 +29,7 @@ define(function(require, exports, module) {
 
         this.layout = new FlexibleLayout({
             direction: FlexibleLayout.DIRECTION_Y,
-            ratios: [.4, .3, .2, .05]
+            ratios: [.39, .3, .2, .05]
         })
         this.layout.sequenceFrom(this.surfaces)
         this.signin.add(this.layout)
@@ -64,7 +64,7 @@ define(function(require, exports, module) {
         })
         this.surfaces.push(this.terms)
 
-        this.spinner = new SpinnerView()
+        this.spinner = new SpinnerView({origin: [0.5, 0.65]})
         this.signin.add(this.spinner)
     }
 
@@ -73,7 +73,7 @@ define(function(require, exports, module) {
 
     Signin.DEFAULT_OPTIONS = {
         // Relative to context height.
-        logoWidth: 0.125,
+        logoWidth: 0.127,
         errors: {
             DISABLED: 'Please enable Kiipost app in Settings/Twitter.',
             NOT_CONNECTED: 'Please connect your twitter account in Settings/Twitter.',
