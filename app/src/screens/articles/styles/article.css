@@ -16,8 +16,7 @@
 .article .image {
     float: left;
     height: 100%;
-    background-repeat: no-repeat;
-    background-position: center;
+    background: no-repeat center #f0f1f2;
     background-size: cover;
 }
 .article h1 {
