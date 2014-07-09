@@ -41,8 +41,7 @@ define(function(require, exports, module) {
         this.article.add(this.bg)
 
         this.topBtns = new Surface({
-            content: '<span class="close icomatic">close</span>' +
-                '<span class="source icomatic">externallink</span>',
+            content: '<span class="close icomatic">arrowleft</span>',
             classes: ['top-btns'],
             size: [this._size[0], true]
         })
@@ -50,7 +49,7 @@ define(function(require, exports, module) {
         this.surfaces.push(this.topBtns)
 
         this.title = document.createElement('h1')
-        this._headerSize = [this._size[0], this._size[0] * constants.GOLDEN_RATIO]
+        this._headerSize = [this._size[0], this._size[0] * constants.BRULE_RATIO]
         this.header = new Surface({
             content: this.title,
             classes: ['header'],
@@ -79,7 +78,7 @@ define(function(require, exports, module) {
             size: [true, true]
         })
         this.kiipostBtn.on('click', this._onKiipostOpen.bind(this))
-        this.article.add(new Modifier({origin: [0.5, 0.97]})).add(this.kiipostBtn)
+        this.article.add(new Modifier({origin: [0.5, 0.96]})).add(this.kiipostBtn)
 
         this.memoEdit = new MemoEditView({
             context: app.context,
@@ -103,12 +102,12 @@ define(function(require, exports, module) {
         models: null,
         hasKiipostBtn: true,
         darkInTransition: {duration: 200},
-        darkOutTransition: {duration: 200},
+        darkOutTransition: {duration: 200}
     }
 
     FullArticle.prototype.setContent = function() {
         this.title.textContent = this.model.get('title')
-        this.textContent.innerHTML = this.model.get('description')
+        this.textContent.innerHTML = this._getLink() + this.model.get('description')
         this._setImage()
         this.bg.resume()
         // We need to check periodicaly the height because of images in the content.
@@ -120,6 +119,11 @@ define(function(require, exports, module) {
         this.textContent.textContent = ''
         this._resetImage()
         this.bg.setContent()
+    }
+
+    FullArticle.prototype._getLink = function() {
+        var a = this.model.attributes
+        return '<a href="' + a.url + '" class="source">' + a.hostname + '</a>'
     }
 
     FullArticle.prototype._resetImage = function() {
@@ -215,8 +219,6 @@ define(function(require, exports, module) {
         var cls = e.target.classList
         if (cls.contains('close')) {
             this._eventOutput.emit('close')
-        } else if (cls.contains('source')) {
-            this._open(this.model.get('url'))
         }
     }
 
