@@ -30,7 +30,9 @@ require.config({
         'components/log': './components/log/index',
         'components/deviceready': './components/deviceready/index',
         'components/keyboard': './components/keyboard/index',
-        raven: '../lib/raven-js/dist/raven'
+        raven: '../lib/raven-js/dist/raven',
+        moment: '../lib/momentjs/moment',
+        'raven-js': '../lib/raven-js/dist/raven'
     },
     packages: [
 

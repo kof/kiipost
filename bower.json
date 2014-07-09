@@ -40,6 +40,7 @@
     "domready": "~1.0.5",
     "rename-keys": "~0.1.1",
     "jquery-ajax-retry": "0.2.6",
-    "raven-js": "~1.1.15"
+    "raven-js": "~1.1.15",
+    "momentjs": "~2.7.0"
   }
 }

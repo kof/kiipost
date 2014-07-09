@@ -23,10 +23,15 @@
     height: 2.5rem;
     display: inline-block;
 }
+.memo .meta {
+    font-size: 0.7rem;
+    line-height: 0.8rem;
+    color: #d7d7d7;
+}
 .memo h1.text {
     height: 3.6rem;
     border-bottom: 1px solid #d4d4d4;
-    padding: 0 0.5em 0.5em 0;
+    padding: 0 0.5rem 0.5rem 0;
     color: #000;
     margin: 0;
     overflow: hidden;
@@ -35,7 +40,6 @@
     line-height: 1.6;
 }
 .memo .content {
-    padding-top: 0.8rem;
     overflow: hidden;
 }
 .memo .article {
@@ -64,7 +68,7 @@
 .memo p {
     font-size: 0.55rem;
     line-height: 1.54;
-    margin: 0 0.5em 0.5em 0;
+    margin: 0 0.5rem 0.5rem 0;
     height: 2.3rem;
     overflow: hidden;
     color: #bebebe;

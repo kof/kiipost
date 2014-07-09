@@ -4,6 +4,7 @@ define(function(require, exports, module) {
     var inherits = require('inherits')
     var _ = require('underscore')
     var closest = require('closest')
+    var moment = require('moment')
 
     var Engine = require('famous/core/Engine')
     var View = require('famous/core/View')
@@ -93,6 +94,8 @@ define(function(require, exports, module) {
         }
 
         i.avatar.style.backgroundImage = 'url(' + this.models.user.get('imageUrl') + ')'
+        i.sourceIcon.textContent = attr.tweetId ? 'twitter' : 'star'
+        i.date.textContent = moment(attr.createdAt).fromNow()
         i.text.textContent = attr.text || ''
         i.content.style.width = textWidth
         i.title.textContent = article.title || ''
