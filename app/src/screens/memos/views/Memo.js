@@ -34,7 +34,7 @@ define(function(require, exports, module) {
         View.apply(this, arguments)
 
         var width = app.context.getSize()[0]
-        var height = Math.round(width * constants.GOLDEN_RATIO)
+        var height = Math.round(width * this.options.heightRatio)
 
         this.model = this.options.model
         this.models = this.options.models
@@ -58,7 +58,8 @@ define(function(require, exports, module) {
 
     MemoItem.DEFAULT_OPTIONS = {
         model: null,
-        memoHeight: 0.35
+        memoHeight: 0.35,
+        heightRatio: 0.68
     }
 
     MemoItem.prototype.setContent = function() {
