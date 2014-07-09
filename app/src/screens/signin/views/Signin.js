@@ -73,7 +73,7 @@ define(function(require, exports, module) {
 
     Signin.DEFAULT_OPTIONS = {
         // Relative to context height.
-        logoWidth: 0.14,
+        logoWidth: 0.125,
         errors: {
             DISABLED: 'Please enable Kiipost app in Settings/Twitter.',
             NOT_CONNECTED: 'Please connect your twitter account in Settings/Twitter.',
