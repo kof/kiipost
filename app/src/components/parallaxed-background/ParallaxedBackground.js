@@ -45,8 +45,8 @@ define(function(require, exports, module) {
     module.exports = ParallaxedBackground
 
     ParallaxedBackground.DEFAULT_OPTIONS = {
-        offset: 20,
-        content: 'content/images/background.png',
+        offset: 0,
+        content: 'content/images/background.jpg',
         properties: {
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',

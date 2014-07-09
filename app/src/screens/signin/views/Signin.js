@@ -5,6 +5,7 @@ define(function(require, exports, module) {
 
     var View = require('famous/core/View')
     var Surface = require('famous/core/Surface')
+    var Group = require('famous/core/Group')
     var Modifier = require('famous/core/Modifier')
     var FlexibleLayout = require('famous/views/FlexibleLayout')
     var ImageSurface = require('famous/surfaces/ImageSurface')
@@ -23,18 +24,21 @@ define(function(require, exports, module) {
         this.model = this.options.model
         this.surfaces = []
 
+        this.signin = new Group({classes: ['signin']})
+        this.add(this.signin)
+
         this.layout = new FlexibleLayout({
             direction: FlexibleLayout.DIRECTION_Y,
-            ratios: [.3, .35, .3, .05]
+            ratios: [.4, .3, .2, .05]
         })
         this.layout.sequenceFrom(this.surfaces)
-        this.add(this.layout)
+        this.signin.add(this.layout)
 
         this.bg = new ParallaxedBackgroundView({context: app.context})
         this.add(this.bg)
 
         this.logo = new Surface({
-            classes: ['signin-logo'],
+            classes: ['logo'],
             properties: {
                 backgroundSize: size[1] * this.options.logoWidth + 'px'
             }
@@ -42,26 +46,26 @@ define(function(require, exports, module) {
         this.surfaces.push(this.logo)
 
         this.slogan = new Surface({
-            classes: ['signin-slogan'],
-            content: 'Stay in the know, no matter how unique your passions are.'
+            classes: ['slogan'],
+            content: 'Stay in the know.'
         })
         this.surfaces.push(this.slogan)
 
         this.button = new Surface({
-            classes: ['signin-button'],
-            content: 'Sign in with Twitter'
+            classes: ['button'],
+            content: 'Connect with Twitter'
         })
         this.button.on('click', this._onSigninStart.bind(this))
         this.surfaces.push(this.button)
 
         this.terms = new Surface({
-            classes: ['signin-terms'],
+            classes: ['terms'],
             content: '<span>By continuing, you agree to our Terms and Privacy policy</span>',
         })
         this.surfaces.push(this.terms)
 
         this.spinner = new SpinnerView()
-        this.add(this.spinner)
+        this.signin.add(this.spinner)
     }
 
     inherits(Signin, View)
@@ -69,7 +73,7 @@ define(function(require, exports, module) {
 
     Signin.DEFAULT_OPTIONS = {
         // Relative to context height.
-        logoWidth: 0.1,
+        logoWidth: 0.14,
         errors: {
             DISABLED: 'Please enable Kiipost app in Settings/Twitter.',
             NOT_CONNECTED: 'Please connect your twitter account in Settings/Twitter.',

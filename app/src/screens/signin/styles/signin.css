@@ -1,23 +1,22 @@
-.signin-logo {
-    background: url('/content/images/logo.png') no-repeat center;
+.signin .logo {
+    background: url('/content/images/logo.svg') no-repeat center bottom;
 }
-.signin-slogan {
+.signin .slogan {
     text-align: center;
-    padding: 0 3em;
+    padding-top: 1.5rem;
     color: #fff;
-    line-height: 1.4;
+    font-size: 1.6rem;
 }
-.signin-button {
+.signin .button {
     text-align: center;
-    color: #fff;
-    font-size: 1.3em;
+    color: rgba(255,255,255,0.7);
+    font-size: 1.2rem;
     cursor: pointer;
 }
-.signin-terms {
+.signin .terms {
     text-align: center;
 }
-.signin-terms span {
-    color: #fff;
-    opacity: 0.6;
-    font-size: 0.7em;
+.signin .terms span {
+    color: rgba(255,255,255,0.7);
+    font-size: 0.7rem;
 }

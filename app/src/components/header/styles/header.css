@@ -8,7 +8,7 @@
     top: 0;
     width: 2rem;
     height: 2rem;
-    background: url('/content/images/logo.png') no-repeat;
+    background: url('/content/images/logo.svg') no-repeat;
     background-size: contain;
 }
 .header .avatar {
