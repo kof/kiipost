@@ -1,9 +1,7 @@
-.menu {
-}
 .menu .indicator {
     position: relative;
     background: rgba(255, 255, 255, .5);
-    height: 1px;
+    height: 0.063rem;
 }
 .menu .indicator span {
     position: absolute;
@@ -15,12 +13,12 @@
 .menu .item {
     display: inline-block;
     height: 100%;
-    line-height: 40px;
+    font-size: 1rem;
+    line-height: 2.9rem;
     cursor: pointer;
-    margin-right: 15px;
-    color: #fff;
-    opacity: 0.7;
+    margin-right: 1.25rem;
+    color: rgba(255, 255, 255, .5);
 }
 .menu .item.selected {
-    opacity: 1;
+    color: #fff;
 }

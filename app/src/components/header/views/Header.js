@@ -17,7 +17,7 @@ define(function(require, exports, module) {
         var size = this.options.context.getSize()
 
         // Height is the golden ratio.
-        this.options.size = [size[0], Math.round(constants.GOLDEN_RATIO * size[0])]
+        this.options.size = [size[0], constants.GOLDEN_RATIO * size[0]]
         this.models = this.options.models
 
         this.surface = new ContainerSurface({
@@ -36,7 +36,7 @@ define(function(require, exports, module) {
 
         this.avatar = new Surface({
             classes: ['avatar'],
-            size: [35, 35]
+            size: [true, true]
         })
         this.surface.add(this.avatar)
 

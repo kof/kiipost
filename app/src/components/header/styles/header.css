@@ -1,16 +1,18 @@
 .header {
-    padding: 2.5rem 2.5rem 0 2.5rem;
+    padding: 1.25rem 1.25rem 0 1.25rem;
     color: #fff;
 }
 .header .logo {
     left: 0;
     top: 0;
-    width: 2rem;
-    height: 2rem;
+    width: 2.2rem;
+    height: 2.2rem;
     background: url('/content/images/logo.svg') no-repeat;
     background-size: contain;
 }
 .header .avatar {
+    width: 2.5rem;
+    height: 2.5rem;
     right: 0;
     top: 0;
     border-radius: 100%;
