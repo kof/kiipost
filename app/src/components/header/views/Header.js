@@ -17,7 +17,7 @@ define(function(require, exports, module) {
         var size = this.options.context.getSize()
 
         // Height is the golden ratio.
-        this.options.size = [size[0], constants.GOLDEN_RATIO * size[0]]
+        this.options.size = [size[0], this.options.heightRatio * size[0]]
         this.models = this.options.models
 
         this.surface = new ContainerSurface({
@@ -55,7 +55,8 @@ define(function(require, exports, module) {
 
     Header.DEFAULT_OPTIONS = {
         title: 'Home',
-        models: null
+        models: null,
+        heightRatio: 0.68
     }
 
     Header.prototype.setAvatarUrl = function(url) {
