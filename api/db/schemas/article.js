@@ -6,6 +6,6 @@ var _article = require('./_article')
 var article = new m.Schema(_article)
 
 article.index({tags: 1, pubDate: -1})
-article.index({url: 1}, {unique: true})
+article.index({url: 1}, {unique: true, dropDups: true})
 
 module.exports = article
