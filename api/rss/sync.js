@@ -211,6 +211,7 @@ function* processOne (feed, options) {
  */
 function fetch(url, callback) {
     var req, done
+    var timeoutId
 
     done = _.once(callback)
 
@@ -224,11 +225,10 @@ function fetch(url, callback) {
         .buffer(true)
         .on('error', done)
         .end(function(res) {
-            if (!res.ok) return done(new Error('Bad status code'))
+            if (!res.ok) return done(new ExtError('Bad status code', {statusCode: res.statusCode}))
 
             var data = convertCharset(res, res.body)
             var articles = []
-            var timeoutId
 
             new FeedParser({feedurl: req.url})
                 .on('error', done)
@@ -243,16 +243,18 @@ function fetch(url, callback) {
                     }
                 })
                 .on('end', function() {
+                    clearTimeout(timeoutId)
                     done(null, articles)
                 })
                 .end(data)
-
-            // For the case some extractors stuck.
-            timeoutId = setTimeout(function() {
-                done(new Error('Feed parse timeout'))
-            }, 10000)
         })
 
+    // Required because in case of redirect and then not emiting end
+    // timeout of superagent will not work
+    // https://github.com/visionmedia/superagent/issues/413
+    timeoutId = setTimeout(function() {
+        done(new Error('Feed parse timeout'))
+    }, conf.request.timeout + 10000)
 }
 
 fetch = thunkify(fetch)
@@ -385,8 +387,7 @@ function addSiteData(articles) {
         for (var i = 0; i < articles.length; i++) {
             try {
                 var article = articles[i]
-                var data = yield extractor.extractWithRetry(article.url)
-
+                var data = yield extractor.extract(article.url)
                 if (len(data.title) > len(article.title)) {
                     article.title = data.title
                 }

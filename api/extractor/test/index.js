@@ -1,6 +1,7 @@
-test('extract 1', function() {
-    stop()
+var co = require('co')
 
+test('extract 1', co(function* () {
+    stop()
     var title = 'Interview With Mark Zuckerberg At Web 2.0 Summit (VIDEO)'
     var score = 41
     var url = 'http://techcrunch.com/2010/11/18/mark-zuckerberg/'
@@ -12,25 +13,22 @@ test('extract 1', function() {
     } ]
     var description = '<p><iframe src="http://www.youtube.com/embed/Czw-dtTP6oU?version=3&rel=1&fs=1&showsearch=0&showinfo=1&iv_load_policy=1&wmode=transparent"></iframe> </p> <p>This is seriously the best Mark Zuckerberg interview I’ve ever seen. Fresh off of the <a href="http://techcrunch.com/2010/11/15/facebook-messaging/">announcement of Facebook Messages</a> (yes, that’s what the product is called) Facebook CEO Zuckerberg took the stage at Web 2.0 Summit to talk about the state of Facebook.</p> <p>Zuckerberg went into the recent scuffles with Google, how soon every major product will be rethought to be social, why Facebook’s been on a recent acquisition tear and more. But the most insightful part of the interview was when Zuckerberg <a href="http://techcrunch.com/2010/11/16/mark-zuckerberg-your-map-is-missing-uncharted-territory/">called out</a> John Battelle and Tim O’Reilly on the inaccuracy of their Web 2.0 <a href="http://techcrunch.com/2010/10/13/web-2-0-acquisitions-the-game/">“Points of Control”</a> map.</p> <blockquote><p><em>“Your map is wrong. The biggest part of the map has to be uncharted territory — this map makes it seem like it’s zero-sum, but it’s not. We’re building value, not just taking it away from someone else.”</em></p></blockquote> <p>Sometimes amidst all the competition, it’s difficult to remember why we got into the game in the first place.</p>'
     var summary = 'This is seriously the best Mark Zuckerberg interview I’ve ever seen. Fresh off of the announcement of Facebook Messages (yes, that’s what the product is called) Zuckerberg took the stage at Web 2.0 Summit to talk about the state of Facebook'
-    var tags = [ 'facebook', 'mark zuckerberg' ]
+    var tags = [ 'mark zuckerberg', 'facebook' ]
 
-    extractor.extract(url, function(err, data) {
-        equal(err, null, 'no errors')
-        equal(data.title, title, 'title ok')
-        equal(data.score, score, 'score ok')
-        equal(data.url, url, 'url ok')
-        equal(data.icon, icon, 'icon ok')
-        deepEqual(data.images, images, 'images ok')
-        equal(data.description, description, 'description ok')
-        equal(data.summary, summary, 'summary ok')
-        deepEqual(data.tags, tags, 'tags ok')
-        start()
-    })
-})
+    var data = yield extractor.extract(url)
+    equal(data.title, title, 'title ok')
+    equal(data.score, score, 'score ok')
+    equal(data.url, url, 'url ok')
+    equal(data.icon, icon, 'icon ok')
+    deepEqual(data.images, images, 'images ok')
+    equal(data.description, description, 'description ok')
+    equal(data.summary, summary, 'summary ok')
+    deepEqual(data.tags, tags, 'tags ok')
+    start()
+}))
 
-test('extract 2', function() {
+test('extract 2', co(function* () {
     stop()
-
     var title = 'Interview with Jan Lehnardt of Hoodie'
     var score = 300
     var url = 'http://appbusinesspodcast.com/jan-lehnardt-hoodie/'
@@ -63,23 +61,20 @@ test('extract 2', function() {
             'jan lehnardt'
         ]
 
-    extractor.extract(url, function(err, data) {
-        equal(err, null, 'no errors')
-        equal(data.title, title, 'title ok')
-        equal(data.score, score, 'score ok')
-        equal(data.summary, summary, 'summary ok')
-        equal(data.url, url, 'url ok')
-        equal(data.icon, icon, 'icon ok')
-        deepEqual(data.images, images, 'images ok')
-        equal(data.description, description, 'description ok')
-        deepEqual(data.tags, tags, 'tags ok')
-        start()
-    })
-})
+    var data = yield extractor.extract(url)
+    equal(data.title, title, 'title ok')
+    equal(data.score, score, 'score ok')
+    equal(data.summary, summary, 'summary ok')
+    equal(data.url, url, 'url ok')
+    equal(data.icon, icon, 'icon ok')
+    deepEqual(data.images, images, 'images ok')
+    equal(data.description, description, 'description ok')
+    deepEqual(data.tags, tags, 'tags ok')
+    start()
+}))
 
-test('extract 3', function() {
+test('extract 3', co(function* () {
     stop()
-
     var title = "Project Loon: Google's quest to bring internet to the world with a fleet of balloons"
     var score = 309
     var description = "<div> <p>For many, internet access is a vital resource. However, vast, rural swaths of the world have no broadband internet access. One of Google's latest \"moonshot\" projects seeks to fill that gap with balloons. Called Project Loon, the plan is incredibly ambitious: it calls for a large network of \"towers\" in the sky that receive internet access from antennas on the ground in one location and beam internet down to rural homes below. Google has many challenges to overcome before Loon becomes a reality, but the team says it hopes to have a functioning service online by summer 2015. We'll be covering the company's progress here — stay tuned for all the updates. </p> </div>"
@@ -88,24 +83,21 @@ test('extract 3', function() {
     var summary = "For many, internet access is a vital resource. However, vast, rural swaths of the world have no broadband internet access. One of Google's latest \"moonshot\" projects seeks to fill that gap with..."
     var tags = [ 'general', 'the-verge' ]
 
-    extractor.extract(url, function(err, data) {
-        equal(err, null, 'no errors')
-        equal(data.title, title, 'title ok')
-        equal(data.score, score, 'score ok')
-        equal(data.summary, summary, 'summary ok')
-        equal(data.url, url, 'url ok')
-        equal(data.icon, icon, 'icon ok')
-        // This one has dynamic url
-        equal(typeof data.images[0].url, 'string', 'images ok')
-        equal(data.description, description, 'description ok')
-        deepEqual(data.tags, tags, 'tags ok')
-        start()
-    })
-})
+    var data = yield extractor.extract(url)
+    equal(data.title, title, 'title ok')
+    equal(data.score, score, 'score ok')
+    equal(data.summary, summary, 'summary ok')
+    equal(data.url, url, 'url ok')
+    equal(data.icon, icon, 'icon ok')
+    // This one has dynamic url
+    equal(typeof data.images[0].url, 'string', 'images ok')
+    equal(data.description, description, 'description ok')
+    deepEqual(data.tags, tags, 'tags ok')
+    start()
+}))
 
-test('extract 4', function() {
+test('extract 4', co(function* () {
     stop()
-
     var url = 'http://thepioneerwoman.com/blog/2014/06/saturday-gathering/'
     var score = 94
     var title = 'Saturday Gathering | Confessions of a Pioneer Woman'
@@ -130,21 +122,18 @@ test('extract 4', function() {
     ]
 
     // Sends gziped data independent of req headers.
-    extractor.extract(url, function(err, data) {
-        equal(err, null, 'no errors')
-        equal(data.title, title, 'title ok')
-        equal(data.score, score, 'score ok')
-        equal(data.summary, summary, 'summary ok')
-        equal(data.url, url, 'url ok')
-        deepEqual(data.images, images, 'images ok')
-        equal(data.description, description, 'description ok')
-        start()
-    })
-})
+    var data = yield extractor.extract(url)
+    equal(data.title, title, 'title ok')
+    equal(data.score, score, 'score ok')
+    equal(data.summary, summary, 'summary ok')
+    equal(data.url, url, 'url ok')
+    deepEqual(data.images, images, 'images ok')
+    equal(data.description, description, 'description ok')
+    start()
+}))
 
-test('extract 5', function() {
+test('extract 5', co(function* () {
     stop()
-
     var url = 'http://heaven.branda.to/~thinker/GinGin_CGI.py/show_id_doc/486'
     var title = '為何希望方仰寧下台'
     var score = 1
@@ -152,25 +141,22 @@ test('extract 5', function() {
     var description = '<td> <div><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_to_robot/">robot</a></div> <div> <div> <p>最新文章(10)</p> <ul> <li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_id_doc/488">Promise 解決了什麼問題?</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_id_doc/487">OSDC.TW 2014 投影片</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_id_doc/486">為何希望方仰寧下台</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_id_doc/485">台灣工程師的主要問題</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_id_doc/484">你可能沒想過的 Python 用法</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_id_doc/483">Hey Jude - Hacker 版本</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_id_doc/482">F/OSS 的慢性自殺?</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_id_doc/481">libuncall 背後的想法</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_id_doc/480">Your First Platform Patch for B2G</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_id_doc/471">「超商竟然成了社會安全系統」的另一個角度</a></li> </ul> <a href="http://heaven.branda.to/~thinker/GinGin_CGI.py">首頁</a><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/new_doc">新編</a><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/last_comments">最新留言</a></p><p> <a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/rssfeed">Entries RSS</a></div> <div> <p>重要關鍵字(10)</p> <ul> <li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_kw_docs/coding">coding (122)</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_kw_docs/Python">Python (91)</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_kw_docs/FreeBSD">FreeBSD (71)</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_kw_docs/WEB">WEB (61)</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_kw_docs/URL">URL (48)</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_kw_docs/hardware">hardware (46)</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_kw_docs/javascript">javascript (36)</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_kw_docs/Linux">Linux (34)</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_kw_docs/blog">blog (30)</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_kw_docs/C++">C++ (16)</a></li> </ul> <a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_all_kws">所有關鍵字</a></p><p> <a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/edit_new_url">新增 URL</a> </div> </div> </td><td> <div> <div> 為何希望方仰寧下台 <p> by thinker </p> </div> <div> <a href="javascript: init_mcol()"> 2 Columns </a> </div> <div> 關鍵字: <div> <a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_kw_docs/雜記"> 雜記 </a> </div> </div> <div> 最後更新時間: 2014-04-12 13:20:58 CST | <a href="http://heaven.branda.to/~thinker/GinGin_TB.py/trackback/486?__mod=view"> 引用 </a> </div> <p> 查詢: </p> <p> COMMENTS: </p> <rdf:rdf> <rdf:description></rdf:description> </rdf:rdf> </div> </td>'
 
     // We can't parse it correctly, just verifying it doesn't breaks.
-    extractor.extract(url, function(err, data) {
-        equal(err, null, 'no errors')
-        equal(data.url, url, 'url ok')
-        equal(data.title, title, 'title ok')
-        equal(data.score, score, 'score ok')
-        equal(data.summary, summary, 'summary ok')
-        equal(data.description, description, 'description ok')
+    var data = yield extractor.extract(url)
+    equal(data.url, url, 'url ok')
+    equal(data.title, title, 'title ok')
+    equal(data.score, score, 'score ok')
+    equal(data.summary, summary, 'summary ok')
+    equal(data.description, description, 'description ok')
+    start()
+}))
 
-        start()
-    })
-})
-
-test('extract 6', function() {
+test('extract 6', co(function* () {
     stop()
     var url = 'http://www.golem.de/news/developer-preview-3-os-x-10-10-yosemite-macht-das-licht-aus-1407-107711.html'
-    var score = 43
+    var score = 41
     var title = 'Developer Preview 3: OS X 10.10 Yosemite macht das Licht aus'
-    var summary = 'Apple hat die dritte Beta-Version von OS X 10.10, alias Yosemite, an Entwickler verteilt. Erstmals ist der Dark Mode aktivierbar, mit dem die Benutzeroberfläche modisch abgedunkelt wird.'
-    var description = '<div> <p>Die neue Beta-Version von <a href="http://www.golem.de/news/os-x-10-10-apple-raeumt-das-regal-weg-1406-106886.html">OS X 10.10 Yosemite</a> kann erstmals über die Benutzeroberfläche in den "Dark"-Modus geschaltet werden. Dadurch werden nicht nur die obere Menüleiste abgedunkelt, sondern auch andere Elemente. Das ist augenfreundlicher und ahmt das nach, was Adobe mit Lightroom und Photoshop CC sowie diverse andere Softwarehersteller bereits für ihre Programme vollzogen haben. Die Option ließ sich in der Beta 2 von OS X 10.10 nur mit einem Terminalbefehl einschalten.</p> <p> Zudem hat Apple, den ersten Informationen nach, bei der 3. Beta ein neues Programm-Icon für Quicktime eingeführt und die Symbole in diversen mitgelieferten Programmen überarbeitet. Unter anderem wird die Zahl der ungelesenen E-Mails der Mail.app deutlich größer dargestellt. Das wird nicht jedem gefallen. Auch das Backup-Programm Time-Machine bekam einen neuen Anstrich. Beim FaceTime-Programm wurden Video- und Audiokommunikation in zwei verschiedene Reiter aufgeteilt, was für mehr Übersicht sorgt.</p> <a href="http://scr3.golem.de/?d=1406/OSX10.10&a=106886"> Das neue OS X 10.10 (Apple/Screenshot: Golem.de) </a> <p> Wichtigste Designelemente von OS X 10.10 sind der flache Look und die leichten Transparenzen, dien von iOS 7 herrühren und auf das Konto von Jony Ive gehen, der als Senior Vice President of Design bei Apple tätig ist. Er ist seit Oktober 2012 für die Gestaltung der grafischen Benutzeroberflächen von Apple-Software zuständig.</p> <p>Yosemite wird laut Apple im Herbst 2014 erscheinen und kostenlos angeboten.</p> <p>Wer kein Entwickler ist, soll sich ab Sommer für den Download der Betaversion registrieren können. Wie viele Entwickler-Versionen davor noch erscheinen werden, ist nicht bekannt. </p> </div>'
+    var summary = 'Apple hat die dritte Betaversion von OS X 10.10 alias Yosemite an Entwickler verteilt. Erstmals ist der Dark Mode aktivierbar, mit dem die Benutzeroberfläche modisch abgedunkelt wird.'
+    var description = '<div> <p>Die neue Betaversion von <a href="http://www.golem.de/news/os-x-10-10-apple-raeumt-das-regal-weg-1406-106886.html">OS X 10.10 Yosemite</a> kann erstmals über die Benutzeroberfläche in den "Dark"-Modus geschaltet werden. Dadurch wird nicht nur die obere Menüleiste abgedunkelt, sondern auch andere Elemente. Das ist augenfreundlicher und ahmt das nach, was Adobe mit Lightroom und Photoshop CC sowie diverse andere Softwarehersteller bereits für ihre Programme vollzogen haben. Die Option ließ sich in der Beta 2 von OS X 10.10 nur mit einem Terminalbefehl einschalten.</p> <p> Zudem hat Apple den ersten Informationen nach bei der 3. Beta ein neues Programm-Icon für Quicktime eingeführt und die Symbole in diversen mitgelieferten Programmen überarbeitet. Unter anderem wird die Zahl der ungelesenen E-Mails der Mail.app deutlich größer dargestellt. Das wird nicht jedem gefallen. Auch das Backup-Programm Time-Machine bekam einen neuen Anstrich. Beim FaceTime-Programm wurden Video- und Audiokommunikation in zwei verschiedene Reiter aufgeteilt, was für mehr Übersicht sorgt.</p> <a href="http://scr3.golem.de/?d=1406/OSX10.10&a=106886"> Das neue OS X 10.10 (Apple/Screenshot: Golem.de) </a> <p> Wichtigste Designelemente von OS X 10.10 sind der flache Look und die leichten Transparenzen, die von iOS 7 herrühren und auf Jony Ive zurückzuführen sind, der als Senior Vice President of Design bei Apple tätig ist. Er ist seit Oktober 2012 für die Gestaltung der grafischen Benutzeroberflächen von Apple-Software zuständig.</p> <p>Yosemite wird laut Apple im Herbst 2014 erscheinen und kostenlos angeboten.</p> <p>Wer kein Entwickler ist, soll sich ab Sommer für den Download der Betaversion registrieren können. Wie viele Entwicklerversionen davor noch erscheinen werden, ist nicht bekannt.</p> </div>'
 
     // This image size has been detected by downloading image.
     var images = [ {
@@ -179,14 +165,12 @@ test('extract 6', function() {
         url: 'http://www.golem.de/1407/107711-82114-i_rc.jpg'
     } ]
 
-    extractor.extract(url, function(err, data) {
-        equal(err, null, 'no errors')
-        equal(data.title, title, 'title ok')
-        equal(data.score, score, 'score ok')
-        equal(data.summary, summary, 'summary ok')
-        equal(data.url, url, 'url ok')
-        deepEqual(data.images, images, 'images ok')
-        equal(data.description, description, 'description ok')
-        start()
-    })
-})
+    var data = yield extractor.extract(url)
+    equal(data.title, title, 'title ok')
+    equal(data.score, score, 'score ok')
+    equal(data.summary, summary, 'summary ok')
+    equal(data.url, url, 'url ok')
+    deepEqual(data.images, images, 'images ok')
+    equal(data.description, description, 'description ok')
+    start()
+}))

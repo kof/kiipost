@@ -36,19 +36,21 @@ var noop = function() {}
  * @param {String} url
  * @param {Function} callback
  */
-exports.extract = co(function* (url) {
-    var data = yield fetchData(url)
-    var res = {}
-    if (!data.tags || !data.article) return res
-    res = _.pick(data.article, 'title', 'score', 'url')
-    res.icon = findIcon(data.tags, url)
-    res.images = findImages(data.tags, url, MIN_IMAGE_WIDTH, MAX_IMAGES_AMOUNT)
-    yield largeImageFirst(res.images)
-    res.summary = _s.prune(_s.stripTags(findDescription(data.tags) || data.article.html).trim(), 250, '')
-    res.description = data.article.html
-    res.tags = findKeywords(data.tags)
-    return res
-})
+exports.extract = function(url) {
+    return function* () {
+        var data = yield fetchData(url)
+        var res = {}
+        if (!data.tags || !data.article) return res
+        res = _.pick(data.article, 'title', 'score', 'url')
+        res.icon = findIcon(data.tags, url)
+        res.images = findImages(data.tags, url, MIN_IMAGE_WIDTH, MAX_IMAGES_AMOUNT)
+        yield largeImageFirst(res.images)
+        res.summary = _s.prune(_s.stripTags(findDescription(data.tags) || data.article.html).trim(), 250, '')
+        res.description = data.article.html
+        res.tags = findKeywords(data.tags)
+        return res
+    }
+}
 
 /**
  * Find data with retry
@@ -99,7 +101,10 @@ function fetchData(url, callback) {
             done(null, data)
         })
 
-    // For the case some extractors stuck.
+    // Required because in case of redirect and then not emiting end
+    // timeout of superagent will not work.
+    // Also an extractor could stuck.
+    // https://github.com/visionmedia/superagent/issues/413
     timeoutId = setTimeout(function() {
         done(new Error('Extractor timeout'))
     }, conf.request.timeout + 10000)
