@@ -38,7 +38,7 @@ define(function(require, exports, module) {
         })).pipe(this._eventOutput)
         this.header.surface.add(this.menu)
 
-        this.spinner = new SpinnerView()
+        this.spinner = new SpinnerView({origin: [0.5, 0.7]})
         this.add(this.spinner)
 
         this.stream = new StreamView({

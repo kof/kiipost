@@ -70,7 +70,7 @@ define(function(require, exports, module) {
         this.textContent.addEventListener('click', this._onTextClick.bind(this))
         this.surfaces.push(this.text)
 
-        this.spinner = new SpinnerView()
+        this.spinner = new SpinnerView({origin: [0.5, 0.7]})
         this.add(this.spinner)
 
         this.kiipostBtn = new Surface({
