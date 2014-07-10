@@ -45,6 +45,9 @@
 .full-article .content a {
     text-decoration: none;
 }
+.full-article .content img {
+    width: 100%;
+}
 .full-article .content a.source {
     display:  block;
     margin-bottom: 1rem;
