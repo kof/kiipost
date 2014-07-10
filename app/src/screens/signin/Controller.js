@@ -43,11 +43,14 @@ define(function(require, exports, module) {
     }
 
     Signin.prototype._signin = function() {
-        this.view.spinner.show(true)
         if (ios.isSupported()) {
+            this.view.spinner.show(true)
             ios.signin()
                 .then(this.view.load.bind(this.view))
-                .catch(this.view.error.bind(this.view))
+                .catch(function(err) {
+                    this.view.spinner.hide()
+                    this.view.error(err)
+                }.bind(this))
         }
     }
 
