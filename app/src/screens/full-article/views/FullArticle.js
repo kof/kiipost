@@ -110,6 +110,8 @@ define(function(require, exports, module) {
         this.textContent.innerHTML = this._getLink() + this.model.get('description')
         this._setImage()
         this.bg.resume()
+        var avatarUrl = this.models.user.get('imageUrl')
+        if (avatarUrl) this.memoEdit.setAvatarUrl(avatarUrl)
         // We need to check periodicaly the height because of images in the content.
         this._textHeightIntervalId = setInterval(this._setTextHeight.bind(this), 500)
     }

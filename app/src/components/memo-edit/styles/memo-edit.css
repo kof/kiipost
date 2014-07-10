@@ -2,25 +2,39 @@
     padding: 1rem;
 }
 .memo-edit .action-bar {
-    background: #ededed;
+    background: #fff;
     color: #503c8d;
+    border-radius: 0.4rem 0.4rem 0 0;
+    border-bottom: 1px solid #f0f1f2;
 }
-.memo-edit .counter.error {
-    color: red;
-}
-.memo-edit .submit,
 .memo-edit .abort {
-    padding: 0 .5em;
+    color: #d7d7d7;
+    font-size: 0.95rem;
     line-height: 3;
+    padding: 0 0.8rem;
     cursor: pointer;
 }
 .memo-edit .submit {
     right: 0;
 }
+.memo-edit .submit span {
+    display: inline-block;
+    color: #fff;
+    font-size: 0.95rem;
+    line-height: 1;
+    background: #000;
+    border-radius: 0.4rem;
+    padding: 0.5rem;
+    margin: 0.5rem;
+}
 .memo-edit .counter {
-    right: 30%;
-    color: #999;
-    line-height: 3em;
+    right: 5.5rem;
+    color: #000;
+    line-height: 3;
+    font-size: 0.95rem;
+}
+.memo-edit .counter.error {
+    color: red;
 }
 .memo-edit .avatar span {
     display: inline-block;
@@ -32,8 +46,10 @@
 }
 .memo-edit .memo {
     background: #fff;
-    padding: 1em;
+    padding: 0.8rem 0.8rem 0.8rem 0;
     box-sizing: border-box;
+    border-radius: 0 0 0.4rem 0.4rem;
+    overflow: hidden;
 }
 .memo-edit textarea {
     outline: none;

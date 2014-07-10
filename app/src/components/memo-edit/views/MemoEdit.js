@@ -44,7 +44,7 @@ define(function(require, exports, module) {
         this.layoutSequence.push(this.actionBar)
 
         this.abort = new Surface({
-            content: 'Abort',
+            content: 'cancel',
             classes: ['abort'],
             size: [true, undefined]
         })
@@ -59,7 +59,7 @@ define(function(require, exports, module) {
         this.actionBar.add(this.counter)
 
         this.submit = new Surface({
-            content: 'Kiipost',
+            content: '<span>kiipost</span>',
             classes: ['submit'],
             size: [true, undefined]
         })
@@ -79,20 +79,22 @@ define(function(require, exports, module) {
         this.memoLayout.sequenceFrom(this.memoSurfaces)
         this.memo.add(this.memoLayout)
 
+        this.avatarImage = document.createElement('span')
         this.avatar = new Surface({
             classes: ['avatar'],
-            content: '<span/>'
+            content: this.avatarImage
         })
         this.memoSurfaces.push(this.avatar)
 
         this.textarea = new TextareaSurface({
-            placeholder: 'Your memo.',
-            size: [true, undefined]
+            placeholder: 'What did you learn from that link?',
+            size: [undefined, undefined]
         })
         this.textarea.on('keydown', this._onType.bind(this))
         this.memoSurfaces.push(this.textarea)
 
         new SlideDownTransition({size: o.contentSize}).commit(this)
+
     }
 
     inherits(MemoEdit, RenderController)
@@ -114,6 +116,10 @@ define(function(require, exports, module) {
     MemoEdit.prototype.hide = function() {
         MemoEdit.super_.prototype.hide.call(this)
         this._eventOutput.emit('hide')
+    }
+
+    MemoEdit.prototype.setAvatarUrl = function(url) {
+        this.avatarImage.style.backgroundImage = 'url(' + url + ')'
     }
 
     MemoEdit.prototype._onType = _.throttle(function(e) {
