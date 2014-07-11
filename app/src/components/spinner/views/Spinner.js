@@ -7,36 +7,25 @@ define(function(require, exports, module) {
     var Transform = require('famous/core/Transform')
     var ImageSurface = require('famous/surfaces/ImageSurface')
     var ContainerSurface = require('famous/surfaces/ContainerSurface')
+    var Surface = require('famous/core/Surface')
     var RenderController = require('famous/views/RenderController')
 
     function Spinner() {
         RenderController.apply(this, arguments)
 
         this.container = new ContainerSurface({
-            classes: ['spinner'],
-            size: this.options.size
+            classes: ['spinner']
         })
-
-        this.image = new ImageSurface({
-            size: this.options.size,
-            content: this.options.content
-        })
-
-        var angle = 0
-        var rotationModifier
-        rotationModifier = new Modifier({
-            origin: [0.5, 0.5],
-            transform: function(val) {
-                angle += this.options.step
-                return Transform.rotateZ(angle)
-            }.bind(this)
-        })
-        this.spinner = this.add(new Modifier({
+        this.boxModifier = new Modifier({
             origin: this.options.origin,
             transform: Transform.inFront
-        }))
-        this.spinner.add(this.container)
-        this.container.add(rotationModifier).add(this.image)
+        })
+        this.box = new Surface({
+            classes: ['box'],
+            size: this.options.size,
+            content: '<span class="icon rotate"/>'
+        })
+        this.container.add(this.boxModifier).add(this.box)
     }
 
     inherits(Spinner, RenderController)
@@ -46,20 +35,17 @@ define(function(require, exports, module) {
         // Wait before showing indicator
         // http://ux.stackexchange.com/questions/37416/is-it-bad-ux-to-omit-a-progress-indicator
         delay: 1000,
-        inTransition: false,
-        outTransition: false,
-        // Step to rotate in rad.
-        step: 0.07,
         size: [true, true],
         origin: [0.5, 0.5],
-        content: 'src/components/spinner/images/grey-100.png'
+        inTransition: {duration: 0},
+        outTransition: {duration: 0}
     }
 
     Spinner.prototype.show = function(immediate) {
         if (this._showing >= 0) return
         clearTimeout(this._timeoutId)
         this._timeoutId = setTimeout(function() {
-            Spinner.super_.prototype.show.call(this, this.spinner)
+            Spinner.super_.prototype.show.call(this, this.container)
         }.bind(this), immediate ? 0 : this.options.delay)
     }
 

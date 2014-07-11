@@ -1,0 +1,7 @@
+.rotate {
+    animation: 1.5s rotate infinite linear;
+    -webkit-animation: 1s rotate infinite linear;
+    transform: rotate(0deg);
+}
+@-webkit-keyframes rotate { to { -webkit-transform: rotate(360deg); } }
+@keyframes rotate { to { transform: rotate(360deg); } }
