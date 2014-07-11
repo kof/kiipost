@@ -154,7 +154,6 @@ module.exports = thunkify(function(options, callback) {
             }}
             if (options.verbose && stats.errors.length) console.log(stats.errors)
             errors = errors.concat(stats.errors)
-            processed++
         } catch(err) {
             update = {
                 $inc: {'syncStats.failed': 1},
@@ -168,6 +167,7 @@ module.exports = thunkify(function(options, callback) {
             .exec()
 
         processing--
+        processed++
         complete()
     })
 
