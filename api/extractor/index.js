@@ -85,13 +85,15 @@ function fetchData(url, callback) {
         .set('user-agent', conf.request.agent)
         .set('accept', conf.request.accept)
         .timeout(conf.request.timeout)
-        .parse(bufferParser)
+        .parse(bufferParser({
+            type: /text/i,
+            maxLength: 500 * 1024
+        }))
         .agent(undefined)
         .buffer(true)
         .on('error', done)
         .end(function(res) {
             if (!res.ok) return done(new Error('Bad status code'))
-            if (!/text/i.test(res.type)) return done(new Error('Bad content type'))
 
             var data = {}
             res.body = convertCharset(res, res.body)

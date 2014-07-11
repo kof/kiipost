@@ -225,7 +225,10 @@ function fetch(url, callback) {
         .set('user-agent', conf.request.agent)
         .set('accept', conf.request.accept)
         .timeout(conf.request.timeout)
-        .parse(bufferParser)
+        .parse(bufferParser({
+            type: /xml/i,
+            maxLength: 1000 * 1024
+        }))
         .agent(undefined)
         .buffer(true)
         .on('error', done)
