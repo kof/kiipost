@@ -4,7 +4,7 @@ var m = require('mongoose')
 var _ = require('underscore')
 
 // Amount of tags we take from each saved article to find new articles.
-var REDUCE_USER_TAGS = 3
+var TAGS_AMOUNT = 3
 
 /**
  * Read saved memos.
@@ -33,8 +33,8 @@ exports.read = function *() {
 
         memos.forEach(function(memo) {
             var article = memo.articles[0]
-            if (!article || article.tags.length < REDUCE_USER_TAGS) return
-            var tags = article.tags.splice(0, REDUCE_USER_TAGS).sort()
+            if (!article || article.tags.length < TAGS_AMOUNT) return
+            var tags = article.tags.splice(0, TAGS_AMOUNT).sort()
             // Create map to avoid duplicates
             map[tags.toString()] = tags
         })
