@@ -90,6 +90,7 @@ module.exports = thunkify(function(options, callback) {
 
     var errors = []
     var processing = 0
+    var processed = 0
     var closed = false
 
     var controller = new ProcessingController({mem: {max: options.memory}})
@@ -153,6 +154,7 @@ module.exports = thunkify(function(options, callback) {
             }}
             if (options.verbose && stats.errors.length) console.log(stats.errors)
             errors = errors.concat(stats.errors)
+            processed++
         } catch(err) {
             update = {$inc: {'syncStats.failed': 1}}
             errors.push(err)
@@ -170,7 +172,7 @@ module.exports = thunkify(function(options, callback) {
         if (processing > 0 || !closed) return
         controller.stop()
         errors = error.uniq(errors, [/Unexpected end/])
-        callback(null, errors)
+        callback(null, {errors: errors, processed: processed})
     }
 })
 

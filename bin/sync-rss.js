@@ -4,6 +4,7 @@ require('api/setup')
 
 var program = require('commander')
 var co = require('co')
+var _ = require('underscore')
 
 var db = require('api/db')
 var sync = require('api/rss/sync')
@@ -26,15 +27,10 @@ program
 db.init()
     .then(function() {
         co(function *(){
-            var errors = []
-            var stats
-            var multiError
-
             try {
-                errors = yield sync(program)
-                stats = getStats()
-                stats.uniqErrors = errors.length
-                stats.errors = errors
+                var stats = yield sync(program)
+                _.extend(stats, getStats())
+                stats.uniqErrors = stats.errors.length
                 log.info('Rss feeds sync', stats, function() {
                     process.exit()
                 })
