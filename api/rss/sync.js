@@ -156,7 +156,10 @@ module.exports = thunkify(function(options, callback) {
             errors = errors.concat(stats.errors)
             processed++
         } catch(err) {
-            update = {$inc: {'syncStats.failed': 1}}
+            update = {
+                $inc: {'syncStats.failed': 1},
+                $set: {'syncStats.date': new Date()}
+            }
             errors.push(err)
         }
 
