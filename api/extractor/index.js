@@ -79,8 +79,8 @@ function fetchData(url, callback) {
     var timeoutId
 
     done = _.once(function(err, data) {
-        req.abort()
         callback(err, data)
+        req.abort()
     })
 
     req = request

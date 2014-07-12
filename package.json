@@ -28,7 +28,7 @@
     "grunt-usemin": "^2.1.1",
     "koa-slow": "^0.1.1",
     "load-grunt-config": "^0.9.1",
-    "qunit": "^0.6.4",
+    "qunit": "^0.7.0",
     "requirejs": "~2.1.11",
     "time-grunt": "^0.3.1",
     "underscore": "~1.6.0"
@@ -79,7 +79,7 @@
     "retry": "^0.6.0",
     "sax": "https://github.com/kof/sax-js/tarball/issue-116",
     "sinon": "~1.10.2",
-    "superagent": "https://github.com/kiipost/superagent/tarball/zlib",
+    "superagent": "https://github.com/kiipost/superagent/tarball/zlib-0",
     "thunkify": "^2.1.2",
     "twit": "^1.1.15",
     "underscore": "^1.6.0",

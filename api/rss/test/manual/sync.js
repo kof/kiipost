@@ -9,10 +9,10 @@ var sync = require('../../sync')
 db.init()
     .then(function() {
         co(function *(){
-            var errors
+            var stats
             console.time('sync')
             try {
-                errors = yield sync({
+                stats = yield sync({
                     /*
                     query: {feed: {$in: ['http://techcrunch.com/fundings-exits/feed/',
                         'http://techcrunch.com/europe/feed/',
@@ -24,9 +24,9 @@ db.init()
                     //feed: 'http://thepioneerwoman.com/contact/feed/',
                     //feed: 'http://feeds.feedburner.com/MajorNelsonblogcast',
                     //feed: 'http://i.rottentomatoes.com/syndication/rss/top_news.xml',
-                    feed: 'http://appleinsider.com.feedsportal.com/c/33975/f/616168/index.rss',
+                    feed: 'http://www.defenselink.mil/news/mrss_leadphotos.xml',
                     verbose: true,
-                    //limit: 3000,
+                    limit: 300,
                     //skip: 3000,
                     update: true
                 })
@@ -35,7 +35,7 @@ db.init()
                 console.log(err.stack)
             }
             console.timeEnd('sync')
-            errors.forEach(function(err) {
+            stats.errors.forEach(function(err) {
                 console.log(err)
                 console.log(err.stack)
             })

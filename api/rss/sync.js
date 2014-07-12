@@ -219,8 +219,8 @@ function fetch(url, callback) {
     var timeoutId
 
     done = _.once(function(err, articles) {
-        req.abort()
         callback(err, articles)
+        req.abort()
     })
 
     req = request
