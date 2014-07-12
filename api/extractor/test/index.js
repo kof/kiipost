@@ -1,7 +1,4 @@
-var co = require('co')
-
-test('extract 1', co(function* () {
-    stop()
+test('extract 1', function* () {
     var title = 'Interview With Mark Zuckerberg At Web 2.0 Summit (VIDEO)'
     var score = 41
     var url = 'http://techcrunch.com/2010/11/18/mark-zuckerberg/'
@@ -13,7 +10,7 @@ test('extract 1', co(function* () {
     } ]
     var description = '<p><iframe src="http://www.youtube.com/embed/Czw-dtTP6oU?version=3&rel=1&fs=1&showsearch=0&showinfo=1&iv_load_policy=1&wmode=transparent"></iframe> </p> <p>This is seriously the best Mark Zuckerberg interview I’ve ever seen. Fresh off of the <a href="http://techcrunch.com/2010/11/15/facebook-messaging/">announcement of Facebook Messages</a> (yes, that’s what the product is called) Facebook CEO Zuckerberg took the stage at Web 2.0 Summit to talk about the state of Facebook.</p> <p>Zuckerberg went into the recent scuffles with Google, how soon every major product will be rethought to be social, why Facebook’s been on a recent acquisition tear and more. But the most insightful part of the interview was when Zuckerberg <a href="http://techcrunch.com/2010/11/16/mark-zuckerberg-your-map-is-missing-uncharted-territory/">called out</a> John Battelle and Tim O’Reilly on the inaccuracy of their Web 2.0 <a href="http://techcrunch.com/2010/10/13/web-2-0-acquisitions-the-game/">“Points of Control”</a> map.</p> <blockquote><p><em>“Your map is wrong. The biggest part of the map has to be uncharted territory — this map makes it seem like it’s zero-sum, but it’s not. We’re building value, not just taking it away from someone else.”</em></p></blockquote> <p>Sometimes amidst all the competition, it’s difficult to remember why we got into the game in the first place.</p>'
     var summary = 'This is seriously the best Mark Zuckerberg interview I’ve ever seen. Fresh off of the announcement of Facebook Messages (yes, that’s what the product is called) Zuckerberg took the stage at Web 2.0 Summit to talk about the state of Facebook'
-    var tags = [ 'mark zuckerberg', 'facebook' ]
+    var tags = [ 'facebook', 'mark zuckerberg' ]
 
     var data = yield extractor.extract(url)
     equal(data.title, title, 'title ok')
@@ -24,11 +21,9 @@ test('extract 1', co(function* () {
     equal(data.description, description, 'description ok')
     equal(data.summary, summary, 'summary ok')
     deepEqual(data.tags, tags, 'tags ok')
-    start()
-}))
+})
 
-test('extract 2', co(function* () {
-    stop()
+test('extract 2', function* () {
     var title = 'Interview with Jan Lehnardt of Hoodie'
     var score = 300
     var url = 'http://appbusinesspodcast.com/jan-lehnardt-hoodie/'
@@ -70,11 +65,9 @@ test('extract 2', co(function* () {
     deepEqual(data.images, images, 'images ok')
     equal(data.description, description, 'description ok')
     deepEqual(data.tags, tags, 'tags ok')
-    start()
-}))
+})
 
-test('extract 3', co(function* () {
-    stop()
+test('extract 3', function* () {
     var title = "Project Loon: Google's quest to bring internet to the world with a fleet of balloons"
     var score = 309
     var description = "<div> <p>For many, internet access is a vital resource. However, vast, rural swaths of the world have no broadband internet access. One of Google's latest \"moonshot\" projects seeks to fill that gap with balloons. Called Project Loon, the plan is incredibly ambitious: it calls for a large network of \"towers\" in the sky that receive internet access from antennas on the ground in one location and beam internet down to rural homes below. Google has many challenges to overcome before Loon becomes a reality, but the team says it hopes to have a functioning service online by summer 2015. We'll be covering the company's progress here — stay tuned for all the updates. </p> </div>"
@@ -93,11 +86,9 @@ test('extract 3', co(function* () {
     equal(typeof data.images[0].url, 'string', 'images ok')
     equal(data.description, description, 'description ok')
     deepEqual(data.tags, tags, 'tags ok')
-    start()
-}))
+})
 
-test('extract 4', co(function* () {
-    stop()
+test('extract 4', function* () {
     var url = 'http://thepioneerwoman.com/blog/2014/06/saturday-gathering/'
     var score = 94
     var title = 'Saturday Gathering | Confessions of a Pioneer Woman'
@@ -129,11 +120,9 @@ test('extract 4', co(function* () {
     equal(data.url, url, 'url ok')
     deepEqual(data.images, images, 'images ok')
     equal(data.description, description, 'description ok')
-    start()
-}))
+})
 
-test('extract 5', co(function* () {
-    stop()
+test('extract 5', function* () {
     var url = 'http://heaven.branda.to/~thinker/GinGin_CGI.py/show_id_doc/486'
     var title = '為何希望方仰寧下台'
     var score = 1
@@ -147,11 +136,9 @@ test('extract 5', co(function* () {
     equal(data.score, score, 'score ok')
     equal(data.summary, summary, 'summary ok')
     equal(data.description, description, 'description ok')
-    start()
-}))
+})
 
-test('extract 6', co(function* () {
-    stop()
+test('extract 6', function* () {
     var url = 'http://www.golem.de/news/developer-preview-3-os-x-10-10-yosemite-macht-das-licht-aus-1407-107711.html'
     var score = 41
     var title = 'Developer Preview 3: OS X 10.10 Yosemite macht das Licht aus'
@@ -172,5 +159,4 @@ test('extract 6', co(function* () {
     equal(data.url, url, 'url ok')
     deepEqual(data.images, images, 'images ok')
     equal(data.description, description, 'description ok')
-    start()
-}))
+})

@@ -113,12 +113,16 @@ module.exports = thunkify(function(options, callback) {
     feeds.on('data', function(data) {
         if (options.verbose) console.log(controller.stats)
 
+        function error(err) {
+            if (err) errors.push(err)
+        }
+
         if (controller.check()) {
-            onData(data)
+            onData(data, error)
         } else {
             feeds.pause()
             controller.once('ok', function() {
-                onData(data)
+                onData(data, error)
                 feeds.resume()
             })
         }

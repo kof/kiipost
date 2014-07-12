@@ -14,4 +14,7 @@ port-redirect:
 	if [ -x /sbin/ipfw ]; then sudo /sbin/ipfw add 1 fwd 0.0.0.0,1337 tcp from any to me 80; fi
 	if command -v iptables >/dev/null 2>&1; then sudo iptables -t nat -A OUTPUT -o lo -p tcp --dport 80 -j REDIRECT --to-port 1337; fi
 
-.PHONY: ln rundb mongo port-redirect
+test:
+	node --harmony ./testrunner
+
+.PHONY: ln rundb mongo port-redirect test

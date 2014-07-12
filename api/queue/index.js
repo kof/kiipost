@@ -52,8 +52,8 @@ queue.Template.prototype.complete = function(err) {
 
     co(function* () {
         if (userId) yield setProcessing(userId, job, false)
-        complete.call(this, err)
-    }).call(this)
+        complete.call(this)
+    }).call(this, complete)
 }
 
 /**

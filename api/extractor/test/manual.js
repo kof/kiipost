@@ -1,21 +1,13 @@
 var extractor = require('..')
-var domain = require('domain')
 var co = require('co')
 
-process.on('uncaughtException', function(err) {
-    console.log('uncaught', err)
-})
+console.time('extract')
 
-var d = domain.create()
-
-d.on('error', function(err) {
-    console.log(err.stack)
-})
-
-d.run(co(function* () {
-    console.time('extract')
-    var data = yield extractor.extract('http://s228.photobucket.com/albums/ee39/BillyG1591/?action=view&current=untitled.jpg')
+co(function* () {
+    return yield extractor.extract('http://sublimetexttips.com/giveaways/sublime-text-giveaway/?lucky=41809')
+})(function(err, data) {
     console.timeEnd('extract')
+    if (err) console.log(err.stack)
     console.log(data)
-}))
+})
 

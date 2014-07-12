@@ -28,7 +28,7 @@
     "grunt-usemin": "^2.1.1",
     "koa-slow": "^0.1.1",
     "load-grunt-config": "^0.9.1",
-    "qunit": "^0.7.0",
+    "qunit": "^0.7.1",
     "requirejs": "~2.1.11",
     "time-grunt": "^0.3.1",
     "underscore": "~1.6.0"

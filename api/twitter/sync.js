@@ -4,7 +4,6 @@ var m = require('mongoose')
 var _ = require('underscore')
 var _s = require('underscore.string')
 var Batch = require('batch')
-var co = require('co')
 var thunkify = require('thunkify')
 
 var client = require('api/twitter/client')
@@ -24,7 +23,7 @@ var TWEETS_AMOUNT = 200
  * @param {ObjectId} options.userId
  */
 module.exports = function(options) {
-    return co(function* () {
+    return function* () {
         var user = yield findUser(options)
 
         var twitterOptions = {count: TWEETS_AMOUNT}
@@ -32,6 +31,7 @@ module.exports = function(options) {
         if (latestMemo && latestMemo.tweetId) {
             twitterOptions.sinceId = latestMemo.tweetId
         }
+
         var tweets
         tweets = yield [
             fetchUserTweets(user, twitterOptions),
@@ -42,59 +42,62 @@ module.exports = function(options) {
         if (!tweets.length) return
         tweets = tweets.filter(hasLinks)
         var memos = tweets.map(toMemo)
+
         yield addArticles(memos)
         yield addAnalyzedTags(memos)
+
         memos.forEach(function(memo) {
             var article = memo.articles[0]
             if (article && _.isArray(article.tags)) article.tags = article.tags.filter(filterTags)
             memo.userId = user._id
         })
+
         yield batchInsert('memo', memos)
-    })
+    }
 }
 
 /**
  * Find latest memo in the db.
  */
 function findLatestMemo(options) {
-    return co(function* () {
+    return function* () {
         return yield m.model('memo')
             .findOne({userId: options.userId, tweetId: {$exists: true}})
             .sort({createdAt: -1})
             .exec()
-    })
+    }
 }
 
 /**
  * Find user in the db.
  */
 function findUser(options) {
-    return co(function* () {
+    return function* () {
         return yield m.model('user')
             .findById(options.userId)
             .select({twitter: 1})
             .exec()
-    })
+    }
 }
 
 /**
  * Fetch tweets from twitter done by passed user.
  */
 function fetchUserTweets(user, options) {
-    return co(function* () {
+    return function* () {
         return yield client.create(user.twitter)
             .getUserTimeline(options)
-    })
+    }
 }
 
 /**
  * Fetch users favorites from twitter.
  */
 function fetchFavorites(user, options) {
-    return co(function* () {
+    return function* () {
         return yield client.create(user.twitter)
             .getFavorites(options)
-    })
+    }
 }
 
 /**

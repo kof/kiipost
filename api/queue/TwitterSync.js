@@ -22,7 +22,9 @@ module.exports = TwitterSync
  *
  * @param {Object} options
  */
-TwitterSync.prototype.perform = co(function* (options) {
-    yield sync(options)
-    this.complete()
-})
+TwitterSync.prototype.perform = function(options) {
+    co(function* () {
+        yield sync(options)
+        this.complete()
+    }).call(this, this.complete)
+}

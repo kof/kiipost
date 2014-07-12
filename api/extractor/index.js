@@ -58,10 +58,10 @@ exports.extract = function(url) {
  * @see exports.extract
  */
 exports.extractWithRetry = thunkify(function(url, callback) {
-    var op = retry.operation({retries: 2})
+    var op = retry.operation({retries: 1})
 
     op.attempt(function(attempt) {
-        exports.extract(url, function(err, data) {
+        co(exports.extract(url))(function(err, data) {
             if (op.retry(err)) return
             callback(err ? op.mainError() : null, data)
         })
