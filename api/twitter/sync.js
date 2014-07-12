@@ -33,11 +33,17 @@ module.exports = function(options) {
         }
 
         var tweets
-        tweets = yield [
-            fetchUserTweets(user, twitterOptions),
-            fetchFavorites(user, twitterOptions)
-        ]
-        tweets = [].concat(tweets[0], tweets[1])
+        try {
+            tweets = yield [
+                fetchUserTweets(user, twitterOptions),
+                fetchFavorites(user, twitterOptions)
+            ]
+            tweets = [].concat(tweets[0], tweets[1])
+        } catch(err) {
+            // Ignore rate limit.
+            if (err.statusCode != 429) throw err
+            return
+        }
 
         if (!tweets.length) return
         tweets = tweets.filter(hasLinks)
