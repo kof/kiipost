@@ -153,8 +153,7 @@ define(function(require, exports, module) {
         if (!image) return setTimeout(callback)
 
         function setImage(err, size) {
-            if (err) return
-
+            if (err) return setTimeout(callback, 0, err)
             var props = {}
             props.backgroundSize = image.isIcon ? 'contain' : 'cover'
 
@@ -166,7 +165,7 @@ define(function(require, exports, module) {
 
             this.bg.setProperties(props)
             this.bg.setContent(image.url)
-            if (callback) callback()
+            setTimeout(callback)
         }
 
 

@@ -47,13 +47,14 @@ define(function(require, exports, module) {
         this._show(id, true)
     }
 
-    FullArticle.prototype._show = function(id, isMemo, model) {
+    FullArticle.prototype._show = function(id, isMemo, model, callback) {
         function show() {
             app.controller.show(this.view, load.bind(this))
         }
 
         function load() {
             if (id != prev) this._load(id, isMemo)
+            if (callback) callback()
         }
 
         var prev = this.current
@@ -98,8 +99,9 @@ define(function(require, exports, module) {
         var isMemo = model.constructor.name == 'Memo'
 
         this.layeredTransition.commit(app.controller)
-        this._show(model.id, isMemo, model)
+        this._show(model.id, isMemo, model, function() {
+            this.layeredTransition.commit(app.controller, true)
+        }.bind(this))
         this.router.navigate((isMemo ? 'memos' : 'articles') + '/' + model.id)
-        this.layeredTransition.commit(app.controller, true)
     }
 })
