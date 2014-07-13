@@ -108,12 +108,21 @@ define(function(require, exports, module) {
     FullArticle.prototype.setContent = function() {
         this.title.textContent = this.model.get('title')
         this.textContent.innerHTML = this._getLink() + this.model.get('description')
-        this._setImage()
+        this._setImage(this.model)
         this.bg.resume()
         var avatarUrl = this.models.user.get('imageUrl')
         if (avatarUrl) this.memoEdit.setAvatarUrl(avatarUrl)
         // We need to check periodicaly the height because of images in the content.
         this._textHeightIntervalId = setInterval(this._setTextHeight.bind(this), 500)
+    }
+
+    /**
+     * Content to be rendered before transition starts.
+     */
+    FullArticle.prototype.setPreviewContent = function(model, callback) {
+        this.title.textContent = model.get('title')
+        this.bg.resume()
+        this._setImage(model, callback)
     }
 
     FullArticle.prototype.cleanup = function() {
@@ -135,13 +144,13 @@ define(function(require, exports, module) {
         })
     }
 
-    FullArticle.prototype._setImage = function() {
-        var attr = this.model.attributes
-        var image = this.model.getImage()
+    FullArticle.prototype._setImage = function(model, callback) {
+        var attr = model.attributes
+        var image = model.getImage()
 
         this._resetImage()
 
-        if (!image) return
+        if (!image) return setTimeout(callback)
 
         function setImage(err, size) {
             if (err) return
@@ -157,6 +166,7 @@ define(function(require, exports, module) {
 
             this.bg.setProperties(props)
             this.bg.setContent(image.url)
+            if (callback) callback()
         }
 
 

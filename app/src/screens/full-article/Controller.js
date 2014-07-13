@@ -47,13 +47,20 @@ define(function(require, exports, module) {
         this._show(id, true)
     }
 
-    FullArticle.prototype._show = function(id, isMemo) {
+    FullArticle.prototype._show = function(id, isMemo, model) {
+        function show() {
+            app.controller.show(this.view, load.bind(this))
+        }
+
+        function load() {
+            if (id != prev) this._load(id, isMemo)
+        }
+
         var prev = this.current
         this.current = id
         if (id != prev) this.view.cleanup()
-        app.controller.show(this.view, function() {
-            if (id != prev) this._load(id, isMemo)
-        }.bind(this))
+        model = isMemo ? model.get('articles')[0] : model
+        model ? this.view.setPreviewContent(model, show.bind(this)) : show.call(this)
     }
 
     FullArticle.prototype._load = function(id, isMemo) {
@@ -91,7 +98,7 @@ define(function(require, exports, module) {
         var isMemo = model.constructor.name == 'Memo'
 
         this.layeredTransition.commit(app.controller)
-        this._show(model.id, isMemo)
+        this._show(model.id, isMemo, model)
         this.router.navigate((isMemo ? 'memos' : 'articles') + '/' + model.id)
         this.layeredTransition.commit(app.controller, true)
     }
