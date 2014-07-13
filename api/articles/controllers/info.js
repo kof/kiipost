@@ -25,7 +25,7 @@ exports.read = function *() {
             var hasAll = true
 
             data.tags.forEach(function(tag) {
-                if (article.tags.indexOf(tag) < 0) hasAll = false
+                if (_.isEmpty(article.tags) || article.tags.indexOf(tag) < 0) hasAll = false
             })
 
             return hasAll
