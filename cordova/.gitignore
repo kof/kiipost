@@ -13,6 +13,4 @@ platforms/ios/Kiipost.xcodeproj/project.xcworkspace/xcuserdata
 platforms/ios/build/device
 platforms/ios/build/emulator
 platforms/ios/build/Kiipost.build
-platforms/ios/Kiipost/Resources/Kiipost.ipa
-
 platforms/ios/CordovaLib/build/CordovaLib.build

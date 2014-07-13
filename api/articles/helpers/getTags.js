@@ -25,11 +25,11 @@ module.exports = function(userId, full) {
         memos.forEach(function(memo) {
             var article = memo.articles[0]
             if (!article || article.tags.length < TAGS_AMOUNT) return
-            var tags = article.tags.splice(0, TAGS_AMOUNT).sort()
+            var tags = _(article.tags).first(TAGS_AMOUNT).sort()
             // Create map to avoid duplicates
             var tagsStr = tags.toString()
             if (!map[tagsStr]) {
-                map[tagsStr] = tags
+                map[tagsStr] = true
                 data.push({
                     tags: tags,
                     memo: memo

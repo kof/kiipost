@@ -26,13 +26,9 @@ exports.read = function *() {
     var tagsData = yield getTags(userId, true)
 
     tagsData = tagsData.filter(function(data) {
-        var hasAll = true
-
-        data.tags.forEach(function(tag) {
-            if (article.tags.indexOf(tag) < 0) hasAll = false
-        })
-
-        return hasAll
+        if (_.intersection(data.tags, article.tags).length === data.tags.length) {
+            return true
+        }
     })
 
     this.body = {
