@@ -21,16 +21,23 @@ exports.read = function *() {
             .select({tags: 1})
             .exec()
 
-        tagsData = tagsData.filter(function(data) {
-            var hasAll = true
+        if (article)  {
+            tagsData = tagsData.filter(function(data) {
+                var hasAll = true
 
-            data.tags.forEach(function(tag) {
-                if (_.isEmpty(article.tags) || article.tags.indexOf(tag) < 0) hasAll = false
+                data.tags.forEach(function(tag) {
+                    if (article.tags.indexOf(tag) < 0) hasAll = false
+                })
+
+                return hasAll
             })
 
-            return hasAll
-        })
+            this.body = tagsData
+        } else {
+            this.status = 'bad request'
+            this.body = 'Bad article id.'
+        }
+    } else {
+        this.body = tagsData
     }
-
-    this.body = tagsData
 }
