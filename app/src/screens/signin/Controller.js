@@ -62,7 +62,9 @@ define(function(require, exports, module) {
 
     Signin.prototype._onSigninSuccess = function(user) {
         if (!backbone.history.getFragment()) {
-            this.router.navigate(this.options.defaultScreen, {trigger: true})
+            this.view.transit('out', function() {
+                this.router.navigate(this.options.defaultScreen, {trigger: true})
+            }.bind(this))
         }
         log.setUser(user)
     }

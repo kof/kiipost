@@ -7,6 +7,7 @@ define(function(require, exports, module) {
     var Surface = require('famous/core/Surface')
     var Group = require('famous/core/Group')
     var Modifier = require('famous/core/Modifier')
+    var Transform = require('famous/core/Transform')
 
     var ParallaxedBackgroundView = require('components/parallaxed-background/ParallaxedBackground')
     var SpinnerView = require('components/spinner/views/Spinner')
@@ -34,7 +35,12 @@ define(function(require, exports, module) {
             classes: ['logo'],
             size: o.logo.size
         })
-        this.logoModifier = new Modifier({origin: o.logo.origin})
+        this.logoModifier = new Modifier({
+            transform: Transform.translate(
+                app.context.getSize()[0] * o.logo.left - o.logo.size[0] / 2,
+                app.context.getSize()[1] * o.logo.top - o.logo.size[1] / 2
+            )
+        })
         this.signin.add(this.logoModifier).add(this.logo)
 
         this.slogan = new Surface({
@@ -67,7 +73,7 @@ define(function(require, exports, module) {
         this.spinner = new SpinnerView({origin: [0.5, 0.65]})
         this.signin.add(this.spinner)
 
-        this.transition = new Transition(this)
+        this.transition = new Transition(this, {context: app.context})
     }
 
     inherits(Signin, View)
@@ -76,7 +82,8 @@ define(function(require, exports, module) {
     Signin.DEFAULT_OPTIONS = {
         logo: {
             size: [72, 113],
-            origin: [0.5, 0.5]
+            top: 0.5,
+            left: 0.5
         },
         slogan: {
             size: [undefined, true],
