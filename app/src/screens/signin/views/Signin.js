@@ -7,73 +7,90 @@ define(function(require, exports, module) {
     var Surface = require('famous/core/Surface')
     var Group = require('famous/core/Group')
     var Modifier = require('famous/core/Modifier')
-    var FlexibleLayout = require('famous/views/FlexibleLayout')
-    var ImageSurface = require('famous/surfaces/ImageSurface')
 
     var ParallaxedBackgroundView = require('components/parallaxed-background/ParallaxedBackground')
     var SpinnerView = require('components/spinner/views/Spinner')
     var alert = require('components/notification/alert')
+
+    var Transition = require('../helpers/Transition')
 
     var app = require('app')
 
     function Signin() {
         View.apply(this, arguments)
 
-        var size = app.context.getSize()
+        var o = this.options
 
-        this.model = this.options.model
-        this.surfaces = []
+        this.model = o.model
 
         this.signin = new Group({classes: ['signin']})
         this.add(this.signin)
 
-        this.layout = new FlexibleLayout({
-            direction: FlexibleLayout.DIRECTION_Y,
-            ratios: [.39, .3, .2, .05]
-        })
-        this.layout.sequenceFrom(this.surfaces)
-        this.signin.add(this.layout)
-
         this.bg = new ParallaxedBackgroundView({context: app.context})
-        this.add(this.bg)
+        this.bgModifier = new Modifier({opacity: o.bg.opacity})
+        this.signin.add(this.bgModifier).add(this.bg)
 
         this.logo = new Surface({
             classes: ['logo'],
-            properties: {
-                backgroundSize: size[1] * this.options.logoWidth + 'px'
-            }
+            size: o.logo.size
         })
-        this.surfaces.push(this.logo)
+        this.logoModifier = new Modifier({origin: o.logo.origin})
+        this.signin.add(this.logoModifier).add(this.logo)
 
         this.slogan = new Surface({
             classes: ['slogan'],
-            content: 'Stay in the know.'
+            content: 'Stay in the know.',
+            size: o.slogan.size
         })
-        this.surfaces.push(this.slogan)
+        this.sloganModifier = new Modifier({origin: o.slogan.origin, opacity: o.slogan.opacity})
+        this.signin.add(this.sloganModifier).add(this.slogan)
 
-        this.button = new Surface({
-            classes: ['button'],
-            content: 'Connect with Twitter'
+        this.connect = new Surface({
+            classes: ['connect'],
+            content: 'Connect with Twitter',
+            size: o.connect.size
         })
-        this.button.on('click', this._onSigninStart.bind(this))
-        this.surfaces.push(this.button)
+        this.connectModifier = new Modifier({
+            origin: o.connect.origin,
+            opacity: o.connect.opacity
+        })
+        this.connect.on('click', this._onSigninStart.bind(this))
+        this.signin.add(this.connectModifier).add(this.connect)
 
+        /*
         this.terms = new Surface({
             classes: ['terms'],
             content: '<span>By continuing, you agree to our Terms and Privacy policy</span>',
         })
-        this.surfaces.push(this.terms)
+        */
 
         this.spinner = new SpinnerView({origin: [0.5, 0.65]})
         this.signin.add(this.spinner)
+
+        this.transition = new Transition(this)
     }
 
     inherits(Signin, View)
     module.exports = Signin
 
     Signin.DEFAULT_OPTIONS = {
-        // Relative to context height.
-        logoWidth: 0.127,
+        logo: {
+            size: [72, 113],
+            origin: [0.5, 0.5]
+        },
+        slogan: {
+            size: [undefined, true],
+            origin: [0.5, 0.5],
+            opacity: 0
+        },
+        connect: {
+            origin: [0.5, 0.85],
+            opacity: 0,
+            size: [undefined, true]
+        },
+        bg: {
+            opacity: 0
+        },
         errors: {
             DISABLED: 'Please enable Kiipost app in Settings/Twitter.',
             NOT_CONNECTED: 'Please connect your twitter account in Settings/Twitter.',
@@ -102,6 +119,10 @@ define(function(require, exports, module) {
                 }
             }.bind(this))
             .always(this.spinner.hide.bind(this.spinner))
+    }
+
+    Signin.prototype.transit = function(dir, callback) {
+        this.transition[dir](callback)
     }
 
     Signin.prototype._onSigninStart = function() {

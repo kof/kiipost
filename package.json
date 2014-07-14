@@ -36,6 +36,7 @@
   "dependencies": {
     "amd-loader": "0.0.5",
     "batch": "^0.5.0",
+    "chainer": "0.0.5",
     "charset": "0.0.2",
     "closest": "0.0.1",
     "co": "^3.0.6",
@@ -96,7 +97,8 @@
       "multiline",
       "promise",
       "qs",
-      "closest"
+      "closest",
+      "chainer"
     ]
   },
   "private": true

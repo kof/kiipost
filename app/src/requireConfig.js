@@ -32,7 +32,8 @@ require.config({
         'components/keyboard': './components/keyboard/index',
         raven: '../lib/raven-js/dist/raven',
         moment: '../lib/momentjs/moment',
-        'raven-js': '../lib/raven-js/dist/raven'
+        'raven-js': '../lib/raven-js/dist/raven',
+        chainer: '../lib/chainer/chainer'
     },
     packages: [
 

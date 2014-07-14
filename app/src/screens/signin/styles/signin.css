@@ -1,17 +1,19 @@
 .signin .logo {
-    background: url('/content/images/logo.svg') no-repeat center bottom;
+    background: url('/content/images/logo.svg') no-repeat center;
+    background-size: contain;
 }
 .signin .slogan {
     text-align: center;
-    padding-top: 1.5rem;
+    padding: 1rem 0;
     color: #fff;
     font-size: 1.5rem;
 }
-.signin .button {
+.signin .connect {
     text-align: center;
     color: rgba(255,255,255,0.7);
     font-size: 1.15rem;
     cursor: pointer;
+    padding: 1rem 0;
 }
 .signin .terms {
     text-align: center;

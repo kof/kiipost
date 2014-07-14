@@ -33,13 +33,15 @@ define(function(require, exports, module) {
         this.view = new SigninView({model: this.models.user})
         this.view.on('start', this._onSigninStart.bind(this))
         this.view.on('success', this._onSigninSuccess.bind(this))
-        ios.available().then(this._signin.bind(this))
     }
 
     Signin.prototype.signin = function() {
         app.controller.show(this.view, function() {
             if (navigator.splashscreen) navigator.splashscreen.hide()
-        })
+            this.view.transit('in', function() {
+                ios.available().then(this._signin.bind(this))
+            }.bind(this))
+        }.bind(this))
     }
 
     Signin.prototype._signin = function() {
