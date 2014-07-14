@@ -7,6 +7,7 @@ define(function(require, exports, module) {
     var View = require('famous/core/View')
     var Surface = require('famous/core/Surface')
     var Modifier = require('famous/core/Modifier')
+    var Transform = require('famous/core/Transform')
 
     var EventProxy = require('components/famous/EventProxy')
     var HeaderView = require('components/header/views/Header')
@@ -39,7 +40,9 @@ define(function(require, exports, module) {
         this.header.surface.add(this.menu)
 
         this.spinner = new SpinnerView({origin: [0.5, 0.7]})
-        this.add(this.spinner)
+        this
+            .add(new Modifier({transform: Transform.translate(0, 0, 2)}))
+            .add(this.spinner)
 
         this.stream = new StreamView({
             ItemView: MemoView,
@@ -58,11 +61,10 @@ define(function(require, exports, module) {
         // Header can scroll the scrollview.
         this.header.pipe(this.stream.scrollview)
 
-        this.jumper = new JumperView({
-            scrollview: this.stream.scrollview,
-            context: app.context
-        })
-        this.add(this.jumper)
+        this.jumper = new JumperView({scrollview: this.stream.scrollview})
+        this
+            .add(new Modifier({transform: Transform.translate(0, 0, 1)}))
+            .add(this.jumper)
     }
 
     inherits(Memos, View)

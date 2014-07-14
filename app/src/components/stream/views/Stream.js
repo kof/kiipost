@@ -35,7 +35,7 @@ define(function(require, exports, module) {
         this._endReached = false
 
         this.stream = new Group({classes: this.options.classes})
-        this.add(new Modifier({transform: Transform.inFront})).add(this.stream)
+        this.add(this.stream)
 
         this.scrollview = new InfiniteScrollView({
             // Trigger infiniteScroll event 5 screens before items actually get rendered.
@@ -44,7 +44,9 @@ define(function(require, exports, module) {
             // before they get shown.
             margin: contextHeight * 2
         })
-        this.stream.add(this.scrollview)
+        this.stream.add(new Modifier({
+            transform: Transform.inFront
+        })).add(this.scrollview)
         this.scrollview.sequenceFrom(this.views)
         this.scrollview.on('infiniteScroll', _.debounce(this.load.bind(this), 300, true))
         this.collection.on('end', this._onEnd.bind(this))
@@ -53,10 +55,7 @@ define(function(require, exports, module) {
             properties: {backgroundColor: '#fff'}
         })
         this.stream.add(new Modifier({
-            transform: Transform.multiply(
-                Transform.behind,
-                Transform.translate(0, this.options.backTop)
-            )
+            transform: Transform.translate(0, this.options.backTop)
         })).add(this.back)
     }
 

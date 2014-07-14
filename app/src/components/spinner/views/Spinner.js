@@ -17,8 +17,7 @@ define(function(require, exports, module) {
             classes: ['spinner']
         })
         this.boxModifier = new Modifier({
-            origin: this.options.origin,
-            transform: Transform.inFront
+            origin: this.options.origin
         })
         this.box = new Surface({
             classes: ['box'],
@@ -44,9 +43,10 @@ define(function(require, exports, module) {
     Spinner.prototype.show = function(immediate) {
         if (this._showing >= 0) return
         clearTimeout(this._timeoutId)
-        this._timeoutId = setTimeout(function() {
-            Spinner.super_.prototype.show.call(this, this.container)
-        }.bind(this), immediate ? 0 : this.options.delay)
+        this._timeoutId = setTimeout(
+            Spinner.super_.prototype.show.bind(this, this.container),
+            immediate ? 0 : this.options.delay
+        )
     }
 
     Spinner.prototype.hide = function() {
