@@ -55,7 +55,7 @@ define(function(require, exports, module) {
     }
 
     Memos.prototype._onOpen = function() {
-        this.router.navigate('memos')
+        this.navigate('memos')
         this.baseTransition.commit(app.controller)
         this.memos()
     }
@@ -66,7 +66,7 @@ define(function(require, exports, module) {
 
     Memos.prototype._onFullArticleClose = function(e) {
         if (!e.isMemo) return
-        this.router.navigate('memos')
+        this.navigate('memos')
         this.memos()
         this.baseTransition.commit(app.controller)
     }

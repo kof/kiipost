@@ -39,12 +39,12 @@ define(function(require, exports, module) {
         app.controller.show(this.view, function() {
             if (navigator.splashscreen) navigator.splashscreen.hide()
             this.view.transit('in', function() {
-                ios.available().then(this._signin.bind(this))
+                ios.available().then(this.do.bind(this))
             }.bind(this))
         }.bind(this))
     }
 
-    Signin.prototype._signin = function() {
+    Signin.prototype.do = function() {
         if (ios.isSupported()) {
             this.view.spinner.show(true)
             ios.signin()
@@ -57,13 +57,13 @@ define(function(require, exports, module) {
     }
 
     Signin.prototype._onSigninStart = _.debounce(function() {
-        this._signin()
+        this.do()
     }, 500, true)
 
     Signin.prototype._onSigninSuccess = function(user) {
         if (!backbone.history.getFragment()) {
             this.view.transit('out', function() {
-                this.router.navigate(this.options.defaultScreen, {trigger: true})
+                this.navigate(this.options.defaultScreen, {trigger: true})
             }.bind(this))
         }
         log.setUser(user)

@@ -54,12 +54,12 @@ define(function(require, exports, module) {
 
     Articles.prototype._onFullArticleClose = function(e) {
         if (e.isMemo) return
-        this.router.navigate('articles')
+        this.navigate('articles')
         this.articles()
     }
 
     Articles.prototype._onOpen = function() {
-        this.router.navigate('articles')
+        this.navigate('articles')
         this.articles()
     }
 })

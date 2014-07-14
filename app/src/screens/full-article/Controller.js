@@ -102,6 +102,6 @@ define(function(require, exports, module) {
         this._show(model.id, isMemo, model, function() {
             this.layeredTransition.commit(app.controller, true)
         }.bind(this))
-        this.router.navigate((isMemo ? 'memos' : 'articles') + '/' + model.id)
+        this.navigate((isMemo ? 'memos' : 'articles') + '/' + model.id)
     }
 })
