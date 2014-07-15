@@ -39,7 +39,7 @@ define(function(require, exports, module) {
 
         this.scrollview = new InfiniteScrollView({
             // Trigger infiniteScroll event 5 screens before items actually get rendered.
-            offset: contextHeight * 5,
+            offset: contextHeight * 10,
             // Margin for full scroller to render invisible items
             // before they get shown.
             margin: contextHeight * 2
@@ -75,8 +75,8 @@ define(function(require, exports, module) {
     }
 
     Stream.prototype.load = function(options) {
-        if (!options) options = {}
         if (this._loading || this._endReached) return
+        if (!options) options = {}
         this._eventOutput.emit('loadStart')
         this._loading = true
         this.scrollview.infiniteScrollDisabled = true
