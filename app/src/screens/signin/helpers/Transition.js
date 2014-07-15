@@ -19,7 +19,7 @@ define(function(require, exports, module) {
         in: {
             logo: {
                 left: 0.5,
-                top: 0.2,
+                top: 0.32,
                 transition: {
                     duration: 500,
                     curve: easing.inOutQuad
@@ -67,7 +67,6 @@ define(function(require, exports, module) {
         var container = this._container
 
         chain.add(function() {
-
             container.logoModifier.setTransform(
                 Transform.translate(
                     context.getSize()[0] * o.logo.left - container.logo.getSize()[0] / 2,
