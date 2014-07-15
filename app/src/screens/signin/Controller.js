@@ -31,14 +31,14 @@ define(function(require, exports, module) {
 
     Signin.prototype.initialize = function() {
         this.view = new SigninView({model: this.models.user})
-        this.view.on('start', this._onSigninStart.bind(this))
-        this.view.on('success', this._onSigninSuccess.bind(this))
+        this.view.on('connect', this._onConnect.bind(this))
+        this.view.on('success', this._onSuccess.bind(this))
     }
 
     Signin.prototype.signin = function() {
         app.controller.show(this.view, function() {
             if (navigator.splashscreen) navigator.splashscreen.hide()
-            this.view.transit('in', function() {
+            this.view.animate('in', function() {
                 ios.available().then(this.do.bind(this))
             }.bind(this))
         }.bind(this))
@@ -56,13 +56,13 @@ define(function(require, exports, module) {
         }
     }
 
-    Signin.prototype._onSigninStart = _.debounce(function() {
+    Signin.prototype._onConnect = _.debounce(function() {
         this.do()
     }, 500, true)
 
-    Signin.prototype._onSigninSuccess = function(user) {
+    Signin.prototype._onSuccess = function(user) {
         if (!backbone.history.getFragment()) {
-            this.view.transit('out', function() {
+            this.view.animate('out', function() {
                 this.navigate(this.options.defaultScreen, {trigger: true})
             }.bind(this))
         }

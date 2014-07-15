@@ -13,91 +13,20 @@ define(function(require, exports, module) {
     var SpinnerView = require('components/spinner/views/Spinner')
     var alert = require('components/notification/alert')
 
-    var Transition = require('../helpers/Transition')
+    var Animation = require('../helpers/Animation')
 
     var app = require('app')
 
     function Signin() {
         View.apply(this, arguments)
-
-        var o = this.options
-
-        this.model = o.model
-
-        this.signin = new Group({classes: ['signin']})
-        this.add(this.signin)
-
-        this.bg = new ParallaxedBackgroundView({context: app.context})
-        this.bgModifier = new Modifier({opacity: o.bg.opacity})
-        this.signin.add(this.bgModifier).add(this.bg)
-
-        this.logo = new Surface({
-            classes: ['logo'],
-            size: o.logo.size
-        })
-        this.logoModifier = new Modifier({
-            transform: Transform.translate(
-                app.context.getSize()[0] * o.logo.left - o.logo.size[0] / 2,
-                app.context.getSize()[1] * o.logo.top - o.logo.size[1] / 2
-            )
-        })
-        this.signin.add(this.logoModifier).add(this.logo)
-
-        this.slogan = new Surface({
-            classes: ['slogan'],
-            content: 'Stay in the know.',
-            size: o.slogan.size
-        })
-        this.sloganModifier = new Modifier({origin: o.slogan.origin, opacity: o.slogan.opacity})
-        this.signin.add(this.sloganModifier).add(this.slogan)
-
-        this.connect = new Surface({
-            classes: ['connect'],
-            content: 'Connect with Twitter',
-            size: o.connect.size
-        })
-        this.connectModifier = new Modifier({
-            origin: o.connect.origin,
-            opacity: o.connect.opacity
-        })
-        this.connect.on('click', this._onSigninStart.bind(this))
-        this.signin.add(this.connectModifier).add(this.connect)
-
-        /*
-        this.terms = new Surface({
-            classes: ['terms'],
-            content: '<span>By continuing, you agree to our Terms and Privacy policy</span>',
-        })
-        */
-
-        this.spinner = new SpinnerView({origin: [0.5, 0.65]})
-        this.signin.add(this.spinner)
-
-        this.transition = new Transition(this, {context: app.context})
+        this.model = this.options.model
+        this.initialize()
     }
 
     inherits(Signin, View)
     module.exports = Signin
 
     Signin.DEFAULT_OPTIONS = {
-        logo: {
-            size: [72, 113],
-            top: 0.5,
-            left: 0.5
-        },
-        slogan: {
-            size: [undefined, true],
-            origin: [0.5, 0.5],
-            opacity: 0
-        },
-        connect: {
-            origin: [0.5, 0.85],
-            opacity: 0,
-            size: [undefined, true]
-        },
-        bg: {
-            opacity: 0
-        },
         errors: {
             DISABLED: 'Please enable Kiipost app in Settings/Twitter.',
             NOT_CONNECTED: 'Please connect your twitter account in Settings/Twitter.',
@@ -105,6 +34,62 @@ define(function(require, exports, module) {
             UNAUTHORIZED: 'Something went wrong with your twitter authentification.',
             UNKNOWN: 'Unknown error.',
         }
+    }
+
+    Signin.prototype.initialize = function() {
+        this.signin = new Group({classes: ['signin']})
+        this.add(this.signin)
+
+        this.bg = {
+            view: new ParallaxedBackgroundView({context: app.context}),
+            modifier: new Modifier()
+        }
+        this.signin.add(this.bg.modifier).add(this.bg.view)
+
+        this.logo = {
+            surface: new Surface({
+                classes: ['logo'],
+                size: [72, 113]
+            }),
+            modifier: new Modifier()
+        }
+        this.signin.add(this.logo.modifier).add(this.logo.surface)
+
+        this.slogan = {
+            surface: new Surface({
+                classes: ['slogan'],
+                content: 'Stay in the know.',
+                size: [undefined, true]
+            }),
+            modifier: new Modifier()
+        }
+        this.signin.add(this.slogan.modifier).add(this.slogan.surface)
+
+        this.connect = {
+            surface: new Surface({
+                classes: ['connect'],
+                content: 'Connect with Twitter',
+                size: [undefined, true]
+            }),
+            modifier: new Modifier()
+        }
+        this.connect.surface.on('click', this._onConnect.bind(this))
+        this.signin.add(this.connect.modifier).add(this.connect.surface)
+
+        this.terms = {
+            surface: new Surface({
+                classes: ['terms'],
+                content: '<span>By continuing, you agree to our Terms and Privacy policy</span>',
+                size: [undefined, true]
+            }),
+            modifier: new Modifier({origin: [0.5, 0.98]})
+        }
+        this.signin.add(this.terms.modifier).add(this.terms.surface)
+
+        this.spinner = new SpinnerView({origin: [0.5, 0.65]})
+        this.signin.add(this.spinner)
+
+        this.animation = new Animation(this, {context: app.context})
     }
 
     Signin.prototype.error = function(err) {
@@ -128,11 +113,11 @@ define(function(require, exports, module) {
             .always(this.spinner.hide.bind(this.spinner))
     }
 
-    Signin.prototype.transit = function(dir, callback) {
-        this.transition[dir](callback)
+    Signin.prototype.animate = function(dir, callback) {
+        this.animation[dir](callback)
     }
 
-    Signin.prototype._onSigninStart = function() {
-        this._eventOutput.emit('start')
+    Signin.prototype._onConnect = function() {
+        this._eventOutput.emit('connect')
     }
 })
