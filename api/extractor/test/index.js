@@ -10,7 +10,7 @@ test('extract 1', function* () {
     } ]
     var description = '<p><iframe src="http://www.youtube.com/embed/Czw-dtTP6oU?version=3&rel=1&fs=1&showsearch=0&showinfo=1&iv_load_policy=1&wmode=transparent"></iframe> </p> <p>This is seriously the best Mark Zuckerberg interview I’ve ever seen. Fresh off of the <a href="http://techcrunch.com/2010/11/15/facebook-messaging/">announcement of Facebook Messages</a> (yes, that’s what the product is called) Facebook CEO Zuckerberg took the stage at Web 2.0 Summit to talk about the state of Facebook.</p> <p>Zuckerberg went into the recent scuffles with Google, how soon every major product will be rethought to be social, why Facebook’s been on a recent acquisition tear and more. But the most insightful part of the interview was when Zuckerberg <a href="http://techcrunch.com/2010/11/16/mark-zuckerberg-your-map-is-missing-uncharted-territory/">called out</a> John Battelle and Tim O’Reilly on the inaccuracy of their Web 2.0 <a href="http://techcrunch.com/2010/10/13/web-2-0-acquisitions-the-game/">“Points of Control”</a> map.</p> <blockquote><p><em>“Your map is wrong. The biggest part of the map has to be uncharted territory — this map makes it seem like it’s zero-sum, but it’s not. We’re building value, not just taking it away from someone else.”</em></p></blockquote> <p>Sometimes amidst all the competition, it’s difficult to remember why we got into the game in the first place.</p>'
     var summary = 'This is seriously the best Mark Zuckerberg interview I’ve ever seen. Fresh off of the announcement of Facebook Messages (yes, that’s what the product is called) Zuckerberg took the stage at Web 2.0 Summit to talk about the state of Facebook'
-    var tags = [ 'facebook', 'mark zuckerberg' ]
+    var tags = [ 'facebook', 'interview', 'map', 'mark zuckerberg', 'zuckerberg' ]
 
     var data = yield extractor.extract(url)
     equal(data.title, title, 'title ok')
@@ -20,7 +20,7 @@ test('extract 1', function* () {
     deepEqual(data.images, images, 'images ok')
     equal(data.description, description, 'description ok')
     equal(data.summary, summary, 'summary ok')
-    deepEqual(data.tags, tags, 'tags ok')
+    deepEqual(data.tags.sort(), tags, 'tags ok')
 })
 
 test('extract 2', function* () {
@@ -48,12 +48,14 @@ test('extract 2', function* () {
     var description = '<div><audio> <source src="http://appbusinesspodcast.com/podlove/file/876/s/webplayer/c/episode/ABP041-Jan-Lehnardt-CEO-of-Hoodie.m4a"></source> <source src="http://appbusinesspodcast.com/podlove/file/875/s/webplayer/c/episode/ABP041-Jan-Lehnardt-CEO-of-Hoodie.mp3"></source> </audio> <h3>On this episode, David is joined by Jan Lehnardt of Hood.ie. Jan shares his thoughts on the recent Apple release CloudKit and what makes it similar and different to Hood.ie. Listen in as we discuss:</h3> <ul> <li>What the term backend is all about and why developers need a backend strategy</li> <li>Jan’s “abundance mindset” and why he’s not worried about CloudKit at all</li> <li>Comparison of CloudKit and Hoodie – what interested developers need to know</li> <li>More about the Hoodie Project</li> <li>Comparison of Parse and Hoodie</li> </ul> <p></p> <h3>Sponsors:</h3> <ul> <li><strong><a href="http://affordabledev.com">Affordable Dev</a></strong> a complete mobile development agency with developers and designers that will bring your project to life. Mention the #ABP for 20% off of your next project. For a limited time – Affordable Dev is offering free ASO consultations with an ASO professional with every new project.</li> </ul> <h3>Resources and Links Mentioned in this Episode</h3> <h3>Listening Options</h3> <p>Download your favorite file format: </p> <h3>Transcription:</h3> <p></p> <p></p> </div><p></p>'
     var summary = 'David is joined by Jan Lehnardt of Hood.ie. Jan shares his thoughts on the recent Apple release CloudKit and what makes it similar and different to Hood.ie.'
     var tags = [
-            'backend',
-            'cloudkit',
-            'frontend',
-            'hood.ie',
-            'hoodie',
-            'jan lehnardt'
+          'cloudkit',
+          'developer',
+          'hoodie',
+          'project',
+          'backend',
+          'frontend',
+          'hood.ie',
+          'jan lehnardt'
         ]
 
     var data = yield extractor.extract(url)
@@ -74,7 +76,7 @@ test('extract 3', function* () {
     var url = 'http://www.theverge.com/2014/6/22/5831836/google-project-loon-storystream'
     var icon = 'http://www.theverge.com/images/verge/apple-touch-icon.png'
     var summary = "For many, internet access is a vital resource. However, vast, rural swaths of the world have no broadband internet access. One of Google's latest \"moonshot\" projects seeks to fill that gap with..."
-    var tags = [ 'general', 'the-verge' ]
+    var tags = [ 'internetacces', 'google', 'loon', 'general', 'the-verge' ]
 
     var data = yield extractor.extract(url)
     equal(data.title, title, 'title ok')
@@ -126,15 +128,15 @@ test('extract 5', function* () {
     var url = 'http://heaven.branda.to/~thinker/GinGin_CGI.py/show_id_doc/486'
     var title = '為何希望方仰寧下台'
     var score = 1
-    var summary = 'robot   最新文章(10)  Promise 解決了什麼問題?OSDC.TW 2014 投影片為何希望方仰寧下台台灣工程師的主要問題你可能沒想過的 Python 用法Hey Jude - Hacker 版本F/OSS 的慢性自殺?libuncall 背後的想法Your First Platform Patch for B2G「超商竟然成了社會安全系統」的另一個角度  首頁新編最新留言 Entries RSS  重要關鍵字(10)  coding (122)Python (9'
-    var description = '<td> <div><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_to_robot/">robot</a></div> <div> <div> <p>最新文章(10)</p> <ul> <li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_id_doc/488">Promise 解決了什麼問題?</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_id_doc/487">OSDC.TW 2014 投影片</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_id_doc/486">為何希望方仰寧下台</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_id_doc/485">台灣工程師的主要問題</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_id_doc/484">你可能沒想過的 Python 用法</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_id_doc/483">Hey Jude - Hacker 版本</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_id_doc/482">F/OSS 的慢性自殺?</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_id_doc/481">libuncall 背後的想法</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_id_doc/480">Your First Platform Patch for B2G</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_id_doc/471">「超商竟然成了社會安全系統」的另一個角度</a></li> </ul> <a href="http://heaven.branda.to/~thinker/GinGin_CGI.py">首頁</a><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/new_doc">新編</a><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/last_comments">最新留言</a></p><p> <a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/rssfeed">Entries RSS</a></div> <div> <p>重要關鍵字(10)</p> <ul> <li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_kw_docs/coding">coding (122)</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_kw_docs/Python">Python (91)</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_kw_docs/FreeBSD">FreeBSD (71)</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_kw_docs/WEB">WEB (61)</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_kw_docs/URL">URL (48)</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_kw_docs/hardware">hardware (46)</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_kw_docs/javascript">javascript (36)</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_kw_docs/Linux">Linux (34)</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_kw_docs/blog">blog (30)</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_kw_docs/C++">C++ (16)</a></li> </ul> <a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_all_kws">所有關鍵字</a></p><p> <a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/edit_new_url">新增 URL</a> </div> </div> </td><td> <div> <div> 為何希望方仰寧下台 <p> by thinker </p> </div> <div> <a href="javascript: init_mcol()"> 2 Columns </a> </div> <div> 關鍵字: <div> <a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_kw_docs/雜記"> 雜記 </a> </div> </div> <div> 最後更新時間: 2014-04-12 13:20:58 CST | <a href="http://heaven.branda.to/~thinker/GinGin_TB.py/trackback/486?__mod=view"> 引用 </a> </div> <p> 查詢: </p> <p> COMMENTS: </p> <rdf:rdf> <rdf:description></rdf:description> </rdf:rdf> </div> </td>'
+    var summary = 'robot 最新文章(10) 如何用 setjmp 、 longjmp 設計 coroutine? Promise 解決了什麼問題? OSDC.TW 2014 投影片 為何希望方仰寧下台 台灣工程師的主要問題 你可能沒想過的 Python 用法 Hey Jude - Hacker 版本 F/OSS 的慢性自殺? libuncall 背後的想法 Your First Platform Patch for B2G 首頁新編最新留言 Entries RSS 重要關鍵字(1'
+    var description = '<td> <div><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_to_robot/">robot</a></div> <div> <div> <p>最新文章(10)</p> <ul> <li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_id_doc/489">如何用 setjmp 、 longjmp 設計 coroutine?</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_id_doc/488">Promise 解決了什麼問題?</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_id_doc/487">OSDC.TW 2014 投影片</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_id_doc/486">為何希望方仰寧下台</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_id_doc/485">台灣工程師的主要問題</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_id_doc/484">你可能沒想過的 Python 用法</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_id_doc/483">Hey Jude - Hacker 版本</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_id_doc/482">F/OSS 的慢性自殺?</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_id_doc/481">libuncall 背後的想法</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_id_doc/480">Your First Platform Patch for B2G</a></li> </ul> <a href="http://heaven.branda.to/~thinker/GinGin_CGI.py">首頁</a><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/new_doc">新編</a><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/last_comments">最新留言</a></p><p> <a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/rssfeed">Entries RSS</a></div> <div> <p>重要關鍵字(10)</p> <ul> <li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_kw_docs/coding">coding (122)</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_kw_docs/Python">Python (91)</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_kw_docs/FreeBSD">FreeBSD (71)</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_kw_docs/WEB">WEB (61)</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_kw_docs/URL">URL (48)</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_kw_docs/hardware">hardware (46)</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_kw_docs/javascript">javascript (36)</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_kw_docs/Linux">Linux (34)</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_kw_docs/blog">blog (30)</a></li><li><a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_kw_docs/C++">C++ (16)</a></li> </ul> <a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_all_kws">所有關鍵字</a></p><p> <a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/edit_new_url">新增 URL</a> </div> </div> </td><td> <div> <div> 為何希望方仰寧下台 <p> by thinker </p> </div> <div> <a href="javascript: init_mcol()"> 2 Columns </a> </div> <div> 關鍵字: <div> <a href="http://heaven.branda.to/~thinker/GinGin_CGI.py/show_kw_docs/雜記"> 雜記 </a> </div> </div> <div> 最後更新時間: 2014-04-12 13:20:58 CST | <a href="http://heaven.branda.to/~thinker/GinGin_TB.py/trackback/486?__mod=view"> 引用 </a> </div> <p> 查詢: </p> <p> COMMENTS: </p> <rdf:rdf> <rdf:description></rdf:description> </rdf:rdf> </div> </td>'
 
     // We can't parse it correctly, just verifying it doesn't breaks.
     var data = yield extractor.extract(url)
     equal(data.url, url, 'url ok')
     equal(data.title, title, 'title ok')
     equal(data.score, score, 'score ok')
-    equal(data.summary, summary, 'summary ok')
+    equal(data.summary.replace(/\s+/g, ' '), summary, 'summary ok')
     equal(data.description, description, 'description ok')
 })
 
