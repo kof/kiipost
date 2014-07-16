@@ -9,8 +9,6 @@ define(function(require, exports, module) {
     var Surface = require('famous/core/Surface')
     var ContainerSurface = require('famous/surfaces/ContainerSurface')
 
-    var AnchorSurface = require('components/famous/AnchorSurface')
-
     var app = require('app')
     var constants = require('constants')
 
@@ -67,7 +65,7 @@ define(function(require, exports, module) {
             }))
             .add(this._summary)
 
-        this._link = new AnchorSurface({
+        this._link = new Surface({
             classes: ['truncate', 'link'],
             size: [textWidth, true]
         })
@@ -93,7 +91,6 @@ define(function(require, exports, module) {
         this._title.setContent(a.title)
         this._summary.setContent(a.summary)
         this._link.setContent(a.hostname)
-        this._link.setHref(a.url)
         this._setImage()
     }
 
