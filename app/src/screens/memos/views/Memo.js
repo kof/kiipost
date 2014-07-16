@@ -42,16 +42,16 @@ define(function(require, exports, module) {
         this.options.size = [width, height]
         this._imageWidth = Math.round((height - (height * this.options.memoHeight)) * constants.GOLDEN_RATIO)
         this._poolItem = pool.get()
-        this.surface = new Surface({
+        this.container = new Surface({
             size: this.options.size,
             classes: ['memo']
         })
-        this.add(this.surface)
-        this.surface.pipe(this._eventOutput)
+        this.add(this.container)
+        this.container.pipe(this._eventOutput)
 
-        this.surface.on('click', this._onClick.bind(this))
-        this.surface.on('recall', this._onRecall.bind(this))
-        this.surface.on('deploy',this._onDeploy.bind(this))
+        this.container.on('click', this._onClick.bind(this))
+        this.container.on('recall', this._onRecall.bind(this))
+        this.container.on('deploy',this._onDeploy.bind(this))
     }
 
     inherits(MemoItem, View)
@@ -103,7 +103,7 @@ define(function(require, exports, module) {
         i.link.href = article.url || ''
         i.link.textContent = article.hostname || ''
 
-        this.surface.setContent(i.container)
+        this.container.setContent(i.container)
     }
 
     MemoItem.prototype._onClick = function(e) {

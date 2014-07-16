@@ -1,43 +1,30 @@
 .article {
     background: #fff;
     cursor: pointer;
-}
-.article .inner {
-    height: 100%;
     border-bottom: 1px solid #979797;
-    box-sizing: border-box;
-}
-.article .text {
-    float: left;
-    padding: 1rem 0.7rem 0 0.7rem;
-    box-sizing: border-box;
-    height: 100%;
+    overflow: hidden;
 }
 .article .image {
-    float: left;
-    height: 100%;
     background: no-repeat center #f0f1f2;
     background-size: cover;
 }
-.article h1 {
+.article .title {
     font-size: 1rem;
     font-weight: normal;
     line-height: 1.4;
-    margin: 0 0 0.5rem 0;
-    height: 4.1rem;
+    padding: 1rem 0.7rem 0 0.7rem;
     overflow: hidden;
     color: #000;
 }
-.article p {
+.article .summary {
     font-size: 0.8rem;
     line-height: 1.4;
-    margin: 0 0 0.5rem 0;
-    height: 5.9rem;
+    padding: 0 0.7rem;
     overflow: hidden;
     color: #bebebe;
 }
-.article a {
-    display: block;
+.article .link {
+    padding: 0.3rem 0.7rem 0 0.7rem;
     font-size: 0.8rem;
     line-height: 1;
     text-decoration: none;

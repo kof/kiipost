@@ -25,14 +25,32 @@ define(function(require, exports, module) {
     function Stream() {
         View.apply(this, arguments)
 
-        var contextHeight = app.context.getSize()[1]
-
         this.models = this.options.models
         this.views = this.options.views
         this.collection = this.options.collection
         this._initialViewsAmount = this.views.length
         this._loading = false
         this._endReached = false
+        this.initialize()
+    }
+
+    inherits(Stream, View)
+    module.exports = Stream
+
+    Stream.EVENTS = {
+        loadStart: true,
+        loadEnd: true
+    }
+
+    Stream.DEFAULT_OPTIONS = {
+        ItemView: null,
+        views: null,
+        classes: null,
+        backTop: null
+    }
+
+    Stream.prototype.initialize = function() {
+        var contextHeight = app.context.getSize()[1]
 
         this.stream = new Group({classes: this.options.classes})
         this.add(this.stream)
@@ -57,21 +75,6 @@ define(function(require, exports, module) {
         this.stream.add(new Modifier({
             transform: Transform.translate(0, this.options.backTop)
         })).add(this.back)
-    }
-
-    inherits(Stream, View)
-    module.exports = Stream
-
-    Stream.EVENTS = {
-        loadStart: true,
-        loadEnd: true
-    }
-
-    Stream.DEFAULT_OPTIONS = {
-        ItemView: null,
-        views: null,
-        classes: null,
-        backTop: null
     }
 
     Stream.prototype.load = function(options) {
@@ -101,7 +104,7 @@ define(function(require, exports, module) {
 
         this.collection.each(function(model) {
             var view = new ItemView({model: model, models: this.models})
-            view.surface.pipe(this.scrollview)
+            view.container.pipe(this.scrollview)
             view.pipe(this._eventOutput)
             this.views.push(view)
         }, this)

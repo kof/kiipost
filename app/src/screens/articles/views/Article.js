@@ -3,50 +3,24 @@ define(function(require, exports, module) {
 
     var inherits = require('inherits')
 
-    var Engine = require('famous/core/Engine')
     var View = require('famous/core/View')
-    var Group = require('famous/core/Group')
+    var Transform = require('famous/core/Transform')
+    var Modifier = require('famous/core/Modifier')
     var Surface = require('famous/core/Surface')
-    var FlexibleLayout = require('famous/views/FlexibleLayout')
+    var ContainerSurface = require('famous/surfaces/ContainerSurface')
 
-    var Pool = require('components/stream/helpers/Pool')
-    var elementsMap = require('components/elements-map/elementsMap')
+    var AnchorSurface = require('components/famous/AnchorSurface')
 
     var app = require('app')
     var constants = require('constants')
 
-    var tpl = require('../templates/article.html')
-
-    var pool = new Pool()
-
-    pool.setCreator(function() {
-        var container = document.createElement('div')
-        container.className = 'inner'
-        container.innerHTML = tpl
-        var map = elementsMap(container)
-        map.container = container
-        return map
-    })
-
     function Article() {
         View.apply(this, arguments)
-
         var width = app.context.getSize()[0]
-
         this.model = this.options.model
         this.options.size = [width, Math.round(width * constants.BRULE_RATIO)]
-        this._imageWidth = Math.round(this.options.size[1] * constants.GOLDEN_RATIO)
-        this._poolItem = pool.get()
-
-        this.surface = new Surface({
-            size: this.options.size,
-            classes: ['article']
-        })
-        this.add(this.surface)
-
-        this.surface.on('click', this._onClick.bind(this))
-        this.surface.on('recall', this._onRecall.bind(this))
-        this.surface.on('deploy',this._onDeploy.bind(this))
+        this.initialize()
+        this.setContent()
     }
 
     inherits(Article, View)
@@ -57,58 +31,101 @@ define(function(require, exports, module) {
     }
 
     Article.DEFAULT_OPTIONS = {
-        model: null
+        model: null,
+        title: {height: 0.39},
+        summary: {height: 0.43}
+    }
+
+    Article.prototype.initialize = function() {
+        var o = this.options
+        var height = o.size[1]
+        var imageWidth = this._imageWidth = this.model.getImage() ? Math.round(height * constants.GOLDEN_RATIO) : 0
+        var textWidth = o.size[0] - imageWidth
+
+        this.container = new ContainerSurface({
+            size: o.size,
+            classes: ['article']
+        })
+        this.add(this.container)
+        this.container.on('click', this._onClick.bind(this))
+
+        var titleHeight = height * o.title.height
+        this._title = new Surface({
+            classes: ['title'],
+            size: [textWidth, titleHeight]
+        })
+        this.container.add(this._title)
+
+        var summaryHeight = height * o.summary.height
+        this._summary = new Surface({
+            classes: ['summary'],
+            size: [textWidth, summaryHeight]
+        })
+        this.container
+            .add(new Modifier({
+                transform: Transform.translate(0, titleHeight)
+            }))
+            .add(this._summary)
+
+        this._link = new AnchorSurface({
+            classes: ['truncate', 'link'],
+            size: [textWidth, true]
+        })
+        this.container
+            .add(new Modifier({
+                transform: Transform.translate(0, titleHeight + summaryHeight)
+            }))
+            .add(this._link)
+
+        this._image = new Surface({
+            classes: ['image'],
+            size: [imageWidth, height]
+        })
+        this.container
+            .add(new Modifier({
+                transform: Transform.translate(textWidth, 0)
+            }))
+            .add(this._image)
     }
 
     Article.prototype.setContent = function() {
-        var attr = this.model.attributes
-        var i = this._poolItem
-        var textWidth
+        var a = this.model.attributes
+        this._title.setContent(a.title)
+        this._summary.setContent(a.summary)
+        this._link.setContent(a.hostname)
+        this._link.setHref(a.url)
+        this._setImage()
+    }
+
+    Article.prototype._setImage = function() {
         var image = this.model.getImage()
 
+        if (!image) return
+
         function setImage(err, size) {
-            if (err) return i.image.style.display = 'none'
-            i.image.style.backgroundImage = 'url(' + image.url + ')'
-            i.image.style.width = this._imageWidth + 'px'
-            i.image.style.backgroundSize = image.isIcon ? 'contain' : 'cover'
+            if (err) return
+
+            var backgroundSize = image.isIcon ? 'contain' : 'cover'
+
             if (size.width <= this._imageWidth && size.height <= this.options.size[1]) {
-                i.image.style.backgroundSize = 'initial'
+                backgroundSize = 'initial'
             }
+
+            this._image.setProperties({
+                backgroundImage: 'url(' + image.url + ')',
+                backgroundSize: backgroundSize
+            })
         }
 
-        if (image) {
-            textWidth = this.options.size[0] - this._imageWidth + 'px'
-            i.image.style.display = 'block'
-            if (image.width && image.height) {
-                setImage.call(this, null, image)
-            } else {
-                app.imagesLoader.load(image.url, setImage.bind(this))
-            }
+        if (image.width && image.height) {
+            setImage.call(this, null, image)
         } else {
-            i.image.style.display = 'none'
-            textWidth = '100%'
+            app.imagesLoader.load(image.url, setImage.bind(this))
         }
-
-        i.text.style.width = textWidth
-        i.title.textContent = attr.title
-        i.summary.textContent = attr.summary
-        i.link.href = attr.url
-        i.link.textContent = attr.hostname
-
-        this.surface.setContent(i.container)
     }
 
     Article.prototype._onClick = function(e) {
         e.preventDefault()
         this._eventOutput.emit('open', this.model)
-    }
-
-    Article.prototype._onRecall = function() {
-        pool.release(this._poolItem)
-    }
-
-    Article.prototype._onDeploy = function() {
-        // Without nextTick changes will not applied.
-        Engine.nextTick(this.setContent.bind(this))
     }
 })
