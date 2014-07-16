@@ -16,7 +16,7 @@ exports.extract = function(text, max) {
                 .toLowerCase()
                 .trim()
                 // We don't need non alpha-numeric chars in the tags?
-                .replace(/\W/, '')
+                .replace(/\W/g, '')
         })
         .filter(function(str) {
             return str.length > MIN_LENGTH
