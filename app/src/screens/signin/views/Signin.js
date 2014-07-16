@@ -86,7 +86,7 @@ define(function(require, exports, module) {
         }
         this.signin.add(this.terms.modifier).add(this.terms.surface)
 
-        this.spinner = new SpinnerView({origin: [0.5, 0.65]})
+        this.spinner = new SpinnerView({origin: [0.5, 0.675]})
         this.signin.add(this.spinner)
 
         this.animation = new Animation(this, {context: app.context})
