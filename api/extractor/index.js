@@ -24,7 +24,6 @@ var isKeywords = /keywords|tag|tags/i
 
 var MIN_IMAGE_WIDTH = 200
 var MAX_IMAGES_AMOUNT = 5
-var MAX_EXTRACTED_TAGS_AMOUNT = 5
 
 /**
  * Extract icon and a big image from a website.
@@ -51,7 +50,7 @@ exports.extract = function(url) {
         // Temp for https://github.com/NaturalNode/natural/issues/175
         var extractedKeywords = []
         try {
-            extractedKeywords = extractKeywords('constructor', MAX_EXTRACTED_TAGS_AMOUNT)
+            extractedKeywords = extractKeywords(article.text)
         } catch(err) {}
         res.tags = _.uniq(extractedKeywords.concat(htmlData.keywords))
         return res

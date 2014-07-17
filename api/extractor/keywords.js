@@ -1,16 +1,15 @@
 var glossary = require('glossary')
 
+// Min amount of chars a keyword should have.
 var MIN_LENGTH = 2
 
-exports.extract = function(text, max) {
+exports.extract = function(text) {
     var extractor = glossary({minFreq: 2, collapse: true, verbose: true})
 
-    return extractor
-        .extract(text)
+    return extractor.extract(text)
         .sort(function(a, b) {
             return b.count - a.count
         })
-        .splice(0, max)
         .map(function(obj) {
             return obj.norm
                 .toLowerCase()
