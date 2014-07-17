@@ -48,7 +48,11 @@ exports.extract = function(url) {
         yield largeImageFirst(res.images)
         res.summary = _s.prune(htmlData.description || article.text, 250, '')
         res.description = article.html
-        var extractedKeywords = extractKeywords(article.text, MAX_EXTRACTED_TAGS_AMOUNT)
+        // Temp for https://github.com/NaturalNode/natural/issues/175
+        var extractedKeywords = []
+        try {
+            extractedKeywords = extractKeywords('constructor', MAX_EXTRACTED_TAGS_AMOUNT)
+        } catch(err) {}
         res.tags = _.uniq(extractedKeywords.concat(htmlData.keywords))
         return res
     }
