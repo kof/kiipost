@@ -18,7 +18,8 @@ module.exports = {
     images: [new m.Schema({
         url: String,
         width: Number,
-        height: Number
+        height: Number,
+        type: String
     }, {_id: false})],
     enclosures: [new m.Schema({
         url: String,

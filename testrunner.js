@@ -21,10 +21,10 @@ tests.push({
 
 tests.push({
     code: {
-        path: './api/extractor/getImageSize.js',
-        namespace: 'getImageSize'
+        path: './api/extractor/image.js',
+        namespace: 'image'
     },
-    tests: './api/extractor/test/getImageSize.js'
+    tests: './api/extractor/test/image.js'
 })
 
 tests.push({

@@ -40,7 +40,8 @@ test('extract 2', function* () {
     var images = [
       { width: 300,
         height: 250,
-        url: 'http://appbusinesspodcast.com/wp-content/uploads/2014/07/Ad300x250.png' },
+        url: 'http://appbusinesspodcast.com/wp-content/uploads/2014/07/Ad300x250.png',
+        type: 'png' },
       { url: 'http://appbusinesspodcast.com/wp-content/uploads/2014/07/Ad14.png',
         width: 300,
         height: 200 },
@@ -112,7 +113,8 @@ test('extract 4', function* () {
     var images = [
       { height: 640,
         width: 427,
-        url: 'https://farm3.staticflickr.com/2347/2101347540_de8fab5a21_z.jpg' },
+        url: 'https://farm3.staticflickr.com/2347/2101347540_de8fab5a21_z.jpg',
+        type: 'jpg' },
       { url: 'https://farm4.staticflickr.com/3849/14452823826_4c57c0f5ed_z.jpg',
         width: 426,
         height: 640 },
@@ -164,7 +166,8 @@ test('extract 6', function* () {
     var images = [ {
         height: 234,
         width: 416,
-        url: 'http://www.golem.de/1407/107711-82114-i_rc.jpg'
+        url: 'http://www.golem.de/1407/107711-82114-i_rc.jpg',
+        type: 'jpg'
     } ]
 
     var data = yield extractor.extract(url)

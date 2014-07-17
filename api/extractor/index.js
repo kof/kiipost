@@ -6,21 +6,13 @@ var retry = require('retry')
 var thunkify = require('thunkify')
 var co = require('co')
 
-var getImageSize = require('./getImageSize')
 var fetch = require('./fetch')
 var extractArticle = require('./article').extract
 var extractHtmlData = require('./htmlData').extract
 var extractKeywords = require('./keywords').extract
+var processImages = require('./image').process
 
 var conf = require('api/conf')
-
-var isIcon = /icon/i
-var isLogo = /logo/i
-var isIco = /\.ico/i // They are too small for our purpose.
-var isDataImage = /data:image\//i
-var isOgImage = /og:image/i
-var isDescription = /description/i
-var isKeywords = /keywords|tag|tags/i
 
 var MIN_IMAGE_WIDTH = 200
 var MAX_IMAGES_AMOUNT = 5
@@ -43,8 +35,7 @@ exports.extract = function(url) {
             maxImagesAmount: MAX_IMAGES_AMOUNT
         })
         res.icon = htmlData.icon
-        res.images = htmlData.images
-        yield largeImageFirst(res.images)
+        res.images = yield processImages(htmlData.images, {minWidth: MIN_IMAGE_WIDTH})
         res.summary = _s.prune(htmlData.description || article.text, 250, '')
         res.description = article.html
         // Temp for https://github.com/NaturalNode/natural/issues/175
@@ -73,29 +64,5 @@ exports.extractWithRetry = thunkify(function(url, callback) {
     })
 })
 
-
-/**
- * Find an image which is big enough by checking real size.
- * Put it at first position to be used as main article image.
- *
- * @param {Array} images
- */
-function largeImageFirst(images) {
-    return function* () {
-        for (var i = 0; i < images.length; i++) {
-            var image = images[i]
-            try {
-                var size = yield getImageSize(image.url)
-                if (size.width >= MIN_IMAGE_WIDTH) {
-                    images.splice(i, 1)
-                    size.url = image.url
-                    images.unshift(size)
-                    break;
-                }
-            // We ignore errors here because its optional.
-            } catch(err) {}
-        }
-    }
-}
 
 
