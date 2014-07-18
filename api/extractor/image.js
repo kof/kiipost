@@ -41,7 +41,14 @@ exports.process = function(images, options) {
  * @param {String} uri
  */
 exports.getMeta = thunkify(function(uri, callback) {
-    callback = _.once(callback)
+    var done
+    var timeoutId
+
+    done = _.once(function(err, meta) {
+        req.abort()
+        clearTimeout(timeoutId)
+        callback(err, meta)
+    })
 
     var options = url.parse(uri)
     var req
@@ -61,13 +68,16 @@ exports.getMeta = thunkify(function(uri, callback) {
         })
         res.on('end', function() {
             if (meta) {
-                callback(null, meta)
+                done(null, meta)
             } else {
-                callback(lastErr || new Error('Could not read image meta'))
+                done(lastErr || new Error('Could not read image meta'))
             }
         })
     })
-    req.on('error', callback)
-    req.setTimeout(10000)
+    req.on('error', done)
     req.end()
+
+    timeoutId = setTimeout(function() {
+        done(new Error('Image extractor timeout'))
+    }, 10000)
 })

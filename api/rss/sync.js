@@ -48,8 +48,6 @@ IGNORE_ERRORS = new RegExp([
 
 var ExtError = error.ExtError
 
-var noop = function() {}
-
 /**
  * Process all feeds from the feeds collection.
  *
