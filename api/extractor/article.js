@@ -1,3 +1,5 @@
+'use strict'
+
 var readabilitySax = require('readabilitySAX')
 var htmlParser = require('htmlparser2')
 
@@ -8,6 +10,10 @@ var entities = require('entities')
 
 /**
  * Extract article using readabilitySax.
+ *
+ * @param {String} url
+ * @param {String} data
+ * @return {Object}
  */
 exports.extract = function(url, data) {
     var readability = new Readability({pageURL: url, type: 'html'})

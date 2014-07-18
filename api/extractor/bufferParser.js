@@ -2,6 +2,11 @@
 
 /**
  * Aggregate chunks to one buffer.
+ *
+ * @param {Object} options
+ * @param {Object.String} type
+ * @param {Object.Number} maxLength
+ * @return {Buffer}
  */
 module.exports = function(options) {
     return function(res, callback) {

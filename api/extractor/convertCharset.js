@@ -8,7 +8,13 @@ var Iconv = require('iconv').Iconv
 var iconvCharsets = require('./iconvCharsets.json')
 var nodeCharsets = require('./nodeCharsets.json')
 
-
+/**
+ * Convert text to the detected charset.
+ *
+ * @param {Response} res
+ * @param {String} data
+ * @return {String}
+ */
 module.exports = function(res, data) {
     var charset = detect(res, data)
 
@@ -25,7 +31,13 @@ module.exports = function(res, data) {
 }
 
 
-
+/**
+ * Detect charset from text.
+ *
+ * @param {Response} res
+ * @param {String} data
+ * @return {String}
+ */
 function detect(res, data) {
     var detected = charset(res.headers, data)
 

@@ -1,10 +1,22 @@
+'use strict'
+
 var glossary = require('glossary')
 
 // Min amount of chars a keyword should have.
 var MIN_LENGTH = 2
 
+// Min amount of times the word should be in the article.
+var MIN_FREQ = 2
+
+/**
+ * Extract keywords from text.
+ * Result is lowercased.
+ *
+ * @param {String} text
+ * @return {Array}
+ */
 exports.extract = function(text) {
-    var extractor = glossary({minFreq: 2, collapse: true, verbose: true})
+    var extractor = glossary({minFreq: MIN_FREQ, collapse: true, verbose: true})
 
     return extractor.extract(text)
         .sort(function(a, b) {
