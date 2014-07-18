@@ -8,6 +8,9 @@ var MIN_LENGTH = 2
 // Min amount of times the word should be in the article.
 var MIN_FREQ = 2
 
+// Cap the amount of overall keywords.
+var MAX_AMOUNT = 10
+
 /**
  * Extract keywords from text.
  * Result is lowercased.
@@ -32,4 +35,9 @@ exports.extract = function(text) {
         .filter(function(str) {
             return str.length > MIN_LENGTH
         })
+        // XXX
+        // This is temporary solution to reduce amount of irrelevant articles.
+        // When we implement personal relevance, we can have way more keywords
+        // per article and do better selection.
+        .splice(0, MAX_AMOUNT)
 }
