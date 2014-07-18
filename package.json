@@ -50,7 +50,6 @@
     "feedparser": "0.18.1",
     "generator-foreach": "^0.1.0",
     "glossary": "^0.1.1",
-    "pos": "https://github.com/kiipost/pos-js/archive/0.1.7.tar.gz",
     "grunt-relative-root": "^0.2.1",
     "hogan.js": "~2.0.0",
     "htmlparser2": "^3.7.2",
