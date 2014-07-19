@@ -14,7 +14,7 @@ var batchInsert = require('api/db/batchInsert')
 var filterTags = require('api/tags/filter')
 
 var PARALLEL = 50
-var TWEETS_AMOUNT = 2
+var TWEETS_AMOUNT = 3
 
 /**
  * Get links from users twitter account.
@@ -34,11 +34,14 @@ module.exports = function(options) {
 
         var tweets
         try {
+/*
             tweets = yield [
                 fetchUserTweets(user, twitterOptions),
-                //fetchFavorites(user, twitterOptions)
+                fetchFavorites(user, twitterOptions)
             ]
-            //tweets = [].concat(tweets[0], tweets[1])
+            tweets = [].concat(tweets[0], tweets[1])
+            */
+            tweets = yield fetchUserTweets(user, twitterOptions)
         } catch(err) {
             // Ignore rate limit.
             if (err.statusCode == 429) return log.info(err.message, user)
