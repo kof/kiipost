@@ -41,8 +41,8 @@ module.exports = function(options) {
             //tweets = [].concat(tweets[0], tweets[1])
         } catch(err) {
             // Ignore rate limit.
-            err.statusCode == 429 ? log.info(err.message, user) : throw err
-            return
+            if (err.statusCode == 429) return log.info(err.message, user)
+            else throw err
         }
 
         if (!tweets.length) return
