@@ -14,7 +14,7 @@ var batchInsert = require('api/db/batchInsert')
 var filterTags = require('api/tags/filter')
 
 var PARALLEL = 50
-var TWEETS_AMOUNT = 1
+var TWEETS_AMOUNT = 2
 
 /**
  * Get links from users twitter account.
