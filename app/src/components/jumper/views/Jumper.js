@@ -52,7 +52,7 @@ define(function(require, exports, module) {
         outTransition: {duration: 200}
     }
 
-    Jumper.prototype._onScroll = function(e) {
+    Jumper.prototype._onScroll = _.throttle(function(e) {
         if (Math.abs(e.delta) < this.options.scrollBackDelta) return
 
         // Show
@@ -69,7 +69,7 @@ define(function(require, exports, module) {
         } else {
             this._hide()
         }
-    }
+    }, 200, {leading: false})
 
     Jumper.prototype._hide = function() {
         if (this._showing > -1) this.hide()
