@@ -35,13 +35,13 @@ module.exports = function(options) {
         var tweets
         try {
             tweets = yield [
-                //fetchUserTweets(user, twitterOptions),
-                fetchFavorites(user, twitterOptions)
+                fetchUserTweets(user, twitterOptions),
+                //fetchFavorites(user, twitterOptions)
             ]
             //tweets = [].concat(tweets[0], tweets[1])
         } catch(err) {
             // Ignore rate limit.
-            if (err.statusCode != 429) throw err
+            err.statusCode == 429 ? log.info(err.message, user) : throw err
             return
         }
 
