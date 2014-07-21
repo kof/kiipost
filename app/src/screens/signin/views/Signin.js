@@ -7,7 +7,6 @@ define(function(require, exports, module) {
     var Surface = require('famous/core/Surface')
     var Group = require('famous/core/Group')
     var Modifier = require('famous/core/Modifier')
-    var Transform = require('famous/core/Transform')
 
     var ParallaxedBackgroundView = require('components/parallaxed-background/ParallaxedBackground')
     var SpinnerView = require('components/spinner/views/Spinner')
@@ -32,7 +31,7 @@ define(function(require, exports, module) {
             NOT_CONNECTED: 'Please connect your twitter account in Settings/Twitter.',
             AUTH: 'Please go to twitter website and authorize iOS app in settings.',
             UNAUTHORIZED: 'Something went wrong with your twitter authentification.',
-            UNKNOWN: 'Unknown error.',
+            UNKNOWN: 'Unknown error.'
         }
     }
 

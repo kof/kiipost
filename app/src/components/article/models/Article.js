@@ -3,7 +3,6 @@ define(function(require, exports, module) {
 
     var inherits = require('inherits')
     var backbone = require('backbone')
-    var _s = require('underscore.string')
     var _ = require('underscore')
 
     var url = require('components/utils/url')

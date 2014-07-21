@@ -4,6 +4,7 @@ define(function(require, exports, module) {
     var Controller = require('controller')
     var inherits = require('inherits')
     var backbone = require('backbone')
+    var _ = require('underscore')
 
     var log = require('components/log')
     var SigninView = require('./views/Signin')

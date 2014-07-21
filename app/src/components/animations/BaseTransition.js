@@ -49,7 +49,7 @@ define(function(require, exports, module) {
         return val
     }
 
-    BaseTransition.prototype.outTransform = function(val) {
+    BaseTransition.prototype.outTransform = function() {
         return Transform.identity
     }
 
@@ -57,7 +57,7 @@ define(function(require, exports, module) {
         return val
     }
 
-    BaseTransition.prototype.inTransform = function(val) {
+    BaseTransition.prototype.inTransform = function() {
         return Transform.identity
     }
 })

@@ -4,8 +4,6 @@ define(function(require, exports, module) {
     var inherits = require('inherits')
 
     var Modifier = require('famous/core/Modifier')
-    var Transform = require('famous/core/Transform')
-    var ImageSurface = require('famous/surfaces/ImageSurface')
     var ContainerSurface = require('famous/surfaces/ContainerSurface')
     var Surface = require('famous/core/Surface')
     var RenderController = require('famous/views/RenderController')

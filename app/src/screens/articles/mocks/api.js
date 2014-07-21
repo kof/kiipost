@@ -1,4 +1,6 @@
 define(function(require, exportsm, module) {
+    'use strict'
+
     var server = require('test/server')
 
     module.exports = function() {

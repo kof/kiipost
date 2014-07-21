@@ -38,5 +38,5 @@ require.config({
     packages: [
 
     ]
-});
-require(['main']);
+})
+require(['main'])

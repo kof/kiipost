@@ -1,4 +1,6 @@
 define(function(require, exports, module) {
+    'use strict'
+
     var Controller = require('controller')
     var inherits = require('inherits')
     var _ = require('underscore')

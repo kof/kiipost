@@ -87,6 +87,3 @@ define(function(require, exports, module) {
         this.select(this.options.selected)
     }
 })
-
-
-

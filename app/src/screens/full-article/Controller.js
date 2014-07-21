@@ -61,7 +61,8 @@ define(function(require, exports, module) {
         this.current = id
         if (id != prev) this.view.cleanup()
         model = isMemo ? model.get('articles')[0] : model
-        model ? this.view.setPreviewContent(model, show.bind(this)) : show.call(this)
+        if (model) this.view.setPreviewContent(model, show.bind(this))
+        else show.call(this)
     }
 
     FullArticle.prototype._load = function(id, isMemo) {
@@ -93,7 +94,6 @@ define(function(require, exports, module) {
             xhr.always(view.spinner.hide.bind(view.spinner))
         }.bind(this))
     }
-
 
     FullArticle.prototype._onOpen = function(model) {
         var isMemo = model.constructor.name == 'Memo'

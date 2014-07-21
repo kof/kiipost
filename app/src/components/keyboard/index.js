@@ -6,8 +6,8 @@ define(function(require, exports, module) {
     var Promise = window.Promise || require('promise')
 
     var deviceready = require('components/deviceready')
-
-    var ready, keyboard
+    var ready
+    var keyboard
 
     ready = new Promise(function(fulfill, reject) {
         deviceready.then(function() {

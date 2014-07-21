@@ -14,7 +14,7 @@ define(function(require, exports, module) {
 
     module.exports = ScrollviewController
 
-    ScrollviewController.prototype.getIndex = function () {
+    ScrollviewController.prototype.getIndex = function() {
       return this._scrollview._node.getIndex()
     }
 

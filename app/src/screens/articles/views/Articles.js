@@ -4,7 +4,6 @@ define(function(require, exports, module) {
     var inherits = require('inherits')
 
     var View = require('famous/core/View')
-    var Surface = require('famous/core/Surface')
     var Modifier = require('famous/core/Modifier')
     var Transform = require('famous/core/Transform')
 
@@ -77,12 +76,10 @@ define(function(require, exports, module) {
         collection: null
     }
 
-
     Articles.prototype.load = function() {
         if (this._loaded) return
         this.spinner.show()
         this.models.user.authorize.then(this.stream.load.bind(this.stream))
         this._loaded = true
     }
-
 })

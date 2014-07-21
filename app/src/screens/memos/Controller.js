@@ -1,6 +1,9 @@
 define(function(require, exports, module) {
+    'use strict'
+
     var Controller = require('controller')
     var inherits = require('inherits')
+    var _ = require('underscore')
 
     var StreamCollection = require('components/stream/collections/Stream')
     var BaseTransition = require('components/animations/BaseTransition')
@@ -71,7 +74,7 @@ define(function(require, exports, module) {
         this.baseTransition.commit(app.controller)
     }
 
-    Memos.prototype._onFullArticleKiiposted = function(e) {
+    Memos.prototype._onFullArticleKiiposted = function() {
         this._reset = true
         this.view.loaded = false
     }

@@ -97,7 +97,6 @@ define(function(require, exports, module) {
     Animation.prototype.out = function(callback) {
         var o = this.options.out
         var chain = chainer()
-        var container = this._container
 
         chain.add(function() {
             var next = _.after(2, chain.next.bind(chain))

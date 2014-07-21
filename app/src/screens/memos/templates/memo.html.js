@@ -1,4 +1,5 @@
 define(function(require, exports, module) {
+'use strict'
 module.exports = require('multiline')(function() {/*
 <div class="avatar"><span data-name="avatar"></span></div>
 <div class="content">
@@ -18,4 +19,3 @@ module.exports = require('multiline')(function() {/*
 </div>
 */})
 })
-

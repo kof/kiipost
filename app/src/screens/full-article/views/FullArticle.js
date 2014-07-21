@@ -6,7 +6,6 @@ define(function(require, exports, module) {
     var View = require('famous/core/View')
     var Surface = require('famous/core/Surface')
     var Modifier = require('famous/core/Modifier')
-    var Transform = require('famous/core/Transform')
     var Group = require('famous/core/Group')
     var Scrollview = require('famous/views/Scrollview')
 
@@ -145,7 +144,6 @@ define(function(require, exports, module) {
     }
 
     FullArticle.prototype._setImage = function(model, callback) {
-        var attr = model.attributes
         var image = model.getImage()
 
         this._resetImage()
@@ -168,12 +166,8 @@ define(function(require, exports, module) {
             setTimeout(callback)
         }
 
-
-        if (image.width && image.height) {
-            setImage.call(this, null, image)
-        } else {
-            app.imagesLoader.load(image.url, setImage.bind(this))
-        }
+        if (image.width && image.height) setImage.call(this, null, image)
+        else app.imagesLoader.load(image.url, setImage.bind(this))
     }
 
     FullArticle.prototype._setTextHeight = function() {
@@ -181,9 +175,7 @@ define(function(require, exports, module) {
         var headerHeight = this._headerSize[1]
         var contextHeight = this._size[1]
 
-        if (textHeight + headerHeight < contextHeight) {
-            textHeight = contextHeight - headerHeight
-        }
+        if (textHeight + headerHeight < contextHeight) textHeight = contextHeight - headerHeight
 
         if (this._textSize[1] != textHeight) {
             this._textSize[1] = textHeight
@@ -228,15 +220,12 @@ define(function(require, exports, module) {
 
     FullArticle.prototype._onTopBtnClick = function(e) {
         var cls = e.target.classList
-        if (cls.contains('close')) {
-            this._eventOutput.emit('close')
-        }
+        if (cls.contains('close')) this._eventOutput.emit('close')
     }
 
     FullArticle.prototype._onOptionsChange = function(option) {
-        if (option.id == 'hasKiipostBtn') {
-            this._toggleKiipostBtn(option.value, true)
-        } else if (option.id == 'models') {
+        if (option.id == 'hasKiipostBtn') this._toggleKiipostBtn(option.value, true)
+        else if (option.id == 'models') {
             this.models = option.value
             this.memoEdit.model = this.models.memo
         }

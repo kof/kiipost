@@ -2,7 +2,6 @@ define(function(require, exports, module) {
     'use strict'
 
     var Transform = require('famous/core/Transform')
-    var _ = require('underscore')
     var inherits = require('inherits')
 
     var BaseTransition = require('./BaseTransition')

@@ -9,7 +9,9 @@
  */
 
 define(function(require, exports, module) {
-    var Surface = require('famous/core/Surface');
+    'use strict'
+
+    var Surface = require('famous/core/Surface')
 
     /**
      * A surface containing a link.
@@ -22,15 +24,15 @@ define(function(require, exports, module) {
      * @param {Object} [options] overrides of default options
      */
     function AnchorSurface(options) {
-        this._href = undefined;
-        this._content = undefined;
-        Surface.apply(this, arguments);
+        this._href = undefined
+        this._content = undefined
+        Surface.apply(this, arguments)
     }
 
-    AnchorSurface.prototype = Object.create(Surface.prototype);
-    AnchorSurface.prototype.constructor = AnchorSurface;
-    AnchorSurface.prototype.elementType = 'a';
-    AnchorSurface.prototype.elementClass = 'famous-surface';
+    AnchorSurface.prototype = Object.create(Surface.prototype)
+    AnchorSurface.prototype.constructor = AnchorSurface
+    AnchorSurface.prototype.elementType = 'a'
+    AnchorSurface.prototype.elementClass = 'famous-surface'
 
     /**
      * Set content href and text.  This will cause a re-rendering.
@@ -38,19 +40,19 @@ define(function(require, exports, module) {
      * @param {string} content
      */
     AnchorSurface.prototype.setContent = function setContent(content) {
-        this._content = content;
-        this._contentDirty = true;
-    };
+        this._content = content
+        this._contentDirty = true
+    }
 
     /**
      * Set content href and text.  This will cause a re-rendering.
      * @method setContent
-     * @param {string} content
+     * @param {string} href
      */
     AnchorSurface.prototype.setHref = function setHref(href) {
-        this._href = href;
-        this._contentDirty = true;
-    };
+        this._href = href
+        this._contentDirty = true
+    }
 
     /**
      * Place the document element that this component manages into the document.
@@ -60,22 +62,21 @@ define(function(require, exports, module) {
      * @param {Node} target document parent of this container
      */
     AnchorSurface.prototype.deploy = function deploy(target) {
-        target.href = this._href || '';
-        target.innerHTML = this._content || '';
-    };
+        target.href = this._href || ''
+        target.innerHTML = this._content || ''
+    }
 
     /**
      * Remove this component and contained content from the document
      *
      * @private
      * @method recall
-     *
      * @param {Node} target node to which the component was deployed
      */
     AnchorSurface.prototype.recall = function recall(target) {
-        target.href = '';
-        target.innerHTML = '';
-    };
+        target.href = ''
+        target.innerHTML = ''
+    }
 
-    module.exports = AnchorSurface;
-});
+    module.exports = AnchorSurface
+})

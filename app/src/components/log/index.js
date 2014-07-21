@@ -17,7 +17,7 @@ define(function(require, exports, module) {
 
         if (!obj) return setTimeout(callback)
 
-        eventData || (eventData = {})
+        if (!eventData) eventData = {}
         options.level = obj.level || eventData.level || level
         options.extra.eventData = eventData
 

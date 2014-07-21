@@ -1,7 +1,7 @@
 define(function(require, exports, module) {
     'use strict'
 
-    var noop = function() {}
+    function noop() {}
 
     /**
      * Alert using cordova notification plugin if installed, otherwise

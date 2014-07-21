@@ -27,7 +27,7 @@ module.exports = function (grunt) {
 
     tasks = [
       'clean:dist',
-      //'lint',
+      'lint',
       'processhtml:dist',
       'useminPrepare',
       'requirejs',

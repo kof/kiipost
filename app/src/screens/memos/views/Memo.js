@@ -2,15 +2,11 @@ define(function(require, exports, module) {
     'use strict'
 
     var inherits = require('inherits')
-    var _ = require('underscore')
-    var closest = require('closest')
     var moment = require('moment')
 
     var Engine = require('famous/core/Engine')
     var View = require('famous/core/View')
-    var Group = require('famous/core/Group')
     var Surface = require('famous/core/Surface')
-    var FlexibleLayout = require('famous/views/FlexibleLayout')
 
     var Pool = require('components/stream/helpers/Pool')
     var elementsMap = require('components/elements-map/elementsMap')
@@ -70,7 +66,10 @@ define(function(require, exports, module) {
         var image = attr.articles[0] ? attr.articles[0].getImage() : null
 
         function setImage(err, size) {
-            if (err) return i.image.style.display = 'none'
+            if (err) {
+                i.image.style.display = 'none'
+                return
+            }
             i.image.style.backgroundImage = 'url(' + image.url + ')'
             i.image.style.width = this._imageWidth + 'px'
             i.image.style.backgroundSize = image.isIcon ? 'contain' : 'cover'

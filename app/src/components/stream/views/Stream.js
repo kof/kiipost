@@ -1,12 +1,9 @@
 define(function(require, exports, module) {
     'use strict'
 
-    var $ = require('jquery')
-    var mustache = require('mustache')
     var inherits = require('inherits')
     var _ = require('underscore')
 
-    var EventProxy = require('components/famous/EventProxy')
     var View = require('famous/core/View')
     var Surface = require('famous/core/Surface')
     var InfiniteScrollView  = require('famous-infinitescroll')

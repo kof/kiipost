@@ -4,7 +4,6 @@ define(function(require, exports, module) {
     var inherits = require('inherits')
     var _ = require('underscore')
 
-    var Engine = require('famous/core/Engine')
     var Surface = require('famous/core/Surface')
     var RenderController = require('famous/views/RenderController')
     var FlexibleLayout = require('famous/views/FlexibleLayout')
@@ -19,7 +18,6 @@ define(function(require, exports, module) {
         RenderController.apply(this, arguments)
 
         var o = this.options
-        var size = o.context.getSize()
 
         this.model = o.model
         this.models = o.models
@@ -122,7 +120,7 @@ define(function(require, exports, module) {
         this.avatarImage.style.backgroundImage = 'url(' + url + ')'
     }
 
-    MemoEdit.prototype._onType = _.throttle(function(e) {
+    MemoEdit.prototype._onType = _.throttle(function() {
         var remaining = this.options.limit - this.textarea.getValue().length
 
         this.limitViolation = remaining < 0

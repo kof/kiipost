@@ -2,6 +2,7 @@ define(function(require, exports, module) {
     'use strict'
 
     var inherits = require('inherits')
+    var _ = require('underscore')
 
     var View = require('famous/core/View')
     var Surface = require('famous/core/Surface')
@@ -75,13 +76,13 @@ define(function(require, exports, module) {
         // We need either switch the pattern or create cordova plugin
         // with performant replacement.
         // https://bugs.webkit.org/show_bug.cgi?id=134447
-        return;
-        window.addEventListener('deviceorientation', this._onChange)
+        // window.addEventListener('deviceorientation', this._onChange)
     }
 
     ParallaxedBackground.prototype._transform = function(e) {
         var o = this.options
-        var x = e.gamma, y = e.beta
+        var x = e.gamma
+        var y = e.beta
         var set = false
 
         if (x < o.offset && x > -o.offset && this.x !== -x) {

@@ -27,7 +27,8 @@ define(function(require, exports, module) {
     context.add(exports.controller)
 
     exports.ready = new Promise(function(fulfill, reject) {
-        var isResized, isDomReady
+        var isResized
+        var isDomReady
         var isDeviceReady = !window.cordova
 
         context.on('resize', function() {
@@ -50,16 +51,18 @@ define(function(require, exports, module) {
         }
     })
 
+    exports.controllers = {}
+
     // Some views require to know the context size immediately.
     exports.ready.then(function() {
         var options = {router: true, models: {}}
 
         options.models.user = new UserModel()
 
-        var signin = new SigninController(options)
-        var articles = new ArticlesController(options)
-        var article = new FullArticleController(options)
-        var memos = new MemosController(options)
+        exports.controllers.signin = new SigninController(options)
+        exports.controllers.articles = new ArticlesController(options)
+        exports.controllers.fullArticle = new FullArticleController(options)
+        exports.controllers.memos = new MemosController(options)
 
         backbone.history.start()
         if (backbone.history.getFragment()) signin.do()
