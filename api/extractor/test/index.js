@@ -10,16 +10,7 @@ test('extract 1', function* () {
     } ]
     var description = '<p><iframe src="http://www.youtube.com/embed/Czw-dtTP6oU?version=3&rel=1&fs=1&showsearch=0&showinfo=1&iv_load_policy=1&wmode=transparent"></iframe> </p> <p>This is seriously the best Mark Zuckerberg interview I’ve ever seen. Fresh off of the <a href="http://techcrunch.com/2010/11/15/facebook-messaging/">announcement of Facebook Messages</a> (yes, that’s what the product is called) Facebook CEO Zuckerberg took the stage at Web 2.0 Summit to talk about the state of Facebook.</p> <p>Zuckerberg went into the recent scuffles with Google, how soon every major product will be rethought to be social, why Facebook’s been on a recent acquisition tear and more. But the most insightful part of the interview was when Zuckerberg <a href="http://techcrunch.com/2010/11/16/mark-zuckerberg-your-map-is-missing-uncharted-territory/">called out</a> John Battelle and Tim O’Reilly on the inaccuracy of their Web 2.0 <a href="http://techcrunch.com/2010/10/13/web-2-0-acquisitions-the-game/">“Points of Control”</a> map.</p> <blockquote><p><em>“Your map is wrong. The biggest part of the map has to be uncharted territory — this map makes it seem like it’s zero-sum, but it’s not. We’re building value, not just taking it away from someone else.”</em></p></blockquote> <p>Sometimes amidst all the competition, it’s difficult to remember why we got into the game in the first place.</p>'
     var summary = 'This is seriously the best Mark Zuckerberg interview I’ve ever seen. Fresh off of the announcement of Facebook Messages (yes, that’s what the product is called) Zuckerberg took the stage at Web 2.0 Summit to talk about the state of Facebook'
-    var tags = [
-        'facebook',
-        'interview',
-        'map',
-        'mark zuckerberg',
-        'part',
-        'product',
-        'web',
-        'zuckerberg'
-    ]
+    var tags = ['acquisition','amidst','announcement','battelle','biggest','building','called','ceo','ceo zuckerberg','competition','control','difficult','facebook','fresh','game','google','inaccuracy','insightful','interview','john','john battelle','major','makes','map','mark','mark zuckerberg','messages','part','place','points','product','recent','reilly','remember','rethought','scuffles','social','sometimes','stage','state','sum','summit','talk','tear','territory','this','tim','tim o’reilly','uncharted','web','wrong','zuckerberg']
 
     var data = yield extractor.extract(url)
     equal(data.title, title, 'title ok')
@@ -57,20 +48,7 @@ test('extract 2', function* () {
     ]
     var description = '<div><audio> <source src="http://appbusinesspodcast.com/podlove/file/876/s/webplayer/c/episode/ABP041-Jan-Lehnardt-CEO-of-Hoodie.m4a"></source> <source src="http://appbusinesspodcast.com/podlove/file/875/s/webplayer/c/episode/ABP041-Jan-Lehnardt-CEO-of-Hoodie.mp3"></source> </audio> <h3>On this episode, David is joined by Jan Lehnardt of Hood.ie. Jan shares his thoughts on the recent Apple release CloudKit and what makes it similar and different to Hood.ie. Listen in as we discuss:</h3> <ul> <li>What the term backend is all about and why developers need a backend strategy</li> <li>Jan’s “abundance mindset” and why he’s not worried about CloudKit at all</li> <li>Comparison of CloudKit and Hoodie – what interested developers need to know</li> <li>More about the Hoodie Project</li> <li>Comparison of Parse and Hoodie</li> </ul> <p></p> <h3>Sponsors:</h3> <ul> <li><strong><a href="http://affordabledev.com">Affordable Dev</a></strong> a complete mobile development agency with developers and designers that will bring your project to life. Mention the #ABP for 20% off of your next project. For a limited time – Affordable Dev is offering free ASO consultations with an ASO professional with every new project.</li> </ul> <h3>Resources and Links Mentioned in this Episode</h3> <h3>Listening Options</h3> <p>Download your favorite file format: </p> <h3>Transcription:</h3> <p></p> <p></p> </div><p></p>'
     var summary = 'David is joined by Jan Lehnardt of Hood.ie. Jan shares his thoughts on the recent Apple release CloudKit and what makes it similar and different to Hood.ie.'
-    var tags = [
-        'cloudkit',
-        'developer',
-        'hoodie',
-        'project',
-        'jan',
-        'backend',
-        'comparison',
-        'affordabledev',
-        'aso',
-        'frontend',
-        'hood.ie',
-        'jan lehnardt'
-    ]
+    var tags = [ 'hoodie', 'lehnardt', 'jan', 'jan lehnardt', 'interested developers', 'apple release', 'project', 'developers', 'cloudkit', 'listen', 'hood', 'dev', 'mention', 'comparison', 'aso', 'episode', 'backend', 'affordable', 'transcription', 'file', 'favorite', 'download', 'options', 'links', 'resources', 'professional', 'consultations', 'free', 'offering', 'time', 'limited', 'abundance', 'life', 'bring', 'designers', 'agency', 'mobile', 'complete', 'similar', 'sponsors', 'parse', 'makes', 'interested', 'worried', 'mindset', 'joined', 'release', 'strategy', 'apple', 'recent', 'format', 'thoughts', 'shares', 'david', 'term', 'discuss', 'abp' ]
 
     var data = yield extractor.extract(url)
     equal(data.title, title, 'title ok')
@@ -90,7 +68,7 @@ test('extract 3', function* () {
     var url = 'http://www.theverge.com/2014/6/22/5831836/google-project-loon-storystream'
     var icon = 'http://www.theverge.com/images/verge/apple-touch-icon.png'
     var summary = "For many, internet access is a vital resource. However, vast, rural swaths of the world have no broadband internet access. One of Google's latest \"moonshot\" projects seeks to fill that gap with..."
-    var tags = [ 'internetacces', 'google', 'loon', 'general', 'the-verge' ]
+    var tags = [ 'world', 'project', 'balloons', 'google', 'loon', 'internet', 'internet access', 'vital resource', 'project loon', 'access', 'calls', 'rural', 'updates', 'tuned', 'stay', 'progress', 'company', 'covering', 'summer', 'online', 'service', 'functioning', 'hopes', 'team', 'reality', 'overcome', 'challenges', 'homes', 'beam', 'network', 'ground', 'antennas', 'receive', 'sky', 'vast', 'towers', 'large', 'broadband', 'ambitious', 'incredibly', 'plan', 'however', 'gap', 'fill', 'resource', 'seeks', 'vital', 'moonshot', 'latest', 'swaths', 'location' ]
 
     var data = yield extractor.extract(url)
     equal(data.title, title, 'title ok')
@@ -177,4 +155,33 @@ test('extract 6', function* () {
     equal(data.url, url, 'url ok')
     deepEqual(data.images, images, 'images ok')
     equal(data.description, description, 'description ok')
+})
+
+test('extract 7', function* () {
+    var url = 'http://venturebeat.com/2013/08/28/material-a-sexy-flipboard-competitor-comes-to-the-iphone/'
+    var title = 'Material, a sexy Flipboard competitor, comes to the iPhone | VentureBeat | Mobile'
+    var score = 340
+    var icon = 'http://0.gravatar.com/blavatar/c6d8c27ffa1c5a7f106f97e434437baf?s=114'
+    var memo = 'Material, a sexy Flipboard competitor, comes to the iPhone http://t.co/oarNsv83Af'
+    var images = [
+        {
+            height: 500,
+            width: 655,
+            type: 'jpg',
+            url: 'http://venturebeat.files.wordpress.com/2013/08/inq-material-iphone.jpg'
+        }
+    ]
+    var summary = 'Inq\'s Material -- a beautiful Flipboard-like app that delivers relevant news and info -- launched for Android back in February. Now it has finally come to the iPhone.'
+    var description = '<a href="http://venturebeat.com/category/mobile/">Mobile</a> <div> <div> <div><p>Inq’s <a href="http://www.materialapp.com/">Material</a>, a beautiful Flipboard-like app that delivers relevant news and videos, <a href="http://venturebeat.com/2013/02/13/material-app-flipboard-grokr/">launched for Android back in February</a>. Now the free app has <a href="https://itunes.apple.com/app/id673115871">finally come to the iPhone</a>.</p> <p>While there are quite a few news-reading apps out there and Flipboard holds the dominant position, Material sets itself apart with design and intelligent curation. As I wrote previously when Material <a href="http://venturebeat.com/2013/01/08/inq-material-app/">debuted at CES 2013 in January</a>, the app recommends news based on what’s happening in your Facebook and Twitter feeds.</p> <p>While your interests change every day depending on the activity, you can make those interests permanent. Material also learns with you. If you are reading a certain topic every day, it prioritizes that topic higher in your feed.</p> <p>“With the avalanche of content out there, we’re focused on finding new and exciting ways for people to get directly to the things they love”, Inq Mobile CEO Ken Johnstone said in a statement. “Material was the result of this thinking, an app that takes all the hard work out of finding great stuff.”</p> <p>Outside of smart curation of stories, the apps’s biggest asset is its colorful and smart design. Stories are shown in rectangles and often show big pictures that help you understand what stories you’re checking out.</p> <p>Check out a few more screenshots of the app below.</p> <div><hr/> <em><a href="http://events.venturebeat.com/event/growthbeat2014/?utm_source=venturebeat&utm_medium=boilerplate&utm_content=top&utm_campaign=growthbeat2014"><img src="http://venturebeat.files.wordpress.com/2014/07/screen-shot-2014-07-15-at-10-53-56-am-e1405446914443.png" alt="Screen Shot 2014-07-15 at 10.53.56 AM"></img></a>Our upcoming <a href="http://events.venturebeat.com/event/growthbeat2014/?utm_source=venturebeat&utm_medium=boilerplate&utm_content=top&utm_campaign=growthbeat2014">GrowthBeat event</a> — August 5-6 in San Francisco — is exploring the data, apps, and science of successful marketing. <a href="http://events.venturebeat.com/event/growthbeat2014/?utm_source=venturebeat&utm_medium=boilerplate&utm_content=top&utm_campaign=growthbeat2014">Get the scoop here</a>, and <a href="http://events.venturebeat.com/event/growthbeat2014/registration/?utm_source=venturebeat&utm_medium=boilerplate&utm_content=top&utm_campaign=growthbeat2014">grab your tickets</a> before they\'re gone! </em> <hr/></div></div> </div> </div>'
+    var tags = [ 'flipboard', 'material', 'mobile', 'facebook', 'apps', 'app', 'stories', 'reading', 'smart', 'finding', 'topic', 'check', 'interests', 'feed', 'inq', 'curation', 'design', 'day' ]
+
+    var data = yield extractor.extract(url, {memo: memo})
+    equal(data.title, title, 'title ok')
+    equal(data.score, score, 'score ok')
+    equal(data.url, url, 'url ok')
+    equal(data.icon, icon, 'icon ok')
+    deepEqual(data.images, images, 'images ok')
+    equal(data.description, description, 'description ok')
+    equal(data.summary, summary, 'summary ok')
+    deepEqual(data.tags, tags, 'tags ok')
 })

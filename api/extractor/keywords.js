@@ -1,43 +1,50 @@
 'use strict'
 
-var glossary = require('glossary')
+var gramophone = require('gramophone')
+var _ = require('underscore')
 
-// Min amount of chars a keyword should have.
-var MIN_LENGTH = 2
-
-// Min amount of times the word should be in the article.
-var MIN_FREQ = 2
-
-// Cap the amount of overall keywords.
-var MAX_AMOUNT = 10
+var DEFAULT_OPTIONS = {
+    ngrams: [1],
+    score: true,
+    min: 1,
+    stem: true,
+    // Minimal density in %.
+    minDensity: 1,
+    // Min amount of chars a keyword should have.
+    minLength: 2
+}
 
 /**
- * Extract keywords from text.
+ * Extract keywords from text, sort them by density, cut off low density keywords.
  * Result is lowercased.
  *
  * @param {String} text
+ * @param {Object} [options]
+ * @param {Boolean} [options.verbose]
  * @return {Array}
  */
-exports.extract = function(text) {
-    var extractor = glossary({minFreq: MIN_FREQ, collapse: true, verbose: true})
+exports.extract = function(text, options) {
+    options = _.extend({}, DEFAULT_OPTIONS, options)
+    var keywords = gramophone.extract(text, options)
+    var total = 0
 
-    return extractor.extract(text)
+    keywords.forEach(function(obj) {
+        total += obj.tf
+    })
+
+    keywords = keywords
+        .filter(function(obj) {
+            obj.tag = obj.term.toLowerCase()
+            obj.density = obj.tf / total * 100
+            return obj.term.length > options.minLength && obj.density >= options.minDensity
+        })
         .sort(function(a, b) {
-            return b.count - a.count
+            return b.tf - a.tf
         })
-        .map(function(obj) {
-            return obj.norm
-                .toLowerCase()
-                .trim()
-                // We don't need non alpha-numeric chars in the tags?
-                .replace(/\W/g, '')
-        })
-        .filter(function(str) {
-            return str.length > MIN_LENGTH
-        })
-        // XXX
-        // This is temporary solution to reduce amount of irrelevant articles.
-        // When we implement personal relevance, we can have way more keywords
-        // per article and do better selection.
-        .splice(0, MAX_AMOUNT)
+
+    if (!options.verbose) {
+        keywords = _(keywords).pluck('tag')
+    }
+
+    return keywords
 }

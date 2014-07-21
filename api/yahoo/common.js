@@ -34,9 +34,8 @@ exports.buildQuery = function(table, params) {
     _.each(params, function(val, name) {
         if (!val) return
         if (i) query += ' and'
-        name = encodeURIComponent(_s.underscored(name))
-        val = encodeURIComponent(val)
-        query += ' ' + name + '="' + val + '"'
+        name = _s.underscored(name)
+        query += ' ' + name + '="' + escape(val) + '"'
         i++
     })
 
@@ -74,4 +73,13 @@ exports.request = function(method, data, callback) {
 
             callback(null, res.body)
         })
+}
+
+/**
+ * Escape the value to be included in the yql query.
+ */
+function escape(val) {
+    return String(val)
+        .replace(/"/g, '\\"')
+        .replace(/'/g, "\\'")
 }

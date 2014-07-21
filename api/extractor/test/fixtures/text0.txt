@@ -1,0 +1,21 @@
+Betaworks-owned Digg.com expanded its product lineup today with the launch of a new service – well, technically, an older service that’s been retooled and rebranded – called “Digg Deeper.” While Digg.com’s main page helps to surface the best of the web, including the top articles and videos Digg’s editors and users like, Digg Deeper is designed to offer a more personalized experience.
+
+As the company explains, Digg Deeper is “a way to see, in real time, what your friends think are the most interesting things to read and watch.”
+
+The new service grew out of betaworks’ earlier social news reading app, News.me. That product got its start as an iPad and mobile application that pulled in an aggregated list of news stories from sites like Facebook and Twitter, curated by signals from bit.ly and Twitter. The team behind News.me later made its way over to Digg, after betaworks acquired Digg back in 2012.
+
+Now the new version of News.me is being rebranded as “Digg Deeper,” and is designed to alert you to the best stories from your friends and trusted sources on Twitter. After logging in, Digg Deeper dives into your Twitter timeline to surface the links being shared the most, then offers these as a scrolling list on the Digg homepage, as real-time email alerts, and as mobile notifications from the Digg iOS app.
+
+The company has also made improvements to its algorithm in order to determine the right threshold for your alerts, the company says in a blog post out this morning.
+
+“If you follow tons of accounts that are linking to many hundreds of stories a day, you might get an alert when 5 friends share the same link. But if you follow only a handful of accounts, you might get an alert when just 2 friends share that link,” the post explains.
+
+Initially, Digg Deeper will only be made available to prior News.me subscribers, but after the bugs are worked out it will roll out to the wider Digg user base. Additional social sources, beyond Twitter, will also be added over time.
+
+Personalizing the Web
+
+Over the years, a number of startups have attempted to tap into social media sources to offer users a curated selection of trending stories. Some of these, like social magazine Flipboard for example, use these signals as part of a larger product aimed at filtering and personalizing the massive amount of content available to read on the web.
+
+In addition mobile apps, like Nuzzel or Prismatic, are focused mainly on news discovery or alerts, rather than aggregation. Others still, like Yahoo’s News Digest or Circa, instead try to summarize the top stories in easily-digestible chunks.
+
+These apps and others will be now be competitors for Digg Deeper. However, as part of Digg’s larger product lineup, which also includes Digg Video and its Google Reader replacement Digg Reader, Digg Deeper has a chance at drawing in more eyeballs via Digg’s current user base.

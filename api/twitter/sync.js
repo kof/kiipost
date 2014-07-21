@@ -9,9 +9,7 @@ var thunkify = require('thunkify')
 var client = require('api/twitter/client')
 var extractor = require('api/extractor')
 var log = require('api/log')
-var contentAnalysis = require('api/yahoo/contentAnalysis')
 var batchInsert = require('api/db/batchInsert')
-var filterTags = require('api/tags/filter')
 
 var PARALLEL = 50
 var TWEETS_AMOUNT = 200
@@ -50,11 +48,8 @@ module.exports = function(options) {
         var memos = tweets.map(toMemo)
 
         yield addArticles(memos)
-        yield addAnalyzedTags(memos)
 
         memos.forEach(function(memo) {
-            var article = memo.articles[0]
-            if (article && _.isArray(article.tags)) article.tags = article.tags.filter(filterTags)
             memo.userId = user._id
         })
 
@@ -134,7 +129,7 @@ function addArticles(memos, callback) {
     memos.forEach(function(memo) {
         batch.push(function(done) {
             memo.articles = []
-            extractor.extractWithRetry(memo.urls[0])(function(err, article) {
+            extractor.extractWithRetry(memo.urls[0], {memo: memo.text})(function(err, article) {
                 if (err) return done(err)
                 memo.articles.push(article)
                 done()
@@ -150,33 +145,4 @@ function addArticles(memos, callback) {
 
 addArticles = thunkify(addArticles)
 
-/**
- * Add tags to the first article by analyzing its text.
- */
-function addAnalyzedTags(memos, callback) {
-    var batch = Batch().throws(false).concurrency(PARALLEL)
 
-    memos.forEach(function(memo) {
-        batch.push(function(done) {
-            var article = memo.articles[0] // Analyze only first one.
-            if (!article || !article.html) return done()
-            var text = _s.stripTags(article.html).trim()
-            if (!text) return done()
-            contentAnalysis.analyze({text: text})(function(err, data) {
-                if (err) return done(err)
-                article.tags = article.tags.concat(_.pluck(data.entities, 'content'))
-                article.tags = _.invoke(article.tags, 'toLowerCase')
-                article.tags = _.uniq(article.tags)
-                article.categories = _.pluck(data.categories, 'content')
-                done()
-            })
-        })
-    })
-
-    batch.end(function(errors) {
-        // XXX Should we log here something?
-        callback()
-    })
-}
-
-addAnalyzedTags = thunkify(addAnalyzedTags)

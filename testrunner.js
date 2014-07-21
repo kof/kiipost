@@ -28,6 +28,11 @@ tests.push({
 })
 
 tests.push({
+    code: './api/extractor/keywords.js',
+    tests: './api/extractor/test/keywords.js'
+})
+
+tests.push({
     code: {
         path: './api/yahoo/contentAnalysis.js'
     },
