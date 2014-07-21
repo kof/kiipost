@@ -79,7 +79,5 @@ exports.request = function(method, data, callback) {
  * Escape the value to be included in the yql query.
  */
 function escape(val) {
-    return String(val)
-        .replace(/"/g, '\\"')
-        .replace(/'/g, "\\'")
+    return String(val).replace(/([\\"])/g, '\\$1')
 }

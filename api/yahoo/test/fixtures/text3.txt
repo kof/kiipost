@@ -1,0 +1,47 @@
+Software used by local educational agencies in preparing budgets, interim reports, and year-end financial reports to the California Department of Education.
+
+The alternative format approved by the State Board of Education for those charter schools that elect not to report using the Standardized Account Code Structure (SACS) is available in the Charter School Unaudited Actuals Financial Report-Alternative Form section.
+
+SACS2014ALL Software
+
+The Standardized Account Code Structure SACS2014ALL software contains the components necessary to prepare the 2014&ndash;15 budget and interim reports and the 2013&ndash;14 unaudited actual reports. Be sure to check SACS2014ALL Software: Known Problems/Fixes below for any update files.
+
+sacs2014allsetup.exe (EXE; 78MB)
+
+The SACS2014ALL software has been modified to mitigate the worst of its incompatibilities with Windows 7. Windows 7 users are no longer required to install and access the SACS2014ALL software within the &quot;Windows XP with Virtual PC&quot; window.
+
+THERE ARE KNOWN PRINTING ISSUES RELATING TO WINDOWS 7. See the SACS2014ALL Software: Known Problems/Fixes page for the problem description, workaround, and possible fix.
+
+Before beginning the download, identify (or create) a clean subdirectory into which you will download the sacs2014allsetup.exe zipped file. Right-click on the sacs2014allsetup.exe link above, select "save link as" (or "save target as" or "copy to folder"), then select the subdirectory into which the sacs2014allsetup.exe file will be downloaded.
+
+Once the file has been downloaded, use Windows Explorer to find the sacs2014allsetup.exe file, then double-click on the file and follow the prompts to install the software.
+
+When the SACS software is installed on your computer, the financial reporting calendars and the SACS Software User Guide will be automatically copied into your C:\SACS2014ALL\Calendars and Manuals subdirectory. To find the financial reporting calendars and the SACS2014ALL Software User Guide, use Windows Explorer and navigate to your C:\SACS2014ALL\Calendars and Manuals subdirectory. In addition, to help make the software easier to use, the SACS Software User Guide is accessible from the Help menu and also from within the forms and processes in the software by pressing F1.
+
+What's New?
+
+Please refer either to the "What's New" section of the SACS2014ALL Software User Guide or to the readme.docx file installed with the software for a summary of the changes made to the SACS2014ALL budget, unaudited actuals, and interim forms. Also, be sure to check "SACS2014ALL Software: Known Problems/Fixes" below for any updates subsequent to the SACS2014ALL software release.
+
+Need to Update Your Validation Tables?
+
+The sacs2014allsetup.exe file (above) contains the most current validation tables at the time the software was released, dated June 30, 2014. Any subsequent validation table updates will need to be downloaded and added to the software. The Validation Tables page contains software update instructions.
+
+SACS2014ALL Software: Known Problems/Fixes
+
+The sacs2014allsetup.exe file (above) will not include fixes made subsequent to the SACS2014ALL software release. If any problems are found, we will list them on the SACS2014ALL Software: Known Problems/Fixes page and provide any revised files or workaround instructions. All revised files will need to be applied separately after the software is installed.
+
+SACS2014ALL Software Release Letter
+
+2014 Standardized Account Code Structure Software - ALL Release
+
+SACS2014 Budget Software
+
+You may need to refer to the SACS2014 Budget Software used to report the 2014&ndash;15 budget reports.
+
+Charter School Unaudited Actuals Financial Report-Alternative Form
+
+The 2013&ndash;14 Charter School Unaudited Actuals Financial Report Alternative Form page has links to download the Alternative Form as well as the Alternative Form User Guide. Please refer to the "General Information" and the "Accounting Guidance" sections of the user guide for more detailed instructions on how to use and submit the Alternative Form.
+
+Need Assistance?
+
+For assistance with the SACS software or the Charter School Alternative Form, districts should call their county office of education, and charter schools should call their authorizing agency. County offices may contact us using the contact information in the Questions Section of this page.

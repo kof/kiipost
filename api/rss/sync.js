@@ -12,13 +12,11 @@ var extend = require('extend')
 var url = require('url')
 
 var conf = require('api/conf')
-var contentAnalysis = require('api/yahoo/contentAnalysis')
 var extractor = require('api/extractor')
 var convertCharset = require('api/extractor/convertCharset')
 var bufferParser = require('api/extractor/bufferParser')
 var batchInsert = require('api/db/batchInsert')
 var error = require('api/error')
-var filterTags = require('api/tags/filter')
 var ProcessingController = require('api/processing-controller')
 
 // Posts should be not older than this date.
@@ -196,7 +194,6 @@ function* processOne (feed, options) {
         articles = prenormalize(articles, feed.feed)
         articles = yield prefilter(articles, options)
         stats.errors = stats.errors.concat(yield addSiteData(articles))
-        stats.errors = stats.errors.concat(yield addAnalyzedTags(articles))
         articles = postnormalize(articles, feed)
         articles = postfilter(articles)
         stats.ok = articles.length
@@ -273,34 +270,6 @@ function fetch(url, callback) {
 fetch = thunkify(fetch)
 
 /**
- * Find tags by analyzing description.
- */
-function addAnalyzedTags(articles) {
-    return function* () {
-        var errors = []
-
-        if (!articles.length) return errors
-        for (var i = 0; i < articles.length; i++) {
-            try {
-                var article = articles[i]
-                var text = _s.stripTags(article.description).trim()
-                var data = yield contentAnalysis.analyze({text: text})
-                if (!data) continue
-                var tags = _.pluck(data.entities.concat(data.categories), 'content')
-                article.tags = article.tags.concat(tags)
-            } catch(err) {
-                err.type = 'CONTENT_ANALYSIS'
-                err.text = text
-                err.articleUrl = article.url
-                errors.push(err)
-            }
-        }
-
-        return errors
-    }
-}
-
-/**
  * Filter out articles without links or those once we have already synced.
  */
 function prefilter(articles, options) {
@@ -375,10 +344,6 @@ function prenormalize(articles, feedUrl) {
 
 function postnormalize(articles, feed) {
     return articles.map(function(article) {
-        article.tags = article.tags.map(function(tag) {
-            return tag && String(tag).trim().toLowerCase()
-        })
-        article.tags = _.compact(_.uniq(article.tags)).filter(filterTags)
         article.feedId = feed._id
         return article
     })

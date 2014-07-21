@@ -18,10 +18,9 @@ db.init()
                     'http://www.forbes.com/real-time/feed2/']}},*/
                 //feed: 'http://feeds.aps.org/rss/recent/pra.xml',
                 //feed: 'http://cal.tamu.edu/?&format=rss',
-                //feed: 'http://www.theverge.com/rss/frontpage',
+                feed: 'http://www.theverge.com/rss/frontpage',
                 //feed: 'http://thepioneerwoman.com/contact/feed/',
                 //feed: 'http://feeds.feedburner.com/MajorNelsonblogcast',
-                feed: 'http://i.rottentomatoes.com/syndication/rss/top_news.xml',
                 //feed: 'http://www.defenselink.mil/news/mrss_leadphotos.xml',
                 verbose: true,
                 limit: 300,

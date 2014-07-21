@@ -38,3 +38,20 @@ test('content analysis 2', function* () {
         equal(cat.content, categories[i], 'category matched')
     })
 })
+
+test('content analysis 3', function* () {
+    var text = fs.readFileSync(fix + '/text3.txt', 'utf-8')
+    var entities = [ 'SACS', 'charter schools', 'Problems/Fixes', 'software release', 'Alternative Form', 'Charter School Unaudited', 'interim reports', 'Budget Software', 'Software', 'Standardized Account Code Structure', 'Software User Guide', 'State Board of Education', 'Windows Explorer']
+    var categories = ['Software', 'Technology & Electronics']
+    var data = yield analyze({text: text})
+    ok(Array.isArray(data.entities), 'entities given')
+    ok(Array.isArray(data.categories), 'categories given')
+    equal(data.entities.length, entities.length, 'entities amount correct')
+    data.entities.forEach(function(entity, i) {
+        equal(entity.content, entities[i], 'entity matched')
+    })
+    equal(data.categories.length, categories.length, 'categories amount correct')
+    data.categories.forEach(function(cat, i) {
+        equal(cat.content, categories[i], 'category matched')
+    })
+})

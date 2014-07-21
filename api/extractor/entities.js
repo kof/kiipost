@@ -10,6 +10,7 @@ var _ = require('underscore')
 exports.extract = function(text) {
     return function* () {
         var data = yield contentAnalysis.analyze({text: text})
+        if (!data) return []
         var tags = _(data.entities).pluck('content')
         tags = _(tags).invoke('toLowerCase')
         tags = _(tags).uniq()
