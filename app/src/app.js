@@ -65,6 +65,6 @@ define(function(require, exports, module) {
         exports.controllers.memos = new MemosController(options)
 
         backbone.history.start()
-        if (backbone.history.getFragment()) signin.do()
+        if (backbone.history.getFragment()) exports.controllers.signin.do()
     })
 })
