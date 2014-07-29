@@ -36,8 +36,7 @@ define(function(require, exports, module) {
 
         this.surface.on('click', this._onJump.bind(this))
         this.scrollview.sync.on('update', this._onUpdate.bind(this))
-
-        this._onEdgeHit = this._onEdgeHit.bind(this)
+        this.scrollview.sync.on('end', this._onEnd.bind(this))
     }
 
     inherits(Jumper, RenderController)
@@ -49,22 +48,18 @@ define(function(require, exports, module) {
         scrollview: null,
         // Min amount of px to scroll back before jumper will be shown.
         scrollBackDelta: 3,
+        // Min amount of pages have to be scrolled down.
+        minPages: 2,
         inTransition: {duration: 200},
         outTransition: {duration: 200}
     }
 
     Jumper.prototype._hide = function() {
-        if (this._showing > -1) {
-            this.hide()
-            this.scrollview._scroller.removeListener('edgeHit', this._onEdgeHit)
-        }
+        if (this._showing > -1) this.hide()
     }
 
     Jumper.prototype._show = function() {
-        if (this._showing < 0) {
-            this.show(this.surface)
-            this.scrollview._scroller.on('edgeHit', this._onEdgeHit)
-        }
+        if (this._showing < 0) this.show(this.surface)
     }
 
     Jumper.prototype._onUpdate = _.throttle(function(e) {
@@ -75,7 +70,7 @@ define(function(require, exports, module) {
             // XXX After scrolling down and up, pageSpringPosition value never
             // gets its original value 0
             // Only Show if not on the first page.
-            if (this._scrollviewCountroller.getIndex() > 2) {
+            if (this._scrollviewCountroller.getIndex() > this.options.minPages) {
                 this._show()
             } else {
                 this._hide()
@@ -86,8 +81,10 @@ define(function(require, exports, module) {
         }
     }, 200, {trailing: false})
 
-    Jumper.prototype._onEdgeHit = function() {
-        this._hide()
+    Jumper.prototype._onEnd = function() {
+        if (this._scrollviewCountroller.getIndex() < this.options.minPages) {
+            this._hide()
+        }
     }
 
     Jumper.prototype._onJump = function() {
