@@ -39,7 +39,7 @@ define(function(require, exports, module) {
 
         this.header.surface.add(this.menu)
 
-        this.spinner = new SpinnerView({origin: [0.5, 0.7]})
+        this.spinner = new SpinnerView({origin: [0.5, 0.5]})
         this
             .add(new Modifier({transform: Transform.translate(0, 0, 2)}))
             .add(this.spinner)
