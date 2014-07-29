@@ -37,6 +37,8 @@ define(function(require, exports, module) {
         this.models = this.options.models
         this.options.size = [width, height]
         this._imageWidth = Math.round((height - (height * this.options.memoHeight)) * constants.GOLDEN_RATIO)
+        this.scrollviewController = this.options.stream.scrollviewController
+
         this._poolItem = pool.get()
         this.container = new Surface({
             size: this.options.size,
@@ -105,10 +107,10 @@ define(function(require, exports, module) {
         this.container.setContent(i.container)
     }
 
-    MemoItem.prototype._onClick = function(e) {
-        e.preventDefault()
+    MemoItem.prototype._onClick = _.debounce(function() {
+        if (this.scrollviewController.scrolling) return
         this._eventOutput.emit('open', this.model)
-    }
+    }, 500, true)
 
     MemoItem.prototype._onRecall = function() {
         pool.release(this._poolItem)
