@@ -35,7 +35,9 @@ define(function(require, exports, module) {
         }))
 
         this.surface.on('click', this._onJump.bind(this))
-        this.scrollview.sync.on('update', this._onScroll.bind(this))
+        this.scrollview.sync.on('update', this._onUpdate.bind(this))
+
+        this._onEdgeHit = this._onEdgeHit.bind(this)
     }
 
     inherits(Jumper, RenderController)
@@ -51,7 +53,21 @@ define(function(require, exports, module) {
         outTransition: {duration: 200}
     }
 
-    Jumper.prototype._onScroll = _.throttle(function(e) {
+    Jumper.prototype._hide = function() {
+        if (this._showing > -1) {
+            this.hide()
+            this.scrollview._scroller.removeListener('edgeHit', this._onEdgeHit)
+        }
+    }
+
+    Jumper.prototype._show = function() {
+        if (this._showing < 0) {
+            this.show(this.surface)
+            this.scrollview._scroller.on('edgeHit', this._onEdgeHit)
+        }
+    }
+
+    Jumper.prototype._onUpdate = _.throttle(function(e) {
         if (Math.abs(e.delta) < this.options.scrollBackDelta) return
 
         // Show
@@ -68,14 +84,10 @@ define(function(require, exports, module) {
         } else {
             this._hide()
         }
-    }, 200, {leading: false})
+    }, 200, {trailing: false})
 
-    Jumper.prototype._hide = function() {
-        if (this._showing > -1) this.hide()
-    }
-
-    Jumper.prototype._show = function() {
-        if (this._showing < 0) this.show(this.surface)
+    Jumper.prototype._onEdgeHit = function() {
+        this._hide()
     }
 
     Jumper.prototype._onJump = function() {
