@@ -17,7 +17,7 @@ define(function(require, exports, module) {
     module.exports = Stream
 
     Stream.DEFAULT_OPTIONS = {
-        limit: 30,
+        limit: 50,
         skip: 0,
         urlRoot: null
     }
