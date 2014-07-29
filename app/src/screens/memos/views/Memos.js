@@ -60,7 +60,7 @@ define(function(require, exports, module) {
         // Header can scroll the scrollview.
         this.header.pipe(this.stream.scrollview)
 
-        this.jumper = new JumperView({scrollview: this.stream.scrollview})
+        this.jumper = new JumperView({scrollviewController: this.stream.scrollviewController})
         this
             .add(new Modifier({transform: Transform.translate(0, 0, 1)}))
             .add(this.jumper)

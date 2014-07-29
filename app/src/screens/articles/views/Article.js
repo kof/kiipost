@@ -17,6 +17,7 @@ define(function(require, exports, module) {
         var width = app.context.getSize()[0]
         this.model = this.options.model
         this.options.size = [width, Math.round(width * constants.BRULE_RATIO)]
+        this.scrollviewController = this.options.stream.scrollviewController
         this.initialize()
         this.setContent()
     }
@@ -30,6 +31,7 @@ define(function(require, exports, module) {
 
     Article.DEFAULT_OPTIONS = {
         model: null,
+        scrollview: null,
         title: {height: 0.39},
         summary: {height: 0.43}
     }
@@ -46,6 +48,8 @@ define(function(require, exports, module) {
         })
         this.add(this.container)
         this.container.on('click', this._onClick.bind(this))
+        this.container.on('deploy', this._onDeploy.bind(this))
+        this.container.on('recall', this._onRecall.bind(this))
 
         var titleHeight = height * o.title.height
         this._title = new Surface({
@@ -84,6 +88,8 @@ define(function(require, exports, module) {
                 transform: Transform.translate(textWidth, 0)
             }))
             .add(this._image)
+
+        this.scrollviewController.on('scrollEnd', this._onScrollEnd.bind(this))
     }
 
     Article.prototype.setContent = function() {
@@ -91,10 +97,11 @@ define(function(require, exports, module) {
         this._title.setContent(a.title)
         this._summary.setContent(a.summary)
         this._link.setContent(a.hostname)
-        this._setImage()
     }
 
     Article.prototype._setImage = function() {
+        if (this._imageSet) return
+
         var image = this.model.getImage()
 
         if (!image) return
@@ -119,10 +126,25 @@ define(function(require, exports, module) {
         } else {
             app.imagesLoader.load(image.url, setImage.bind(this))
         }
+
+        this._imageSet = true
     }
 
-    Article.prototype._onClick = function(e) {
-        e.preventDefault()
-        this._eventOutput.emit('open', this.model)
+    Article.prototype._onScrollEnd = function() {
+        if (this._deployed) this._setImage()
     }
+
+    Article.prototype._onDeploy = function() {
+        this._deployed = true
+        if (!this.scrollviewController.scrolling) this._setImage()
+    }
+
+    Article.prototype._onRecall = function() {
+        this._deployed = false
+    }
+
+    Article.prototype._onClick = _.debounce(function() {
+        if (this.scrollviewController.scrolling) return
+        this._eventOutput.emit('open', this.model)
+    }, 500, true)
 })

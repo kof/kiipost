@@ -11,6 +11,8 @@ define(function(require, exports, module) {
     var Transform = require('famous/core/Transform')
     var Modifier = require('famous/core/Modifier')
 
+    var ScrollviewController = require('components/famous/ScrollviewController')
+
     var app = require('app')
 
     /**
@@ -36,7 +38,8 @@ define(function(require, exports, module) {
 
     Stream.EVENTS = {
         loadStart: true,
-        loadEnd: true
+        loadEnd: true,
+        scrollEnd: true
     }
 
     Stream.DEFAULT_OPTIONS = {
@@ -57,14 +60,20 @@ define(function(require, exports, module) {
             offset: contextHeight * 10,
             // Margin for full scroller to render invisible items
             // before they get shown.
-            margin: contextHeight * 2
+            // Don't render more then can be displayed.
+            margin: 0,
+            // Makes the scrolling animation stop faster.
+            friction: 0.005
         })
+        this.scrollviewController = new ScrollviewController(this.scrollview)
         this.stream.add(new Modifier({
             transform: Transform.inFront
         })).add(this.scrollview)
         this.scrollview.sequenceFrom(this.views)
         this.scrollview.on('infiniteScroll', _.debounce(this.load.bind(this), 300, true))
-        this.collection.on('end', this._onEnd.bind(this))
+
+        this.collection.on('end', this._onCollectionEnd.bind(this))
+
         this.back = new Surface({
             classes: ['back'],
             properties: {backgroundColor: '#fff'}
@@ -100,7 +109,11 @@ define(function(require, exports, module) {
         var ItemView = this.options.ItemView
 
         this.collection.each(function(model) {
-            var view = new ItemView({model: model, models: this.models})
+            var view = new ItemView({
+                model: model,
+                models: this.models,
+                stream: this
+            })
             view.container.pipe(this.scrollview)
             view.pipe(this._eventOutput)
             this.views.push(view)
@@ -111,7 +124,7 @@ define(function(require, exports, module) {
         this.scrollview._scroller.group.addClass(name)
     }
 
-    Stream.prototype._onEnd = function() {
+    Stream.prototype._onCollectionEnd = function() {
         this._endReached = true
     }
 })

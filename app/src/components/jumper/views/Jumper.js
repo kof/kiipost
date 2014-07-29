@@ -9,13 +9,9 @@ define(function(require, exports, module) {
     var RenderController = require('famous/views/RenderController')
     var CachedMap = require('famous/transitions/CachedMap')
 
-    var ScrollviewController = require('components/famous/ScrollviewController')
-
     function Jumper() {
         RenderController.apply(this, arguments)
-        this.scrollview = this.options.scrollview
-
-        this._scrollviewCountroller = new ScrollviewController(this.scrollview)
+        this._scrollviewController = this.options.scrollviewController
 
         this.surface = new Surface({
             content: 'arrowup',
@@ -35,8 +31,8 @@ define(function(require, exports, module) {
         }))
 
         this.surface.on('click', this._onJump.bind(this))
-        this.scrollview.sync.on('update', this._onUpdate.bind(this))
-        this.scrollview.sync.on('end', this._onEnd.bind(this))
+        this._scrollviewController.scrollview.sync.on('update', this._onUpdate.bind(this))
+        this._scrollviewController.on('scrollEnd', this._onScrollEnd.bind(this))
     }
 
     inherits(Jumper, RenderController)
@@ -45,7 +41,7 @@ define(function(require, exports, module) {
     Jumper.DEFAULT_OPTIONS = {
         origin: [0.5, 0.1],
         size: [45, 45],
-        scrollview: null,
+        scrollviewController: null,
         // Min amount of px to scroll back before jumper will be shown.
         scrollBackDelta: 3,
         // Min amount of pages have to be scrolled down.
@@ -70,25 +66,24 @@ define(function(require, exports, module) {
             // XXX After scrolling down and up, pageSpringPosition value never
             // gets its original value 0
             // Only Show if not on the first page.
-            if (this._scrollviewCountroller.getIndex() > this.options.minPages) {
+            if (this._scrollviewController.getIndex() > this.options.minPages) {
                 this._show()
             } else {
                 this._hide()
             }
-        // Hide
         } else {
             this._hide()
         }
     }, 200, {trailing: false})
 
-    Jumper.prototype._onEnd = function() {
-        if (this._scrollviewCountroller.getIndex() < this.options.minPages) {
+    Jumper.prototype._onScrollEnd = function() {
+        if (this._scrollviewController.getIndex() < this.options.minPages) {
             this._hide()
         }
     }
 
     Jumper.prototype._onJump = function() {
         this.hide(this.surface)
-        this._scrollviewCountroller.goToFirst(5)
+        this._scrollviewController.goToFirst(5)
     }
 })
