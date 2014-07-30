@@ -89,7 +89,6 @@ define(function(require, exports, module) {
             }))
             .add(this._image)
 
-        this.scrollviewController.on('scrollStart', this._onScrollStart.bind(this))
         this.scrollviewController.on('scrollEnd', this._onScrollEnd.bind(this))
     }
 
@@ -133,13 +132,6 @@ define(function(require, exports, module) {
         }
 
         this._imageSet = true
-    }
-
-    Article.prototype._onScrollStart = function() {
-        if (this._deployed) {
-            this._imageSet = false
-            this._image.setProperties({backgroundImage: 'none'})
-        }
     }
 
     Article.prototype._onScrollEnd = function() {
