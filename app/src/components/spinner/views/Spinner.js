@@ -38,13 +38,15 @@ define(function(require, exports, module) {
         outTransition: {duration: 0}
     }
 
+    var show = Spinner.super_.prototype.show
     Spinner.prototype.show = function(immediate) {
         if (this._showing >= 0) return
-        clearTimeout(this._timeoutId)
-        this._timeoutId = setTimeout(
-            Spinner.super_.prototype.show.bind(this, this.container),
-            immediate ? 0 : this.options.delay
-        )
+        if (this._timeoutId) clearTimeout(this._timeoutId)
+        if (immediate) {
+            show.call(this, this.container)
+        } else {
+            this._timeoutId = setTimeout(show.bind(this, this.container), this.options.delay)
+        }
     }
 
     Spinner.prototype.hide = function() {
