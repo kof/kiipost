@@ -105,6 +105,11 @@ define(function(require, exports, module) {
         i.link.textContent = article.hostname || ''
 
         this.container.setContent(i.container)
+        Engine.nextTick(this._setVisible.bind(this))
+    }
+
+    MemoItem.prototype._setVisible = function() {
+        this._poolItem.container.style.visibility = 'visible'
     }
 
     MemoItem.prototype._onClick = _.debounce(function() {

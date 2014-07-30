@@ -16,9 +16,7 @@ define(function(require, exports, module) {
         this.scrolling = false
         this._lastParticlePos = 0
         this._lastParticlePosRounded = 0
-        this._eventInput = new EventHandler()
         this._eventOutput = new EventHandler()
-        EventHandler.setInputHandler(this, this._eventInput)
         EventHandler.setOutputHandler(this, this._eventOutput)
         this.scrollview._particle.on('update', this._onScrollParticleUpdate.bind(this))
         this.scrollview.sync.on('start', this._onScrollStart.bind(this))

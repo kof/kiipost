@@ -78,7 +78,7 @@ define(function(require, exports, module) {
 
     Articles.prototype.load = function() {
         if (this._loaded) return
-        this.spinner.show()
+        this.spinner.show(true)
         this.models.user.authorize.then(this.stream.load.bind(this.stream))
         this._loaded = true
     }

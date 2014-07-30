@@ -73,7 +73,7 @@ define(function(require, exports, module) {
 
     Memos.prototype.load = function(options) {
         if (this.loaded) return
-        this.spinner.show()
+        this.spinner.show(true)
         this.models.user.authorize.then(function() {
             this.stream.load(options)
         }.bind(this))
