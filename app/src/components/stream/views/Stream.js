@@ -63,7 +63,7 @@ define(function(require, exports, module) {
             // Don't render more then can be displayed.
             margin: 0,
             // Makes the scrolling animation stop faster.
-            friction: 0.005
+            friction: 0.003
         })
         this.scrollviewController = new ScrollviewController(this.scrollview)
         this.stream.add(new Modifier({
