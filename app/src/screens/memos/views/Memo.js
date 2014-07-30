@@ -78,7 +78,6 @@ define(function(require, exports, module) {
             textWidth = '100%'
         }
 
-        i.avatar.style.backgroundImage = 'url(' + this.models.user.get('imageUrl') + ')'
         i.sourceIcon.textContent = attr.tweetId ? 'twitter' : 'star'
         i.date.textContent = moment(attr.createdAt).fromNow()
         i.text.textContent = attr.text || ''
@@ -90,10 +89,10 @@ define(function(require, exports, module) {
 
         this.container.setContent(i.container)
         Engine.nextTick(this._setVisible.bind(this))
-        if (!this.scrollviewController.scrolling) this._setImage()
+        if (!this.scrollviewController.scrolling) this._setImages()
     }
 
-    MemoItem.prototype._setImage = function() {
+    MemoItem.prototype._setImages = function() {
         var attr = this.model.attributes
         var image = attr.articles[0] ? attr.articles[0].getImage() : null
 
@@ -122,6 +121,8 @@ define(function(require, exports, module) {
         } else {
             app.imagesLoader.load(image.url, setImage.bind(this))
         }
+
+        i.avatar.style.backgroundImage = 'url(' + this.models.user.get('imageUrl') + ')'
     }
 
     MemoItem.prototype._setVisible = function() {
@@ -134,7 +135,7 @@ define(function(require, exports, module) {
     }, 500, true)
 
     MemoItem.prototype._onScrollEnd = function() {
-        if (this._deployed) this._setImage()
+        if (this._deployed) this._setImages()
     }
 
     MemoItem.prototype._onRecall = function() {
