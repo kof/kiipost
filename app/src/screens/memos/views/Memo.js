@@ -89,7 +89,7 @@ define(function(require, exports, module) {
 
         this.container.setContent(i.container)
         Engine.nextTick(this._setVisible.bind(this))
-        if (!this.scrollviewController.scrolling) this._setImages()
+        if (!this.scrollviewController.isScrolling) this._setImages()
     }
 
     MemoItem.prototype._setImages = function() {
@@ -130,7 +130,7 @@ define(function(require, exports, module) {
     }
 
     MemoItem.prototype._onClick = _.debounce(function() {
-        if (this.scrollviewController.scrolling) return
+        if (this.scrollviewController.isScrolling) return
         this._eventOutput.emit('open', this.model)
     }, 500, true)
 

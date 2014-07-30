@@ -136,7 +136,7 @@ define(function(require, exports, module) {
 
     Article.prototype._onDeploy = function() {
         this._deployed = true
-        if (!this.scrollviewController.scrolling) this._setImage()
+        if (!this.scrollviewController.isScrolling) this._setImage()
     }
 
     Article.prototype._onRecall = function() {
@@ -144,7 +144,7 @@ define(function(require, exports, module) {
     }
 
     Article.prototype._onClick = _.debounce(function() {
-        if (this.scrollviewController.scrolling) return
+        if (this.scrollviewController.isScrolling) return
         this._eventOutput.emit('open', this.model)
     }, 500, true)
 })

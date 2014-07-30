@@ -13,7 +13,7 @@ define(function(require, exports, module) {
 
     function ScrollviewController(scrollview) {
         this.scrollview = scrollview
-        this.scrolling = false
+        this.isScrolling = false
         this._lastParticlePos = 0
         this._lastParticlePosRounded = 0
         this._eventOutput = new EventHandler()
@@ -68,8 +68,8 @@ define(function(require, exports, module) {
     }
 
     ScrollviewController.prototype._scrollEnd = function() {
-        if (!this.scrolling) return
-        this.scrolling = false
+        if (!this.isScrolling) return
+        this.isScrolling = false
         this._eventOutput.emit('scrollEnd')
     }
 
@@ -83,7 +83,7 @@ define(function(require, exports, module) {
         // while chaning its position by a < 1px number, scrolling is optically done.
         var rounded = round(pos)
         if (rounded === this._lastParticlePosRounded) return
-        this.scrolling = true
+        this.isScrolling = true
         this._eventOutput.emit('scroll')
         if (this._timeout) clearTimeout(this._timeout)
         this._timeout = setTimeout(this._scrollEnd, 100)
