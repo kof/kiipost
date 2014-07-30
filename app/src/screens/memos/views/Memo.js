@@ -74,6 +74,7 @@ define(function(require, exports, module) {
             textWidth = this.options.size[0] - this._textOffsetLeft - this._imageWidth + 'px'
             i.image.style.display = 'block'
         } else {
+            i.image.className = 'dummy'
             i.image.style.display = 'none'
             textWidth = '100%'
         }
@@ -89,7 +90,7 @@ define(function(require, exports, module) {
 
         this.container.setContent(i.container)
         Engine.nextTick(this._setVisible.bind(this))
-        if (!this.scrollviewController.isScrolling) this._setImages()
+        if (!this.scrollviewController.isScrolling && image) this._setImages()
     }
 
     MemoItem.prototype._setImages = function() {

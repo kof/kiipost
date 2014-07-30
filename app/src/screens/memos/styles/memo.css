@@ -16,13 +16,16 @@
     text-align: center;
 }
 .memo .avatar span {
-    background: url('/content/images/dummy-avatar.png') no-repeat center;
+    background: no-repeat center;
     background-size: contain;
     border-radius: 100%;
     line-height: 0;
     width: 2.5rem;
     height: 2.5rem;
     display: inline-block;
+}
+.memo .avatar .dummy {
+    background-image: url('/content/images/dummy-avatar.png');
 }
 .memo .meta {
     font-size: 0.7rem;
