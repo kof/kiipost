@@ -83,6 +83,7 @@ define(function(require, exports, module) {
         // while chaning its position by a < 1px number, scrolling is optically done.
         var rounded = round(pos)
         if (rounded === this._lastParticlePosRounded) return
+        if (!this.scrolling) this._eventOutput.emit('scrollStart')
         this.scrolling = true
         this._eventOutput.emit('scroll')
         if (this._timeout) clearTimeout(this._timeout)

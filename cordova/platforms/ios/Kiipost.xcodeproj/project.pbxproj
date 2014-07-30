@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		060C291F77DC4C378E715C27 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FECCC6D527D94D7894F98CB9 /* Accounts.framework */; };
 		183F75DD6A0642AFB73466FA /* SocialAuthPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = C81B0AAB9D5A46E08C820BF7 /* SocialAuthPlugin.m */; };

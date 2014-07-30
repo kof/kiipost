@@ -89,6 +89,7 @@ define(function(require, exports, module) {
             }))
             .add(this._image)
 
+        this.scrollviewController.on('scrollStart', this._onScrollStart.bind(this))
         this.scrollviewController.on('scrollEnd', this._onScrollEnd.bind(this))
     }
 
@@ -115,6 +116,10 @@ define(function(require, exports, module) {
                 backgroundSize = 'initial'
             }
 
+            // Set the size on image object to avoid preloading by the next render.
+            image.width = size.width
+            image.height = size.height
+
             this._image.setProperties({
                 backgroundImage: 'url(' + image.url + ')',
                 backgroundSize: backgroundSize
@@ -128,6 +133,13 @@ define(function(require, exports, module) {
         }
 
         this._imageSet = true
+    }
+
+    Article.prototype._onScrollStart = function() {
+        if (this._deployed) {
+            this._imageSet = false
+            this._image.setProperties({backgroundImage: 'none'})
+        }
     }
 
     Article.prototype._onScrollEnd = function() {
