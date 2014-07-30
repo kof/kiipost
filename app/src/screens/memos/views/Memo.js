@@ -96,10 +96,11 @@ define(function(require, exports, module) {
     MemoItem.prototype._setImages = function() {
         var attr = this.model.attributes
         var image = attr.articles[0] ? attr.articles[0].getImage() : null
+        var i = this._poolItem
+
+        i.avatar.style.backgroundImage = 'url(' + this.models.user.get('imageUrl') + ')'
 
         if (!image) return
-
-        var i = this._poolItem
 
         function setImage(err, size) {
             if (err) return
@@ -123,7 +124,6 @@ define(function(require, exports, module) {
             app.imagesLoader.load(image.url, setImage.bind(this))
         }
 
-        i.avatar.style.backgroundImage = 'url(' + this.models.user.get('imageUrl') + ')'
     }
 
     MemoItem.prototype._setVisible = function() {
