@@ -100,8 +100,6 @@ define(function(require, exports, module) {
     }
 
     Article.prototype._setImage = function() {
-        if (this._imageSet) return
-
         var image = this.model.getImage()
 
         if (!image) return
@@ -130,8 +128,6 @@ define(function(require, exports, module) {
         } else {
             app.imagesLoader.load(image.url, setImage.bind(this))
         }
-
-        this._imageSet = true
     }
 
     Article.prototype._onScrollEnd = function() {

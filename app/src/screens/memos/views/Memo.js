@@ -50,6 +50,8 @@ define(function(require, exports, module) {
         this.container.on('click', this._onClick.bind(this))
         this.container.on('recall', this._onRecall.bind(this))
         this.container.on('deploy',this._onDeploy.bind(this))
+
+        this.scrollviewController.on('scrollEnd', this._onScrollEnd.bind(this))
     }
 
     inherits(MemoItem, View)
@@ -67,28 +69,10 @@ define(function(require, exports, module) {
         var textWidth
         var image = attr.articles[0] ? attr.articles[0].getImage() : null
 
-        function setImage(err, size) {
-            if (err) {
-                i.image.style.display = 'none'
-                return
-            }
-            i.image.style.backgroundImage = 'url(' + image.url + ')'
-            i.image.style.width = this._imageWidth + 'px'
-            i.image.style.backgroundSize = image.isIcon ? 'contain' : 'cover'
-            if (size.width <= this._imageWidth && size.height <= this.options.size[1]) {
-                i.image.style.backgroundSize = 'initial'
-            }
-        }
-
         if (image) {
             if (!this._textOffsetLeft) this._textOffsetLeft = i.content.offsetLeft
             textWidth = this.options.size[0] - this._textOffsetLeft - this._imageWidth + 'px'
             i.image.style.display = 'block'
-            if (image.width && image.height) {
-                setImage.call(this, null, image)
-            } else {
-                app.imagesLoader.load(image.url, setImage.bind(this))
-            }
         } else {
             i.image.style.display = 'none'
             textWidth = '100%'
@@ -106,6 +90,38 @@ define(function(require, exports, module) {
 
         this.container.setContent(i.container)
         Engine.nextTick(this._setVisible.bind(this))
+        if (!this.scrollviewController.scrolling) this._setImage()
+    }
+
+    MemoItem.prototype._setImage = function() {
+        var attr = this.model.attributes
+        var image = attr.articles[0] ? attr.articles[0].getImage() : null
+
+        if (!image) return
+
+        var i = this._poolItem
+
+        function setImage(err, size) {
+            if (err) return
+            i.image.style.backgroundImage = 'url(' + image.url + ')'
+            i.image.style.width = this._imageWidth + 'px'
+            var backgroundSize = image.isIcon ? 'contain' : 'cover'
+            if (size.width <= this._imageWidth && size.height <= this.options.size[1]) {
+                backgroundSize = 'initial'
+            }
+
+            // Set the size on image object to avoid preloading by the next render.
+            image.width = size.width
+            image.height = size.height
+
+            i.image.style.backgroundSize = backgroundSize
+        }
+
+        if (image.width && image.height) {
+            setImage.call(this, null, image)
+        } else {
+            app.imagesLoader.load(image.url, setImage.bind(this))
+        }
     }
 
     MemoItem.prototype._setVisible = function() {
@@ -117,11 +133,17 @@ define(function(require, exports, module) {
         this._eventOutput.emit('open', this.model)
     }, 500, true)
 
+    MemoItem.prototype._onScrollEnd = function() {
+        if (this._deployed) this._setImage()
+    }
+
     MemoItem.prototype._onRecall = function() {
+        this._deployed = false
         pool.release(this._poolItem)
     }
 
     MemoItem.prototype._onDeploy = function() {
+        this._deployed = true
         // Without nextTick changes will not applied.
         Engine.nextTick(this.setContent.bind(this))
     }
