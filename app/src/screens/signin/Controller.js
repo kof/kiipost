@@ -7,18 +7,24 @@ define(function(require, exports, module) {
     var _ = require('underscore')
 
     var log = require('components/log')
-    var SigninView = require('./views/Signin')
+    var LayeredTransition = require('components/animations/LayeredTransition')
+    var BaseTransition = require('components/animations/BaseTransition')
+
     var ios = require('./helpers/ios')
+    var SigninView = require('./views/Signin')
+    var TermsView = require('./views/Terms')
 
     var app = require('app')
 
     function Signin(options) {
         this.routes = {
-            '': 'signin'
+            '': 'signin',
+            'terms': 'terms'
         }
-
         options = _.extend({}, Signin.DEFAULT_OPTIONS, options)
+        this.views = {}
         this.models = options.models
+        this._firstTime = true
         Controller.call(this, options)
         this.router = this.options.router
     }
@@ -31,28 +37,44 @@ define(function(require, exports, module) {
     }
 
     Signin.prototype.initialize = function() {
-        this.view = new SigninView({model: this.models.user})
-        this.view.on('connect', this._onConnect.bind(this))
-        this.view.on('success', this._onSuccess.bind(this))
+        this.layeredTransition = new LayeredTransition({size: app.context.getSize()})
+        this.baseTransition = new BaseTransition()
+
+        var signin = this.views.signin = new SigninView({model: this.models.user})
+        signin.on('connect', this._onConnect.bind(this))
+        signin.on('success', this._onSuccess.bind(this))
+        signin.on('terms', this._onShowTerms.bind(this))
+        this.views.terms = new TermsView()
+        this.views.terms.on('close', this._onTermsClose.bind(this))
     }
 
     Signin.prototype.signin = function() {
-        app.controller.show(this.view, function() {
+        app.controller.show(this.views.signin, function() {
+            if (!this._firstTime) return
             if (navigator.splashscreen) navigator.splashscreen.hide()
-            this.view.animate('in', function() {
+            this.views.signin.animate('in', function() {
                 ios.available().then(this.do.bind(this))
             }.bind(this))
+            this._firstTime = false
+        }.bind(this))
+    }
+
+    Signin.prototype.terms = function() {
+        this.layeredTransition.commit(app.controller)
+        app.controller.show(this.views.terms, function() {
+            this.layeredTransition.commit(app.controller, true)
         }.bind(this))
     }
 
     Signin.prototype.do = function() {
         if (ios.isSupported()) {
-            this.view.spinner.show(true)
+            var signin = this.views.signin
+            signin.spinner.show(true)
             ios.signin()
-                .then(this.view.load.bind(this.view))
+                .then(signin.load.bind(signin))
                 .catch(function(err) {
-                    this.view.spinner.hide()
-                    this.view.error(err)
+                    signin.spinner.hide()
+                    signin.error(err)
                 }.bind(this))
         }
     }
@@ -63,10 +85,21 @@ define(function(require, exports, module) {
 
     Signin.prototype._onSuccess = function(user) {
         if (!backbone.history.getFragment()) {
-            this.view.animate('out', function() {
+            this.views.signin.animate('out', function() {
+                this.baseTransition.commit(app.controller)
                 this.navigate(this.options.defaultScreen, {trigger: true})
             }.bind(this))
         }
         log.setUser(user)
+    }
+
+    Signin.prototype._onShowTerms = function() {
+        this.terms()
+        this.navigate('terms')
+    }
+
+    Signin.prototype._onTermsClose = function() {
+        this.signin()
+        this.navigate('')
     }
 })

@@ -77,12 +77,13 @@ define(function(require, exports, module) {
 
         this.terms = {
             surface: new Surface({
-                classes: ['terms'],
+                classes: ['terms-link'],
                 content: '<span>By continuing, you agree to our Terms and Privacy policy</span>',
                 size: [undefined, true]
             }),
             modifier: new Modifier({origin: [0.5, 0.98]})
         }
+        this.terms.surface.on('click', this._onShowTerms.bind(this))
         this.signin.add(this.terms.modifier).add(this.terms.surface)
 
         this.spinner = new SpinnerView({origin: [0.5, 0.675]})
@@ -118,5 +119,9 @@ define(function(require, exports, module) {
 
     Signin.prototype._onConnect = function() {
         this._eventOutput.emit('connect')
+    }
+
+    Signin.prototype._onShowTerms = function() {
+        this._eventOutput.emit('terms')
     }
 })
