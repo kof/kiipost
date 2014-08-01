@@ -94,6 +94,7 @@ define(function(require, exports, module) {
     }
 
     MemoItem.prototype._setImages = function() {
+        if (this._imagesSet) return
         var attr = this.model.attributes
         var image = attr.articles[0] ? attr.articles[0].getImage() : null
         var i = this._poolItem
@@ -124,6 +125,7 @@ define(function(require, exports, module) {
             app.imagesLoader.load(image.url, setImage.bind(this))
         }
 
+        this._imagesSet = true
     }
 
     MemoItem.prototype._setVisible = function() {
