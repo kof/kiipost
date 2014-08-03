@@ -6,50 +6,11 @@
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-        <link rel="apple-touch-icon" sizes="152x152" href="/content/icons/152x152.png"/>
-
-        <link rel="stylesheet" type="text/css" href="lib/famous/core/famous.css" />
-
-        <!-- build:css(app/) css/app.css -->
-        <link rel="stylesheet" type="text/css" href="styles/fonts.css" />
-        <link rel="stylesheet" type="text/css" href="src/components/icomatic/font-face.css" />
-        <link rel="stylesheet" type="text/css" href="src/components/icomatic/icomatic.css" />
-        <link rel="stylesheet" type="text/css" href="styles/app.css" />
-        <link rel="stylesheet" type="text/css" href="src/components/header/styles/header.css" />
-        <link rel="stylesheet" type="text/css" href="src/components/menu/styles/menu.css" />
-        <link rel="stylesheet" type="text/css" href="src/components/jumper/styles/jumper.css" />
-        <link rel="stylesheet" type="text/css" href="src/components/spinner/styles/spinner.css" />
-        <link rel="stylesheet" type="text/css" href="src/components/memo-edit/styles/memo-edit.css" />
-        <link rel="stylesheet" type="text/css" href="src/components/css-animations/rotate.css" />
-        <link rel="stylesheet" type="text/css" href="src/screens/signin/styles/signin.css" />
-        <link rel="stylesheet" type="text/css" href="src/screens/signin/styles/terms.css" />
-        <link rel="stylesheet" type="text/css" href="src/screens/articles/styles/article.css" />
-        <link rel="stylesheet" type="text/css" href="src/screens/memos/styles/memo.css" />
-        <link rel="stylesheet" type="text/css" href="src/screens/full-article/styles/full-article.css" />
-
-        <!-- bower:css -->
-        <!-- endbower -->
-        <!-- endbuild -->
-
-        <!-- process:remove:dev -->
+        <link rel="apple-touch-icon" sizes="152x152" href="content/icons/152x152.png"/>
+        <link rel="stylesheet" type="text/css" href="bundle.css" />
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="cordova_plugins.js"></script>
-        <!-- /process -->
-
-        <!-- build:js(app/) src/polyfills.js -->
-        <script type="text/javascript" src="lib/famous-polyfills/functionPrototypeBind.js"></script>
-        <script type="text/javascript" src="lib/famous-polyfills/classList.js"></script>
-        <script type="text/javascript" src="lib/famous-polyfills/requestAnimationFrame.js"></script>
-        <script type="text/javascript" src="lib/sinon/pkg/sinon-server-1.10.2.js"></script>
-        <!-- endbuild -->
-
-        <!-- process:remove:dist -->
-        <script type="text/javascript" src="lib/requirejs/require.js" data-main="src/requireConfig"></script>
-        <!-- /process -->
-
-        <!-- process:remove:dev -->
-        <script type="text/javascript" src="src/main.js"></script>
-        <!-- /process -->
+        <script type="text/javascript" src="bundle.js"></script>
     </head>
     <body></body>
 </html>
