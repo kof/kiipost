@@ -2,6 +2,10 @@ var ms = require('ms')
 
 var env = process.env
 
+if (!env.ENV) throw new Error('ENV required')
+
+exports.version = require('../../package.json').version
+
 exports.db = {
     url: env.MONGO_URL,
     options: {
@@ -22,6 +26,12 @@ exports.server = {
     stdout: true,
     stderr: true,
     sentryDsn: env.SENTRY_DSN
+}
+
+// For the clients.
+exports.client = {
+    baseUrl: '',
+    sentryDsn: ''
 }
 
 exports.cors = {
@@ -63,7 +73,10 @@ exports.request = {
 
 exports.article = {
     // How old can be an in days.
-    maxAge: 60,
+    maxAge: 60
 }
 
+var extend = require('extend')
+var envConf = require('./' + env.ENV)
+extend(true, exports, envConf)
 require('deep-freeze')(exports)

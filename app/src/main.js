@@ -1,3 +1,7 @@
+/**
+ * Require global dependencies.
+ */
+
 define(function(require, exports, module) {
     'use strict'
 

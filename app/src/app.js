@@ -1,3 +1,6 @@
+/**
+ * Bootstrap the app, export app's globals.
+ */
 define(function(require, exports, module) {
     'use strict'
 

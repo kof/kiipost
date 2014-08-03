@@ -1,15 +1,12 @@
+/**
+ * Setup the app.
+ */
 define(function(require, exports, module) {
     'use strict'
 
     if (!window.Promise) window.Promise = require('promise')
     var $ = require('jquery')
-
-    // XXX
-    //var API_BASE_URL = 'http://oleg.localtunnel.me'
-    var API_BASE_URL = 'http://kiipost-dev.herokuapp.com'
-    var SENTRY_DSN = 'https://16045f69f28a46aea86e6dc7ac253aa5@app.getsentry.com/26904'
-    //var API_BASE_URL = 'http://192.168.1.7:3000'
-    //var SENTRY_DSN = ''
+    var conf = require('conf')
 
     $.ajaxSetup({
         xhrFields: {
@@ -17,8 +14,8 @@ define(function(require, exports, module) {
         },
 
         beforeSend: function(xhr, opts) {
-            if (opts.url.substr(0, 4) != 'http' && typeof API_BASE_URL == 'string') {
-                opts.url = API_BASE_URL + opts.url
+            if (opts.url.substr(0, 4) != 'http') {
+                opts.url = conf.server.baseUrl + opts.url
             }
         },
 
@@ -44,10 +41,10 @@ define(function(require, exports, module) {
     backbone.View.prototype.emit =
     backbone.Model.prototype.emit = backbone.Events.trigger
 
-    if (SENTRY_DSN) {
+    if (conf.server.sentryDsn) {
         require('components/log').setup({
             reload: false,
-            sentryDsn: SENTRY_DSN
+            sentryDsn: conf.server.sentryDsn
         })
     }
 })
