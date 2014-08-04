@@ -1,8 +1,8 @@
 'use strict'
 
 /**
-* Setup the app.
-*/
+ * Setup the app.
+ */
 
 if (!window.Promise) window.Promise = require('promise')
 var $ = require('jquery')

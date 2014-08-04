@@ -14,7 +14,8 @@
     "gulp-build": "^0.5.3",
     "gulp-cssimport": "^1.2.3",
     "koa-slow": "^0.1.1",
-    "qunit": "^0.7.1"
+    "qunit": "^0.7.1",
+    "run-sequence": "^0.3.6"
   },
   "dependencies": {
     "backbone": "^1.1.2",
