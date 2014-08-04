@@ -9,7 +9,7 @@ program
     .parse(process.argv)
 
 var task = {}
-;['clean', 'css', 'copy', 'js', 'html', 'test', 'lint', 'symlink'].forEach(function(name) {
+;['clean', 'css', 'copy', 'js', 'html', 'test', 'lint', 'ln'].forEach(function(name) {
     task[name] = require('./gulp/' + name)
 })
 
@@ -61,7 +61,7 @@ gulp.task('lint', task.lint({
     src: app + '/**/*.js'
 }))
 
-gulp.task('symlink', task.symlink({
+gulp.task('ln', task.ln({
     src: ['./shared', './api', './app'],
     dest: './node_modules'
 }))
