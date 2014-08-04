@@ -12,7 +12,7 @@ var Surface = require('famous/core/Surface')
  * @constructor
  * @param {Object} [options] overrides of default options
  */
-function AnchorSurface(options) {
+function AnchorSurface() {
     this._href = undefined
     this._content = undefined
     Surface.apply(this, arguments)
