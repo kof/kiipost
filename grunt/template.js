@@ -9,8 +9,8 @@ module.exports = function(grunt) {
       delimiters: 'js'
     },
     files: {
-      src: '<%= config.dist %>/src/main.js',
-      dest: '<%= config.dist %>/src/main.js'
+      src: '<%= config.dist %>/bundle.js',
+      dest: '<%= config.dist %>/bundle.js'
     }
   };
 }

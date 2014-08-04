@@ -1,4 +1,3 @@
-define(function(require, exports, module) {
 'use strict'
 
 module.exports = require('multiline')(function() {/*

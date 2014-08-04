@@ -105,16 +105,5 @@
     "test": "grunt test",
     "postinstall": "make ln"
   },
-  "overlay": {
-    "browserify": [
-      "hogan.js",
-      "inherits",
-      "multiline",
-      "promise",
-      "qs",
-      "closest",
-      "chainer"
-    ]
-  },
   "private": true
 }

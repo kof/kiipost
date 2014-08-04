@@ -1,11 +1,9 @@
-define(function(require, exports, module) {
-    'use strict'
+'use strict'
 
-    var Surface = require('famous/core/Surface')
+var Surface = require('famous/core/Surface')
 
-    // https://github.com/Famous/core/issues/37
-    Surface.prototype.emit = function(type, event) {
-        if (event && !event.origin) event.origin = this
-        return this.eventHandler.emit(type, event)
-    }
-})
+// https://github.com/Famous/core/issues/37
+Surface.prototype.emit = function(type, event) {
+    if (event && !event.origin) event.origin = this
+    return this.eventHandler.emit(type, event)
+}

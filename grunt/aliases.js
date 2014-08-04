@@ -28,18 +28,18 @@ module.exports = function (grunt) {
     tasks = [
       'clean:dist',
       'lint',
-      'processhtml:dist',
-      'useminPrepare',
-      'requirejs',
-      'concat',
-      'cssmin',
-      'uglify',
+      //'processhtml:dist',
+      //'useminPrepare',
+      //'requirejs',
+      //'concat',
+      //'cssmin',
+      //'uglify',
       'copy:dist',
       'template',
-      'rev',
-      'usemin',
-      'relativeRoot:dist',
-      'htmlmin'
+      //'rev',
+      //'usemin',
+      //'relativeRoot:dist',
+      //'htmlmin'
     ];
 
     // Set dist for cordova

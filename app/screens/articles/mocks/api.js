@@ -1,12 +1,10 @@
-define(function(require, exportsm, module) {
-    'use strict'
+'use strict'
 
-    var server = require('test/server')
+var server = require('test/server')
 
-    module.exports = function() {
-        server.respondWith('GET', /\/api\/articles/, [
-            200, {'Content-Type':'application/json'},
-            JSON.stringify(require('./articles.json'))
-        ])
-    }
-})
+module.exports = function() {
+    server.respondWith('GET', /\/api\/articles/, [
+        200, {'Content-Type':'application/json'},
+        JSON.stringify(require('./articles.json'))
+    ])
+}
