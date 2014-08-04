@@ -51,7 +51,7 @@
     "charset": "0.0.2",
     "closest": "0.0.1",
     "co": "^3.0.6",
-    "commander": "^2.2.0",
+    "commander": "^2.3.0",
     "cycle": "^1.0.3",
     "debug": "^1.0.2",
     "deep-freeze": "0.0.1",

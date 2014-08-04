@@ -7,8 +7,10 @@
         <meta name="apple-mobile-web-app-capable" content="yes"/>
         <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
         <link rel="apple-touch-icon" sizes="152x152" href="content/icons/152x152.png"/>
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="cordova_plugins.js"></script>
+        {{#cordova}}
+            <script type="text/javascript" src="cordova.js"></script>
+            <script type="text/javascript" src="cordova_plugins.js"></script>
+        {{/cordova}}
         <script type="text/javascript" src="index.js"></script>
     </head>
     <body></body>

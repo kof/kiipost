@@ -4,10 +4,11 @@ var gulp = require('gulp')
 
 module.exports = function(options) {
     return function() {
-        var cssimport = require('gulp-cssimport')
+        var conf = require('api/conf')
+        var build = require('gulp-build')
 
         return gulp.src(options.src)
-            .pipe(cssimport())
+            .pipe(build({cordova: options.cordova}))
             .pipe(gulp.dest(options.dest))
     }
 }
