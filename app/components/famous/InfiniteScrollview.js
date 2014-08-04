@@ -23,7 +23,7 @@ InfiniteScrollView.prototype.setOffset = function(o) {
 InfiniteScrollView.prototype._setContentSize = function() {
     var node = this._node
     this.contentSize = 0
-    for(var i in node._.array) {
+    for (var i in node._.array) {
         this.contentSize += node._.array[i].getSize()[1]
     }
 }

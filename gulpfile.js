@@ -9,7 +9,7 @@ program
     .parse(process.argv)
 
 var tasks = {}
-;['clean', 'css', 'copy', 'js', 'html', 'test'].forEach(function(name) {
+;['clean', 'css', 'copy', 'js', 'html', 'test', 'lint'].forEach(function(name) {
     tasks[name] = require('./gulp/' + name)
 })
 
@@ -56,5 +56,8 @@ gulp.task('build', function(callback) {
 })
 
 gulp.task('test', tasks.test())
+gulp.task('lint', tasks.lint({
+    src: app + '/**/*.js'
+}))
 
 gulp.task('default', ['build'])
