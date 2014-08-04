@@ -9,12 +9,11 @@ program
     .parse(process.argv)
 
 var tasks = {}
-;['clean', 'css', 'copy', 'js', 'html'].forEach(function(name) {
+;['clean', 'css', 'copy', 'js', 'html', 'test'].forEach(function(name) {
     tasks[name] = require('./gulp/' + name)
 })
 
 var env = process.env.ENV
-
 var app = './node_modules/app'
 var dest = './dist/' + (program.cordova ? 'cordova-' + env : env)
 
@@ -55,5 +54,7 @@ gulp.task('watch', ['build'], function() {
 gulp.task('build', function(callback) {
     sequence('clean', ['css', 'content', 'js', 'html'], callback)
 })
+
+gulp.task('test', tasks.test())
 
 gulp.task('default', ['build'])

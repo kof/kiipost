@@ -1,3 +1,5 @@
+'use strict'
+
 var qunit = require('qunit')
 
 var tests = []
@@ -7,8 +9,7 @@ tests.push({
         path: './shared/utils/transformKeys.js',
         namespace: 'transformKeys'
     },
-    tests: './shared/utils/test/transformKeys.js',
-    deps: 'node_modules/amd-loader'
+    tests: './shared/utils/test/transformKeys.js'
 })
 
 tests.push({
