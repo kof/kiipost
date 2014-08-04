@@ -41,7 +41,7 @@
     border-radius: 100%;
     width: 2.5em;
     height: 2.5em;
-    background: url('/content/images/dummy-avatar.png') no-repeat;
+    background: url('components/content/images/dummy-avatar.png') no-repeat;
     background-size: cover;
 }
 .memo-edit .memo {

@@ -6,7 +6,12 @@
 
 if (!window.Promise) window.Promise = require('promise')
 var $ = require('jquery')
+var backbone = require('backbone')
+
 var conf = require('app/conf')
+var log = require('app/components/log')
+
+require('jquery.ajax-retry')
 
 $.ajaxSetup({
     xhrFields: {
@@ -24,10 +29,8 @@ $.ajaxSetup({
     }
 })
 
-var backbone = require('backbone')
 backbone.Model.prototype.idAttribute = '_id'
 
-require('jquery.ajax-retry')
 backbone.ajax = function(options) {
     return $.ajax(options).retry({
         times: Infinity,
@@ -40,9 +43,10 @@ backbone.ajax = function(options) {
 backbone.Collection.prototype.emit =
 backbone.View.prototype.emit =
 backbone.Model.prototype.emit = backbone.Events.trigger
+backbone.$ = $
 
 if (conf.server.sentryDsn) {
-    require('app/components/log').setup({
+    log.setup({
         reload: false,
         sentryDsn: conf.server.sentryDsn
     })

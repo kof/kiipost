@@ -1,6 +1,7 @@
 'use strict'
 
 var inherits = require('inherits')
+var _ = require('underscore')
 
 var View = require('famous/core/View')
 var Transform = require('famous/core/Transform')

@@ -46,7 +46,7 @@ module.exports = ParallaxedBackground
 
 ParallaxedBackground.DEFAULT_OPTIONS = {
     offset: 0,
-    content: 'content/images/background.jpg',
+    content: 'components/content/images/background.jpg',
     properties: {
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',

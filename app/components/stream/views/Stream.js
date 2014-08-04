@@ -5,12 +5,12 @@ var _ = require('underscore')
 
 var View = require('famous/core/View')
 var Surface = require('famous/core/Surface')
-var InfiniteScrollView  = require('famous-infinitescroll')
 var Group = require('famous/core/Group')
 var Transform = require('famous/core/Transform')
 var Modifier = require('famous/core/Modifier')
 
 var ScrollviewController = require('app/components/famous/ScrollviewController')
+var InfiniteScrollView  = require('app/components/famous/InfiniteScrollview')
 
 var app = require('app')
 

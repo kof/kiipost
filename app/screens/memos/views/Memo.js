@@ -1,6 +1,7 @@
 'use strict'
 
 var inherits = require('inherits')
+var _ = require('underscore')
 var moment = require('moment')
 
 var Engine = require('famous/core/Engine')
