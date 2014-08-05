@@ -15,6 +15,7 @@
     "gulp-cssimport": "^1.2.3",
     "gulp-eslint": "^0.1.8",
     "gulp-jscs": "^1.1.0",
+    "gulp-nodemon": "^1.0.4",
     "gulp-symlink": "^1.1.0",
     "gulp-util": "^3.0.0",
     "koa-slow": "^0.1.1",

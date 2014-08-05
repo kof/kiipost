@@ -10,7 +10,7 @@ program
     .parse(process.argv)
 
 var task = {}
-;['clean', 'css', 'copy', 'js', 'html', 'test', 'lint', 'ln', 'cordova'].forEach(function(name) {
+;['clean', 'css', 'copy', 'js', 'html', 'test', 'lint', 'ln', 'cordova', 'api'].forEach(function(name) {
     task[name] = require('./gulp/' + name)
 })
 
@@ -49,12 +49,16 @@ gulp.task('html', task.html({
     cordova: cordova
 }))
 
-gulp.task('watch', ['build'], function() {
+gulp.task('api', task.api())
+
+gulp.task('watch-app', ['build'], function() {
     gulp.watch(app + '/**/*.js', ['js'])
     gulp.watch(app + '/**/*.html', ['html'])
     gulp.watch(app + '/**/*.css', ['css'])
     gulp.watch(app + '/**/*.{png,jpg,svg,eot,ttf,woff}', ['content'])
 })
+
+gulp.task('start', ['watch-app', 'api'])
 
 gulp.task('build', function(callback) {
     sequence('clean', ['css', 'content', 'js', 'html'], callback)
