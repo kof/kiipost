@@ -76,7 +76,9 @@ gulp.task('ln', task.ln({
 gulp.task('start', ['watch-app', 'api'])
 
 gulp.task('build', function(callback) {
-    sequence('clean', ['css', 'content', 'js', 'html'], callback)
+    var args = ['clean', ['css', 'content', 'js', 'html'], callback]
+    if (env == 'stage' || env == 'prod') args.unshift('lint')
+    sequence.apply(null, args)
 })
 
 gulp.task('cordova', ['build'], task.cordova())
