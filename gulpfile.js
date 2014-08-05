@@ -10,7 +10,7 @@ program
     // TODO add all commands for documentation purpose.
     .parse(process.argv)
 
-if (!program.args.length) return program.help()
+if (process.argv.length < 3) return program.help()
 
 var task = {}
 ;['clean', 'css', 'copy', 'js', 'html', 'test', 'lint', 'ln', 'cordova', 'api'].forEach(function(name) {
