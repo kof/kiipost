@@ -8,10 +8,17 @@ module.exports = function(options) {
         var browserify = require('gulp-browserify')
         var build = require('gulp-build')
 
-        return gulp.src(options.src)
+        var stream = gulp.src(options.src)
             .pipe(browserify(options))
             // Replace template strings.
-            .pipe(build({conf: conf}))
-            .pipe(gulp.dest(options.dest))
+            .pipe(build({conf: conf, evn: options.env}))
+
+        if (options.env == 'prod') {
+           stream.pipe(require('gulp-uglify')())
+        }
+
+        stream.pipe(gulp.dest(options.dest))
+
+        return stream
     }
 }
