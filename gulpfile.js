@@ -30,7 +30,7 @@ gulp.task('clean', task.clean({
 }))
 
 gulp.task('html', task.html({
-    src: app + '/index.html',
+    src: app + '/**/*.html',
     dest: dest,
     env: env,
     cordova: cordova

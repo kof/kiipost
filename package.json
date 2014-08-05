@@ -14,6 +14,7 @@
     "gulp-build": "^0.5.3",
     "gulp-cssimport": "^1.2.3",
     "gulp-eslint": "^0.1.8",
+    "gulp-htmlmin": "^0.1.3",
     "gulp-jscs": "^1.1.0",
     "gulp-minify-css": "^0.3.7",
     "gulp-nodemon": "^1.0.4",
