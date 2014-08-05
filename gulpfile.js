@@ -1,21 +1,26 @@
 'use strict'
 
 var gulp = require('gulp')
-var program = require('commander')
 var sequence = require('run-sequence')
+var gutil = require('gulp-util')
+var program = require('commander')
 
 program
-    .option('-c, --cordova', 'build for cordova')
+    .option('-c, --cordova', 'build for cordova', Boolean)
     .parse(process.argv)
 
 var task = {}
-;['clean', 'css', 'copy', 'js', 'html', 'test', 'lint', 'ln'].forEach(function(name) {
+;['clean', 'css', 'copy', 'js', 'html', 'test', 'lint', 'ln', 'cordova'].forEach(function(name) {
     task[name] = require('./gulp/' + name)
 })
 
+var cordova = program.cordova || process.argv[2] == 'cordova'
 var env = process.env.ENV
 var app = './node_modules/app'
-var dest = './dist/' + (program.cordova ? 'cordova-' + env : env)
+var dest = './dist/' + env
+if (cordova) dest = './cordova/www'
+
+gutil.log('Starting build for ' + env.toUpperCase() + (cordova ? ' CORDOVA' : '') + ' environment')
 
 gulp.task('clean', task.clean({
     dest: dest + '/**'
@@ -41,7 +46,7 @@ gulp.task('html', task.html({
     src: app + '/index.html',
     dest: dest,
     env: env,
-    cordova: program.cordova
+    cordova: cordova
 }))
 
 gulp.task('watch', ['build'], function() {
@@ -65,5 +70,7 @@ gulp.task('ln', task.ln({
     src: ['./shared', './api', './app'],
     dest: './node_modules'
 }))
+
+gulp.task('cordova', ['build'], task.cordova())
 
 gulp.task('default', ['build'])

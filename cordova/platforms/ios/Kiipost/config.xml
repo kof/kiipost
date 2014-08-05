@@ -45,6 +45,6 @@
     <content src="index.html" />
     <access origin="*" />
     <preference name="KeyboardDisplayRequiresUserAction" value="false" />
-    <icon src="www/content/icons/152x152.png" />
+    <icon src="www/components/content/icons/152x152.png" />
     <preference name="AutoHideSplashScreen" value="false" />
 </widget>
