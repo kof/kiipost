@@ -6,8 +6,15 @@ module.exports = function(options) {
     return function() {
         var cssimport = require('gulp-cssimport')
 
-        return gulp.src(options.src)
+        var stream = gulp.src(options.src)
             .pipe(cssimport())
-            .pipe(gulp.dest(options.dest))
+
+        if (options.env == 'prod' || options.env == 'stage') {
+            stream.pipe(require('gulp-minify-css')())
+        }
+
+        stream.pipe(gulp.dest(options.dest))
+
+        return stream
     }
 }

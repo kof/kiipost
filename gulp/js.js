@@ -13,7 +13,7 @@ module.exports = function(options) {
             // Replace template strings.
             .pipe(build({conf: conf, evn: options.env}))
 
-        if (options.env == 'prod') {
+        if (options.env == 'prod' || options.env == 'stage') {
            stream.pipe(require('gulp-uglify')())
         }
 
