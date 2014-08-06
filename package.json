@@ -85,7 +85,7 @@
     "underscore.string": "^2.3.3"
   },
   "scripts": {
-    "postinstall": "node_modules/.bin/gulp ln"
+    "postinstall": "make ln"
   },
   "private": true
 }

@@ -68,11 +68,6 @@ gulp.task('lint', tasks.lint({
     src: src + '/**/*.js'
 }))
 
-gulp.task('ln', tasks.ln({
-    src: ['./shared', './api', './app'],
-    dest: './node_modules'
-}))
-
 gulp.task('start', ['watch-app', 'api'])
 
 gulp.task('build', function(callback) {
