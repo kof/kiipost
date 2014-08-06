@@ -15,3 +15,8 @@
 .terms .content {
     padding: 4rem 1rem 1rem 1rem;
 }
+.terms pre {
+    white-space: pre-line;
+    font-family: inherit;
+    line-height: 1.5;
+}
