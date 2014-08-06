@@ -9,7 +9,6 @@
     "browserify": "^5.9.1",
     "clean-css": "^2.2.12",
     "del": "^0.1.1",
-    "famous-metrics": "0.0.9",
     "gulp": "^3.8.7",
     "gulp-cssimport": "^1.2.3",
     "gulp-eslint": "^0.1.8",
