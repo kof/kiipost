@@ -16,7 +16,7 @@ var conf = require('api/conf')
 var log = require('api/log')
 var queue = require('api/queue')
 
-var apiModules = ['users', 'memos', 'articles']
+var apiModules = ['users', 'memos', 'articles', 'status']
 
 function create(connection) {
     // !!! Attention never commit this.
