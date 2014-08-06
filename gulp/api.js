@@ -1,7 +1,5 @@
 'use strict'
 
-var gulp = require('gulp')
-
 var options = {
     script: './api/index',
     nodeArgs: '--harmony',
@@ -11,6 +9,7 @@ var options = {
 
 module.exports = function() {
     return function(callback) {
+        var gulp = require('gulp')
         var nodemon = require('gulp-nodemon')
 
         nodemon(options)

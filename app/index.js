@@ -1,14 +1,8 @@
 'use strict'
 
 /**
- * Bootstrap the app, export app's globals.
+ * Global app object.
  */
-
-// One time global dependencies.
-require('./components/famous/FastClick')
-require('./components/famous/patches')
-require('./setup')
-require('./test/mocks')
 
 var backbone = require('backbone')
 var ImagesLoader = require('images-loader')

@@ -6,24 +6,25 @@
     "node": "0.11.13"
   },
   "devDependencies": {
+    "browserify": "^5.9.1",
     "del": "^0.1.1",
-    "eslint": "^0.7.4",
     "famous-metrics": "0.0.9",
     "gulp": "^3.8.7",
-    "gulp-browserify": "^0.5.0",
-    "gulp-build": "^0.5.3",
     "gulp-cssimport": "^1.2.3",
     "gulp-eslint": "^0.1.8",
-    "gulp-htmlmin": "^0.1.3",
     "gulp-jscs": "^1.1.0",
     "gulp-minify-css": "^0.3.7",
     "gulp-nodemon": "^1.0.4",
     "gulp-symlink": "^1.1.0",
-    "gulp-uglify": "^0.3.1",
     "gulp-util": "^3.0.0",
+    "html-minifier": "^0.6.6",
     "koa-slow": "^0.1.1",
     "qunit": "^0.7.1",
-    "run-sequence": "^0.3.6"
+    "run-sequence": "^0.3.6",
+    "string-to-js": "0.0.1",
+    "uglify-js": "^2.4.15",
+    "vinyl-map": "^1.0.1",
+    "vinyl-source-stream": "^0.1.1"
   },
   "dependencies": {
     "backbone": "^1.1.2",
@@ -51,7 +52,7 @@
     "iconv": "^2.1.4",
     "image-size": "^0.3.0",
     "image-type": "^0.1.4",
-    "images-loader": "^0.1.1",
+    "images-loader": "^0.1.2",
     "inherits": "^2.0.1",
     "jquery": "^2.1.1",
     "jquery.ajax-retry": "https://github.com/kiipost/jquery-ajax-retry/tarball/master",
@@ -70,7 +71,6 @@
     "mongoose": "^3.8.12",
     "mongoose-types": "^1.0.3",
     "ms": "^0.6.2",
-    "multiline": "~0.3.4",
     "os-utils": "0.0.14",
     "promise": "^5.0.0",
     "qs": "^0.6.6",
@@ -82,14 +82,14 @@
     "sax": "https://github.com/kof/sax-js/tarball/issue-116",
     "sinon": "~1.10.2",
     "superagent": "https://github.com/kiipost/superagent/tarball/zlib-0",
+    "through": "^2.3.4",
     "thunkify": "^2.1.2",
     "twit": "^1.1.15",
     "underscore": "^1.6.0",
     "underscore.string": "^2.3.3"
   },
   "scripts": {
-    "test": "grunt test",
-    "postinstall": "make ln"
+    "postinstall": "node_modules/.bin/gulp ln"
   },
   "private": true
 }

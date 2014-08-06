@@ -1,9 +1,8 @@
 'use strict'
 
-var gulp = require('gulp')
-
 module.exports = function(options) {
     return function() {
+        var gulp = require('gulp')
         var cssimport = require('gulp-cssimport')
 
         var stream = gulp.src(options.src)

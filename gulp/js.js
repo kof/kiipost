@@ -1,23 +1,50 @@
 'use strict'
 
-var gulp = require('gulp')
-
+/**
+ * - browserify
+ * - apply all html tasks on required html file
+ * - compile/render template strings for js
+ * - uglify in prod/stage
+ */
 module.exports = function(options) {
-    return function() {
-        var conf = require('api/conf')
-        var browserify = require('gulp-browserify')
-        var build = require('gulp-build')
+    options.vinyl = true
 
-        var stream = gulp.src(options.src)
-            .pipe(browserify(options))
-            // Replace template strings.
-            .pipe(build({conf: conf, evn: options.env}))
+    return function() {
+        var gulp = require('gulp')
+        var htmlmin = require('./helpers/htmlmin')(options)
+        var template = require('./helpers/template')(options)
+        var file2js = require('./helpers/file2js')(options)
+        var source = require('vinyl-source-stream')
+        var browserify = require('browserify')
+        var es = require('event-stream')
+
+        var stream = browserify(options.entry)
+            .transform(template)
+            .transform(htmlmin)
+            .transform(file2js)
+            .bundle()
+            .pipe(template('fake.html'))
 
         if (options.env == 'prod' || options.env == 'stage') {
-           stream.pipe(require('gulp-uglify')())
+            var uglify = require('uglify-js')
+            var es = require('event-stream')
+            var code = ''
+            options.fromString = true
+            stream = stream.pipe(es.through(
+                function(buf) {
+                    code += buf
+                },
+                function() {
+                    code = uglify.minify(String(code), options).code
+                    this.emit('data', code)
+                    this.emit('end')
+                }
+            ))
         }
 
-        stream.pipe(gulp.dest(options.dest))
+        stream
+            .pipe(source('index.js'))
+            .pipe(gulp.dest(options.dest))
 
         return stream
     }

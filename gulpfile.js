@@ -4,6 +4,8 @@ var gulp = require('gulp')
 var sequence = require('run-sequence')
 var gutil = require('gulp-util')
 var program = require('commander')
+var fs = require('fs')
+var conf = require('api/conf')
 
 program
     .option('-c, --cordova', 'build for cordova', Boolean)
@@ -13,14 +15,15 @@ program
 if (process.argv.length < 3) return program.help()
 
 var task = {}
-;['clean', 'css', 'copy', 'js', 'html', 'test', 'lint', 'ln', 'cordova', 'api'].forEach(function(name) {
-    task[name] = require('./gulp/' + name)
+fs.readdirSync(__dirname + '/gulp').forEach(function(name) {
+    if (/\.js$/.test(name)) task[name.substr(0, name.length - 3)] = require('./gulp/' + name)
 })
 
 var cordova = program.cordova || program.args[0] == 'cordova'
-var env = process.env.ENV
-var app = './node_modules/app'
+var env = process.env.ENV || 'local'
+var src = './node_modules/app'
 var dest = './dist/' + env
+
 if (cordova) dest = './cordova/www'
 
 gutil.log('Starting build for ' + env.toUpperCase() + (cordova ? ' CORDOVA' : '') + ' environment')
@@ -30,42 +33,43 @@ gulp.task('clean', task.clean({
 }))
 
 gulp.task('html', task.html({
-    src: app + '/**/*.html',
+    src: src + '/index.html',
     dest: dest,
     env: env,
-    cordova: cordova
+    data: {cordova: cordova}
 }))
 
 gulp.task('css', task.css({
-    src: app + '/index.css',
+    src: src + '/index.css',
     dest: dest,
     env: env
 }))
 
 gulp.task('js', task.js({
-    src: app + '/index.js',
+    entry: src + '/bootstrap.js',
     dest: dest,
-    env: env
+    env: env,
+    data: {conf: conf}
 }))
 
 gulp.task('content', task.copy({
-    src: app + '/**/*.{png,jpg,svg,eot,ttf,woff}',
+    src: src + '/**/*.{png,jpg,svg,eot,ttf,woff}',
     dest: dest
 }))
 
 gulp.task('api', task.api())
 
 gulp.task('watch-app', ['build'], function() {
-    gulp.watch(app + '/**/*.js', ['js'])
-    gulp.watch(app + '/**/*.html', ['html'])
-    gulp.watch(app + '/**/*.css', ['css'])
-    gulp.watch(app + '/**/*.{png,jpg,svg,eot,ttf,woff}', ['content'])
+    gulp.watch(src + '/**/*.{js,html}', ['js'])
+    gulp.watch(src + '/**/*.html', ['html'])
+    gulp.watch(src + '/**/*.css', ['css'])
+    gulp.watch(src + '/**/*.{png,jpg,svg,eot,ttf,woff}', ['content'])
 })
 
 gulp.task('test', task.test())
 
 gulp.task('lint', task.lint({
-    src: app + '/**/*.js'
+    src: src + '/**/*.js'
 }))
 
 gulp.task('ln', task.ln({

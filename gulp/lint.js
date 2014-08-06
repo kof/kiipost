@@ -1,9 +1,8 @@
 'use strict'
 
-var gulp = require('gulp')
-
 module.exports = function(options) {
     return function() {
+        var gulp = require('gulp')
         var eslint = require('gulp-eslint')
         var jscs = require('gulp-jscs')
 

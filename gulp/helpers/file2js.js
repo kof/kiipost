@@ -1,0 +1,45 @@
+'use strict'
+
+var gulp = require('gulp')
+
+var types = [
+    {test: /\.html$/, type: 'html'}
+]
+
+/**
+ * - convert non-js files to js
+ */
+module.exports = function(options) {
+    return function(filename) {
+        var str2js = require('string-to-js')
+        var source = require('vinyl-source-stream')
+        var es = require('event-stream')
+
+        function handle(type, code) {
+            switch (type) {
+                case 'html':
+                    return str2js(String(code))
+            }
+        }
+
+        // Return a pure writable stream.
+        if (options.vinyl) {
+            var type = getType(filename)
+            if (!type) return es.through()
+            return es.map(function(code, callback) {
+                callback(null, handle(type, code))
+            })
+        }
+
+        return map(function(code, filename) {
+            type = getType(filename)
+            return type ? handle(type, code) : null
+        })
+    }
+}
+
+function getType(filename) {
+    for (var i = 0; i < types.length; i++) {
+        if (types[i].test.test(filename)) return types[i].type
+    }
+}
