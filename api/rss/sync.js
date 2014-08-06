@@ -23,6 +23,8 @@ var ProcessingController = require('api/processing-controller')
 var MIN_PUB_DATE = moment().subtract('days', conf.article.maxAge).toDate()
 // Reduce damage from spammy feeds.
 var MAX_ITEMS = 200
+// Workaround until #134 is done
+var MAX_DESCRIPTION_LENGTH = 10000
 
 var IGNORE_ERRORS
 
@@ -313,6 +315,7 @@ function postfilter(articles) {
         if (_.isEmpty(article.tags)) return false
         // Has no title - we can't list it.
         if (!article.title) return false
+        if (!article.description || article.description.length > MAX_DESCRIPTION_LENGTH) return false
 
         return true
     })
