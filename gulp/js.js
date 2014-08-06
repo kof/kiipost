@@ -27,7 +27,6 @@ module.exports = function(options) {
 
         if (options.env == 'prod' || options.env == 'stage') {
             var uglify = require('uglify-js')
-            var es = require('event-stream')
             var code = ''
             options.fromString = true
             stream = stream.pipe(es.through(

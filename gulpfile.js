@@ -4,7 +4,6 @@ var gulp = require('gulp')
 var sequence = require('run-sequence')
 var gutil = require('gulp-util')
 var program = require('commander')
-var fs = require('fs')
 var conf = require('./api/conf')
 var tasks = require('./gulp')
 
