@@ -7,15 +7,14 @@ var program = require('commander')
 var conf = require('./api/conf')
 var tasks = require('./gulp')
 
+// TODO add all commands for documentation purpose.
 program
-    .option('-c, --cordova', 'build for cordova', Boolean)
-    // TODO add all commands for documentation purpose.
+    .option('-c, --cordova', 'build for cordova')
     .parse(process.argv)
 
 if (process.argv.length < 3) return program.help()
 
-
-var cordova = program.cordova || program.args[0] == 'cordova'
+var cordova = program.cordova
 var env = process.env.ENV || 'local'
 var src = './node_modules/app'
 var dest = './dist/' + env
@@ -70,10 +69,12 @@ gulp.task('lint', tasks.lint({
 
 gulp.task('start', ['watch-app', 'api'])
 
+gulp.task('cordova', tasks.cordova())
+
 gulp.task('build', function(callback) {
-    var args = ['clean', ['css', 'content', 'js', 'html'], callback]
+    var args = ['clean', ['css', 'content', 'js', 'html']]
     if (env == 'stage' || env == 'prod') args.unshift('lint')
+    if (cordova) args.push('cordova')
+    args.push(callback)
     sequence.apply(null, args)
 })
-
-gulp.task('cordova', ['build'], tasks.cordova())
