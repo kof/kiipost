@@ -26,9 +26,17 @@ module.exports = function(options) {
         if (options.vinyl) {
             var type = getType(filename)
             if (!type) return es.through()
-            return es.map(function(code, callback) {
-                callback(null, handle(type, code))
-            })
+            var code = ''
+            return es.through(
+                function(buf) {
+                    code += buf
+                },
+                function() {
+                    code = handle(type, code)
+                    this.emit('data', code)
+                    this.emit('end')
+                }
+            )
         }
 
         return map(function(code, filename) {

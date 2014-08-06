@@ -11,9 +11,9 @@ module.exports = function(options) {
 
     return function() {
         var gulp = require('gulp')
-        var htmlmin = require('./helpers/htmlmin')(options)
-        var template = require('./helpers/template')(options)
-        var file2js = require('./helpers/file2js')(options)
+        var htmlmin = require('./transforms/htmlmin')(options)
+        var template = require('./transforms/template')(options)
+        var file2js = require('./transforms/file2js')(options)
         var source = require('vinyl-source-stream')
         var browserify = require('browserify')
         var es = require('event-stream')

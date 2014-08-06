@@ -7,8 +7,8 @@
 module.exports = function(options) {
     return function() {
         var gulp = require('gulp')
-        var template = require('./helpers/template')(options)
-        var htmlmin = require('./helpers/htmlmin')(options)
+        var template = require('./transforms/template')(options)
+        var htmlmin = require('./transforms/htmlmin')(options)
 
         return gulp.src(options.src)
             .pipe(template())
