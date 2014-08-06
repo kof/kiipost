@@ -1,5 +1,5 @@
 // For the clients.
 exports.client = {
     baseUrl: 'http://kiipost-prod.herokuapp.com',
-    sentryDsn: 'https://16045f69f28a46aea86e6dc7ac253aa5@app.getsentry.com/26904'
+    sentryDsn: 'https://f910537a36524988aa3854c3c03e4961@app.getsentry.com/28516'
 }
