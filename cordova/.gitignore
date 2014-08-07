@@ -1,2 +1,14 @@
 config.xml
 /**/www
+platforms/ios/Kiipost-dev/Resources/splash
+*.m
+*.xib
+*.plist
+*.pch
+*.h
+*.xcscheme
+*.xcuserstate
+*.xccheckout
+*.xcworkspacedata
+*.pbxproj
+
