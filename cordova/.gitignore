@@ -1,13 +1,5 @@
+config.xml
 www/*
-platforms/android/bin
-platforms/android/assets
-platforms/android/.staging
-platforms/android/CordovaLib/bin
-platforms/android/CordovaLib/.project
-platforms/android/gen
-platforms/android/local.properties
-platforms/android/CordovaLib/local.properties
-
 platforms/ios/www
 platforms/ios/Kiipost.xcodeproj/project.xcworkspace/xcuserdata
 platforms/ios/build/device

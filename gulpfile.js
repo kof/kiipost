@@ -15,7 +15,7 @@ program
 if (process.argv.length < 3) return program.help()
 
 var cordova = program.cordova
-var env = process.env.ENV || 'local'
+var env = conf.env
 var src = './node_modules/app'
 var dest = './dist/' + env
 
@@ -69,7 +69,10 @@ gulp.task('lint', tasks.lint({
 
 gulp.task('start', ['watch-app', 'api'])
 
-gulp.task('cordova', tasks.cordova())
+gulp.task('cordova', tasks.cordova({
+    dest: './cordova',
+    data: {conf: conf}
+}))
 
 gulp.task('build', function(callback) {
     var args = ['clean', ['css', 'content', 'js', 'html']]

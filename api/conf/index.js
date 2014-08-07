@@ -6,6 +6,8 @@ if (!env.ENV) throw new Error('ENV required')
 
 exports.version = require('../../package.json').version
 
+exports.env = env.ENV || 'local'
+
 exports.db = {
     url: env.MONGO_URL,
     options: {
