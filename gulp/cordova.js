@@ -42,9 +42,11 @@ module.exports = function(options) {
         }
 
         function symlinkSplash() {
-            var resources = dest + '/platforms/ios/' + data.name + '/Resources/splash'
-            return del(resources + '/splash', {force: true})
-                .then(symlink(dest + '/splash', resources))
+            var splash = dest + '/platforms/ios/' + data.name + '/Resources/splash'
+            return del(splash)
+                .then(function() {
+                    return symlink(dest + '/splash', splash)
+                })
         }
 
         compileConfig()
