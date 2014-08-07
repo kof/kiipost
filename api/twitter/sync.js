@@ -65,6 +65,7 @@ function findLatestMemo(options) {
         return yield m.model('memo')
             .findOne({userId: options.userId, tweetId: {$exists: true}})
             .sort({createdAt: -1})
+            .lean()
             .exec()
     }
 }
@@ -77,6 +78,7 @@ function findUser(options) {
         return yield m.model('user')
             .findById(options.userId)
             .select({twitter: 1})
+            .lean()
             .exec()
     }
 }

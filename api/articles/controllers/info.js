@@ -14,6 +14,7 @@ exports.read = function *() {
 
     article = yield m.model('article')
         .findById(articleId)
+        .lean()
         .exec()
 
     if (!article) {

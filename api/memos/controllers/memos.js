@@ -11,13 +11,13 @@ exports.read = function* () {
     user = yield m.model('user')
         .findById(this.session.user._id)
         .select({processing: 1})
+        .lean()
         .exec()
 
     if (user.processing.TwitterSync) {
         this.status = 'service unavailable'
         this.set('retry-after', 5)
     } else {
-        console.time('memos fetch')
         this.body = yield m.model('memo')
             .find({userId: user._id})
             .sort({createdAt: -1})
@@ -28,6 +28,5 @@ exports.read = function* () {
                 'articles.enclosures': 1})
             .lean()
             .exec()
-        console.timeEnd('memos fetch')
     }
 }

@@ -10,6 +10,7 @@ exports.read = function *() {
 
     article = yield m.model('article')
         .findById(this.params.id)
+        .lean()
         .exec()
 
     this.body = article || {}

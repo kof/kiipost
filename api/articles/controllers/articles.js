@@ -22,6 +22,7 @@ exports.read = function *() {
     var user = yield m.model('user')
         .findById(userId)
         .select({processing: 1})
+        .lean()
         .exec()
 
     if (user.processing.TwitterSync) {

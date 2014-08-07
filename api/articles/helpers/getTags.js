@@ -18,6 +18,7 @@ module.exports = function(userId, full) {
         memos = yield m.model('memo')
             .find({userId: userId})
             .select(full ? {} : {'articles.tags': 1})
+            .lean()
             .exec()
 
         var map = {}, data = []
