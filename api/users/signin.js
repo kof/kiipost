@@ -2,12 +2,16 @@
 
 var m = require('mongoose')
 var _ = require('underscore')
+var lru = require('lru-cache')
+var ms = require('ms')
 
 var twitterClient = require('api/twitter/client')
 var queue = require('api/queue')
 var publicProps = require('./publicProps')
 
 var publicPropsKeys = _.keys(publicProps)
+
+var twitterSyncCache = lru({maxAge: ms('5m')})
 
 /**
  * Signup or login a user.
@@ -28,7 +32,10 @@ module.exports = function signin(auth, isAuthorized) {
             user = yield create(auth, user)
         }
 
-        yield queue.enqueue('TwitterSync', {userId: user._id, block: user._id})
+        if (!twitterSyncCache.get(user._id)) {
+            twitterSyncCache.set(user._id, true)
+            yield queue.enqueue('TwitterSync', {userId: user._id, block: user._id})
+        }
 
         return user
     }

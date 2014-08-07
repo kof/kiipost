@@ -1110,6 +1110,10 @@
         }
       }
     },
+    "lru-cache": {
+      "version": "2.5.0",
+      "from": "lru-cache@"
+    },
     "moment": {
       "version": "2.8.1",
       "from": "moment@^2.7.0",
