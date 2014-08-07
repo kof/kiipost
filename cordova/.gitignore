@@ -1,3 +1,2 @@
 config.xml
-www/*
-platforms/*
+/**/www
