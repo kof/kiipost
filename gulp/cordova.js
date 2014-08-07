@@ -18,6 +18,7 @@ module.exports = function(options) {
 
         function compileConfig() {
             if (options.data.conf != 'prod') options.data.env = options.data.conf.env
+            options.data.version = options.data.conf.version
             return readFile(dest + '/config.tpl', 'utf-8')
                 .then(function(tpl) {
                     tpl = hogan.compile(tpl).render(options.data)
