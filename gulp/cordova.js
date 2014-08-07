@@ -17,7 +17,7 @@ module.exports = function(options) {
         var dest = path.resolve(process.cwd(), options.dest)
 
         function compileConfig() {
-            if (options.data.conf != 'prod') options.data.env = options.data.conf.env
+            if (options.data.conf.env != 'prod') options.data.env = options.data.conf.env
             options.data.version = options.data.conf.version
             return readFile(dest + '/config.tpl', 'utf-8')
                 .then(function(tpl) {
