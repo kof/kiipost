@@ -15,20 +15,12 @@ module.exports = function(options) {
         var del = Promise.denodeify(require('del'))
 
         var dest = path.resolve(process.cwd(), options.dest)
-        var data = {
-            id: 'com.kiipost.app',
-            version: options.data.conf.version,
-            name: 'Kiipost'
-        }
-        if (options.data.conf.env != 'prod') {
-            data.id += '-' + options.data.conf.env
-            data.name += '-' + options.data.conf.env
-        }
 
         function compileConfig() {
+            if (options.data.conf != 'prod') options.data.env = options.data.conf.env
             return readFile(dest + '/config.tpl', 'utf-8')
                 .then(function(tpl) {
-                    tpl = hogan.compile(tpl).render(data)
+                    tpl = hogan.compile(tpl).render(options.data)
                     return writeFile(dest + '/config.xml', tpl)
                 })
         }
@@ -42,7 +34,7 @@ module.exports = function(options) {
         }
 
         function symlinkSplash() {
-            var splash = dest + '/platforms/ios/' + data.name + '/Resources/splash'
+            var splash = dest + '/platforms/ios/Kiipost/Resources/splash'
             return del(splash)
                 .then(function() {
                     return symlink(dest + '/splash', splash)
