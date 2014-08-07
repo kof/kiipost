@@ -28,7 +28,7 @@
                     "CoreGraphics.framework": [
                         {
                             "xml": "false",
-                            "count": 2
+                            "count": 6
                         }
                     ]
                 }
@@ -62,20 +62,20 @@
         }
     },
     "installed_plugins": {
+        "com.ben2.cordova.keyboard": {
+            "PACKAGE_NAME": "com.kiipost.app"
+        },
         "com.danielcwilson.plugins.socialauth": {
-            "PACKAGE_NAME": "Kiipost"
+            "PACKAGE_NAME": "com.kiipost.app"
         },
         "org.apache.cordova.dialogs": {
-            "PACKAGE_NAME": "Kiipost"
-        },
-        "com.ben2.cordova.keyboard": {
-            "PACKAGE_NAME": "Kiipost"
-        },
-        "org.apache.cordova.splashscreen": {
-            "PACKAGE_NAME": "Kiipost"
+            "PACKAGE_NAME": "com.kiipost.app"
         },
         "org.apache.cordova.inappbrowser": {
-            "PACKAGE_NAME": "Kiipost"
+            "PACKAGE_NAME": "com.kiipost.app"
+        },
+        "org.apache.cordova.splashscreen": {
+            "PACKAGE_NAME": "com.kiipost.app"
         }
     },
     "dependent_plugins": {}
