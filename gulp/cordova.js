@@ -7,38 +7,49 @@ module.exports = function(options) {
         var fs = require('fs')
         var path = require('path')
         var hogan = require('hogan.js')
+        var Promise = require('promise')
+        var readFile = Promise.denodeify(fs.readFile)
+        var writeFile = Promise.denodeify(fs.writeFile)
+        var symlink = Promise.denodeify(fs.symlink)
+        var exec = Promise.denodeify(cp.exec)
+        var del = Promise.denodeify(require('del'))
 
         var dest = path.resolve(process.cwd(), options.dest)
+        var data = {
+            id: 'com.kiipost.app',
+            version: options.data.conf.version,
+            name: 'Kiipost'
+        }
+        if (options.data.conf.env != 'prod') {
+            data.id += '-' + options.data.conf.env
+            data.name += '-' + options.data.conf.env
+        }
 
         function compileConfig() {
-            fs.readFile(dest + '/config.tpl', 'utf-8', function(err, tpl) {
-                if (err) return callback(err)
-                var data = {
-                    id: 'com.kiipost.app',
-                    version: options.data.conf.version,
-                    name: 'Kiipost'
-                }
-                if (options.data.conf.env != 'prod') {
-                    data.id += '-' + options.data.conf.env
-                    data.name += '-' + options.data.conf.env
-                }
-
-                tpl = hogan.compile(tpl).render(data)
-                fs.writeFile(dest + '/config.xml', tpl, function(err) {
-                    if (err) return callback(err)
-                    prepare()
+            return readFile(dest + '/config.tpl', 'utf-8')
+                .then(function(tpl) {
+                    tpl = hogan.compile(tpl).render(data)
+                    return writeFile(dest + '/config.xml', tpl)
                 })
-            })
         }
 
         function prepare() {
-            cp.exec('cd ' + dest + '; cordova prepare', function(err, stdout, stderr) {
-                if (stdout) console.log(stdout.toString())
-                if (stderr) console.log(stderr.toString())
-                callback(err)
-            })
+            return exec('cd ' + dest + '; cordova prepare')
+                .then(function(stdout, stderr) {
+                    if (stdout) console.log(stdout.toString())
+                    if (stderr) console.log(stderr.toString())
+                })
+        }
+
+        function symlinkSplash() {
+            var resources = dest + '/platforms/ios/' + data.name + '/Resources/splash'
+            return del(resources + '/splash', {force: true})
+                .then(symlink(dest + '/splash', resources))
         }
 
         compileConfig()
+            .then(prepare)
+            .then(symlinkSplash)
+            .nodeify(callback)
     }
 }
