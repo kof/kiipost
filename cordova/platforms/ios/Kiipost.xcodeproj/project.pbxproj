@@ -38,9 +38,18 @@
 		7E7966E61810823500FA85AD /* icon-small.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E7966DC1810823500FA85AD /* icon-small.png */; };
 		7E7966E71810823500FA85AD /* icon-small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E7966DD1810823500FA85AD /* icon-small@2x.png */; };
 		D4A0D8761607E02300AEF8BB /* Default-568h@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = D4A0D8751607E02300AEF8BB /* Default-568h@2x~iphone.png */; };
-		AFF324B1FEF24F41A8BA0242 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD11475A8B246A696A713B8 /* Accounts.framework */; };
-		67DA5A4EEDEE416E93620CDB /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE326C5ABADA425398A3AF4B /* Social.framework */; };
-		1662C865F2F7475585776779 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B23B48BF05EB48B3BEEEE781 /* AudioToolbox.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		4FE7DFCBA0E043BC84FE58FE /* CDVSplashScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 51E0CE5B873E439697179C3E /* CDVSplashScreen.m */; };
+		AFC4485F84D54EABAD4C21C7 /* CDVKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 81220928A6FC459895A51FAF /* CDVKeyboard.m */; };
+		75A67F0E724F42F7BEC4352A /* SocialAuthPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = DD41DA0E58104C0C9E8F4403 /* SocialAuthPlugin.m */; };
+		FF92C1FD956047029F5CBA31 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 35D7F6C4C1CF452C952E4C10 /* NSData+Base64.m */; };
+		00409123E88C4393A7EA2E94 /* OAuth+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 36C28E2F6E9840AB9546C645 /* OAuth+Additions.m */; };
+		2231D87CE6254D63BBB95135 /* OAuthCore.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BBE97D74B92466F87FF2D26 /* OAuthCore.m */; };
+		EDFAF8B389E84E4492A2F35C /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32E7A5AB7AE540F493D9F5A0 /* Accounts.framework */; };
+		6B50CE4766F74DD1A0EA6B03 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59E23F4C3C2748CD975550F2 /* Social.framework */; };
+		AC5978D582E04C23A0D260B5 /* CDVNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E09426996074A10A7CF472D /* CDVNotification.m */; };
+		5365D12868A743F4B22A006C /* CDVNotification.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D9817E201B594ED4B4514A56 /* CDVNotification.bundle */; };
+		269F3160E7AB4C87B851EF3B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBF479FF560C46B49F9DD948 /* AudioToolbox.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		A809489C17DE483A9E26CDE2 /* CDVInAppBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EA1356E3D1F4A2180A125E9 /* CDVInAppBrowser.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,9 +114,26 @@
 		EB87FDF31871DA8E0020F90C /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; name = www; path = ../../www; sourceTree = "<group>"; };
 		EB87FDF41871DAF40020F90C /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = ../../config.xml; sourceTree = "<group>"; };
 		F840E1F0165FE0F500CFE078 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = "Kiipost/config.xml"; sourceTree = "<group>"; };
-		5FD11475A8B246A696A713B8 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "Accounts.framework"; path = "System/Library/Frameworks/Accounts.framework"; sourceTree = SDKROOT; fileEncoding = 4; };
-		DE326C5ABADA425398A3AF4B /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "Social.framework"; path = "System/Library/Frameworks/Social.framework"; sourceTree = SDKROOT; fileEncoding = 4; };
-		B23B48BF05EB48B3BEEEE781 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "AudioToolbox.framework"; path = "System/Library/Frameworks/AudioToolbox.framework"; sourceTree = SDKROOT; fileEncoding = 4; };
+		51E0CE5B873E439697179C3E /* CDVSplashScreen.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVSplashScreen.m"; path = "org.apache.cordova.splashscreen/CDVSplashScreen.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		8F052AEA56F04FC6A6C2FA1C /* CDVSplashScreen.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVSplashScreen.h"; path = "org.apache.cordova.splashscreen/CDVSplashScreen.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		81220928A6FC459895A51FAF /* CDVKeyboard.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVKeyboard.m"; path = "com.ben2.cordova.keyboard/CDVKeyboard.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		0483D7CBCAFE4F79BF29822F /* CDVKeyboard.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVKeyboard.h"; path = "com.ben2.cordova.keyboard/CDVKeyboard.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		DD41DA0E58104C0C9E8F4403 /* SocialAuthPlugin.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "SocialAuthPlugin.m"; path = "com.danielcwilson.plugins.socialauth/SocialAuthPlugin.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		35D7F6C4C1CF452C952E4C10 /* NSData+Base64.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "NSData+Base64.m"; path = "com.danielcwilson.plugins.socialauth/NSData+Base64.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		36C28E2F6E9840AB9546C645 /* OAuth+Additions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "OAuth+Additions.m"; path = "com.danielcwilson.plugins.socialauth/OAuth+Additions.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		3BBE97D74B92466F87FF2D26 /* OAuthCore.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "OAuthCore.m"; path = "com.danielcwilson.plugins.socialauth/OAuthCore.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		A8A0042C4F9A40A6998F46F5 /* SocialAuthPlugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "SocialAuthPlugin.h"; path = "com.danielcwilson.plugins.socialauth/SocialAuthPlugin.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		A86BDC885CF347BB9E5FB302 /* NSData+Base64.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "NSData+Base64.h"; path = "com.danielcwilson.plugins.socialauth/NSData+Base64.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		651594DAFD674E6881BA60A1 /* OAuth+Additions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "OAuth+Additions.h"; path = "com.danielcwilson.plugins.socialauth/OAuth+Additions.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		2903846DCA094E41B485B44E /* OAuthCore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "OAuthCore.h"; path = "com.danielcwilson.plugins.socialauth/OAuthCore.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		32E7A5AB7AE540F493D9F5A0 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "Accounts.framework"; path = "System/Library/Frameworks/Accounts.framework"; sourceTree = SDKROOT; fileEncoding = 4; };
+		59E23F4C3C2748CD975550F2 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "Social.framework"; path = "System/Library/Frameworks/Social.framework"; sourceTree = SDKROOT; fileEncoding = 4; };
+		1E09426996074A10A7CF472D /* CDVNotification.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVNotification.m"; path = "org.apache.cordova.dialogs/CDVNotification.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		68F094CFD36B4B7FA92F6BC9 /* CDVNotification.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVNotification.h"; path = "org.apache.cordova.dialogs/CDVNotification.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		D9817E201B594ED4B4514A56 /* CDVNotification.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = "CDVNotification.bundle"; path = "CDVNotification.bundle"; sourceTree = "<group>"; };
+		BBF479FF560C46B49F9DD948 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "AudioToolbox.framework"; path = "System/Library/Frameworks/AudioToolbox.framework"; sourceTree = SDKROOT; fileEncoding = 4; };
+		2EA1356E3D1F4A2180A125E9 /* CDVInAppBrowser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVInAppBrowser.m"; path = "org.apache.cordova.inappbrowser/CDVInAppBrowser.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		8936E261896543B1958977E0 /* CDVInAppBrowser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVInAppBrowser.h"; path = "org.apache.cordova.inappbrowser/CDVInAppBrowser.h"; sourceTree = "<group>"; fileEncoding = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,9 +146,9 @@
 				288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */,
 				305D5FD1115AB8F900A74A75 /* MobileCoreServices.framework in Frameworks */,
 				5AEE5B35173C68D80009041E /* CoreLocation.framework in Frameworks */,
-				AFF324B1FEF24F41A8BA0242 /* Accounts.framework in Frameworks */,
-				67DA5A4EEDEE416E93620CDB /* Social.framework in Frameworks */,
-				1662C865F2F7475585776779 /* AudioToolbox.framework in Frameworks */,
+				EDFAF8B389E84E4492A2F35C /* Accounts.framework in Frameworks */,
+				6B50CE4766F74DD1A0EA6B03 /* Social.framework in Frameworks */,
+				269F3160E7AB4C87B851EF3B /* AudioToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -204,6 +230,7 @@
 				308D052D1370CCF300D202BF /* icons */,
 				308D05311370CCF300D202BF /* splash */,
 				8D1107310486CEB800E47090 /* Kiipost-Info.plist */,
+				D9817E201B594ED4B4514A56 /* CDVNotification.bundle */,
 			);
 			name = Resources;
 			path = "Kiipost/Resources";
@@ -216,9 +243,9 @@
 				5B1594DC16A7569C00FEF299 /* AssetsLibrary.framework */,
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
 				305D5FD0115AB8F900A74A75 /* MobileCoreServices.framework */,
-				5FD11475A8B246A696A713B8 /* Accounts.framework */,
-				DE326C5ABADA425398A3AF4B /* Social.framework */,
-				B23B48BF05EB48B3BEEEE781 /* AudioToolbox.framework */,
+				32E7A5AB7AE540F493D9F5A0 /* Accounts.framework */,
+				59E23F4C3C2748CD975550F2 /* Social.framework */,
+				BBF479FF560C46B49F9DD948 /* AudioToolbox.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -234,6 +261,22 @@
 		307C750510C5A3420062BCA9 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
+				51E0CE5B873E439697179C3E /* CDVSplashScreen.m */,
+				8F052AEA56F04FC6A6C2FA1C /* CDVSplashScreen.h */,
+				81220928A6FC459895A51FAF /* CDVKeyboard.m */,
+				0483D7CBCAFE4F79BF29822F /* CDVKeyboard.h */,
+				DD41DA0E58104C0C9E8F4403 /* SocialAuthPlugin.m */,
+				35D7F6C4C1CF452C952E4C10 /* NSData+Base64.m */,
+				36C28E2F6E9840AB9546C645 /* OAuth+Additions.m */,
+				3BBE97D74B92466F87FF2D26 /* OAuthCore.m */,
+				A8A0042C4F9A40A6998F46F5 /* SocialAuthPlugin.h */,
+				A86BDC885CF347BB9E5FB302 /* NSData+Base64.h */,
+				651594DAFD674E6881BA60A1 /* OAuth+Additions.h */,
+				2903846DCA094E41B485B44E /* OAuthCore.h */,
+				1E09426996074A10A7CF472D /* CDVNotification.m */,
+				68F094CFD36B4B7FA92F6BC9 /* CDVNotification.h */,
+				2EA1356E3D1F4A2180A125E9 /* CDVInAppBrowser.m */,
+				8936E261896543B1958977E0 /* CDVInAppBrowser.h */,
 			);
 			name = Plugins;
 			path = "Kiipost/Plugins";
@@ -397,6 +440,7 @@
 				7E7966E11810823500FA85AD /* icon-50@2x.png in Resources */,
 				7E7966E51810823500FA85AD /* icon-76@2x.png in Resources */,
 				30FC414916E50CA1004E6F35 /* icon-72@2x.png in Resources */,
+				5365D12868A743F4B22A006C /* CDVNotification.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -428,6 +472,14 @@
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* AppDelegate.m in Sources */,
 				302D95F114D2391D003F00A1 /* MainViewController.m in Sources */,
+				4FE7DFCBA0E043BC84FE58FE /* CDVSplashScreen.m in Sources */,
+				AFC4485F84D54EABAD4C21C7 /* CDVKeyboard.m in Sources */,
+				75A67F0E724F42F7BEC4352A /* SocialAuthPlugin.m in Sources */,
+				FF92C1FD956047029F5CBA31 /* NSData+Base64.m in Sources */,
+				00409123E88C4393A7EA2E94 /* OAuth+Additions.m in Sources */,
+				2231D87CE6254D63BBB95135 /* OAuthCore.m in Sources */,
+				AC5978D582E04C23A0D260B5 /* CDVNotification.m in Sources */,
+				A809489C17DE483A9E26CDE2 /* CDVInAppBrowser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

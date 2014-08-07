@@ -37,11 +37,7 @@
                 "parents": {
                     "/*": [
                         {
-                            "xml": "<feature name=\"SocialAuth\"><param name=\"ios-package\" value=\"SocialAuthPlugin\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"Notification\"><param name=\"ios-package\" value=\"CDVNotification\" /></feature>",
+                            "xml": "<feature name=\"SplashScreen\"><param name=\"ios-package\" value=\"CDVSplashScreen\" /><param name=\"onload\" value=\"true\" /></feature>",
                             "count": 1
                         },
                         {
@@ -49,7 +45,11 @@
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"SplashScreen\"><param name=\"ios-package\" value=\"CDVSplashScreen\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "xml": "<feature name=\"SocialAuth\"><param name=\"ios-package\" value=\"SocialAuthPlugin\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Notification\"><param name=\"ios-package\" value=\"CDVNotification\" /></feature>",
                             "count": 1
                         },
                         {
@@ -62,20 +62,20 @@
         }
     },
     "installed_plugins": {
-        "com.danielcwilson.plugins.socialauth": {
-            "PACKAGE_NAME": "Kiipost"
-        },
-        "org.apache.cordova.dialogs": {
-            "PACKAGE_NAME": "Kiipost"
+        "org.apache.cordova.splashscreen": {
+            "PACKAGE_NAME": "com.kiipost.app"
         },
         "com.ben2.cordova.keyboard": {
-            "PACKAGE_NAME": "Kiipost"
+            "PACKAGE_NAME": "com.kiipost.app"
         },
-        "org.apache.cordova.splashscreen": {
-            "PACKAGE_NAME": "Kiipost"
+        "com.danielcwilson.plugins.socialauth": {
+            "PACKAGE_NAME": "com.kiipost.app"
+        },
+        "org.apache.cordova.dialogs": {
+            "PACKAGE_NAME": "com.kiipost.app"
         },
         "org.apache.cordova.inappbrowser": {
-            "PACKAGE_NAME": "Kiipost"
+            "PACKAGE_NAME": "com.kiipost.app"
         }
     },
     "dependent_plugins": {}
