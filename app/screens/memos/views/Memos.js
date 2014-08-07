@@ -71,7 +71,7 @@ Memos.DEFAULT_OPTIONS = {}
 
 Memos.prototype.load = function(options) {
     if (this.loaded) return
-    this.spinner.show(true)
+    this.spinner.show()
     this.models.user.authorize.then(function() {
         this.stream.load(options)
     }.bind(this))

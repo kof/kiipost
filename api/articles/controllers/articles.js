@@ -2,17 +2,25 @@
 
 var m = require('mongoose')
 var _ = require('underscore')
+var ms = require('ms')
+var lru = require('lru-cache')
 
 var getTags = require('../helpers/getTags')
 
+var cache = lru({maxAge: ms('8h')})
+
 /**
  * Read saved memos.
+ *
+ * TODO move caching to some database when scaling the process.
  */
 exports.read = function *() {
-    var user
+    var userId = this.session.user._id
+    var skip = this.query.skip
+    var limit = this.query.limit
 
-    user = yield m.model('user')
-        .findById(this.session.user._id)
+    var user = yield m.model('user')
+        .findById(userId)
         .select({processing: 1})
         .exec()
 
@@ -27,13 +35,24 @@ exports.read = function *() {
             query.$or.push({tags: {$all: data.tags}})
         })
 
-        this.body = yield m.model('article')
-            .find(query)
-            .sort({pubDate: -1})
-            .skip(this.query.skip)
-            .limit(this.query.limit)
-            .select({summary: 1, pubDate: 1, title: 1, url: 1, images: 1, icon: 1,
-                enclosures: 1})
-            .exec()
+        var key = JSON.stringify([query, skip, limit])
+        var articles = cache.get(key)
+
+        if (articles) {
+            this.body = articles
+        } else {
+            articles = yield m.model('article')
+                .find(query)
+                .sort({pubDate: -1})
+                .skip(skip)
+                .limit(limit)
+                .select({summary: 1, pubDate: 1, title: 1, url: 1, images: 1, icon: 1,
+                    enclosures: 1})
+                .lean()
+                .exec()
+
+            cache.set(key, articles)
+            this.body = articles
+        }
     }
 }

@@ -11,7 +11,7 @@ var publicProps = require('./publicProps')
 
 var publicPropsKeys = _.keys(publicProps)
 
-var twitterSyncCache = lru({maxAge: ms('5m')})
+var twitterSyncCache = lru({maxAge: ms('1h')})
 
 /**
  * Signup or login a user.

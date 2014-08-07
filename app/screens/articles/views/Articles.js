@@ -77,7 +77,7 @@ Articles.DEFAULT_OPTIONS = {
 
 Articles.prototype.load = function() {
     if (this._loaded) return
-    this.spinner.show(true)
+    this.spinner.show()
     this.models.user.authorize.then(this.stream.load.bind(this.stream))
     this._loaded = true
 }
