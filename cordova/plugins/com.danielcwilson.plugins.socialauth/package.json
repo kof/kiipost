@@ -1,0 +1,13 @@
+{
+    "version": "0.1.0",
+    "name": "com.danielcwilson.plugins.socialauth",
+    "cordova_name": "Social Authentication Plugin",
+    "description": "Simple Social Authentication (Twitter/Facebook) for integrated OS accounts",
+    "license": "MIT License",
+    "engines": [
+        {
+            "name": "cordova",
+            "version": ">=3.0.0"
+        }
+    ]
+}
