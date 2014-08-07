@@ -17,6 +17,7 @@ exports.read = function* () {
         this.status = 'service unavailable'
         this.set('retry-after', 5)
     } else {
+        console.time('memos fetch')
         this.body = yield m.model('memo')
             .find({userId: user._id})
             .sort({createdAt: -1})
@@ -26,5 +27,6 @@ exports.read = function* () {
                 'articles.summary': 1, 'articles.images': 1, 'articles.icon': 1,
                 'articles.enclosures': 1})
             .exec()
+        console.timeEnd('memos fetch')
     }
 }
