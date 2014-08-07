@@ -10,25 +10,25 @@
                     "Accounts.framework": [
                         {
                             "xml": "false",
-                            "count": 1
+                            "count": 2
                         }
                     ],
                     "Social.framework": [
                         {
                             "xml": "false",
-                            "count": 1
+                            "count": 2
                         }
                     ],
                     "AudioToolbox.framework": [
                         {
                             "xml": "true",
-                            "count": 1
+                            "count": 2
                         }
                     ],
                     "CoreGraphics.framework": [
                         {
                             "xml": "false",
-                            "count": 2
+                            "count": 3
                         }
                     ]
                 }
@@ -38,23 +38,23 @@
                     "/*": [
                         {
                             "xml": "<feature name=\"SplashScreen\"><param name=\"ios-package\" value=\"CDVSplashScreen\" /><param name=\"onload\" value=\"true\" /></feature>",
-                            "count": 1
+                            "count": 2
                         },
                         {
                             "xml": "<feature name=\"Keyboard\"><param name=\"ios-package\" onload=\"true\" value=\"CDVKeyboard\" /></feature>",
-                            "count": 1
+                            "count": 2
                         },
                         {
                             "xml": "<feature name=\"SocialAuth\"><param name=\"ios-package\" value=\"SocialAuthPlugin\" /></feature>",
-                            "count": 1
+                            "count": 2
                         },
                         {
                             "xml": "<feature name=\"Notification\"><param name=\"ios-package\" value=\"CDVNotification\" /></feature>",
-                            "count": 1
+                            "count": 2
                         },
                         {
                             "xml": "<feature name=\"InAppBrowser\"><param name=\"ios-package\" value=\"CDVInAppBrowser\" /></feature>",
-                            "count": 1
+                            "count": 2
                         }
                     ]
                 }
@@ -62,9 +62,6 @@
         }
     },
     "installed_plugins": {
-        "org.apache.cordova.splashscreen": {
-            "PACKAGE_NAME": "com.kiipost.app"
-        },
         "com.ben2.cordova.keyboard": {
             "PACKAGE_NAME": "com.kiipost.app"
         },
@@ -75,6 +72,9 @@
             "PACKAGE_NAME": "com.kiipost.app"
         },
         "org.apache.cordova.inappbrowser": {
+            "PACKAGE_NAME": "com.kiipost.app"
+        },
+        "org.apache.cordova.splashscreen": {
             "PACKAGE_NAME": "com.kiipost.app"
         }
     },
