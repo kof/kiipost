@@ -50,6 +50,7 @@
 		A5338FD906E643A0B60B8999 /* CDVNotification.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 93DB6AC4422B412E84920F50 /* CDVNotification.bundle */; };
 		4DFA0BF14B28401D985D70C7 /* CDVInAppBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 29D9A3AC0E1440E9AA042488 /* CDVInAppBrowser.m */; };
 		23CF53A86D544E798D2B1454 /* CDVSplashScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 28977D9107B04BEFBD3B9A97 /* CDVSplashScreen.m */; };
+		6096B7F849E348BA87E6D855 /* CDVStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = DCA3E08BCC46422687934DD2 /* CDVStatusBar.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -134,6 +135,8 @@
 		35C885D9696346A8A2079AB1 /* CDVInAppBrowser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVInAppBrowser.h"; path = "org.apache.cordova.inappbrowser/CDVInAppBrowser.h"; sourceTree = "<group>"; fileEncoding = 4; };
 		28977D9107B04BEFBD3B9A97 /* CDVSplashScreen.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVSplashScreen.m"; path = "org.apache.cordova.splashscreen/CDVSplashScreen.m"; sourceTree = "<group>"; fileEncoding = 4; };
 		62D4A0CC5FE3408BA67A78BE /* CDVSplashScreen.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVSplashScreen.h"; path = "org.apache.cordova.splashscreen/CDVSplashScreen.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		DCA3E08BCC46422687934DD2 /* CDVStatusBar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVStatusBar.m"; path = "org.apache.cordova.statusbar/CDVStatusBar.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		9372AACFCD004EEF924A4164 /* CDVStatusBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVStatusBar.h"; path = "org.apache.cordova.statusbar/CDVStatusBar.h"; sourceTree = "<group>"; fileEncoding = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -277,6 +280,8 @@
 				35C885D9696346A8A2079AB1 /* CDVInAppBrowser.h */,
 				28977D9107B04BEFBD3B9A97 /* CDVSplashScreen.m */,
 				62D4A0CC5FE3408BA67A78BE /* CDVSplashScreen.h */,
+				DCA3E08BCC46422687934DD2 /* CDVStatusBar.m */,
+				9372AACFCD004EEF924A4164 /* CDVStatusBar.h */,
 			);
 			name = Plugins;
 			path = "Kiipost/Plugins";
@@ -480,6 +485,7 @@
 				C08433303A88473CA7EF92E9 /* CDVNotification.m in Sources */,
 				4DFA0BF14B28401D985D70C7 /* CDVInAppBrowser.m in Sources */,
 				23CF53A86D544E798D2B1454 /* CDVSplashScreen.m in Sources */,
+				6096B7F849E348BA87E6D855 /* CDVStatusBar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

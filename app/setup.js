@@ -10,6 +10,7 @@ var backbone = require('backbone')
 
 var conf = require('app/conf')
 var log = require('app/components/log')
+var deviceready = require('./components/deviceready')
 
 require('jquery.ajax-retry')
 
@@ -51,3 +52,7 @@ if (conf.server.sentryDsn) {
         sentryDsn: conf.server.sentryDsn
     })
 }
+
+deviceready.then(function() {
+    if (window.StatusBar) StatusBar.hide()
+})
