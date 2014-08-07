@@ -26,6 +26,7 @@ exports.read = function* () {
             .select({text: 1, createdAt: 1, tweetId: 1, 'articles.title': 1, 'articles.url': 1,
                 'articles.summary': 1, 'articles.images': 1, 'articles.icon': 1,
                 'articles.enclosures': 1})
+            .lean()
             .exec()
         console.timeEnd('memos fetch')
     }
