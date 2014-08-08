@@ -2,6 +2,7 @@
 
 var inherits = require('inherits')
 var _ = require('underscore')
+var moment = require('moment')
 
 var View = require('famous/core/View')
 var Transform = require('famous/core/Transform')
@@ -11,6 +12,24 @@ var ContainerSurface = require('famous/surfaces/ContainerSurface')
 
 var app = require('app')
 var constants = require('app/constants')
+
+moment.locale('en-short', {
+    relativeTime : {
+        future: '%s',
+        past: '%s',
+        s: '%ds',
+        m: '%dm',
+        mm: '%dm',
+        h: '%dh',
+        hh: '%dh',
+        d: '%dd',
+        dd: '%dd',
+        M: '%dmo',
+        MM: '%dmo',
+        y: '%dy',
+        yy: '%dy'
+    }
+});
 
 function Article() {
     View.apply(this, arguments)
@@ -33,7 +52,8 @@ Article.DEFAULT_OPTIONS = {
     model: null,
     scrollview: null,
     title: {height: 0.39},
-    summary: {height: 0.43}
+    summary: {height: 0.43},
+    date: {width: 40}
 }
 
 Article.prototype.initialize = function() {
@@ -71,13 +91,23 @@ Article.prototype.initialize = function() {
 
     this._link = new Surface({
         classes: ['truncate', 'link'],
-        size: [textWidth, true]
+        size: [textWidth - o.date.width, true]
     })
     this.container
         .add(new Modifier({
             transform: Transform.translate(0, titleHeight + summaryHeight)
         }))
         .add(this._link)
+
+    this._date = new Surface({
+        classes: ['date'],
+        size: [o.date.width, true]
+    })
+    this.container
+        .add(new Modifier({
+            transform: Transform.translate(textWidth - o.date.width, titleHeight + summaryHeight)
+        }))
+        .add(this._date)
 
     this._image = new Surface({
         classes: ['image'],
@@ -97,6 +127,14 @@ Article.prototype.setContent = function() {
     this._title.setContent(a.title)
     this._summary.setContent(a.summary)
     this._link.setContent(a.hostname)
+    console.log(moment(a.pubDate).locale('en-short').fromNow(true))
+    this._date.setContent(moment(a.pubDate).locale('en-short').fromNow(true))
+}
+
+Article.prototype._formatDate = function(dateStr) {
+    var now = Date.now()
+    var date = new Date(dateStr)
+
 }
 
 Article.prototype._setImage = function() {

@@ -23,11 +23,15 @@
     overflow: hidden;
     color: #bebebe;
 }
-.article .link {
-    height: 1.5rem;
+.article .link,
+.article .date {
     padding: 0.3rem 0.7rem 0 0.7rem;
     font-size: 0.8rem;
     line-height: 1;
     text-decoration: none;
     color: #bebebe;
+}
+.article .date {
+    padding: 0.3rem 0.7rem 0 0;
+    text-align: right;
 }
