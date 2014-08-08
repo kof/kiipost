@@ -127,14 +127,7 @@ Article.prototype.setContent = function() {
     this._title.setContent(a.title)
     this._summary.setContent(a.summary)
     this._link.setContent(a.hostname)
-    console.log(moment(a.pubDate).locale('en-short').fromNow(true))
     this._date.setContent(moment(a.pubDate).locale('en-short').fromNow(true))
-}
-
-Article.prototype._formatDate = function(dateStr) {
-    var now = Date.now()
-    var date = new Date(dateStr)
-
 }
 
 Article.prototype._setImage = function() {
