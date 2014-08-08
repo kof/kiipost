@@ -8,7 +8,7 @@ var getTags = require('../helpers/getTags')
 /**
  * Read saved memos.
  */
-exports.read = function *() {
+exports.read = function* () {
     var articleId = this.params.id
     var article
 

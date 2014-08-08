@@ -10,50 +10,103 @@ var getTags = require('../helpers/getTags')
 var cache = lru({maxAge: ms('8h')})
 
 /**
- * Read saved memos.
+ * Discover articles.
  *
  * TODO move caching to some database when scaling the process.
  */
-exports.read = function *() {
-    var userId = this.session.user._id
-    var skip = this.query.skip
-    var limit = this.query.limit
+exports.read = function* () {
+    if (this.query.articleId) yield readRelatedArticles.call(this)
+    else yield readUserArticles.call(this)
+}
 
-    var user = yield m.model('user')
-        .findById(userId)
-        .select({processing: 1})
-        .lean()
-        .exec()
+/**
+ * Articles based on user memos.
+ */
+function readUserArticles() {
+    return function* () {
+        var userId = this.session.user._id
+        var skip = this.query.skip
+        var limit = this.query.limit
 
-    if (user.processing.TwitterSync) {
-        this.status = 'service unavailable'
-        this.set('retry-after', 5)
-    } else {
-        var tagsData = yield getTags(user._id)
-        var query = {$or: []}
+        var user = yield m.model('user')
+            .findById(userId)
+            .select({processing: 1})
+            .lean()
+            .exec()
 
-        tagsData.forEach(function(data) {
-            query.$or.push({tags: {$all: data.tags}})
-        })
-
-        var key = JSON.stringify([query, skip, limit])
-        var articles = cache.get(key)
-
-        if (articles) {
-            this.body = articles
+        if (user.processing.TwitterSync) {
+            this.status = 'service unavailable'
+            this.set('retry-after', 5)
         } else {
-            articles = yield m.model('article')
-                .find(query)
-                .sort({pubDate: -1})
-                .skip(skip)
-                .limit(limit)
-                .select({summary: 1, pubDate: 1, title: 1, url: 1, images: 1, icon: 1,
-                    enclosures: 1})
-                .lean()
-                .exec()
+            var tagsData = yield getTags(user._id)
+            var query = {$or: []}
 
-            cache.set(key, articles)
-            this.body = articles
+            tagsData.forEach(function(data) {
+                query.$or.push({tags: {$all: data.tags}})
+            })
+
+            var key = JSON.stringify([query, skip, limit])
+            var articles = cache.get(key)
+
+            if (articles) {
+                this.body = articles
+            } else {
+                articles = yield findArticles({
+                    query: query,
+                    skip: skip,
+                    limit: limit
+                })
+                cache.set(key, articles)
+                this.body = articles
+            }
         }
+
+    }
+}
+
+m.set('debug', true)
+
+/**
+ * Articles related to the passed article.
+ */
+function readRelatedArticles() {
+    return function* () {
+        var articleId = this.query.articleId
+        var skip = this.query.skip
+        var limit = this.query.limit
+
+        var article = yield m.model('article')
+            .findById(articleId)
+            .select({tags: 1})
+            .lean()
+            .exec()
+
+        var query = {
+            _id: {$ne: articleId},
+            tags: {$all: _(article.tags).first(3)}
+        }
+
+        this.body = yield findArticles({
+            query: query,
+            skip: skip,
+            limit: limit
+        })
+    }
+}
+
+/**
+ * Execute articles search.
+ */
+function findArticles(options) {
+    return function* () {
+        return yield m.model('article')
+            .find(options.query)
+            .sort({pubDate: -1})
+            .skip(options.skip)
+            .limit(options.limit)
+            .select({summary: 1, pubDate: 1, title: 1, url: 1, images: 1, icon: 1,
+                enclosures: 1})
+            .lean()
+            .exec()
     }
 }

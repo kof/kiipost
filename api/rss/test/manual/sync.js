@@ -9,7 +9,7 @@ var sync = require('../../sync')
 db.init()
     .then(function() {
         console.time('sync')
-        co(function *(){
+        co(function* (){
             return yield sync({
                 /*
                 query: {feed: {$in: ['http://techcrunch.com/fundings-exits/feed/',

@@ -8,7 +8,7 @@ var sync = require('../../sync')
 
 db.init()
     .then(function() {
-        co(function *(){
+        co(function* (){
             console.time('sync')
             try {
                 yield sync({userId: '5399bcb42dc63a5df063653c'})

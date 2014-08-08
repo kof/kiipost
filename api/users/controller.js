@@ -7,7 +7,7 @@ var signin = require('./signin')
 /**
  * Create session for ios user.
  */
-exports.create = function *() {
+exports.create = function* () {
     try {
         this.body = yield signin(this.request.body, this.session.isAuthorized)
         this.session.$set('isAuthorized', true)
