@@ -8,7 +8,8 @@ var LayeredTransition = require('app/components/animations/LayeredTransition')
 var ArticleModel = require('app/components/article/models/Article')
 var MemoModel = require('app/components/memo/models/Memo')
 
-var FullArticleView = require('./views/FullArticle')
+var MemoFullArticleView = require('./views/MemoFullArticle')
+var NewFullArticleView = require('./views/NewFullArticle')
 
 var app = require('app')
 
@@ -31,10 +32,12 @@ FullArticle.DEFAULT_OPTIONS = {models: null}
 
 FullArticle.prototype.initialize = function() {
     this.layeredTransition = new LayeredTransition({size: app.context.getSize()})
-    this.view = new FullArticleView({models: this.models})
-    this.view.on('close', function() {
-        app.context.emit('fullArticle:close', {isMemo: this.isMemo})
-    }.bind(this))
+    this.views = {
+        memoFullArticleView: new MemoFullArticleView(),
+        newFullArticleView: new NewFullArticleView({models: this.models})
+    }
+    this.views.memoFullArticleView.on('close', this._onClose.bind(this))
+    this.views.newFullArticleView.on('close', this._onClose.bind(this))
     app.context.on('fullArticle:open', this._onOpen.bind(this))
 }
 
@@ -48,15 +51,16 @@ FullArticle.prototype.memos = function(id) {
 
 FullArticle.prototype._show = function(id, isMemo, model, callback) {
     var prev = this.current
+    var view = this._currView = isMemo ? this.views.memoFullArticleView : this.views.newFullArticleView
     this.current = id
-    if (id != prev) this.view.cleanup()
+    if (id != prev) view.cleanup()
     if (model) {
         var articleModel = isMemo ? model.get('articles')[0] : model
-        this.view.setPreviewContent(articleModel, show.bind(this))
+        view.setPreviewContent(articleModel, show.bind(this))
     } else show.call(this)
 
     function show() {
-        app.controller.show(this.view, load.bind(this))
+        app.controller.show(view, load.bind(this))
     }
 
     function load() {
@@ -66,10 +70,9 @@ FullArticle.prototype._show = function(id, isMemo, model, callback) {
 }
 
 FullArticle.prototype._load = function(id, isMemo) {
-    var view = this.view
+    var view = this._currView
 
     this.isMemo = isMemo
-    view.setOptions({hasKiipostBtn: !isMemo})
     view.spinner.show()
     this.models.user.authorize.then(function() {
         var xhr
@@ -77,14 +80,12 @@ FullArticle.prototype._load = function(id, isMemo) {
         view.setOptions({models: _.defaults({memo: memo}, view.models)})
 
         if (isMemo) {
-            xhr = memo
-                .fetch()
-                .then(function() {
-                    this.model = memo.get('articles')[0]
-                    this.setContent()
-                }.bind(view))
+            xhr = memo.fetch().then(function() {
+                view.setOptions({model: memo.get('articles')[0]})
+                view.setContent()
+            })
         } else {
-            view.model = new ArticleModel({_id: id})
+            view.setOptions({model: new ArticleModel({_id: id})})
             xhr = view.model.fetch().then(function() {
                 memo.set('articles', [view.model])
                 view.setContent()
@@ -103,4 +104,8 @@ FullArticle.prototype._onOpen = function(model) {
         this.layeredTransition.commit(app.controller, true)
     }.bind(this))
     this.navigate((isMemo ? 'full-articles/memos' : 'full-articles/new') + '/' + model.id)
+}
+
+FullArticle.prototype._onClose = function() {
+    app.context.emit('fullArticle:close', {isMemo: this.isMemo})
 }
