@@ -29,6 +29,7 @@ NewFullArticle.DEFAULT_OPTIONS = {
 
 NewFullArticle.prototype.initialize = function() {
     this.articleView = new FullArticleView(this.options)
+    this.articleView.container.addClass('new-full-article')
     this.container = this.articleView.container
     this.containerModifier = this.articleView.containerModifier
     this.spinner = this.articleView.spinner

@@ -35,9 +35,9 @@
     font-size: 1.2rem;
     line-height: 1.4;
 }
-.full-article .text .size-detector {
+.full-article .text .content {
     box-sizing: border-box;
-    padding: 1rem 1rem 5rem 1rem;
+    padding: 1rem;
 }
 .full-article .text p {
     margin: 0;
@@ -52,13 +52,4 @@
     display:  block;
     margin-bottom: 1rem;
 }
-.full-article .kiipost-btn {
-    width: 3.75rem;
-    height: 3.75rem;
-    cursor: pointer;
-    z-index: 1;
-    background: url('components/content/images/logo.svg') no-repeat center #000;
-    background-size: 33%;
-    border: 3px solid #b4b4b4;
-    border-radius: 100%;
-}
+

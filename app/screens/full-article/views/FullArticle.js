@@ -77,7 +77,12 @@ FullArticle.prototype.initialize = function() {
 
 FullArticle.prototype.setContent = function() {
     this.title.textContent = this.model.get('title')
-    this.text.setContent(this._getLink() + this.model.get('description'))
+    this.text.setContent(
+        '<div class="content">' +
+            this._getLink() +
+            this.model.get('description') +
+        '</div>'
+    )
     this._setImage(this.model)
     this.bg.resume()
     setTimeout(this._setTextSize.bind(this), 200)
