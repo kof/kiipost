@@ -20,53 +20,32 @@ var ArticlesController = require('./screens/articles/Controller')
 var FullArticleController = require('./screens/full-article/Controller')
 var MemosController = require('./screens/memos/Controller')
 
-var context = exports.context = Engine.createContext()
-
 exports.imagesLoader = new ImagesLoader()
 
 exports.controller = new RenderController()
 new BaseTransition().commit(exports.controller)
 
-context.add(exports.controller)
-
-exports.ready = new Promise(function(fulfill, reject) {
-    var isResized
-    var isDomReady
-    var isDeviceReady = !window.cordova
-
-    context.on('resize', function() {
-        isResized = true
-        resolve()
-    })
-
-    domready(function() {
-        isDomReady = true
-        resolve()
-    })
-
-    deviceready.then(function() {
-        isDeviceReady = true
-        resolve()
-    })
-
-    function resolve() {
-        if (isResized && isDomReady && isDeviceReady) fulfill()
-    }
-})
-
 exports.controllers = {}
 
-// Some views require to know the context size immediately.
-exports.ready.then(function() {
-    var options = {router: true, models: {}}
+domready(function() {
+    var context = exports.context = Engine.createContext()
+    context.add(exports.controller)
 
-    options.models.user = new UserModel()
+    var contextready = new Promise(function(fulfill) {
+        context.on('resize', fulfill)
+    })
 
-    exports.controllers.signin = new SigninController(options)
-    exports.controllers.articles = new ArticlesController(options)
-    exports.controllers.fullArticle = new FullArticleController(options)
-    exports.controllers.memos = new MemosController(options)
+    Promise.all([deviceready, contextready]).then(function() {
+        var options = {router: true, models: {}}
 
-    backbone.history.start()
-    if (backbone.history.getFragment()) exports.controllers.signin.do()
+        options.models.user = new UserModel()
+
+        exports.controllers.signin = new SigninController(options)
+        exports.controllers.articles = new ArticlesController(options)
+        exports.controllers.memos = new MemosController(options)
+        exports.controllers.fullArticle = new FullArticleController(options)
+
+        backbone.history.start()
+        if (backbone.history.getFragment()) exports.controllers.signin.do()
+    })
 })

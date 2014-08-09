@@ -1,11 +1,16 @@
 'use strict'
 
-var ready = false
-var Promise = window.Promise || require('promise')
+var Promise = require('promise')
 
-document.addEventListener('deviceready', function() {
+var ready = false
+
+if (window.cordova) {
+    document.addEventListener('deviceready', function() {
+        ready = true
+    })
+} else {
     ready = true
-})
+}
 
 module.exports = new Promise(function(fulfill) {
     if (ready) return fulfill()

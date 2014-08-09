@@ -14,8 +14,8 @@ var app = require('app')
 
 function FullArticle(options) {
     this.routes = {
-        'articles/:id': 'article',
-        'memos/:id': 'memo'
+        'full-articles/new/:id': 'new',
+        'full-articles/memos/:id': 'memos'
     }
 
     options = _.extend({}, FullArticle.DEFAULT_OPTIONS, options)
@@ -38,15 +38,23 @@ FullArticle.prototype.initialize = function() {
     app.context.on('fullArticle:open', this._onOpen.bind(this))
 }
 
-FullArticle.prototype.article = function(id) {
+FullArticle.prototype.new = function(id) {
     this._show(id, false)
 }
 
-FullArticle.prototype.memo = function(id) {
+FullArticle.prototype.memos = function(id) {
     this._show(id, true)
 }
 
 FullArticle.prototype._show = function(id, isMemo, model, callback) {
+    var prev = this.current
+    this.current = id
+    if (id != prev) this.view.cleanup()
+    if (model) {
+        var articleModel = isMemo ? model.get('articles')[0] : model
+        this.view.setPreviewContent(articleModel, show.bind(this))
+    } else show.call(this)
+
     function show() {
         app.controller.show(this.view, load.bind(this))
     }
@@ -55,13 +63,6 @@ FullArticle.prototype._show = function(id, isMemo, model, callback) {
         if (id != prev) this._load(id, isMemo)
         if (callback) callback()
     }
-
-    var prev = this.current
-    this.current = id
-    if (id != prev) this.view.cleanup()
-    model = isMemo ? model.get('articles')[0] : model
-    if (model) this.view.setPreviewContent(model, show.bind(this))
-    else show.call(this)
 }
 
 FullArticle.prototype._load = function(id, isMemo) {
@@ -101,5 +102,5 @@ FullArticle.prototype._onOpen = function(model) {
     this._show(model.id, isMemo, model, function() {
         this.layeredTransition.commit(app.controller, true)
     }.bind(this))
-    this.navigate((isMemo ? 'memos' : 'articles') + '/' + model.id)
+    this.navigate((isMemo ? 'full-articles/memos' : 'full-articles/new') + '/' + model.id)
 }
