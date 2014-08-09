@@ -81,7 +81,7 @@ NewFullArticle.prototype._onKiipostHide = function() {
 }
 
 NewFullArticle.prototype._onKiipostSaved = function() {
-    app.context.emit('NewFullArticle:kiiposted', this.model)
+    app.context.emit('fullArticle:kiiposted', this.model)
 }
 
 NewFullArticle.prototype._onOptionsChange = function(option) {
