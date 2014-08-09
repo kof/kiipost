@@ -35,20 +35,20 @@
     font-size: 1.2rem;
     line-height: 1.4;
 }
-.full-article .content {
-    padding: 1rem 1rem 5rem 1rem;
+.full-article .text .size-detector {
     box-sizing: border-box;
+    padding: 1rem 1rem 5rem 1rem;
 }
-.full-article .content p {
+.full-article .text p {
     margin: 0;
 }
-.full-article .content a {
+.full-article .text a {
     text-decoration: none;
 }
-.full-article .content img {
+.full-article .text img {
     width: 100%;
 }
-.full-article .content a.source {
+.full-article .text a.source {
     display:  block;
     margin-bottom: 1rem;
 }

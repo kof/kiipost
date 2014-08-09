@@ -12,10 +12,11 @@
     font-size: 1.7rem;
     text-shadow: 1px 1px 4px rgba(0,0,0,0.50);
 }
-.terms .content {
-    padding: 4rem 1rem 1rem 1rem;
-}
+
 .terms pre {
+    box-sizing: border-box;
+    padding: 4rem 1rem 1rem 1rem;
+    margin: 0;
     white-space: pre-line;
     font-family: inherit;
     line-height: 1.5;

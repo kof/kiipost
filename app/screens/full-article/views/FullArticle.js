@@ -60,16 +60,12 @@ FullArticle.prototype.initialize = function() {
     this.header.pipe(this.scrollview)
     this.surfaces.push(this.header)
 
-    this.textContent = document.createElement('div')
-    this.textContent.className = 'content'
     this.text = new Surface({
-        content: this.textContent,
-        size: [this._size[0], this._size[1] - this._headerSize[1]],
+        size: [undefined, true],
         classes: ['text']
     })
-
     this.text.pipe(this.scrollview)
-    this.textContent.addEventListener('click', this._onTextClick.bind(this))
+    this.text.on('click', this._onTextClick.bind(this))
     this.surfaces.push(this.text)
 
     this.spinner = new SpinnerView({origin: [0.5, 0.7]})
@@ -81,11 +77,12 @@ FullArticle.prototype.initialize = function() {
 
 FullArticle.prototype.setContent = function() {
     this.title.textContent = this.model.get('title')
-    this.textContent.innerHTML = this._getLink() + this.model.get('description')
+    this.text.setContent(this._getLink() + this.model.get('description'))
     this._setImage(this.model)
     this.bg.resume()
+    setTimeout(this._setTextSize.bind(this), 200)
     // We need to check periodicaly the height because of images in the content.
-    this._textHeightIntervalId = setInterval(this._setTextHeight.bind(this), 500)
+    this._textSizeIntervalId = setInterval(this._setTextSize.bind(this), 1000)
 }
 
 /**
@@ -99,7 +96,7 @@ FullArticle.prototype.setPreviewContent = function(model, callback) {
 
 FullArticle.prototype.cleanup = function() {
     this.title.textContent = ''
-    this.textContent.textContent = ''
+    this.text.setContent('')
     this._resetImage()
     this.bg.setContent()
 }
@@ -147,17 +144,8 @@ FullArticle.prototype._setImage = function(model, callback) {
     else app.imagesLoader.load(image.url, setImage.bind(this))
 }
 
-FullArticle.prototype._setTextHeight = function() {
-    var textHeight = this.textContent.offsetHeight
-    var headerHeight = this._headerSize[1]
-    var contextHeight = this._size[1]
-
-    if (textHeight + headerHeight < contextHeight) textHeight = contextHeight - headerHeight
-
-    if (this._textSize[1] != textHeight) {
-        this._textSize[1] = textHeight
-        this.text.setSize(this._textSize)
-    }
+FullArticle.prototype._setTextSize = function() {
+    this.text.setSize(this.text.getSize(true))
 }
 
 FullArticle.prototype._open = function(url) {
@@ -170,7 +158,7 @@ FullArticle.prototype._open = function(url) {
 }
 
 FullArticle.prototype._onRecall = function() {
-    clearInterval(this._textHeightIntervalId)
+    clearInterval(this._textSizeIntervalId)
 }
 
 FullArticle.prototype._onTopBtnClick = function(e) {

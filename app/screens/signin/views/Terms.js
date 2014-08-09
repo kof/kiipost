@@ -2,14 +2,14 @@
 
 var inherits = require('inherits')
 
+var Engine = require('famous/core/Engine')
 var View = require('famous/core/View')
 var Surface = require('famous/core/Surface')
 var Modifier = require('famous/core/Modifier')
 var Transform = require('famous/core/Transform')
+
 var ContainerSurface = require('famous/surfaces/ContainerSurface')
 var Scrollview = require('famous/views/Scrollview')
-
-var AutoSizedSurface = require('app/components/famous/AutoSizedSurface')
 
 var termsText = require('../templates/terms.html')
 
@@ -25,6 +25,7 @@ Terms.prototype.initialize = function() {
     this.container = new ContainerSurface({
         classes: ['terms']
     })
+    this.container.on('deploy', this._onDeploy.bind(this))
     this.add(this.container)
 
     this.header = new Surface({
@@ -44,7 +45,7 @@ Terms.prototype.initialize = function() {
     this.container.add(scrollview)
     scrollview.sequenceFrom(this.contents)
 
-    this.content = new AutoSizedSurface({
+    this.content = new Surface({
         content: termsText,
         size: [undefined, true],
         classes: ['content']
@@ -56,4 +57,10 @@ Terms.prototype.initialize = function() {
 
 Terms.prototype._onClose = function() {
     this._eventOutput.emit('close')
+}
+
+Terms.prototype._onDeploy = function() {
+    setTimeout(function() {
+        this.content.setSize(this.content.getSize(true))
+    }.bind(this), 200)
 }

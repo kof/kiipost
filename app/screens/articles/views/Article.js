@@ -29,7 +29,7 @@ moment.locale('en-short', {
         y: '%dy',
         yy: '%dy'
     }
-});
+})
 
 function Article() {
     View.apply(this, arguments)
