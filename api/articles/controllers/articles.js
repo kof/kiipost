@@ -15,7 +15,7 @@ var cache = lru({maxAge: ms('8h')})
  * TODO move caching to some database when scaling the process.
  */
 exports.read = function* () {
-    if (this.query.articleId) yield readRelatedArticles.call(this)
+    if (this.query.relatedTo) yield readRelatedArticles.call(this)
     else yield readUserArticles.call(this)
 }
 
@@ -64,14 +64,12 @@ function readUserArticles() {
     }
 }
 
-m.set('debug', true)
-
 /**
  * Articles related to the passed article.
  */
 function readRelatedArticles() {
     return function* () {
-        var articleId = this.query.articleId
+        var articleId = this.query.relatedTo
         var skip = this.query.skip
         var limit = this.query.limit
 
