@@ -38,7 +38,7 @@ inherits(Jumper, RenderController)
 module.exports = Jumper
 
 Jumper.DEFAULT_OPTIONS = {
-    origin: [0.5, 0.1],
+    origin: [0.5, 0.05],
     size: [45, 45],
     scrollviewController: null,
     // Min amount of px to scroll back before jumper will be shown.
