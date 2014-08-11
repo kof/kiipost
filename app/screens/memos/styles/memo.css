@@ -7,7 +7,7 @@
     height: 100%;
     padding-top: 1rem;
     box-sizing: border-box;
-    border-bottom: 1px solid #999;
+    border-bottom: 1px solid #ececec;
     visibility: hidden;
 }
 .memo .avatar {
@@ -34,7 +34,7 @@
 }
 .memo h1.text {
     height: 3.6rem;
-    border-bottom: 1px solid #979797;
+    border-bottom: 1px solid #ececec;
     padding: 0 0.5rem 0.5rem 0;
     color: #000;
     margin: 0;
@@ -50,8 +50,8 @@
     height: 125px;
 }
 .memo .article h1 {
+    font-family: 'Ubuntu-M';
     font-size: 0.6rem;
-    font-weight: normal;
     line-height: 1.46;
     margin: 0.4rem 0.5rem 0.2rem 0;
     height: 2.63rem;
@@ -78,6 +78,7 @@
     color: #bebebe;
 }
 .memo a {
+    font-family: 'Ubuntu-M';
     display: inline-block;
     font-size: 0.55rem;
     line-height: 1.42;

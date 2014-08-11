@@ -4,3 +4,10 @@
     font-weight: normal;
     font-style: normal;
 }
+
+@font-face {
+    font-family: 'Ubuntu-M';
+    src: url('components/ubuntu/Ubuntu-M.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}

@@ -1,7 +1,7 @@
 .article {
     background: #fff;
     cursor: pointer;
-    border-bottom: 1px solid #979797;
+    border-bottom: 1px solid #ececec;
     overflow: hidden;
 }
 .article .image {
@@ -9,8 +9,8 @@
     background-size: cover;
 }
 .article .title {
+    font-family: 'Ubuntu-M';
     font-size: 1rem;
-    font-weight: normal;
     line-height: 1.4;
     padding: 1rem 0.7rem 0 0.7rem;
     overflow: hidden;
@@ -25,6 +25,7 @@
 }
 .article .link,
 .article .date {
+    font-family: 'Ubuntu-M';
     padding: 0.3rem 0.7rem 0 0.7rem;
     font-size: 0.8rem;
     line-height: 1;
