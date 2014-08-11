@@ -16,7 +16,7 @@ exports.read = function* () {
 
     if (user.processing.TwitterSync) {
         this.status = 'service unavailable'
-        this.set('retry-after', 5)
+        this.set('retry-after', 2)
     } else {
         this.body = yield m.model('memo')
             .find({userId: user._id})

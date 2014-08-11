@@ -3,7 +3,8 @@
 var gulp = require('gulp')
 
 var types = [
-    {test: /\.html$/, type: 'html'}
+    {test: /\.html$/, type: 'html'},
+    {test: /\.svg$/, type: 'svg'}
 ]
 
 /**
@@ -18,6 +19,7 @@ module.exports = function(options) {
         function handle(type, code) {
             switch (type) {
                 case 'html':
+                case 'svg':
                     return str2js(String(code))
             }
         }

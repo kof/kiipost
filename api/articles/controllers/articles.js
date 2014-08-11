@@ -38,7 +38,7 @@ function readUserArticles() {
 
         if (user.processing.TwitterSync) {
             this.status = 'service unavailable'
-            this.set('retry-after', 5)
+            this.set('retry-after', 2)
         } else {
             var tagsData = yield getTags(user._id)
             var query = {$or: []}
@@ -55,7 +55,7 @@ function readUserArticles() {
             } else {
                 if (loading[key]) {
                     this.status = 'service unavailable'
-                    this.set('retry-after', 5)
+                    this.set('retry-after', 2)
                 } else {
                     loading[key] = true
                     articles = yield findArticles({

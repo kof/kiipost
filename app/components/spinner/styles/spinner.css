@@ -1,12 +1,15 @@
 .spinner .box {
-    width: 4rem;
-    height: 4rem;
     border-radius: 10px;
     background-color: rgba(0,0,0,.5);
 }
-.spinner .icon {
-    display: block;
-    height: 100%;
-    background: url('components/spinner/images/spin.svg') no-repeat center;
-    background-size: 50%;
+.spinner .icon .big {
+    fill: #000;
+    opacity: 0.25;
+}
+.spinner .icon .small {
+    fill: #fff;
+}
+
+.spinner .icon.green .small {
+    fill: #4D8091;
 }
