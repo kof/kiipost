@@ -19,6 +19,8 @@ exports.read = function* () {
     else yield readUserArticles.call(this)
 }
 
+var loading = {}
+
 /**
  * Articles based on user memos.
  */
@@ -51,13 +53,21 @@ function readUserArticles() {
             if (articles) {
                 this.body = articles
             } else {
-                articles = yield findArticles({
-                    query: query,
-                    skip: skip,
-                    limit: limit
-                })
-                cache.set(key, articles)
-                this.body = articles
+                if (loading[key]) {
+                    this.status = 'service unavailable'
+                    this.set('retry-after', 5)
+
+                } else {
+                    loading[key] = true
+                    articles = yield findArticles({
+                        query: query,
+                        skip: skip,
+                        limit: limit
+                    })
+                    cache.set(key, articles)
+                    delete loading[key]
+                    this.body = articles
+                }
             }
         }
 
