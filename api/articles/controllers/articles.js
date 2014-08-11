@@ -56,7 +56,6 @@ function readUserArticles() {
                 if (loading[key]) {
                     this.status = 'service unavailable'
                     this.set('retry-after', 5)
-
                 } else {
                     loading[key] = true
                     articles = yield findArticles({
