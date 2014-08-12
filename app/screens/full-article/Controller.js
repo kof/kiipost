@@ -97,7 +97,7 @@ FullArticle.prototype._load = function(id, isMemo) {
 }
 
 FullArticle.prototype._onOpen = function(model) {
-    var isMemo = model.constructor.name == 'Memo'
+    var isMemo = model.name == 'memo'
 
     this.layeredTransition.commit(app.controller)
     this._show(model.id, isMemo, model, function() {

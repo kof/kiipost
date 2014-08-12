@@ -9,6 +9,7 @@ var url = require('app/components/utils/url')
 var wwwRegexp = /^www\./
 
 function Article() {
+    this.name = 'article'
     this.urlRoot = '/api/articles'
     this.defaults = {
         images: []

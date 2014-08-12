@@ -5,6 +5,7 @@ var Model = require('backbone').Model
 var Article = require('app/components/article/models/Article')
 
 function Memo() {
+    this.name = 'memo'
     this.urlRoot = '/api/memos'
     this.defaults = {
         createdAt: new Date(),
