@@ -6,10 +6,11 @@ var View = require('famous/core/View')
 var Surface = require('famous/core/Surface')
 var Modifier = require('famous/core/Modifier')
 var Group = require('famous/core/Group')
+var Transform = require('famous/core/Transform')
 var Scrollview = require('famous/views/Scrollview')
 
 var ParallaxedBackgroundView = require('app/components/parallaxed-background/ParallaxedBackground')
-var SpinnerView = require('app/components/spinner/views/Spinner')
+var SpinnerView = require('app/components/spinner/views/Renderer')
 
 var app = require('app')
 var constants = require('app/constants')
@@ -68,7 +69,11 @@ FullArticle.prototype.initialize = function() {
     this.text.on('click', this._onTextClick.bind(this))
     this.surfaces.push(this.text)
 
-    this.spinner = new SpinnerView({origin: [0.5, 0.7]})
+    this.spinner = new SpinnerView({spinner:{
+        containerOrigin: [0.5, 0.7],
+        containerTransform: Transform.translate(0, 0, 1),
+        hasBox: true
+    }})
     this.add(this.spinner)
 
     this._optionsManager.on('change', this._onOptionsChange.bind(this))
@@ -102,6 +107,7 @@ FullArticle.prototype.setPreviewContent = function(model, callback) {
 FullArticle.prototype.cleanup = function() {
     this.title.textContent = ''
     this.text.setContent('')
+    this.text.setSize([undefined, true])
     this._resetImage()
     this.bg.setContent()
 }

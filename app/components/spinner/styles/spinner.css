@@ -1,18 +1,22 @@
-.spinner .box {
+.spinner-container.has-box {
     border-radius: 10px;
     background-color: rgba(0,0,0,.5);
 }
-.spinner .icon .spin {
+.spinner-container .spinner {
     font-size: 0;
 }
-.spinner .icon .big {
-    fill: #000;
+.spinner-container .spinner .big {
+    fill: #fff;
     opacity: 0.25;
 }
-.spinner .icon .small {
+.spinner-container .spinner .small {
     fill: #fff;
 }
 
-.spinner .icon.green .small {
+/* Green theme */
+.spinner-container .green .big {
+    fill: #000;
+}
+.spinner-container .green .small {
     fill: #4D8091;
 }

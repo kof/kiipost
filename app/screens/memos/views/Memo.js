@@ -59,7 +59,8 @@ module.exports = MemoItem
 
 MemoItem.DEFAULT_OPTIONS = {
     model: null,
-    memoHeight: 0.35
+    memoHeight: 0.35,
+    stream: null
 }
 
 MemoItem.prototype.setContent = function() {

@@ -55,7 +55,7 @@ gulp.task('content', tasks.copy({
 gulp.task('api', tasks.api())
 
 gulp.task('watch-app', ['build'], function() {
-    gulp.watch(src + '/**/*.{js,html}', ['js'])
+    gulp.watch(src + '/**/*.{js,html,svg}', ['js'])
     gulp.watch(src + '/**/*.html', ['html'])
     gulp.watch(src + '/**/*.css', ['css'])
     gulp.watch(src + '/**/*.{png,jpg,svg,eot,ttf,woff}', ['content'])

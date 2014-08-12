@@ -50,7 +50,7 @@ Article.EVENTS = {
 
 Article.DEFAULT_OPTIONS = {
     model: null,
-    scrollview: null,
+    stream: null,
     title: {height: 0.39},
     summary: {height: 0.43},
     date: {width: 40}

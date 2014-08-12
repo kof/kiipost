@@ -8,7 +8,7 @@ var Group = require('famous/core/Group')
 var Modifier = require('famous/core/Modifier')
 
 var ParallaxedBackgroundView = require('app/components/parallaxed-background/ParallaxedBackground')
-var SpinnerView = require('app/components/spinner/views/Spinner')
+var SpinnerView = require('app/components/spinner/views/Renderer')
 var alert = require('app/components/notification/alert')
 
 var Animation = require('../helpers/Animation')
@@ -85,7 +85,10 @@ Signin.prototype.initialize = function() {
     this.terms.surface.on('click', this._onShowTerms.bind(this))
     this.signin.add(this.terms.modifier).add(this.terms.surface)
 
-    this.spinner = new SpinnerView({origin: [0.5, 0.675]})
+    this.spinner = new SpinnerView({spinner: {
+        containerOrigin: [0.5, 0.675],
+        hasBox: true
+    }})
     this.signin.add(this.spinner)
 
     this.animation = new Animation(this, {context: app.context})

@@ -11,8 +11,8 @@ var Modifier = require('famous/core/Modifier')
 
 var ScrollviewController = require('app/components/famous/ScrollviewController')
 var InfiniteScrollView  = require('app/components/famous/InfiniteScrollview')
-
-var app = require('app')
+var SpinnerRenderer  = require('app/components/spinner/views/Renderer')
+var SpinnerContainerView  = require('app/components/spinner/views/Container')
 
 /**
  * Infinite list.
@@ -27,6 +27,10 @@ function Stream() {
     this.views = this.options.views
     this.collection = this.options.collection
     this._initialViewsAmount = this.views.length
+    this._initialViewsHeight = 0
+    this.views.forEach(function(view) {
+        this._initialViewsHeight += view.getSize()[1]
+    }, this)
     this._loading = false
     this._endReached = false
     this.initialize()
@@ -44,19 +48,18 @@ Stream.EVENTS = {
 Stream.DEFAULT_OPTIONS = {
     ItemView: null,
     views: null,
-    classes: null,
-    backTop: null
+    classes: null
 }
 
 Stream.prototype.initialize = function() {
-    var contextHeight = app.context.getSize()[1]
+    var size = this.options.context.getSize()
 
     this.stream = new Group({classes: this.options.classes})
     this.add(this.stream)
 
     this.scrollview = new InfiniteScrollView({
         // Trigger infiniteScroll event 5 screens before items actually get rendered.
-        offset: contextHeight * 10,
+        offset: size[1] * 10,
         // Margin for full scroller to render invisible items
         // before they get shown.
         // Don't render more then can be displayed.
@@ -78,14 +81,27 @@ Stream.prototype.initialize = function() {
         properties: {backgroundColor: '#fff'}
     })
     this.stream.add(new Modifier({
-        transform: Transform.translate(0, this.options.backTop)
+        transform: Transform.translate(0, this._initialViewsHeight)
     })).add(this.back)
+
+
+    this.centralSpinner = new SpinnerRenderer()
+    var spinnerY = this._initialViewsHeight + (size[1] - this._initialViewsHeight - this.centralSpinner.getSize()[1]) / 2
+    this.centralSpinner.container.containerModifier.transformFrom(Transform.translate(0, spinnerY, 2))
+    this.centralSpinner.container.containerModifier.originFrom([0.5, 0])
+    this.centralSpinner.container.spinner.addClass('green')
+
+    this.add(this.centralSpinner)
+
+    this.edgeSpinner = new SpinnerContainerView({
+        containerSize: [size[0], 64]
+    })
+    this.edgeSpinner.spinner.addClass('green')
 }
 
 Stream.prototype.load = function(options) {
     if (this._loading || this._endReached) return
     if (!options) options = {}
-    this._eventOutput.emit('loadStart')
     this._loading = true
     this.scrollview.infiniteScrollDisabled = true
     if (options.reset) {
@@ -95,12 +111,17 @@ Stream.prototype.load = function(options) {
         // Minus views added before scroll items.
         this.collection.options.skip = this.views.length - this._initialViewsAmount
     }
+
+    if (this.views.length > this._initialViewsAmount) this.views.push(this.edgeSpinner)
+
     this.collection.fetch()
         .then(this.setContent.bind(this))
         .always(function() {
             this._loading = false
             this.scrollview.infiniteScrollDisabled = false
-            this._eventOutput.emit('loadEnd')
+            this.centralSpinner.hide()
+            var spinnerIndex = this.views.indexOf(this.edgeSpinner)
+            if (spinnerIndex >= 0) this.views.splice(spinnerIndex, 1)
         }.bind(this))
 }
 
