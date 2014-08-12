@@ -60,7 +60,7 @@ FullArticle.prototype._show = function(id, isMemo, model, callback) {
     } else show.call(this)
 
     function show() {
-        view.spinner.show(true)
+        if (id != prev) view.spinner.show(true)
         app.controller.show(view, load.bind(this))
     }
 
