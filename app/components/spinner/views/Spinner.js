@@ -11,6 +11,10 @@ var RenderController = require('famous/views/RenderController')
 
 var svg = require('../images/spin.svg')
 
+var spin = document.createElement('div')
+spin.className = 'spin rotate'
+spin.innerHTML = svg
+
 function Spinner() {
     RenderController.apply(this, arguments)
     this.initialize()
@@ -54,7 +58,7 @@ Spinner.prototype.initialize = function() {
     })
     this.icon = new Surface({
         classes: ['icon'],
-        content: svg,
+        content: spin,
         size: this.options.iconSize
     })
     this.box.add(this.iconModifier).add(this.icon)

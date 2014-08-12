@@ -2,6 +2,9 @@
     border-radius: 10px;
     background-color: rgba(0,0,0,.5);
 }
+.spinner .icon .spin {
+    font-size: 0;
+}
 .spinner .icon .big {
     fill: #000;
     opacity: 0.25;
