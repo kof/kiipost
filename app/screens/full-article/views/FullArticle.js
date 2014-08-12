@@ -69,11 +69,14 @@ FullArticle.prototype.initialize = function() {
     this.text.on('click', this._onTextClick.bind(this))
     this.surfaces.push(this.text)
 
-    this.spinner = new SpinnerView({spinner:{
-        containerOrigin: [0.5, 0.7],
-        containerTransform: Transform.translate(0, 0, 1),
-        hasBox: true
+    this.spinner = new SpinnerView({spinner: {
+        //containerOrigin: [0.5, 0.7],
+        containerTransform: Transform.translate(0, this._headerSize[1], 1),
+        containerSize: [this._size[0], this._size[1] - this._headerSize[1]],
+        hasBox: false
     }})
+    this.spinner.container.container.setProperties({backgroundColor: '#fff'})
+    this.spinner.container.spinner.addClass('green')
     this.add(this.spinner)
 
     this._optionsManager.on('change', this._onOptionsChange.bind(this))

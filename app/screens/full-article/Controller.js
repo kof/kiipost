@@ -60,6 +60,7 @@ FullArticle.prototype._show = function(id, isMemo, model, callback) {
     } else show.call(this)
 
     function show() {
+        view.spinner.show(true)
         app.controller.show(view, load.bind(this))
     }
 
@@ -73,7 +74,6 @@ FullArticle.prototype._load = function(id, isMemo) {
     var view = this._currView
 
     this.isMemo = isMemo
-    view.spinner.show()
     this.models.user.authorize.then(function() {
         var xhr
         var memo = new MemoModel(isMemo ? {_id: id} : {userId: this.models.user.id})
