@@ -68,11 +68,12 @@ FullArticle.prototype.initialize = function() {
     this.text.pipe(this.scrollview)
     this.text.on('click', this._onTextClick.bind(this))
     this.surfaces.push(this.text)
+    this._minTextHeight = this._size[1] - this._headerSize[1]
 
     this.spinner = new SpinnerView({spinner: {
         //containerOrigin: [0.5, 0.7],
         containerTransform: Transform.translate(0, this._headerSize[1], 1),
-        containerSize: [this._size[0], this._size[1] - this._headerSize[1]],
+        containerSize: [this._size[0], this._minTextHeight],
         hasBox: false
     }})
     this.spinner.container.container.setProperties({backgroundColor: '#fff'})
@@ -159,7 +160,9 @@ FullArticle.prototype._setImage = function(model, callback) {
 }
 
 FullArticle.prototype._setTextSize = function() {
-    this.text.setSize(this.text.getSize(true))
+    var height = this.text.getSize(true)[1]
+    if (height < this._minTextHeight) height = this._minTextHeight
+    this.text.setSize([undefined, height])
 }
 
 FullArticle.prototype._open = function(url) {
