@@ -84,7 +84,6 @@ Stream.prototype.initialize = function() {
         transform: Transform.translate(0, this._initialViewsHeight)
     })).add(this.back)
 
-
     this.centralSpinner = new SpinnerRenderer()
     var spinnerY = this._initialViewsHeight + (size[1] - this._initialViewsHeight - this.centralSpinner.getSize()[1]) / 2
     this.centralSpinner.container.containerModifier.transformFrom(Transform.translate(0, spinnerY, 2))
