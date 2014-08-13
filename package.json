@@ -52,7 +52,7 @@
     "images-loader": "^0.1.2",
     "inherits": "^2.0.1",
     "jquery": "^2.1.1",
-    "jquery.ajax-retry": "https://github.com/kiipost/jquery-ajax-retry/tarball/master",
+    "jquery.ajax-retry": "^0.2.7",
     "jschardet": "^1.1.0",
     "koa": "^0.6.2",
     "koa-bodyparser": "^1.0.1",
