@@ -8,7 +8,7 @@
     padding-top: 1rem;
     box-sizing: border-box;
     border-bottom: 1px solid #ececec;
-    visibility: hidden;
+    opacity: 0;
 }
 .memo .avatar {
     -webkit-flex: none;

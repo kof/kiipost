@@ -90,8 +90,10 @@ MemoItem.prototype.setContent = function() {
     i.link.textContent = article.hostname || ''
 
     this.container.setContent(i.container)
-    Engine.nextTick(this._setVisible.bind(this))
-    if (!this.scrollviewController.isScrolling && image) this._setImages()
+    // Delay visibility to let css sizes apply to the dom before showing.
+    setTimeout(this._setVisible.bind(this), 100)
+    // Render images later not produce less flicker.
+    if (!this.scrollviewController.isScrolling && image) setTimeout(this._setImages.bind(this), 300)
 }
 
 MemoItem.prototype._setImages = function() {
@@ -130,7 +132,7 @@ MemoItem.prototype._setImages = function() {
 }
 
 MemoItem.prototype._setVisible = function() {
-    this._poolItem.container.style.visibility = 'visible'
+    this._poolItem.container.style.opacity = 1
 }
 
 MemoItem.prototype._onClick = _.debounce(function() {
