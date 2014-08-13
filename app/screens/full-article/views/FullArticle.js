@@ -86,7 +86,10 @@ FullArticle.prototype.initialize = function() {
 }
 
 FullArticle.prototype.setContent = function() {
-    this.title.textContent = this.model.get('title')
+    if (this._currTitle != this.model.get('title')) {
+        this.title.textContent = this.model.get('title')
+        this._currTitle = this.title.textContent
+    }
 
     // TODO fix design issues and use html.
     var descr = this.model.get('description').replace(/<\/p>/g, '___br___')
@@ -141,6 +144,8 @@ FullArticle.prototype._resetImage = function() {
 
 FullArticle.prototype._setImage = function(model, callback) {
     var image = model.getImage()
+
+    if (this._currImage === image) return setTimeout(callback)
 
     this._resetImage()
 
