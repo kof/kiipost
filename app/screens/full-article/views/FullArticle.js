@@ -1,6 +1,7 @@
 'use strict'
 
 var inherits = require('inherits')
+var _s = require('underscore.string')
 
 var View = require('famous/core/View')
 var Surface = require('famous/core/Surface')
@@ -86,15 +87,21 @@ FullArticle.prototype.initialize = function() {
 
 FullArticle.prototype.setContent = function() {
     this.title.textContent = this.model.get('title')
+
+    // TODO fix design issues and use html.
+    var descr = this.model.get('description').replace(/<\/p>/g, '___br___')
+    descr = _s.stripTags(descr)
+    descr = descr.replace(/___br___/g, '<br /><br />')
+
     this.text.setContent(
         '<div class="content">' +
             this._getLink() +
-            this.model.get('description') +
+            descr +
         '</div>'
     )
     this._setImage(this.model)
     this.bg.resume()
-    setTimeout(this._setTextSize.bind(this), 200)
+    setTimeout(this._setTextSize.bind(this), 500)
     // We need to check periodicaly the height because of images in the content.
     this._textSizeIntervalId = setInterval(this._setTextSize.bind(this), 1000)
 }
