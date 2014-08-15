@@ -26,6 +26,7 @@
     "vinyl-source-stream": "^0.1.1"
   },
   "dependencies": {
+    "animation-frame": "^0.1.7",
     "backbone": "^1.1.2",
     "backbone.controller": "https://github.com/kiipost/backbone.controller/tarball/master",
     "batch": "^0.5.0",

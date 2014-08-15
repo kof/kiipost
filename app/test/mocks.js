@@ -1,10 +1,6 @@
 'use strict'
 
-var iosHelper = require('app/screens/signin/mocks/helpers/ios')
-
-if (!window.cordova) {
-    iosHelper()
-}
+require('app/screens/signin/mocks/helpers/ios')
 
 /*
 require('app/screens/signin/mocks/api')()

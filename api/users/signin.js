@@ -7,11 +7,12 @@ var ms = require('ms')
 
 var twitterClient = require('api/twitter/client')
 var queue = require('api/queue')
+var conf = require('api/cache')
 var publicProps = require('./publicProps')
 
 var publicPropsKeys = _.keys(publicProps)
 
-var twitterSyncCache = lru({maxAge: ms('1h')})
+var twitterSyncCache = lru({maxAge: conf.twitter.cacheFor})
 
 /**
  * Signup or login a user.

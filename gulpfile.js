@@ -6,13 +6,21 @@ var gutil = require('gulp-util')
 var program = require('commander')
 var conf = require('./api/conf')
 var tasks = require('./gulp')
+var extend = require('extend')
+var path = require('path')
 
 // TODO add all commands for documentation purpose.
 program
     .option('-c, --cordova', 'build for cordova')
+    .option('-p, --patch [path]', 'patch config by some passed file')
     .parse(process.argv)
 
 if (process.argv.length < 3) return program.help()
+
+if (program.patch) {
+    conf = extend(true, {}, conf)
+    require(path.resolve(process.cwd(), program.patch))(conf)
+}
 
 var cordova = program.cordova
 var env = conf.env

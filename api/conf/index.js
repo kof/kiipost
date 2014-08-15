@@ -53,7 +53,8 @@ exports.session = {
 
 exports.twitter = {
     consumerKey: 'JmTqJFn47mOp14NpR0UiSdxig',
-    consumerSecret: 'MHTdjpIwfVjcV2rZOyxesl939FqlnIKFzE50DhLZmG5UCwAViI'
+    consumerSecret: 'MHTdjpIwfVjcV2rZOyxesl939FqlnIKFzE50DhLZmG5UCwAViI',
+    cacheFor: ms('1h')
 }
 
 exports.queue = {

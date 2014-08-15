@@ -2,6 +2,10 @@
   "name": "kiipost",
   "version": "0.1.0",
   "dependencies": {
+    "animation-frame": {
+      "version": "0.1.7",
+      "from": "animation-frame@"
+    },
     "backbone": {
       "version": "1.1.2",
       "from": "https://registry.npmjs.org/backbone/-/backbone-1.1.2.tgz",
