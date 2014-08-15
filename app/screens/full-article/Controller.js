@@ -52,11 +52,13 @@ FullArticle.prototype.memos = function(id) {
 FullArticle.prototype._show = function(id, isMemo, model, callback) {
     var prev = this.current
     var view = this._currView = isMemo ? this.views.memoFullArticleView : this.views.newFullArticleView
+
     this.current = id
     if (id != prev) view.cleanup()
     if (model) {
-        var articleModel = isMemo ? model.get('articles')[0] : model
-        view.setPreviewContent(articleModel, show.bind(this))
+        if (isMemo) model = model.get('articles')[0]
+        else view.closeMemoEdit()
+        view.setPreviewContent(model, show.bind(this))
     } else show.call(this)
 
     function show() {

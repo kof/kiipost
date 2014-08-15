@@ -40,7 +40,7 @@ NewFullArticle.prototype.initialize = function() {
         classes: ['kiipost-btn'],
         size: [true, true]
     })
-    this.kiipostBtn.on('click', this._onKiipostOpen.bind(this))
+    this.kiipostBtn.on('click', this._onMemoEditOpen.bind(this))
     this.container.add(new Modifier({origin: [0.5, 0.96]})).add(this.kiipostBtn)
 
     this.memoEdit = new MemoEditView({
@@ -48,8 +48,8 @@ NewFullArticle.prototype.initialize = function() {
         model: this.models.memo
     })
     this.memoEdit
-        .on('hide', this._onKiipostHide.bind(this))
-        .on('saved', this._onKiipostSaved.bind(this))
+        .on('hide', this._onMemoEditHide.bind(this))
+        .on('saved', this._onMemoEditSaved.bind(this))
     this.add(this.memoEdit)
 
     this._optionsManager.on('change', this._onOptionsChange.bind(this))
@@ -69,18 +69,26 @@ NewFullArticle.prototype.cleanup = function() {
     this.articleView.cleanup.apply(this.articleView, arguments)
 }
 
-NewFullArticle.prototype._onKiipostOpen = function(e) {
+NewFullArticle.prototype.closeMemoEdit = function(options) {
+    if (!this._memoEditOpened) return
+    this.articleView.bg.resume()
+    this.containerModifier.setOpacity(1, options || {duration: 0})
+    this.memoEdit.hide({silent: true})
+    this._memoEditOpened = false
+}
+
+NewFullArticle.prototype._onMemoEditOpen = function(e) {
     this.articleView.bg.pause()
     this.containerModifier.setOpacity(0.3, this.options.darkInTransition)
     this.memoEdit.show()
+    this._memoEditOpened = true
 }
 
-NewFullArticle.prototype._onKiipostHide = function() {
-    this.articleView.bg.resume()
-    this.containerModifier.setOpacity(1, this.options.darkOutTransition)
+NewFullArticle.prototype._onMemoEditHide = function() {
+    this.closeMemoEdit({duration: this.options.darkOutTransition})
 }
 
-NewFullArticle.prototype._onKiipostSaved = function() {
+NewFullArticle.prototype._onMemoEditSaved = function() {
     app.context.emit('fullArticle:kiiposted', this.model)
 }
 

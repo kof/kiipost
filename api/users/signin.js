@@ -7,7 +7,7 @@ var ms = require('ms')
 
 var twitterClient = require('api/twitter/client')
 var queue = require('api/queue')
-var conf = require('api/cache')
+var conf = require('api/conf')
 var publicProps = require('./publicProps')
 
 var publicPropsKeys = _.keys(publicProps)

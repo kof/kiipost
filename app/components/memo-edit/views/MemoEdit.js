@@ -110,9 +110,10 @@ MemoEdit.prototype.show = function() {
     }.bind(this))
 }
 
-MemoEdit.prototype.hide = function() {
+MemoEdit.prototype.hide = function(options) {
+    if (!options) options = {}
     MemoEdit.super_.prototype.hide.call(this)
-    this._eventOutput.emit('hide')
+    if (!options.silent) this._eventOutput.emit('hide')
 }
 
 MemoEdit.prototype.setAvatarUrl = function(url) {
