@@ -4,3 +4,7 @@ splash
 icons
 platforms/ios/Kiipost/Resources/icons
 platforms/ios/Kiipost/Resources/splash
+platforms/android/**/ant-build
+platforms/android/**/ant-gen
+platforms/android/assets
+platforms/android/res
