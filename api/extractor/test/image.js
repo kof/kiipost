@@ -1,11 +1,10 @@
 test('jpg', function* () {
-    var url = 'https://farm4.staticflickr.com/3877/14590471994_c611cfbb25_k.jpg'
+    var url = 'https://farm6.staticflickr.com/5573/14915953166_4d56705d86_k_d.jpg'
     var meta = yield image.getMeta(url)
     equal(meta.type, 'jpg', 'type correct')
     equal(meta.width, 2048, 'width correct')
-    equal(meta.height, 1363, 'height correct')
+    equal(meta.height, 1239, 'height correct')
 })
-
 test('png', function* () {
     var url = 'https://farm7.staticflickr.com/6187/6085939488_f10ee7a713_o.png'
     var meta = yield image.getMeta(url)
