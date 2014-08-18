@@ -76,14 +76,15 @@ exports.extractWithRetry = thunkify(function(url, options, callback) {
  *
  * Order of sources sorted by decreasing relevance:
  *
+ * 0. 1 entity which is in title
  * 1. memo text
  * 2. article title
  * 3. article text entities
  * 4. article text keywords sorted by decreasing density
  *
  * @param {Object} options
- * @param {String} options.title
- * @param {String} options.text
+ * @param {String} options.title article title
+ * @param {String} options.text article text
  * @param {String} [options.memo]
  * @return {Array}
  */
@@ -97,13 +98,16 @@ function getCompoundTags(options) {
             topArticleTextKeywords = extractKeywords(options.text)
         } catch(err) {}
 
-        extractKeywords(options.title, {minDensity: 0}).forEach(function(keyword) {
+        var titleKeywords = extractKeywords(options.title, {minDensity: 0})
+
+        titleKeywords.forEach(function(keyword) {
             if (topArticleTextKeywords.indexOf(keyword) >= 0) {
                 tags.push(keyword)
             }
         })
 
-        tags = tags.concat(yield extractEntities(options.text))
+        var entities = yield extractEntities(options.text)
+        tags = tags.concat(entities)
 
         tags = tags.concat(topArticleTextKeywords)
 
@@ -112,6 +116,13 @@ function getCompoundTags(options) {
                 tags.unshift(keyword)
             }
         })
+
+        // Put an entity which is in title as a first tag.
+        var entityInTitle = _(entities).find(function(entity) {
+            if (titleKeywords.indexOf(entity) >= 0) return entity
+        })
+
+        if (entityInTitle) tags.unshift(entityInTitle)
 
         tags = _(tags).uniq()
 

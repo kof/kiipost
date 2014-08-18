@@ -69,7 +69,7 @@ test('extract 3', function* () {
     var url = 'http://www.theverge.com/2014/6/22/5831836/google-project-loon-storystream'
     var icon = 'http://www.theverge.com/images/verge/apple-touch-icon.png'
     var summary = "For many, internet access is a vital resource. However, vast, rural swaths of the world have no broadband internet access. One of Google's latest \"moonshot\" projects seeks to fill that gap with..."
-    var tags = [ 'world', 'project', 'balloons', 'google', 'loon', 'internet', 'internet access', 'vital resource', 'project loon', 'access', 'calls', 'rural', 'updates', 'tuned', 'stay', 'progress', 'company', 'covering', 'summer', 'online', 'service', 'functioning', 'hopes', 'team', 'reality', 'overcome', 'challenges', 'homes', 'beam', 'network', 'ground', 'antennas', 'receive', 'sky', 'vast', 'towers', 'large', 'broadband', 'ambitious', 'incredibly', 'plan', 'however', 'gap', 'fill', 'resource', 'seeks', 'vital', 'moonshot', 'latest', 'swaths', 'location' ]
+    var tags = [ 'google', 'world', 'project', 'balloons', 'loon', 'internet', 'internet access', 'vital resource', 'project loon', 'access', 'calls', 'rural', 'updates', 'tuned', 'stay', 'progress', 'company', 'covering', 'summer', 'online', 'service', 'functioning', 'hopes', 'team', 'reality', 'overcome', 'challenges', 'homes', 'beam', 'network', 'ground', 'antennas', 'receive', 'sky', 'vast', 'towers', 'large', 'broadband', 'ambitious', 'incredibly', 'plan', 'however', 'gap', 'fill', 'resource', 'seeks', 'vital', 'moonshot', 'latest', 'swaths', 'location' ]
 
     var data = yield extractor.extract(url)
     equal(data.title, title, 'title ok')
