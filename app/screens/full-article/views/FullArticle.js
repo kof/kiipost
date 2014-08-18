@@ -40,8 +40,10 @@ FullArticle.prototype.initialize = function() {
     this.container.add(this.scrollview)
     this.scrollview.sequenceFrom(this.surfaces)
 
-    this.bg = new ParallaxedBackgroundView({context: app.context})
-    this.bg.pause()
+    this.bg = new ParallaxedBackgroundView({
+        context: app.context,
+        overlay: true
+    })
     this.container.add(this.bg)
 
     this.topBtns = new Surface({
@@ -92,7 +94,8 @@ FullArticle.prototype.setContent = function() {
     }
 
     // TODO fix design issues and use html.
-    var descr = this.model.get('description').replace(/<\/p>/g, '___br___')
+    var descr = this.model.get('description') || ''
+    descr = descr.replace(/<\/p>/g, '___br___')
     descr = _s.stripTags(descr)
     descr = descr.replace(/___br___/g, '<br /><br />')
 

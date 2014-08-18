@@ -27,6 +27,16 @@ function ParallaxedBackground() {
     })
     this.add(this.container)
 
+    if (o.overlay) {
+        this.overlay = new Surface({
+            classes: ['overlay'],
+            properties: {
+                backgroundColor: '#000'
+            }
+        })
+        this.container.add(new Modifier({opacity: 0.25})).add(this.overlay)
+    }
+
     this.image = new Surface({
         properties: o.properties,
         size: [size[0] + o.offset * 2, size[1] + o.offset * 2]
@@ -54,7 +64,8 @@ ParallaxedBackground.DEFAULT_OPTIONS = {
         backgroundImage: null,
         zIndex: -1
     },
-    context: null
+    context: null,
+    overlay: false
 }
 
 ParallaxedBackground.prototype.setContent = function(url) {
