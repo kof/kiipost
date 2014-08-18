@@ -1,7 +1,17 @@
+var koa = require('koa')
+var serve = require('koa-static')
+
+var app = koa()
+app.use(serve(__dirname + '/fixtures/index'))
+app.on('error', function() {})
+app.listen(3001)
+
+var baseUrl = 'http://localhost:3001'
+
 test('extract 1', function* () {
     var title = 'Interview With Mark Zuckerberg At Web 2.0 Summit (VIDEO)'
     var score = 41
-    var url = 'http://techcrunch.com/2010/11/18/mark-zuckerberg/'
+    var url = baseUrl + '/1.html'
     var icon = '/wp-content/themes/vip/techcrunch-2013/assets/images/homescreen_TCIcon_ipad_2x.png?m=1391183173g'
     var images = [ {
         url: '/wp-content/themes/vip/techcrunch-2013/assets/images/techcrunch.global.thumb-placeholder.png?m=1391183173g',
@@ -28,7 +38,7 @@ test('extract 1', function* () {
 test('extract 2', function* () {
     var title = 'Interview with Jan Lehnardt of Hoodie'
     var score = 478
-    var url = 'http://appbusinesspodcast.com/jan-lehnardt-hoodie/'
+    var url = baseUrl + '/2.html'
     var icon = 'http://appbusinesspodcast.com/wp-content/themes/genesis-sample/images/favicon.png'
     var images = [
       { width: 300,
@@ -66,8 +76,8 @@ test('extract 3', function* () {
     var title = "Project Loon: Google's quest to bring internet to the world with a fleet of balloons"
     var score = 309
     var description = "<div> <p>For many, internet access is a vital resource. However, vast, rural swaths of the world have no broadband internet access. One of Google's latest \"moonshot\" projects seeks to fill that gap with balloons. Called Project Loon, the plan is incredibly ambitious: it calls for a large network of \"towers\" in the sky that receive internet access from antennas on the ground in one location and beam internet down to rural homes below. Google has many challenges to overcome before Loon becomes a reality, but the team says it hopes to have a functioning service online by summer 2015. We'll be covering the company's progress here — stay tuned for all the updates. </p> </div>"
-    var url = 'http://www.theverge.com/2014/6/22/5831836/google-project-loon-storystream'
-    var icon = 'http://www.theverge.com/images/verge/apple-touch-icon.png'
+    var url = baseUrl + '/3.html'
+    var icon = baseUrl + '/images/verge/apple-touch-icon.png'
     var summary = "For many, internet access is a vital resource. However, vast, rural swaths of the world have no broadband internet access. One of Google's latest \"moonshot\" projects seeks to fill that gap with..."
     var tags = [ 'google', 'world', 'project', 'balloons', 'loon', 'internet', 'internet access', 'vital resource', 'project loon', 'access', 'calls', 'rural', 'updates', 'tuned', 'stay', 'progress', 'company', 'covering', 'summer', 'online', 'service', 'functioning', 'hopes', 'team', 'reality', 'overcome', 'challenges', 'homes', 'beam', 'network', 'ground', 'antennas', 'receive', 'sky', 'vast', 'towers', 'large', 'broadband', 'ambitious', 'incredibly', 'plan', 'however', 'gap', 'fill', 'resource', 'seeks', 'vital', 'moonshot', 'latest', 'swaths', 'location' ]
 
@@ -84,7 +94,7 @@ test('extract 3', function* () {
 })
 
 test('extract 4', function* () {
-    var url = 'http://thepioneerwoman.com/blog/2014/06/saturday-gathering/'
+    var url = baseUrl + '/4.html'
     var score = 94
     var title = 'Saturday Gathering | Confessions of a Pioneer Woman'
     var summary = 'My two girls, my BFF Hyacinth, Hy\'s daughter, and I are in New York City for a few days, and I\'ll be taking photos and sharin...'
@@ -119,7 +129,7 @@ test('extract 4', function* () {
 })
 
 test('extract 5', function* () {
-    var url = 'http://heaven.branda.to/~thinker/GinGin_CGI.py/show_id_doc/486'
+    var url = baseUrl + '/5.html'
     var title = '為何希望方仰寧下台'
     var score = 1
     var summary = 'robot 最新文章(10) pthread_cond_wait() 如何運作? 如何用 setjmp 、 longjmp 設計 coroutine? Promise 解決了什麼問題? OSDC.TW 2014 投影片 為何希望方仰寧下台 台灣工程師的主要問題 你可能沒想過的 Python 用法 Hey Jude - Hacker 版本 F/OSS 的慢性自殺? libuncall 背後的想法 首頁新編最新留言 Entries RSS 重要關鍵字(10) coding'
@@ -135,7 +145,7 @@ test('extract 5', function* () {
 })
 
 test('extract 6', function* () {
-    var url = 'http://www.golem.de/news/developer-preview-3-os-x-10-10-yosemite-macht-das-licht-aus-1407-107711.html'
+    var url = baseUrl + '/6.html'
     var score = 41
     var title = 'Developer Preview 3: OS X 10.10 Yosemite macht das Licht aus'
     var summary = 'Apple hat die dritte Betaversion von OS X 10.10 alias Yosemite an Entwickler verteilt. Erstmals ist der Dark Mode aktivierbar, mit dem die Benutzeroberfläche modisch abgedunkelt wird.'
@@ -159,7 +169,7 @@ test('extract 6', function* () {
 })
 
 test('extract 7', function* () {
-    var url = 'http://venturebeat.com/2013/08/28/material-a-sexy-flipboard-competitor-comes-to-the-iphone/'
+    var url = baseUrl + '/7.html'
     var title = 'Material, a sexy Flipboard competitor, comes to the iPhone | VentureBeat | Mobile'
     var score = 344
     var icon = 'http://0.gravatar.com/blavatar/c6d8c27ffa1c5a7f106f97e434437baf?s=114'

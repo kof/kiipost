@@ -1,0 +1,426 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US" prefix="og: http://ogp.me/ns#" prefix="og: http://ogp.me/ns#">
+<head profile="http://gmpg.org/xfn/11">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Interview with Jan Lehnardt of Hoodie</title><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<!-- This site is optimized with the Yoast WordPress SEO plugin v1.5.4.2 - https://yoast.com/wordpress/plugins/seo/ -->
+<meta name="description" content="David is joined by Jan Lehnardt of Hood.ie. Jan shares his thoughts on the recent Apple release CloudKit and what makes it similar and different to Hood.ie."/>
+<link rel="canonical" href="http://appbusinesspodcast.com/jan-lehnardt-hoodie/" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Interview with Jan Lehnardt of Hoodie" />
+<meta property="og:description" content="David is joined by Jan Lehnardt of Hood.ie. Jan shares his thoughts on the recent Apple release CloudKit and what makes it similar and different to Hood.ie." />
+<meta property="og:url" content="http://appbusinesspodcast.com/jan-lehnardt-hoodie/" />
+<meta property="og:site_name" content="App Business Podcast" />
+<meta property="article:tag" content="backend" />
+<meta property="article:tag" content="CloudKit" />
+<meta property="article:tag" content="frontend" />
+<meta property="article:tag" content="Hood.ie" />
+<meta property="article:tag" content="Hoodie" />
+<meta property="article:tag" content="Jan Lehnardt" />
+<meta property="article:section" content="Podcast" />
+<meta property="og:image" content="http://appbusinesspodcast.com/wp-content/uploads/2014/06/ABP041-image.jpg" />
+<!-- / Yoast WordPress SEO plugin. -->
+
+<link rel="alternate" type="application/rss+xml" title="App Business Podcast &raquo; Feed" href="http://appbusinesspodcast.com/feed/" />
+<link rel="alternate" type="application/rss+xml" title="App Business Podcast &raquo; Comments Feed" href="http://appbusinesspodcast.com/comments/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Podcast Feed: App Business Podcast - discussions on the business of mobile apps (MPEG-4 AAC Audio)" href="http://appbusinesspodcast.com/feed/aac/" />
+<link rel="alternate" type="application/rss+xml" title="Podcast Feed: App Business Podcast - discussions on the business of mobile apps (MP3 Audio HQ)" href="http://appbusinesspodcast.com/feed/mp3-hq/" />
+<link rel="alternate" type="application/rss+xml" title="App Business Podcast &raquo; ABP041 &#8211; Jan Lehnardt of Hood.ie Comments Feed" href="http://appbusinesspodcast.com/jan-lehnardt-hoodie/feed/" />
+<link rel='stylesheet' id='bwp-rc-css'  href='http://appbusinesspodcast.com/wp-content/plugins/bwp-recent-comments/css/bwp-recent-comments.css?ver=1.2.2' type='text/css' media='all' />
+<link rel='stylesheet' id='podlove-frontend-css-css'  href='http://appbusinesspodcast.com/wp-content/plugins/podlove-podcasting-plugin-for-wordpress/css/frontend.css?ver=1.0' type='text/css' media='all' />
+<link rel='stylesheet' id='podlove-admin-font-css'  href='http://appbusinesspodcast.com/wp-content/plugins/podlove-podcasting-plugin-for-wordpress/css/admin-font.css?ver=1.10.16-alpha' type='text/css' media='all' />
+<link rel='stylesheet' id='genesis-sample-theme-css'  href='http://appbusinesspodcast.com/wp-content/themes/genesis-sample/style.css?ver=2.1.2' type='text/css' media='all' />
+<link rel='stylesheet' id='tm_clicktotweet-css'  href='http://appbusinesspodcast.com/wp-content/plugins/click-to-tweet-by-todaymade/assets/css/styles.css?ver=3.9.2' type='text/css' media='all' />
+<link rel='stylesheet' id='vr-shortcodes-css-css'  href='http://appbusinesspodcast.com/wp-content/plugins/vr-jscrollpane-shortcode/jquery.jscrollpane.css?ver=20130311' type='text/css' media='all' />
+<link rel='stylesheet' id='simple-social-icons-font-css'  href='http://appbusinesspodcast.com/wp-content/plugins/simple-social-icons/css/style.css?ver=1.0.5' type='text/css' media='all' />
+<link rel='stylesheet' id='pwpfont-css'  href='http://appbusinesspodcast.com/wp-content/plugins/podlove-podcasting-plugin-for-wordpress/lib/modules/podlove_web_player/player/podlove-web-player/static/podlove-web-player.css?ver=2.0.17' type='text/css' media='all' />
+<script type='text/javascript' src='http://appbusinesspodcast.com/wp-includes/js/jquery/jquery.js?ver=1.11.0'></script>
+<script type='text/javascript' src='http://appbusinesspodcast.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.2.1'></script>
+<script type='text/javascript' src='http://appbusinesspodcast.com/wp-content/plugins/podlove-podcasting-plugin-for-wordpress/js/frontend.js?ver=1.10.16-alpha'></script>
+<script type='text/javascript' src='http://appbusinesspodcast.com/wp-content/plugins/vr-jscrollpane-shortcode/jquery.jscrollpane.min.js?ver=20130311'></script>
+<script type='text/javascript' src='http://appbusinesspodcast.com/wp-content/plugins/vr-jscrollpane-shortcode/jquery.mousewheel.js?ver=20130311'></script>
+<script type='text/javascript' src='http://appbusinesspodcast.com/wp-content/plugins/podlove-podcasting-plugin-for-wordpress/lib/modules/podlove_web_player/player/podlove-web-player/static/hashchange.min.js?ver=1.3.0'></script>
+<script type='text/javascript' src='http://appbusinesspodcast.com/wp-content/plugins/podlove-podcasting-plugin-for-wordpress/lib/modules/podlove_web_player/player/podlove-web-player/static/podlove-web-player.js?ver=2.0.17'></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://appbusinesspodcast.com/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://appbusinesspodcast.com/wp-includes/wlwmanifest.xml" /> 
+<meta name="generator" content="WordPress 3.9.2" />
+<link rel='shortlink' href='http://appbusinesspodcast.com/?p=716' />
+<link rel="publisher" href="http://google.com/+ChrisChidgey"/>
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-29219818-2']);
+_gaq.push(['_trackPageview']);
+(function() {
+var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+<!-- Subscribe Sidebar widget -->
+<link rel="stylesheet" href="http://appbusinesspodcast.com/wp-content/plugins/subscribe-sidebar/subscribe_sidebar.css" type="text/css" media="screen" />
+	<script type="text/javascript">
+	//<![CDATA[
+		jQuery(document).ready(function() {
+			jQuery('.scroll-pane').jScrollPane();
+		});
+	/* ]]> */
+	</script>
+
+
+<!-- BEGIN GADWP v4.3.1 Universal Tracking - http://deconf.com/google-analytics-dashboard-wordpress/ -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+  ga('create', 'UA-29219818-2', 'auto');
+  ga('send', 'pageview');
+</script>
+<!-- END GADWP Universal Tracking -->
+
+
+<link rel="alternate" type="application/json+oembed" href="http://appbusinesspodcast.com/jan-lehnardt-hoodie/?service=podlove-oembed&amp;format=json" title="ABP041 &amp;#8211; Jan Lehnardt of Hood.ie oEmbed Profile"/>
+<link rel="alternate" type="application/xml+oembed" href="http://appbusinesspodcast.com/jan-lehnardt-hoodie/?service=podlove-oembed&amp;format=xml" title="ABP041 &amp;#8211; Jan Lehnardt of Hood.ie oEmbed Profile"/>
+<link rel="Shortcut Icon" href="http://appbusinesspodcast.com/wp-content/themes/genesis-sample/images/favicon.png" type="image/x-icon" />
+<link rel="pingback" href="http://appbusinesspodcast.com/xmlrpc.php" />
+<meta name="google-site-verification" content="43kOoZ0Uum2ttA3R5vn1j_Q74KfZHvhkbOvIMP950Qw" />
+
+<script>(function() {
+  var _fbq = window._fbq || (window._fbq = []);
+  if (!_fbq.loaded) {
+    var fbds = document.createElement('script');
+    fbds.async = true;
+    fbds.src = '//connect.facebook.net/en_US/fbds.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(fbds, s);
+    _fbq.loaded = true;
+  }
+  _fbq.push(['addPixelId', '411461745660348']);
+})();
+window._fbq = window._fbq || [];
+window._fbq.push(['track', 'PixelInitialized', {}]);
+</script>
+<noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?id=411461745660348&amp;ev=NoScript" /></noscript><style type="text/css">#header { background: url(http://appbusinesspodcast.com/wp-content/uploads/2014/05/ABP-Header-1.png) no-repeat !important; }</style>
+<style type="text/css" media="screen"> .simple-social-icons ul li a, .simple-social-icons ul li a:hover { background-color: #999999 !important; border-radius: 3px; color: #ffffff !important; font-size: 18px; padding: 9px; }  .simple-social-icons ul li a:hover { background-color: #666666 !important; color: #ffffff !important; }</style>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="App Business Podcast - discussions on the business of mobile apps"/>
+<meta property="og:title" content="ABP041 - Jan Lehnardt of Hood.ie"/>
+<meta property="og:url" content="http://appbusinesspodcast.com/jan-lehnardt-hoodie/"/>
+<meta property="og:description" content="On this episode, David is joined by Jan Lehnardt of Hood.ie. Jan shares his thoughts on the recent Apple release CloudKit and what makes it similar and different to Hood.ie."/>
+<meta property="og:image" content="http://appbusinesspodcast.com/wp-content/uploads/2014/06/ABP041-image.jpg"/>
+<meta property="og:image" content="http://appbusinesspodcast.com/wp-content/uploads/2014/06/ABP041-image-150x150.jpg"/>
+<meta property="og:audio" content="http://s3.amazonaws.com/appbusinesspodcast.com/episodes/ABP041-Jan-Lehnardt-CEO-of-Hoodie.m4a"/>
+<meta property="og:audio:type" content="audio/mp4"/>
+<meta property="og:audio" content="http://s3.amazonaws.com/appbusinesspodcast.com/episodes/ABP041-Jan-Lehnardt-CEO-of-Hoodie_hq.mp3"/>
+<meta property="og:audio:type" content="audio/mpeg"/>
+</head>
+<body class="single single-podcast postid-716 custom-header header-image content-sidebar"><div id="wrap"><div id="header"><div class="wrap"><div id="title-area"><p id="title"><a href="http://appbusinesspodcast.com/">App Business Podcast</a></p><p id="description">we talk about mobile app publishing</p></div><div class="widget-area header-widget-area"><div id="widget_sp_image-11" class="widget widget_sp_image"><div class="widget-wrap"><h4 class="widget-title widgettitle">       </h4>
+<a href="https://itunes.apple.com/us/podcast/app-business-podcast-discussions/id737665548?mt=2" target="_blank" class="widget_sp_image-image-link" title="       "><img width="150" height="70" alt="       " class="attachment-full alignleft" style="max-width: 100%;" src="http://appbusinesspodcast.com/wp-content/uploads/2014/05/iTunes.png" /></a></div></div>
+<div id="widget_sp_image-12" class="widget widget_sp_image"><div class="widget-wrap"><a href="http://www.stitcher.com/podcast/app-business-podcast" target="_blank" class="widget_sp_image-image-link" title=""><img width="150" height="70" alt="" class="attachment-full aligncenter" style="max-width: 100%;" src="http://appbusinesspodcast.com/wp-content/uploads/2014/05/Stitcher.png" /></a></div></div>
+<div id="widget_sp_image-13" class="widget widget_sp_image"><div class="widget-wrap"><h4 class="widget-title widgettitle">  </h4>
+<a href="https://soundcloud.com/app-business-podcast" target="_blank" class="widget_sp_image-image-link" title="  "><img width="150" height="70" alt="  " class="attachment-full alignright" style="max-width: 100%;" src="http://appbusinesspodcast.com/wp-content/uploads/2014/05/SoundCloud2-1.png" /></a></div></div>
+</div></div></div><div id="nav"><div class="wrap"><ul id="menu-menu-1" class="menu genesis-nav-menu menu-primary"><li id="menu-item-28" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-28"><a href="http://appbusinesspodcast.com/">Home</a></li>
+<li id="menu-item-648" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-648"><a href="http://appbusinesspodcast.com/start/">Start Here!</a></li>
+<li id="menu-item-379" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-379"><a href="http://appbusinesspodcast.com/weekly">#ABP Weekly Live</a></li>
+<li id="menu-item-772" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-772"><a href="http://appbusinesspodcast.com/app-business-podcast-weekly-archive-2/">#ABP Weekly Archive</a></li>
+<li id="menu-item-325" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-325"><a href="http://appbusinesspodcast.com/resources/">Resources</a></li>
+<li id="menu-item-326" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-326"><a href="http://appbusinesspodcast.com/about/">About</a></li>
+<li id="menu-item-162" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-162"><a href="http://appbusinesspodcast.com/feeds/">Feeds</a></li>
+<li class="right search"><form method="get" class="searchform search-form" action="http://appbusinesspodcast.com/" role="search" ><input type="text" value="Search this website&#x2026;" name="s" class="s search-input" onfocus="if (&#039;Search this website&#x2026;&#039; === this.value) {this.value = &#039;&#039;;}" onblur="if (&#039;&#039; === this.value) {this.value = &#039;Search this website&#x2026;&#039;;}" /><input type="submit" class="searchsubmit search-submit" value="Search" /></form></li></ul></div></div><div id="inner"><div id="content-sidebar-wrap"><div id="content" class="hfeed"><div class="post-716 podcast type-podcast status-publish has-post-thumbnail hentry category-podcast tag-backend tag-cloudkit tag-frontend tag-hood-ie tag-hoodie tag-jan-lehnardt entry post"><h1 class="entry-title">ABP041 &#8211; Jan Lehnardt of Hood.ie</h1> 
+<div class="post-info"><span class="date published time" title="2014-06-11T08:00:02+00:00">June 11, 2014</span>  by <span class="author vcard"><span class="fn"><a href="http://appbusinesspodcast.com/author/chris/" rel="author">Chris Chidgey</a></span></span> <span class="post-comments"><a href="http://appbusinesspodcast.com/jan-lehnardt-hoodie/#respond"><span class="dsq-postid" rel="716 http://appbusinesspodcast.com/?post_type=podcast&amp;#038;p=716">Leave a Comment</span></a></span> </div><div class="entry-content"><audio id="podlovewebplayer_a712f8a81eb1537a09091f91abad1d1a67186fc9" controls="controls" preload="none" style="width: auto; height: 30px">
+  <source src="http://appbusinesspodcast.com/podlove/file/876/s/webplayer/c/website/ABP041-Jan-Lehnardt-CEO-of-Hoodie.m4a" type="audio/mp4"/>
+  <source src="http://appbusinesspodcast.com/podlove/file/875/s/webplayer/c/website/ABP041-Jan-Lehnardt-CEO-of-Hoodie.mp3" type="audio/mpeg"/>
+  <object type="application/x-shockwave-flash" data="flashmediaelement.swf">
+    <param name="movie" value="flashmediaelement.swf"/>
+    <param name="flashvars" value="controls=true&amp;file=http://s3.amazonaws.com/appbusinesspodcast.com/episodes/ABP041-Jan-Lehnardt-CEO-of-Hoodie_hq.mp3"/>
+  </object>
+</audio>
+
+<script>
+jQuery('#podlovewebplayer_a712f8a81eb1537a09091f91abad1d1a67186fc9').podlovewebplayer({"pluginPath":"http:\/\/appbusinesspodcast.com\/wp-content\/plugins\/podlove-podcasting-plugin-for-wordpress\/lib\/modules\/podlove_web_player\/player\/podlove-web-player\/static\/","alwaysShowHours":true,"alwaysShowControls":true,"timecontrolsVisible":false,"summaryVisible":false,"hidetimebutton":false,"hidedownloadbutton":false,"hidesharebutton":false,"sharewholeepisode":false,"loop":false,"chapterlinks":"all","permalink":"http:\/\/appbusinesspodcast.com\/jan-lehnardt-hoodie\/","title":"ABP041 &#8211; Jan Lehnardt of Hood.ie","subtitle":"","summary":"On this episode, David is joined by Jan Lehnardt of Hood.ie. Jan shares his thoughts on the recent Apple release CloudKit and what makes it similar and different to Hood.ie.","publicationDate":"2014-06-11T08:00:02+00:00","poster":"http:\/\/appbusinesspodcast.com\/wp-content\/uploads\/2014\/06\/ABP041-image.jpg","showTitle":"App Business Podcast - discussions on the business of mobile apps","showSubtitle":"David Pfahler & Chris Chidgey dig into mobile app development, application marketing, hiring a good mobile dev and chat with mobile app developers - all on the App Business Podcast","showSummary":"The App Business Podcast is hosted by Chris (the non-technical entrepreneur with a big app portfolio) and David (the software engineer, mobile app dev and founder of Excellent Easy). Episodes are for mobile app developers, app entrepreneurs and app publishers as discussions include mobile app marketing and development topics such as creating and selling apps on both iOS and Android, starting a mobile apps business, mobile app analytics and monetization, app reskinning or flipping - all with a focus on the business side of mobile app development. This free-flowing conversation is unscripted and designed to explore a range of topics and uncover interesting insights, with the listener along for the ride. If you are interested in becoming an entrepreneur and creating a mobile apps business, or have already developed or published mobile apps and created an app portfolio, the conversations on the App Business Podcast are sure to interest and inform.","showPoster":"http:\/\/s3.amazonaws.com\/appbusinesspodcast.com\/abp-icon.png","show":{"title":"App Business Podcast - discussions on the business of mobile apps","subtitle":"David Pfahler & Chris Chidgey dig into mobile app development, application marketing, hiring a good mobile dev and chat with mobile app developers - all on the App Business Podcast","summary":"The App Business Podcast is hosted by Chris (the non-technical entrepreneur with a big app portfolio) and David (the software engineer, mobile app dev and founder of Excellent Easy). Episodes are for mobile app developers, app entrepreneurs and app publishers as discussions include mobile app marketing and development topics such as creating and selling apps on both iOS and Android, starting a mobile apps business, mobile app analytics and monetization, app reskinning or flipping - all with a focus on the business side of mobile app development. This free-flowing conversation is unscripted and designed to explore a range of topics and uncover interesting insights, with the listener along for the ride. If you are interested in becoming an entrepreneur and creating a mobile apps business, or have already developed or published mobile apps and created an app portfolio, the conversations on the App Business Podcast are sure to interest and inform.","poster":"http:\/\/s3.amazonaws.com\/appbusinesspodcast.com\/abp-icon.png","url":"http:\/\/appbusinesspodcast.com"},"license":{"name":"CC BY-NC 3.0","url":"http:\/\/creativecommons.org\/licenses\/by-nc\/3.0\/"},"downloads":[{"assetTitle":"MPEG-4 AAC Audio (m4a)","downloadUrl":"http:\/\/appbusinesspodcast.com\/podlove\/file\/876\/s\/webplayer\/c\/website\/ABP041-Jan-Lehnardt-CEO-of-Hoodie.m4a","directAccess":"http:\/\/s3.amazonaws.com\/appbusinesspodcast.com\/episodes\/ABP041-Jan-Lehnardt-CEO-of-Hoodie.m4a","url":"http:\/\/s3.amazonaws.com\/appbusinesspodcast.com\/episodes\/ABP041-Jan-Lehnardt-CEO-of-Hoodie.m4a"},{"assetTitle":"MP3 Audio (mp3)","downloadUrl":"http:\/\/appbusinesspodcast.com\/podlove\/file\/875\/s\/webplayer\/c\/website\/ABP041-Jan-Lehnardt-CEO-of-Hoodie.mp3","directAccess":"http:\/\/s3.amazonaws.com\/appbusinesspodcast.com\/episodes\/ABP041-Jan-Lehnardt-CEO-of-Hoodie_hq.mp3","url":"http:\/\/s3.amazonaws.com\/appbusinesspodcast.com\/episodes\/ABP041-Jan-Lehnardt-CEO-of-Hoodie_hq.mp3"}],"duration":"00:30:02","chaptersVisible":false,"features":["current","progress","duration","tracks","fullscreen","volume"]});
+</script>
+
+<form action="#"><div class="episode_downloads"><input type="hidden" name="ptm_source" value="download" /><input type="hidden" name="ptm_context" value="select-button" /><select name="download_media_file"><option value="876" data-raw-url="http://appbusinesspodcast.com/podlove/file/876/s/download/c/select-show/ABP041-Jan-Lehnardt-CEO-of-Hoodie.m4a">MPEG-4 AAC Audio [28 MB]</option><option value="875" data-raw-url="http://appbusinesspodcast.com/podlove/file/875/s/download/c/select-show/ABP041-Jan-Lehnardt-CEO-of-Hoodie.mp3">MP3 Audio HQ [24 MB]</option></select><button class="primary">Download</button><button class="secondary">Show URL</button></div></form><h3>On this episode, David is joined by Jan Lehnardt of Hood.ie. Jan shares his thoughts on the recent Apple release CloudKit and what makes it similar and different to Hood.ie. Listen in as we discuss:</h3>
+<ul>
+<li>What the term backend is all about and why developers need a backend strategy</li>
+<li>Jan&#8217;s &#8220;abundance mindset&#8221; and why he&#8217;s not worried about CloudKit at all</li>
+<li>Comparison of CloudKit and Hoodie &#8211; what interested developers need to know</li>
+<li>More about the Hoodie Project</li>
+<li>Comparison of Parse and Hoodie</li>
+</ul>
+<p><div class='tm-tweet-clear'></div><div class='tm-click-to-tweet'><div class='tm-ctt-text'><a href='https://twitter.com/share?text=Why+open-source+is+the+%22best-source%22+for+backend+strategies&via=appbusinesstalk&related=appbusinesstalk&url=http://appbusinesspodcast.com/jan-lehnardt-hoodie/' target='_blank'>Why open-source is the "best-source" for backend strategies</a></div><a href='https://twitter.com/share?text=Why+open-source+is+the+%22best-source%22+for+backend+strategies&via=appbusinesstalk&related=appbusinesstalk&url=http://appbusinesspodcast.com/jan-lehnardt-hoodie/' target='_blank' class='tm-ctt-btn'>Click To Tweet</a><div class='tm-ctt-tip'></div><div class='tm-powered-by'></div></div></p>
+<h3>Sponsors:</h3>
+<ul>
+<li><strong><a href="http://affordabledev.com" target="_blank">Affordable Dev</a></strong>  a complete mobile development agency with developers and designers that will bring your project to life.  Mention the #ABP for 20% off of your next project.  For a limited time &#8211; Affordable Dev is offering free ASO consultations with an ASO professional with every new project.</li>
+</ul>
+<h3>Resources and Links Mentioned in this Episode</h3>
+<ul>
+<li><a href="http://hood.ie/" target="_blank">Hoodie Project</a></li>
+<li><a href="https://developer.apple.com/icloud/documentation/cloudkit-storage/" target="_blank">CloudKit</a></li>
+<li><a href="http://blog.hood.ie/" target="_blank">Hoodie Blog</a></li>
+<li><a href="http://inessential.com/2014/06/08/notes_on_cloudkit" target="_blank">Brent Simmons of Vesper &#8211; notes on CloudKit</a></li>
+<li><a href="http://thehoodiefirm.com/" target="_blank">Neighbourhoodie Software</a></li>
+<li><a href="http://vemedio.com/products/instacast" target="_blank">Instacast </a></li>
+<li><a href="http://blog.hood.ie/2014/05/a-hoodie-for-you-8-katrin-apel/" target="_blank">A HOODIE FOR YOU (8): KATRIN APEL</a></li>
+<li><a href="http://www.couchbase.com/mobile" target="_blank">Couchbase Lite</a></li>
+<li><a href="https://parse.com/" target="_blank">Parse</a></li>
+</ul>
+<h3>Listening Options</h3>
+<p>Download your favorite file format: <form action="#"><div class="episode_downloads"><input type="hidden" name="ptm_source" value="download" /><input type="hidden" name="ptm_context" value="select-button" /><select name="download_media_file"><option value="876" data-raw-url="http://appbusinesspodcast.com/podlove/file/876/s/download/c/select-show/ABP041-Jan-Lehnardt-CEO-of-Hoodie.m4a">MPEG-4 AAC Audio [28 MB]</option><option value="875" data-raw-url="http://appbusinesspodcast.com/podlove/file/875/s/download/c/select-show/ABP041-Jan-Lehnardt-CEO-of-Hoodie.mp3">MP3 Audio HQ [24 MB]</option></select><button class="primary">Download</button><button class="secondary">Show URL</button></div></form></p>
+<h3>Transcription:</h3>
+<p style="color: #444444;"><div class='scroll-pane'></p>
+<p><strong>David:</strong> Welcome back to the App Business Podcast. Today is a special episode because Chris is not here. But I&#8217;m here with another awesome person, its Jan Lehnardt. Hey welcome to the show Jan.</p>
+<p><strong>Jan: </strong>Hey David.</p>
+<p><strong>David: </strong>So Jan is the Vice President of CouchDB at the Apache Software Foundation. He is the CEO of newly founded, the Neighbourhoodie Software and he is one of the leading contributors I would say to the Hoodie project which we covered on Episode 28. And I&#8217;m just excited to have you here Jan. So the reason I wanted to talk on this episode is that on the WWDC, Apple decided to release something that is called CloudKit and I don&#8217;t really understand fully what it is, but it just sounded very very similar to what Hoodie promises and I just thought the best way to find out about it and to really get to know the differences and why Hoodie is maybe still awesome is to talk to you about it.</p>
+<p><strong>Jan: </strong> Alright, let&#8217;s try. So with the usual disclaimer. I&#8217;m not claiming five years of experience with Cloudkit because its five days old now as far as we are concerned. And there is a limited amount of stuff that we can talk about from what’s public even though there&#8217;s varying interpretations of the new NDA situation. Like kind of colleges but they tell you everything. I think that I can tell a no, but I think we can let talk in general terms well enough about CloudKit.</p>
+<p><strong>David: </strong>Yeah that&#8217;s my interpretation too. And honestly, I didn&#8217;t even log into the developer portal so I can&#8217;t even be violating any NDA&#8217;s because I don&#8217;t know anything I should know yet.</p>
+<p><strong>Jan: </strong>Like excellent.</p>
+<p><strong>David: </strong>Yeah. So the general promise of Hoodie is this I think new term, new buzzword is no backend. And it was pretty obvious that that was what CloudKit is aiming at to. So I think Craig Federighi was showing us this feature and he said that you know its such a pain if we have to (a) create an awesome app on the frontend, but then (b) you have to also worry about the backend stuff and the API&#8217;s and the storage and all of that.</p>
+<p><strong>Jan: </strong>That sounded very familiar.</p>
+<p><strong>David: </strong>Yeah and that was just very familiar to me. And so can you maybe give a little quick background, a quick recap of what you understand under the term no backend? And why Hoodie and CloudKit could be similar in that way.</p>
+<p><strong>Jan: </strong>So the idea behind no backend is that just like, he quoted Craig is app developers and it doesn&#8217;t matter if they&#8217;re either native app developers or web app developers. People can create good user experience in whatever environment they&#8217;re comfortable in. They shouldn&#8217;t worry about how to login to a server, how to make database, queries, how to do authentication correctly. How to do data sharing like here&#8217;s the worst wing backup and all that kind of system and new stuff. No backend is a way of trying to encapsulate all the stuff that is while its necessary or when you need experts to work on that. We should work on building apps that need that kind of functionality differently. And it is kind of user-centric design for app architecture.</p>
+<p>So the user and this case is the application developer and we&#8217;ll look at their needs and what they want to do and how they want to express certain things in their apps that only a backend can do. But were not doing okay, now you have to set up a rails and that has to do some rest cost and then you need to interface with the rest like there&#8217;s nothing that a fan and developer would want to worry about. All they want to worry about is hey, you can do login. I get back the token, maybe, and then I can do stuff with it or I just get a confirmation that the users now sign in and then I can do stuff with them. I&#8217;ll store data and synchronize data and send emails and all that kind of stuff. Really high-level, I would call them like intense. A feature of an app is being how to formulate that task and intent. No backers just reformulation of the whole backend from an architecture to architecture that were having. Putting the focus on the front side and that could be a native app as well as web app.</p>
+<p><strong>David: </strong>Yeah right. So I think the whole category of apps that are dependent on such a backend is pretty small yet. Because its so hard to do. And we can on the other hand thus see that there&#8217;s lots of demand for that because for example today, I think Instacast announced their cloud sync feature and it was much anticipated. But just for mainly frontend developers like me that&#8217;s a massive task to tackle. And it holds us back as developers from creating this awesome apps just because we don&#8217;t want to worry about the backend.</p>
+<p><strong>Jan: </strong>Yeah if you look at Vasper, which I&#8217;m sure you&#8217;re familiar with. They had to have some of that. Brent Simmons spent like 9 months to build a servers side sync system. And those one of the brightest people in the industry. So this isn&#8217;t like in the reach of everyone.</p>
+<p><strong>David: </strong>Absolutely.</p>
+<p><strong>Jan: </strong>Now you said like my background is a little more webby than appy. And all web apps like have this requirement. Its like you can&#8217;t just go in and let go like good html wire frame. Whether a 2-click targets and then that&#8217;s your app. Like you can do that but nobody wants that really. That you realized you need to hook it up with but you can&#8217;t need your silence somewhere. I need to do the password forget dance, I need to send emails. The data needs to be stored somewhere. I need to do that security. I don&#8217;t wanna lose everybody&#8217;s passwords when I get hack and all that kind of stuff. That again doing that like at least one full time position of another person. And we should think about developer tool to firing people to doing stuff on their own. The web just isn&#8217;t there in that regard. And the result of that on mobile is that most of their apps can actually create useful experiences just on  the mobile device without any connection to cloud, no, stuff on the cloud. But these are getting more and more common, more frequent specially with multi-device setups. And that&#8217;s just the way of the future.</p>
+<p><strong>David: </strong>Yeah and I think it doesn&#8217;t really matter whether your a native developer or a web developer in both cases. The number of use cases that are not covered yet that also don&#8217;t need some kind of back-end integration is shrinking by the day.</p>
+<p><strong>Jan: </strong>Yeah that&#8217;s right. Very rapidly</p>
+<p><strong>David: </strong>Just to pull in the business perspective and then but again is you know we often just say, you know the day that we could make a lot of money with stupid finger print scanners or slot machines or calculators. All kinds of stuff that just runs on your device without any connection to any network. You know those are gone and that&#8217;s done. So the opportunity in where you can generate value for customers is with those interconnected networks and eager apps need to be a part of that. And so I think we have covered why we need such no backend strategy or no backend architecture as a frontend developer. Now with the introduction of CloudKit, I have written down a couple of questions here. But now that I look at them, some of them are a little bit stupid. But still I mean..</p>
+<p><strong>Jan: </strong>Maybe we can start with, I watch the keynote of course being a long time Apple fan. And I kept up on Twitter and like there&#8217;s like most Twitter chatter on the side. And at some point, they&#8217;ve introduced CloudKit and I&#8217;m like , &#8220;Whoa they&#8217;re going no backend, that&#8217;s awesome.&#8221; Because I immediately got what Craig was saying, like you&#8217;ve quoted earlier. That&#8217;s exactly our, like it all saves our pitch. This is all the mundane tasks that are boring, they need to be taken care of by someone. And it was a very happy moment when we like, its a huge validation for our work and for what were doing. That someone as important as Apple thinks that this also the thing that they should be doing.</p>
+<p><strong>David: </strong>That&#8217;s an awesome response from you and I can understand why you think like that. And you know we&#8217;ve talked before but maybe just to explain for the listeners, I think a lot of people might think the elephant in the room who hear is haven&#8217;t you just been stealed? Like is not Apple just replacing what you did?</p>
+<p><strong>Jan: </strong>Yeah, maybe this is a story for later but I&#8217;ve been there before so I&#8217;m not very worried. There is always a larger ecosystem. There is always trade-offs that Apple&#8217;s gonna make. They can&#8217;t be darlings to everyone. And I believe the space is big enough for a bunch of players. So I&#8217;m not worried from that regard. The one thing that I cannot see Apple compromising on any time soon is that you get access to your data from your servers, on the servers side. Its like it all goes through clients and Apple will not, at least for the foreseeable future.</p>
+<p>We know Apple had been a lot, like they just introduced a lot of things that some including me, some people said they would never do. So never say never even on that regard. And but it is, I think its unlikely to imagine that Apple becomes or like that, that iCloud. The stuff, that part of iCloud that powers CloudKit would have get access from the web so you could do like, if you would do Instagram on CloudKit, then you couldn&#8217;t do a website on it. And in that regard we have a little bit. Like Hoodie for example could provide to that in the future is that you have full control over the backend. You have to worry about certain things but you can then again pay experts to run the backend for you like you would pay Apple to do that. Its kind of free.</p>
+<p>And then, I mentioned the web. The web is  different platform if you look from iOS and there&#8217;s other platforms from there as well. So if your overall strategy is an app that you want to cover multiple back platforms with, then something like CloudKit is unlikely. CloudKit for Android is not gonna happen.</p>
+<p><strong>David: </strong>Yeah. I have the same feeling.</p>
+<p><strong>Jan: </strong>Right.</p>
+<p><strong>David: </strong>We did just cover the WWDC in the last episode and you know it was over two hours long. But what we kept hammering home is like how they attack Android? How much they attack Google in every front. It was really obvious this time. So I can imagine them opening up the CloudKit as an API but you could maybe even use it in web apps or websites, something like that.</p>
+<p><strong>Jan: </strong>Yeah, I think I sent a tweet to that effect, said my tl;dr for WWDC is the one whose really listening to developer request. Second is were decent to mediating Google every which way we can. Third one was wear it on top of our game. Just give them the amount of stuff and then ship.</p>
+<p><strong>David: </strong>That&#8217;s right. Yes just to draw the line and the connection to what we often talk about on this podcast for the listeners. I love your reaction and this is just what we talked about under the term which we call &#8220;abundance mindset&#8221;. So its just this mindset that there is way more space in the market than you can possibly fill with your own firm. You don&#8217;t have to be worried about other people. Also taking risk of the pie because the pie is large, right? And that&#8217;s why we love to be in this industry because we don&#8217;t have to attack others or take from others in order to gain. We can all exists in the space and drive technology forward.</p>
+<p><strong>Jan: </strong>If Apple helps expand the mindset of developers to think about this kind of things and then if somebody finds out, hey there&#8217;s something like, can&#8217;t get those to do it for me and then they gonna Google or Bing or DuckDuckGo for CloudKit alternatives. And then if things shows up there, then we&#8217;re good I think. And this isn&#8217;t like leaving the breadcrumbs for the small, for the weak ones. I think there&#8217;s generally, there&#8217;s enough space for this generally.</p>
+<p><strong>David: </strong>Yeah. So if I&#8217;m a developer now and I&#8217;m considering doing an app or even a series of apps in a certain space where I need this sync and this connectivity, then I will think twice about locking myself into the Apple ecosystem. And not being able to get this data out to Android or just the web in general and that&#8217;s gonna be a huge factor in the decision making I think.</p>
+<p><strong>Jan: </strong> Right.</p>
+<p><strong>David: </strong>So I don&#8217;t know. I can&#8217;t remember actually if on the episode where I first covered Hoodie, there was already the iOS release in existence.</p>
+<p><strong>Jan: </strong>Yeah I think it wasn&#8217;t.</p>
+<p><strong>David: </strong>Yeah. So could you maybe, I don&#8217;t know how involved you are in that or whatever but could you maybe just contrast the iOS native release and the actual normal Hoodie jazz and maybe interested developers know whether they should choose one or the other and what the differences will be in using this implementations.</p>
+<p><strong>Jan: </strong>Alright, so for us, oh we fell one step back. For us, the core of Hoodie is a frontend API that as explained earlier, defines how  the various intents or various features are expressed. How that API is implemented on the hood, on he client or even on the server is of no concern to us. We have to provide like reference implementation. But say for the backend if somebody wants to do it all in Java because they are Java shop. They are welcome to do that, all the calls that we&#8217;re making. Not very well as little bit documented and we definitely plan to make this very inter-operable. So you can like switch on different backends with different types.</p>
+<p>And then also the frontend bits, it themselves can change. So all the frontend bits for the regular Hoodie is the Java Script file that you run in the browser that does all the communication with the backend but gives you a nice user friendly webby API. And then the Hoodie version of, oh sorry, the iOS version of Hoodie, the Hoodie version of iOS gives you that frontend bit of this frontends bits from Hoodie to iOS but in native Objective-C. And then they encapsulate all the communication with the backend. So this is a partial reimplementation of the frontend bits of Hoodie.</p>
+<p><strong>David: </strong>You think if I&#8217;m doing a web app, and you know whether that&#8217;s totally just in the browser or shipped through PhoneGap, then I&#8217;m gonna used the JS implementation but if I&#8217;m a native developer and I&#8217;m only using it in iOS for now maybe or I want to create both my Android and my iOS version in native code, then I&#8217;ll use the native implementation.</p>
+<p><strong>Jan: </strong>Exactly. And they can all use the same backend so you can have one app that does that or like one backend and then serves all the frontend versions of it and people can login to each of them.</p>
+<p><strong>David: </strong>And how is the situation on Android? Can I use a native library there?</p>
+<p><strong>Jan: </strong>So to again step back. So the Hoodie version is a very early version. So Katrin Apel is working on that. She&#8217;s an amazing developer from Berlin. Now we kind of showed the Hoodie and she&#8217;s like Oh my God, I need this so she started writing it and then we had a profile about her on our blog. You should totally check that out. But its very young, its like a couple weeks worth of work. There&#8217;s a bunch of contributors that help get all the API and pump it up. It was for now, its just accounts and data sync which are the most important, hardest. So as were getting for this a bunch of good decent Hoodie that aren&#8217;t implemented yet, and then again its very very early days so like it&#8217;s not a competitor yet in the same way that iOS. Like the API&#8217;s for iOS 8 aren&#8217;t ready yet.</p>
+<p><strong>David: </strong>Yeah but when would think that in a couple of weeks maybe then you know it grows in features, it gets most stable and so if you&#8217;re planning long term I guess its very viable option.</p>
+<p><strong>Jan: </strong>No I think if you&#8217;re now looking at solution to stand in choosing either this or CloudKit is kind of the same bet stability wise. Like I like known having look at CloudKit. And then its like, its already, its already, right?</p>
+<p><strong>David: </strong>Right.</p>
+<p><strong>Jan: </strong>Just wanted to make sure that that is out there. Conversely though the hard thinking about all of this has been done before. The syncing exist and existing syncing layer for iOS and for Android that were using its called the Couchbased Lite, its a syncing thing that we use under the hood that you don&#8217;t have to worry about but that heavy lifting there has already been done. So and of course the API design which is always a very tricky part and were very very proud of our API&#8217;s. It has been like we&#8217;ve been thinking this through for a couple of years now so just copy, lots of their codes just copying that over to a different platform isn&#8217;t as much work as starting from scratch so were not too worried about. Like major bugs in the design and architecture.</p>
+<p>And then you originally asked about the Android version, that&#8217;s even less work, head hitting this work, put into it, were still at the seat, we gaze somebody&#8217;s doing there? And that&#8217;s a repo basically and a low bed of contributions there. Now I haven&#8217;t seen anyone do the app, there maybe a demo app so this is like really really early. This is I guess a good chance to mention again that Hoodie is completely open source run by a community. We do have a company that puts all its profit towards building Hoodie out but were a boot-strap company and we don&#8217;t have lots of money resource to spend so were relying on a lot of contributors to help. So if you wanna help out with either one of them and you&#8217;re very very welcome.  And I&#8217;m happy to point in the right direction, put you in touch with the right people.</p>
+<p><strong>David: </strong>Yeah, right. So I just want to mention. We&#8217;re gonna have all the links in the shownotes so if you want to check out the blog post that Jan just mentioned, or get that repost that were all there. I just thought about something that I was asked by Chris. I didn&#8217;t know if you know about this service but its used by a lot of app developers and its called Parse, parse.com. And its also used for them to sync data in some kind of way at least. And could you contrast and compare that as well to Hoodie.</p>
+<p><strong>Jan: </strong>Sure, can do. So Parse is what&#8217;s commonly referred to as a backend as a service and they have a few frontend API&#8217;s that you can integrate with your native platform. I think they do iOS and web at least. They may do, I actually don&#8217;t know, they may do Android as well. But its a close service and you get to like putting all your eggs in one basket question is the same as iCloud. Just completely opaque, like look into it and you don&#8217;t earn the data, you don&#8217;t own..I actually may own the customer relationship stuff but that&#8217;s a lot less access you get. Like coming back to Vesper, they chose to run on their own, on their own backend. And Azure, and do all this. And a bunch of the system aren&#8217;t &#8230; somebody Azure but like build the services on top of their themselves. Because they didn&#8217;t wanna go with one of those services that just don&#8217;t give you access to all of the stuff that you need and in case you need to get out of there. And then specifically, Parse is a venture-backed company or situation mandate were acquired by Facebook I think. A couple of years ago and they work last year and they publicly stated, Parse is gonna be around as is because a lot of people were worried about that kind of thing going away. But you know or you understand that other, like Vesper, sunsetting is  favorite term of the venture capital driven culture that at some point, its like give it its not your core business is gonna go away. Or if the core people leaves its gonna go away. So we don&#8217;t know yet what the future of Parse is. Conversely its like Apple is not gonna go away in terms of. I&#8217;m not worry about anyone buying Apple and then shutting them down. Its not gonna happen. We for Hoodie, because its open source and the company is also boot strap. Were kind of averse to sell out. But we could go away at anytime soon as well but then you have access to all the source and infrustructure and hopefully by the time that happens enough, there&#8217;s enough of community here and build up. That isn&#8217;t actually a problem.</p>
+<p><strong>David: </strong>Yeah.</p>
+<p><strong>Jan: </strong>So this is bad also for Hoodie but again its around control and who owns what and who was inside to whats going on.</p>
+<p><strong>David: </strong>Yeah, I don&#8217;t wanna put you on the spot too much but..</p>
+<p><strong>Jan: </strong>Oh no please do.</p>
+<p><strong>David: </strong>From what  I&#8217;ve heard, Hoodie is not gonna take any venture capital so that thing is not going to happen with Hoodie.</p>
+<p><strong>Jan: </strong>At least, again never say never but the usual strategy of, we get some money up front, spent two years building something and then we get sold to Facebook or Google and then we shut everything down and there lots of there were interested in.</p>
+<p><strong>David: </strong>Yeah so that&#8217;s what I wanted to say. I mean there could be a situation where you weigh in your options. You think, okay this is not a typical venture capital option or this is maybe taking money from. You don&#8217;t wanna basically exclude yourself from ever taking money from anyone and I wouldn&#8217;t do that either.</p>
+<p><strong>Jan: </strong>Exactly. I think so with the founders of the company, were in this for the long term. If this is the company that we retire on with our friends that is exactly a best case scenario. So yeah we weren&#8217;t just interested in like turn a quick buck. We&#8217;d rather change the industry and develop a mark and make everybody&#8217;s lives or a lot of people&#8217;s lives easier. Then were selling a very deliberately that way. That said, if somebody, like I think it boils down to control definitely. If somebody can say, hey your app, your company needs to be sold to someone else then you&#8217;re already in control basically. So if somebody wants  to give us lots of money but not take any control in return, were happy to take that money. But this deals are rare so were not counting on it. But then we make own to crown funding, some point get the community to help a little bit with that. But yeah well see.</p>
+<p><strong>David: </strong>Well now you did get me curious a bit. This is actually not really part of the scope of this episode but because you just mentioned this whole venture capital thing and being wanting to retire on your own company and that kind of stuff, how do you view a 37Signals now, Basecamp? And is that like an inspiration for you?</p>
+<p><strong>Jan: </strong>Huge inspiration. Big fan of what their work, for a long time and the writing. And one of the ways we want to do, made money for the company is a software as a service product. That&#8217;s very similar to what Basecamp, not in function but some productivity app. Basically for small businesses and smaller large businesses. So were exactly executing their Playbook and were, not exactly but like were going up of the road that they pave for everyone else a long time ago. So we are incredibly indebted to them and everyone who&#8217;s been on that bandwagon for long time. That is, if we are only half as successful as they, something we&#8217;ve done very well.</p>
+<p><strong>David: </strong>That&#8217;s right. Yeah. So again you know in regards to Parse, to CloudKit, to other services, if I understand it correctly what is also very huge for Hoodie is the ability as it is. Open and not just the buzz word term but you can actually find stuff and there&#8217;s actually some documentation and stuff like that. Its feasible to create your own functions, which you call plugins where you couldn&#8217;t do this with something like Parse. If you have this fix feature set and if there&#8217;s something that you would like to have in your backend but it doesn&#8217;t exist in CloudKit. I mean there&#8217;s no way you could not go to an Apple store and say, please implement this, right?</p>
+<p><strong>Jan: </strong>Yes. That your totally at the well platform provider. I think the general problem is from an operations perspective. This would be opening up your own platform to untrusted code which is not usually something that people do. Or you have to put in a lot of sandboxing stuff that makes it very expensive to do that, to have an abstracts on that layer. And the platform is so much priced like (unclear 25:07 ) are good at that. But its very very hard to get it right. So we just, we preempt that whole problem like situations okay you can pay, also you can pay someone you trust to run this on the backend like we know all stuff we can operate this and we can do that scale that you need. Coz like moment problem bigger hosting champs around. So if you want to do all in the right space they will have you covered and all that kind of stuff. That is all no problem and you can use another choice of like moving away and turn around and like you said when build your own features if you need , if you personally need a proprietory feature that when be you have a some sort of somewhere that you want to use that your own built internally. You can build a Hoodie plugin for that or if you need something that we have build yet, you can build Hoodie plugin for that. Its just very easy to do and integrate.</p>
+<p><strong>David: </strong>Sounds great. So if the listeners are curious, and they would like to get started. Maybe play around with Hoodie a little bit. Where would they go and what do you suggest?</p>
+<p><strong>Jan: </strong>They should first go to hood.ie which is our main website and everything else should be linked from there. We have gethub.com/hoodiehq and twitter.com/hoodiehq for code and communications. There&#8217;s neighbourhood.ie, the British spelling with ou which is the company website if you want to get in touch. Like if you need consulting around that kind of stuff or if you want to have an app build in this case we would offer. Because Hoodie is cheating on that project management triangle of like time, features and money. Coz we already have built most of the features, we want to like ten of the things that the company does is advertise at where we can build prototypes really when your fast. Because we can. Because we build it most of them already and we only need to do the UI bits. So if you wanna hire us in that regard, please get in touch. While all the, both the engineering time we put into your product, and the profits that we gained from were all going back into the Hoodie open source project. So that&#8217;s a great way to support us.</p>
+<p><strong>David: </strong>Yeah, right. And on your website and especially on your blog, I&#8217;ve noticed there&#8217;s some great videos of talks that some of the team of Hoodie gave different conferences and meetups and that&#8217;s also a great way at least for me to dive into what is the architecture and how does that work. So I can really recommend that.</p>
+<p><strong>Jan: </strong>That&#8217;s blog.hood.ie.</p>
+<p><strong>David: </strong>You&#8217;re right. So I&#8217;m not going to ask you how got that awesome domain name.</p>
+<p><strong>Jan: </strong>Can&#8217;t tell you, trade secret. Sorry. That&#8217;s the one thing that we can&#8217;t talk about.</p>
+<p><strong>David: </strong>Yeah</p>
+<p><strong>Jan: </strong>Everything else is open.</p>
+<p><strong>David: </strong>Yeah were just kidding. So it was a great time Jan. I think Hoodie is awesome, bright future.</p>
+<p><strong>Jan: </strong>Thanks.</p>
+<p><strong>David: </strong>We will be following and hope the listeners appreciated it. And check it out. That&#8217;s hood.ie, check out all the shownotes with the links to stuff mentioned. Appbusinesspodcast.com. Thank you Jan and we hope to have you on the show and maybe in the couple of months and see how Hoodie is doing.</p>
+<p><strong>Jan: </strong>Thank you David. Thanks for having me. Thanks everyone for listening and I&#8217;m happy to be back if you want me back. This is fascinating and we&#8217;d like to thank, on behalf of the team I&#8217;d like to thank you for all your support that you&#8217;ve shown in the past. So thank you.</p>
+<p><strong>David: </strong>Thank you. You&#8217;re welcome. Okay. Thanks bye.</p>
+<p>&nbsp;</p>
+<p><strong>Jan: </strong>Bye.</p>
+<p style="color: #1f031f;"><span style="color: #444444;"></p>
+</div><style>.scroll-pane{width: 100%;height:250px;overflow: auto;}</style></span></p>
+<!--<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+			xmlns:dc="http://purl.org/dc/elements/1.1/"
+			xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+		<rdf:Description rdf:about="http://appbusinesspodcast.com/jan-lehnardt-hoodie/"
+    dc:identifier="http://appbusinesspodcast.com/jan-lehnardt-hoodie/"
+    dc:title="ABP041 &#8211; Jan Lehnardt of Hood.ie"
+    trackback:ping="http://appbusinesspodcast.com/jan-lehnardt-hoodie/trackback/" />
+</rdf:RDF>-->
+</div><div class="post-meta"><span class="categories">Filed Under: <a href="http://appbusinesspodcast.com/category/podcast/" title="View all posts in Podcast" rel="category tag">Podcast</a></span> <span class="tags">Tagged With: <a href="http://appbusinesspodcast.com/tag/backend/" rel="tag">backend</a>, <a href="http://appbusinesspodcast.com/tag/cloudkit/" rel="tag">CloudKit</a>, <a href="http://appbusinesspodcast.com/tag/frontend/" rel="tag">frontend</a>, <a href="http://appbusinesspodcast.com/tag/hood-ie/" rel="tag">Hood.ie</a>, <a href="http://appbusinesspodcast.com/tag/hoodie/" rel="tag">Hoodie</a>, <a href="http://appbusinesspodcast.com/tag/jan-lehnardt/" rel="tag">Jan Lehnardt</a></span></div></div>
+<div id="disqus_thread">
+    </div>
+
+<script type="text/javascript">
+/* <![CDATA[ */
+    var disqus_url = 'http://appbusinesspodcast.com/jan-lehnardt-hoodie/';
+    var disqus_identifier = '716 http://appbusinesspodcast.com/?post_type=podcast&#038;p=716';
+    var disqus_container_id = 'disqus_thread';
+    var disqus_domain = 'disqus.com';
+    var disqus_shortname = 'appbusinesspodcast';
+    var disqus_title = "ABP041 &#8211; Jan Lehnardt of Hood.ie";
+    var disqus_config = function () {
+        var config = this; // Access to the config object
+        config.language = '';
+
+        /* Add the ability to add javascript callbacks */
+        
+        /*
+           All currently supported events:
+            * preData — fires just before we request for initial data
+            * preInit - fires after we get initial data but before we load any dependencies
+            * onInit  - fires when all dependencies are resolved but before dtpl template is rendered
+            * afterRender - fires when template is rendered but before we show it
+            * onReady - everything is done
+         */
+
+        config.callbacks.preData.push(function() {
+            // clear out the container (its filled for SEO/legacy purposes)
+            document.getElementById(disqus_container_id).innerHTML = '';
+        });
+                config.callbacks.onReady.push(function() {
+            // sync comments in the background so we don't block the page
+            var script = document.createElement('script');
+            script.async = true;
+            script.src = '?cf_action=sync_comments&post_id=716';
+
+            var firstScript = document.getElementsByTagName( "script" )[0];
+            firstScript.parentNode.insertBefore(script, firstScript);
+        });
+                    };
+/* ]]> */
+</script>
+
+<script type="text/javascript">
+/* <![CDATA[ */
+    var DsqLocal = {
+        'trackbacks': [
+        ],
+        'trackback_url': "http:\/\/appbusinesspodcast.com\/jan-lehnardt-hoodie\/trackback\/"    };
+/* ]]> */
+</script>
+
+<script type="text/javascript">
+/* <![CDATA[ */
+(function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.' + 'disqus.com' + '/' + 'embed' + '.js' + '?pname=wordpress&pver=2.77';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+/* ]]> */
+</script>
+</div><div id="sidebar" class="sidebar widget-area"><div id="simple-social-icons-2" class="widget simple-social-icons"><div class="widget-wrap"><ul class="aligncenter"><li class="social-facebook"><a href="https://www.facebook.com/pages/App-Business-Podcast/1483494015206943" target="_blank">&#xe802;</a></li><li class="social-gplus"><a href="http://google.com/+Appbusinesspodcast" target="_blank">&#xe801;</a></li><li class="social-twitter"><a href="https://twitter.com/AppBusinessTalk" target="_blank">&#xe80d;</a></li><li class="social-youtube"><a href="https://www.youtube.com/channel/UCvKGiuy1pJkTq4nJUXqta-Q" target="_blank">&#xe804;</a></li></ul></div></div>
+<div id="text-9" class="widget widget_text"><div class="widget-wrap"><h4 class="widget-title widgettitle">Subscribe to the #ABP</h4>
+			<div class="textwidget"><div class="AW-Form-795928274"></div>
+<script type="text/javascript">(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "http://forms.aweber.com/form/74/795928274.js";
+    fjs.parentNode.insertBefore(js, fjs);
+    }(document, "script", "aweber-wjs-zm57y7vjr"));
+</script></div>
+		</div></div>
+<div id="widget_sp_image-14" class="widget widget_sp_image"><div class="widget-wrap"><a href="https://www.facebook.com/groups/640050522736770/" target="_blank" class="widget_sp_image-image-link" title=""><img width="300" height="100" alt="" class="attachment-full aligncenter" style="max-width: 100%;" src="http://appbusinesspodcast.com/wp-content/uploads/2014/05/FacebookGroupButton-inactive.png" /></a></div></div>
+<div id="bwp_recent_comments-2" class="widget bwp-rc-widget"><div class="widget-wrap"><h4 class="widget-title widgettitle">Recent Comments</h4>
+
+		<ul class="bwp-rc-ulist">
+<li class="recent-comment"><span class="recent-comment-avatar"><img alt='User Avatar' src='http://0.gravatar.com/avatar/45b07385a4240d497e408a9317a217d6?s=40&amp;d=&amp;r=G' class='avatar avatar-40 photo' height='40' width='40' /></span><span class="recent-comment-single"><span class="recent-comment-author">Seb Hareng</span><span class="recent-comment-text"> { Thanks for mentioning my blog guys! Hope the post can be helpful to others. } &ndash; </span> <a href="http://appbusinesspodcast.com/abp076-ios-release-checklist/#comment-377" title="Comment on ABP076 - iOS Release Checklist"><strong>Aug 13, 11:22 AM</strong></a></span></li>
+<li class="recent-comment"><span class="recent-comment-avatar"><img alt='User Avatar' src='http://1.gravatar.com/avatar/56ab1e1bb6bdc15e4c52ef475b412528?s=40&amp;d=&amp;r=G' class='avatar avatar-40 photo' height='40' width='40' /></span><span class="recent-comment-single"><span class="recent-comment-author">Christopher Sutton</span><span class="recent-comment-text"> { Enjoyed this episode! I think the one exception to your "nobody has just a tablet" observation is young children. It's true that parents will normally... } &ndash; </span> <a href="http://appbusinesspodcast.com/abp072-rise-phablets/#comment-376" title="Comment on ABP072 - Rise of the Phablets"><strong>Aug 12, 2:26 PM</strong></a></span></li>
+<li class="recent-comment"><span class="recent-comment-avatar"><img alt='User Avatar' src='http://0.gravatar.com/avatar/6314b46e257f6e023f853e57622e4351?s=40&amp;d=&amp;r=G' class='avatar avatar-40 photo' height='40' width='40' /></span><span class="recent-comment-single"><span class="recent-comment-author">MyndArc</span><span class="recent-comment-text"> { Hi guys, I have a small start up and need to find someone to help with a project as far as design/skin any referrals etc.... } &ndash; </span> <a href="http://appbusinesspodcast.com/abp075-abp-weekly-august-8th/#comment-369" title="Comment on ABP075 - ABP Weekly August 8th"><strong>Aug 10, 1:07 PM</strong></a></span></li>
+<li class="recent-comment"><span class="recent-comment-avatar"><img alt='User Avatar' src='http://1.gravatar.com/avatar/fa2d38638e0f19dea5c20c0846201b03?s=40&amp;d=&amp;r=G' class='avatar avatar-40 photo' height='40' width='40' /></span><span class="recent-comment-single"><span class="recent-comment-author">Ales Bellotti</span><span class="recent-comment-text"> { I would agree in few points. But for sure App Store has evaluate to business like any other and it will be almost impossible to... } &ndash; </span> <a href="http://appbusinesspodcast.com/abp068-struggling-developers/#comment-362" title="Comment on ABP068 - Struggling Developers"><strong>Aug 06, 6:05 AM</strong></a></span></li>
+<li class="recent-comment"><span class="recent-comment-avatar"><img alt='User Avatar' src='http://0.gravatar.com/avatar/e34050241891179108bd96e0f12c03ed?s=40&amp;d=&amp;r=G' class='avatar avatar-40 photo' height='40' width='40' /></span><span class="recent-comment-single"><span class="recent-comment-author">David Pfahler</span><span class="recent-comment-text"> { Yes, thanks for the suggestion. I think it's just a fad until apple figures out how to deal with these things, but for now it... } &ndash; </span> <a href="http://appbusinesspodcast.com/abp072-rise-phablets/#comment-358" title="Comment on ABP072 - Rise of the Phablets"><strong>Aug 05, 11:18 AM</strong></a></span></li>
+<li class="recent-comment"><span class="recent-comment-avatar"><img alt='User Avatar' src='http://0.gravatar.com/avatar/84014ae2b90bc3dea843b4a272dc5999?s=40&amp;d=&amp;r=G' class='avatar avatar-40 photo' height='40' width='40' /></span><span class="recent-comment-single"><span class="recent-comment-author">Martin Edmaier</span><span class="recent-comment-text"> { yes its seems a big problem when you look at the top charts right now with games that have bought reviews etc... } &ndash; </span> <a href="http://appbusinesspodcast.com/abp072-rise-phablets/#comment-357" title="Comment on ABP072 - Rise of the Phablets"><strong>Aug 05, 5:27 AM</strong></a></span></li>
+		</ul>
+</div></div>
+<div id="tag_cloud-5" class="widget widget_tag_cloud"><div class="widget-wrap"><h4 class="widget-title widgettitle">Tags</h4>
+<div class="tagcloud"><a href='http://appbusinesspodcast.com/tag/abp-weekly/' class='tag-link-302' title='5 topics' style='font-size: 14.666666666667pt;'>ABP Weekly</a>
+<a href='http://appbusinesspodcast.com/tag/ad-networks/' class='tag-link-268' title='2 topics' style='font-size: 8pt;'>ad networks</a>
+<a href='http://appbusinesspodcast.com/tag/analytics/' class='tag-link-33' title='5 topics' style='font-size: 14.666666666667pt;'>analytics</a>
+<a href='http://appbusinesspodcast.com/tag/android/' class='tag-link-11' title='5 topics' style='font-size: 14.666666666667pt;'>android</a>
+<a href='http://appbusinesspodcast.com/tag/app/' class='tag-link-4' title='10 topics' style='font-size: 20.444444444444pt;'>app</a>
+<a href='http://appbusinesspodcast.com/tag/app-annie/' class='tag-link-153' title='3 topics' style='font-size: 10.666666666667pt;'>App Annie</a>
+<a href='http://appbusinesspodcast.com/tag/appannie/' class='tag-link-35' title='2 topics' style='font-size: 8pt;'>appannie</a>
+<a href='http://appbusinesspodcast.com/tag/app-business/' class='tag-link-102' title='12 topics' style='font-size: 22pt;'>App Business</a>
+<a href='http://appbusinesspodcast.com/tag/apple/' class='tag-link-18' title='2 topics' style='font-size: 8pt;'>apple</a>
+<a href='http://appbusinesspodcast.com/tag/app-monetization/' class='tag-link-263' title='2 topics' style='font-size: 8pt;'>app monetization</a>
+<a href='http://appbusinesspodcast.com/tag/app-store/' class='tag-link-101' title='4 topics' style='font-size: 12.888888888889pt;'>App Store</a>
+<a href='http://appbusinesspodcast.com/tag/aso/' class='tag-link-16' title='6 topics' style='font-size: 16.222222222222pt;'>aso</a>
+<a href='http://appbusinesspodcast.com/tag/business/' class='tag-link-66' title='2 topics' style='font-size: 8pt;'>business</a>
+<a href='http://appbusinesspodcast.com/tag/christopher-sutton/' class='tag-link-67' title='2 topics' style='font-size: 8pt;'>christopher sutton</a>
+<a href='http://appbusinesspodcast.com/tag/developer/' class='tag-link-9' title='2 topics' style='font-size: 8pt;'>developer</a>
+<a href='http://appbusinesspodcast.com/tag/distimo/' class='tag-link-52' title='2 topics' style='font-size: 8pt;'>distimo</a>
+<a href='http://appbusinesspodcast.com/tag/downloads/' class='tag-link-14' title='3 topics' style='font-size: 10.666666666667pt;'>downloads</a>
+<a href='http://appbusinesspodcast.com/tag/flurry/' class='tag-link-45' title='2 topics' style='font-size: 8pt;'>flurry</a>
+<a href='http://appbusinesspodcast.com/tag/freemium/' class='tag-link-6' title='3 topics' style='font-size: 10.666666666667pt;'>freemium</a>
+<a href='http://appbusinesspodcast.com/tag/future/' class='tag-link-21' title='2 topics' style='font-size: 8pt;'>future</a>
+<a href='http://appbusinesspodcast.com/tag/google/' class='tag-link-19' title='5 topics' style='font-size: 14.666666666667pt;'>google</a>
+<a href='http://appbusinesspodcast.com/tag/google-play/' class='tag-link-53' title='2 topics' style='font-size: 8pt;'>Google Play</a>
+<a href='http://appbusinesspodcast.com/tag/guest/' class='tag-link-39' title='6 topics' style='font-size: 16.222222222222pt;'>Guest</a>
+<a href='http://appbusinesspodcast.com/tag/hoodie/' class='tag-link-113' title='3 topics' style='font-size: 10.666666666667pt;'>Hoodie</a>
+<a href='http://appbusinesspodcast.com/tag/incentivized-social-sharing/' class='tag-link-262' title='3 topics' style='font-size: 10.666666666667pt;'>incentivized social sharing</a>
+<a href='http://appbusinesspodcast.com/tag/incentivized-video-ads/' class='tag-link-269' title='2 topics' style='font-size: 8pt;'>incentivized video ads</a>
+<a href='http://appbusinesspodcast.com/tag/interview/' class='tag-link-38' title='9 topics' style='font-size: 19.555555555556pt;'>Interview</a>
+<a href='http://appbusinesspodcast.com/tag/ios/' class='tag-link-10' title='4 topics' style='font-size: 12.888888888889pt;'>ios</a>
+<a href='http://appbusinesspodcast.com/tag/iphone-app-experiment/' class='tag-link-40' title='2 topics' style='font-size: 8pt;'>iphone app experiment</a>
+<a href='http://appbusinesspodcast.com/tag/kpi/' class='tag-link-36' title='2 topics' style='font-size: 8pt;'>kpi</a>
+<a href='http://appbusinesspodcast.com/tag/mobile/' class='tag-link-22' title='2 topics' style='font-size: 8pt;'>mobile</a>
+<a href='http://appbusinesspodcast.com/tag/mobile-apps-business/' class='tag-link-100' title='3 topics' style='font-size: 10.666666666667pt;'>Mobile Apps Business</a>
+<a href='http://appbusinesspodcast.com/tag/mobile-development/' class='tag-link-110' title='3 topics' style='font-size: 10.666666666667pt;'>Mobile Development</a>
+<a href='http://appbusinesspodcast.com/tag/mobile-marketing/' class='tag-link-131' title='3 topics' style='font-size: 10.666666666667pt;'>Mobile Marketing</a>
+<a href='http://appbusinesspodcast.com/tag/mobiles-apps/' class='tag-link-97' title='3 topics' style='font-size: 10.666666666667pt;'>Mobiles Apps</a>
+<a href='http://appbusinesspodcast.com/tag/monetization/' class='tag-link-25' title='7 topics' style='font-size: 17.333333333333pt;'>monetization</a>
+<a href='http://appbusinesspodcast.com/tag/money/' class='tag-link-12' title='2 topics' style='font-size: 8pt;'>money</a>
+<a href='http://appbusinesspodcast.com/tag/optimization/' class='tag-link-15' title='2 topics' style='font-size: 8pt;'>optimization</a>
+<a href='http://appbusinesspodcast.com/tag/patrice-archer/' class='tag-link-61' title='3 topics' style='font-size: 10.666666666667pt;'>Patrice Archer</a>
+<a href='http://appbusinesspodcast.com/tag/pricing/' class='tag-link-3' title='2 topics' style='font-size: 8pt;'>pricing</a>
+<a href='http://appbusinesspodcast.com/tag/reskinning/' class='tag-link-55' title='2 topics' style='font-size: 8pt;'>reskinning</a>
+<a href='http://appbusinesspodcast.com/tag/retention/' class='tag-link-84' title='3 topics' style='font-size: 10.666666666667pt;'>retention</a>
+<a href='http://appbusinesspodcast.com/tag/sell/' class='tag-link-13' title='2 topics' style='font-size: 8pt;'>sell</a>
+<a href='http://appbusinesspodcast.com/tag/store/' class='tag-link-5' title='5 topics' style='font-size: 14.666666666667pt;'>store</a>
+<a href='http://appbusinesspodcast.com/tag/trends/' class='tag-link-26' title='2 topics' style='font-size: 8pt;'>trends</a></div>
+</div></div>
+<div id="text-7" class="widget widget_text"><div class="widget-wrap">			<div class="textwidget"><div class="AW-Form-1163670808"></div>
+<script type="text/javascript">(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "http://forms.aweber.com/form/08/1163670808.js";
+    fjs.parentNode.insertBefore(js, fjs);
+    }(document, "script", "aweber-wjs-o4pupg66w"));
+</script></div>
+		</div></div>
+<div id="widget_sp_image-5" class="widget widget_sp_image"><div class="widget-wrap"><h4 class="widget-title widgettitle">App Jetpack &#8211; App Diagnostics</h4>
+<a href="http://appjetpack.com" target="_blank" class="widget_sp_image-image-link" title="App Jetpack &#8211; App Diagnostics"><img width="260" height="227" alt="App Jetpack &#8211; App Diagnostics" class="attachment-medium aligncenter" style="max-width: 100%;" src="http://appbusinesspodcast.com/wp-content/uploads/2014/01/appicon2.png" /></a><div class="widget_sp_image-description" ><p>Build Better Apps - Make More Money</p>
+</div></div></div>
+<div id="widget_sp_image-16" class="widget widget_sp_image"><div class="widget-wrap"><h4 class="widget-title widgettitle">Join the next App Business MBA LIVE Webinar!</h4>
+<a href="http://appbusinessmba.com" target="_blank" class="widget_sp_image-image-link" title="Join the next App Business MBA LIVE Webinar!"><img width="300" height="200" alt="Join the next App Business MBA LIVE Webinar!" class="attachment-full aligncenter" style="max-width: 100%;" src="http://appbusinesspodcast.com/wp-content/uploads/2014/07/Ad14.png" /></a></div></div>
+</div></div></div><div id="footer-widgets" class="footer-widgets"><div class="wrap"><div class="footer-widgets-1 widget-area"><div id="widget_sp_image-2" class="widget widget_sp_image"><div class="widget-wrap"><h4 class="widget-title widgettitle">Mobile Apps Fastlane</h4>
+<img width="195" height="300" alt="Mobile Apps Fastlane" class="attachment-medium aligncenter" style="max-width: 100%;" src="http://appbusinesspodcast.com/wp-content/uploads/2014/01/BookCover-195x300.jpg" /><div class="widget_sp_image-description" ><p><a href="https://my.leadpages.net/leadbox/143676f73f72a2%3A13cc5d2beb46dc/5757334940811264/" target="_blank">Click here to get the Mobile Apps Fastlane - 100% free</a><script type="text/javascript" src="//my.leadpages.net/leadbox-695.js"></script></p>
+</div></div></div>
+</div><div class="footer-widgets-2 widget-area"><div id="text-12" class="widget widget_text"><div class="widget-wrap"><h4 class="widget-title widgettitle">Subscribe to the #ABP</h4>
+			<div class="textwidget"><div class="AW-Form-795928274"></div>
+<script type="text/javascript">(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "http://forms.aweber.com/form/74/795928274.js";
+    fjs.parentNode.insertBefore(js, fjs);
+    }(document, "script", "aweber-wjs-zm57y7vjr"));
+</script></div>
+		</div></div>
+</div><div class="footer-widgets-3 widget-area"><div id="widget_sp_image-15" class="widget widget_sp_image"><div class="widget-wrap"><h4 class="widget-title widgettitle">Join the next App Business MBA LIVE Webinar: CLICK HERE</h4>
+<a href="http://appbusinessmba.com" target="_blank" class="widget_sp_image-image-link" title="Join the next App Business MBA LIVE Webinar: CLICK HERE"><img width="300" height="250" alt="Join the next App Business MBA LIVE Webinar: CLICK HERE" class="attachment-full aligncenter" style="max-width: 100%;" src="http://appbusinesspodcast.com/wp-content/uploads/2014/07/Ad300x250.png" /></a></div></div>
+</div></div></div><div id="footer" class="footer"><div class="wrap">Copyright 2014 App Business Podcast</div></div></div><script src="//s3.amazonaws.com/scripts.hellobar.com/e49673e776482b24e64fd76a523a932e40f37b9d.js" type="text/javascript"></script><script type='text/javascript' src='http://appbusinesspodcast.com/wp-includes/js/comment-reply.min.js?ver=3.9.2'></script>
+</body>
+</html>

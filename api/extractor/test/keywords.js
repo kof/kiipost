@@ -1,5 +1,5 @@
 var fs = require('fs')
-var fix = __dirname + '/fixtures'
+var fix = __dirname + '/fixtures/keywords'
 var text0 = fs.readFileSync(fix + '/text0.txt', 'utf-8')
 
 test('keywords 0', function* () {
