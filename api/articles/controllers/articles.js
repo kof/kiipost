@@ -41,14 +41,17 @@ function readUserArticles() {
             this.set('retry-after', 2)
         } else {
             var tagsData = yield getTags(user._id)
-            var query = {$or: []}
 
-            tagsData.forEach(function(data) {
-                query.$or.push({tags: {$all: data.tags}})
-            })
-
-            var key = JSON.stringify([query, skip, limit])
-            var articles = cache.get(key)
+            if (tagsData.length) {
+                var query = {$or: []}
+                tagsData.forEach(function(data) {
+                    query.$or.push({tags: {$all: data.tags}})
+                })
+                var key = JSON.stringify([query, skip, limit])
+                var articles = cache.get(key)
+            } else {
+                articles = []
+            }
 
             if (articles) {
                 this.body = articles
@@ -69,7 +72,6 @@ function readUserArticles() {
                 }
             }
         }
-
     }
 }
 
