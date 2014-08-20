@@ -18,6 +18,8 @@ var DEFAULT_OPTIONS = {
  * Extract keywords from text, sort them by density, cut off low density keywords.
  * Result is lowercased.
  *
+ * Note: density here is based on stemmed keywords. Thats why it is way higher than normally.
+ *
  * @param {String} text
  * @param {Object} [options]
  * @param {Boolean} [options.verbose]
@@ -42,9 +44,7 @@ exports.extract = function(text, options) {
             return b.tf - a.tf
         })
 
-    if (!options.verbose) {
-        keywords = _(keywords).pluck('tag')
-    }
+    if (!options.verbose) keywords = _(keywords).pluck('tag')
 
     return keywords
 }

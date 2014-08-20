@@ -9,9 +9,8 @@ var co = require('co')
 var fetch = require('./fetch')
 var extractArticle = require('./article').extract
 var extractHtmlData = require('./htmlData').extract
-var extractKeywords = require('./keywords').extract
 var processImages = require('./image').process
-var extractEntities = require('./entities').extract
+var extractTags = require('./tags').extract
 
 var conf = require('api/conf')
 
@@ -46,7 +45,7 @@ exports.extract = function(url, options) {
         // TODO better summary generation #81
         res.summary = _s.prune(htmlData.description || article.text, 250, '')
         res.description = article.html
-        res.tags = yield getCompoundTags({
+        res.tags = yield extractTags({
             title: res.title,
             text: article.text,
             memo: options.memo
@@ -70,63 +69,3 @@ exports.extractWithRetry = thunkify(function(url, options, callback) {
         })
     })
 })
-
-/**
- * Get unified array of tags from different sources, sorted by relevance.
- *
- * Order of sources sorted by decreasing relevance:
- *
- * 0. 1 entity which is in title
- * 1. memo text
- * 2. article title
- * 3. article text entities
- * 4. article text keywords sorted by decreasing density
- *
- * @param {Object} options
- * @param {String} options.title article title
- * @param {String} options.text article text
- * @param {String} [options.memo]
- * @return {Array}
- */
-function getCompoundTags(options) {
-    return function* () {
-        var tags = []
-
-        var topArticleTextKeywords = []
-        // Temp for https://github.com/NaturalNode/natural/issues/175
-        try {
-            topArticleTextKeywords = extractKeywords(options.text)
-        } catch(err) {}
-
-        var titleKeywords = extractKeywords(options.title, {minDensity: 0})
-
-        titleKeywords.forEach(function(keyword) {
-            if (topArticleTextKeywords.indexOf(keyword) >= 0) {
-                tags.push(keyword)
-            }
-        })
-
-        var entities = yield extractEntities(options.text)
-        tags = tags.concat(entities)
-
-        tags = tags.concat(topArticleTextKeywords)
-
-        extractKeywords(options.memo, {minDensity: 0}).forEach(function(keyword) {
-            if (tags.indexOf(keyword) >= 0) {
-                tags.unshift(keyword)
-            }
-        })
-
-        // Put an entity which is in title as a first tag.
-        var entityInTitle = _(entities).find(function(entity) {
-            if (titleKeywords.indexOf(entity) >= 0) return entity
-        })
-
-        if (entityInTitle) tags.unshift(entityInTitle)
-
-        tags = _(tags).uniq()
-
-        return tags
-    }
-}
-

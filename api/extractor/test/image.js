@@ -1,12 +1,4 @@
-var koa = require('koa')
-var serve = require('koa-static')
-
-var app = koa()
-app.use(serve(__dirname + '/fixtures/image'))
-app.on('error', function() {})
-app.listen(3001)
-
-var baseUrl = 'http://localhost:3001'
+var baseUrl = require('api/test/serve')(__dirname + '/fixtures/image')
 
 test('jpg', function* () {
     var url = baseUrl + '/1.jpg'
@@ -17,7 +9,7 @@ test('jpg', function* () {
 })
 
 test('png', function* () {
-    var url = baseUrl + '/2.jpg'
+    var url = baseUrl + '/1.png'
     var meta = yield image.getMeta(url)
     equal(meta.type, 'png', 'type correct')
     equal(meta.width, 1029, 'width correct')
@@ -25,7 +17,7 @@ test('png', function* () {
 })
 
 test('gif', function* () {
-    var url = baseUrl + '/3.jpg'
+    var url = baseUrl + '/1.gif'
     var meta = yield image.getMeta(url)
     equal(meta.type, 'gif', 'type correct')
     equal(meta.width, 1800, 'width correct')
