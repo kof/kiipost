@@ -85,7 +85,7 @@ NewFullArticle.prototype._onMemoEditOpen = function(e) {
 }
 
 NewFullArticle.prototype._onMemoEditHide = function() {
-    this.closeMemoEdit({duration: this.options.darkOutTransition})
+    this.closeMemoEdit(this.options.darkOutTransition)
 }
 
 NewFullArticle.prototype._onMemoEditSaved = function() {

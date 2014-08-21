@@ -56,3 +56,21 @@ if (conf.server.sentryDsn) {
 deviceready.then(function() {
     if (window.StatusBar) StatusBar.hide()
 })
+
+require('moment').locale('en-short', {
+    relativeTime : {
+        future: '%s',
+        past: '%s',
+        s: '%ds',
+        m: '%dm',
+        mm: '%dm',
+        h: '%dh',
+        hh: '%dh',
+        d: '%dd',
+        dd: '%dd',
+        M: '%dmo',
+        MM: '%dmo',
+        y: '%dy',
+        yy: '%dy'
+    }
+})

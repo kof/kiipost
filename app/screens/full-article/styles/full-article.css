@@ -1,55 +1,42 @@
 .full-article .background {
     background-color: #f0f1f2;
 }
-.full-article .top-btns {
-    z-index: 1;
-}
-.full-article .top-btns span {
-    color: #fff;
-    padding: 1rem;
-    display: inline-block;
-    cursor: pointer;
-}
-.full-article .top-btns .close {
+.full-article .close,
+.full-article .original {
     font-size: 1.7rem;
     padding: 1rem 0.5rem;
     text-shadow: 1px 1px 4px rgba(0,0,0,0.50);
 }
+.full-article .original {
+    right: 0;
+}
 .full-article .header {
     padding: 0;
 }
-.full-article .header h1 {
+.full-article .title {
+    font-family: 'Ubuntu-M';
     font-size: 1.5rem;
     line-height: 2rem;
     max-height: 6.2rem;
-    overflow: hidden;
-    position: absolute;
     bottom: 0;
-    margin: 0 1rem 0.7rem 1rem;
+    padding: 0 1rem 0.7rem 1rem;
     color: #fff;
     text-shadow: 1px 1px 4px rgba(0,0,0,0.50);
+    text-align: left;
 }
-.full-article .text {
+.full-article .body {
+    font-family: 'Ubuntu-L';
     background: #fff;
-    color: #bebebe;
-    font-size: 1.2rem;
+    color: #000;
+    font-size: 1rem;
     line-height: 1.4;
-}
-.full-article .text .content {
-    box-sizing: border-box;
-    padding: 1rem;
 }
 .full-article .text p {
     margin: 0;
 }
-.full-article .text a {
-    text-decoration: none;
-}
-.full-article .text img {
-    width: 100%;
-}
-.full-article .text a.source {
-    display:  block;
-    margin-bottom: 1rem;
+.full-article .link,
+.full-article .date {
+    font-family: 'Ubuntu';
+    color: #d2d2d2;
 }
 

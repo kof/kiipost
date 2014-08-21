@@ -2,9 +2,11 @@
 
 var inherits = require('inherits')
 var _s = require('underscore.string')
+var moment = require('moment')
 
 var View = require('famous/core/View')
 var Surface = require('famous/core/Surface')
+var ContainerSurface = require('famous/surfaces/ContainerSurface')
 var Modifier = require('famous/core/Modifier')
 var Group = require('famous/core/Group')
 var Transform = require('famous/core/Transform')
@@ -28,10 +30,14 @@ inherits(FullArticle, View)
 module.exports = FullArticle
 
 FullArticle.DEFAULT_OPTIONS = {
-    model: null
+    model: null,
+    padding: 16,
+    link: {height: 40},
+    date: {width: 40}
 }
 
 FullArticle.prototype.initialize = function() {
+    var o = this.options
     this.container = new Group({classes: ['full-article']})
     this.containerModifier = new Modifier()
     this.add(this.containerModifier).add(this.container)
@@ -46,37 +52,75 @@ FullArticle.prototype.initialize = function() {
     })
     this.container.add(this.bg)
 
-    this.topBtns = new Surface({
-        content: '<span class="close icomatic">arrowleft</span>',
-        classes: ['top-btns'],
-        size: [this._size[0], true]
-    })
-    this.topBtns.on('click', this._onTopBtnClick.bind(this))
-    this.surfaces.push(this.topBtns)
-
-    this.title = document.createElement('h1')
     this._headerSize = [this._size[0], this._size[0] * constants.BRULE_RATIO]
-    this.header = new Surface({
-        content: this.title,
+    this.header = new ContainerSurface({
         classes: ['header'],
         size: this._headerSize
     })
     this.header.pipe(this.scrollview)
     this.surfaces.push(this.header)
 
+    this.close = new Surface({
+        classes: ['icomatic', 'close'],
+        content: 'arrowleft',
+        size: [true, true]
+    })
+    this.close.on('click', this._onClose.bind(this))
+    this.header.add(this.close)
+
+    this.original = new Surface({
+        classes: ['icomatic', 'original'],
+        content: 'externallink',
+        size: [true, true]
+    })
+    this.original.on('click', this._onOpenOriginal.bind(this))
+    this.header.add(this.original)
+
+    this.title = new Surface({
+        classes: ['title'],
+        size: [undefined, true]
+    })
+    this.header.add(this.title)
+
+    this.body = new ContainerSurface({
+        classes: ['body'],
+        properties: {
+            padding: o.padding + 'px'
+        }
+    })
+    this.body.pipe(this.scrollview)
+    this.surfaces.push(this.body)
+
+    var linkWidth =  this._size[0] - o.date.width - o.padding
+    this.link = new Surface({
+        classes: ['truncate', 'link'],
+        size: [linkWidth, o.link.height]
+    })
+    this.link.on('click', this._onOpenOriginal.bind(this))
+    this.body.add(this.link)
+
+    this.date = new Surface({
+        classes: ['date'],
+        size: [o.date.width, o.link.height]
+    })
+    this.body
+        .add(new Modifier({
+            transform: Transform.translate(linkWidth, 0)
+        }))
+        .add(this.date)
+
     this.text = new Surface({
         size: [undefined, true],
         classes: ['text']
     })
-    this.text.pipe(this.scrollview)
-    this.text.on('click', this._onTextClick.bind(this))
-    this.surfaces.push(this.text)
-    this._minTextHeight = this._size[1] - this._headerSize[1]
+    this.body.add(new Modifier({
+        transform: Transform.translate(0, o.link.height)
+    })).add(this.text)
+    this._minBodyHeight = this._size[1] - this._headerSize[1] + o.padding * 2
 
     this.spinner = new SpinnerView({spinner: {
-        //containerOrigin: [0.5, 0.7],
         containerTransform: Transform.translate(0, this._headerSize[1], 1),
-        containerSize: [this._size[0], this._minTextHeight],
+        containerSize: [this._size[0], this._minBodyHeight],
         hasBox: false
     }})
     this.spinner.container.container.setProperties({backgroundColor: '#fff'})
@@ -88,35 +132,27 @@ FullArticle.prototype.initialize = function() {
 }
 
 FullArticle.prototype.setContent = function() {
-    if (this._currTitle != this.model.get('title')) {
-        this.title.textContent = this.model.get('title')
-        this._currTitle = this.title.textContent
-    }
-
+    this.setTitle(this.model.get('title'))
     // TODO fix design issues and use html.
     var descr = this.model.get('description') || ''
     descr = descr.replace(/<\/p>/g, '___br___')
     descr = _s.stripTags(descr)
     descr = descr.replace(/___br___/g, '<br /><br />')
-
-    this.text.setContent(
-        '<div class="content">' +
-            this._getLink() +
-            descr +
-        '</div>'
-    )
+    this.text.setContent(descr)
     this._setImage(this.model)
     this.bg.resume()
-    setTimeout(this._setTextSize.bind(this), 500)
-    // We need to check periodicaly the height because of images in the content.
-    this._textSizeIntervalId = setInterval(this._setTextSize.bind(this), 1000)
+    this.link.setContent(this.model.get('hostname'))
+    // We don't have a pubDate when article comes from twitter.
+    var date = this.model.get('pubDate')
+    if (date) this.date.setContent(moment(date).locale('en-short').fromNow(true))
+    setTimeout(this._setBodySize.bind(this), 500)
 }
 
 /**
  * Content to be rendered before transition starts.
  */
 FullArticle.prototype.setPreviewContent = function(model, callback) {
-    this.title.textContent = model.get('title')
+    this.setTitle(model.get('title'))
     this.bg.resume()
     this._setImage(model, callback)
 }
@@ -133,9 +169,10 @@ FullArticle.prototype.setOption = function(key, value) {
     this._optionsManager.set(key, value)
 }
 
-FullArticle.prototype._getLink = function() {
-    var a = this.model.attributes
-    return '<a href="' + a.url + '" class="source">' + a.hostname + '</a>'
+FullArticle.prototype.setTitle = function(title) {
+    if (title == this._currTitle) return
+    this.title.setContent(title)
+    this._currTitle = title
 }
 
 FullArticle.prototype._resetImage = function() {
@@ -174,10 +211,10 @@ FullArticle.prototype._setImage = function(model, callback) {
     else app.imagesLoader.load(image.url, setImage.bind(this))
 }
 
-FullArticle.prototype._setTextSize = function() {
-    var height = this.text.getSize(true)[1]
-    if (height < this._minTextHeight) height = this._minTextHeight
-    this.text.setSize([undefined, height])
+FullArticle.prototype._setBodySize = function() {
+    var height = this.text.getSize(true)[1] + this.options.link.height + this.options.padding * 2
+    if (height < this._minBodyHeight) height = this._minBodyHeight
+    this.body.setSize([undefined, height])
 }
 
 FullArticle.prototype._open = function(url) {
@@ -193,9 +230,8 @@ FullArticle.prototype._onRecall = function() {
     clearInterval(this._textSizeIntervalId)
 }
 
-FullArticle.prototype._onTopBtnClick = function(e) {
-    var cls = e.target.classList
-    if (cls.contains('close')) this._eventOutput.emit('close')
+FullArticle.prototype._onClose = function() {
+    this._eventOutput.emit('close')
 }
 
 FullArticle.prototype._onOptionsChange = function(option) {
@@ -204,11 +240,6 @@ FullArticle.prototype._onOptionsChange = function(option) {
     }
 }
 
-FullArticle.prototype._onTextClick = function(e) {
-    // Prevent links from opening!
-    var href = e.target.href
-    // Allow mailto links to open the mail program.
-    if (href && href.trim().indexOf('mailto:') == 0) return
-    e.preventDefault()
-    if (href) this._open(href)
+FullArticle.prototype._onOpenOriginal = function() {
+    this._open(this.model.get('url'))
 }

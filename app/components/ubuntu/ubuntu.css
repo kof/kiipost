@@ -1,10 +1,15 @@
 @font-face {
+    font-family: 'Ubuntu-L';
+    src: url('components/ubuntu/Ubuntu-L.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+@font-face {
     font-family: 'Ubuntu';
     src: url('components/ubuntu/Ubuntu-R.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
-
 @font-face {
     font-family: 'Ubuntu-M';
     src: url('components/ubuntu/Ubuntu-M.ttf') format('truetype');

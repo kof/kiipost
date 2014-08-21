@@ -4,14 +4,6 @@ var m = require('mongoose')
 // Amount of tags we take from each saved article to find new articles.
 var SEARCH_TAGS_AMOUNT = 3
 
-// Min length of the dna array.
-var DNA_MIN_LENGHT = 5
-
-// We try to get only tags which have higher freq number than this.
-// If we can't satisfy the min length when applied this freq filter,
-// we reduce this number by 1 until it is 1.
-var DNA_START_FREQ = 3
-
 /**
  * Get user tags for articles lookup.
  *
@@ -55,6 +47,14 @@ module.exports = function(userId, full) {
     }
 }
 
+// Min length of the dna array.
+var DNA_MIN_LENGHT = 5
+
+// We try to get only tags which have higher freq number than this.
+// If we can't satisfy the min length when applied this freq filter,
+// we reduce this number by 1 until it is 1.
+var DNA_START_FREQ = 3
+
 /**
  * Calc dna - tags identifying users interests-
  */
@@ -71,6 +71,8 @@ function calcDna(memos) {
     })
     // Create a tags dna array.
     var dna = []
+    // !!! avoid breaking _.each
+    delete tagsFreqMap.length
     _(tagsFreqMap).each(function(freq, tag) {
         dna.push({tag: tag, freq: freq})
     })

@@ -13,24 +13,6 @@ var ContainerSurface = require('famous/surfaces/ContainerSurface')
 var app = require('app')
 var constants = require('app/constants')
 
-moment.locale('en-short', {
-    relativeTime : {
-        future: '%s',
-        past: '%s',
-        s: '%ds',
-        m: '%dm',
-        mm: '%dm',
-        h: '%dh',
-        hh: '%dh',
-        d: '%dd',
-        dd: '%dd',
-        M: '%dmo',
-        MM: '%dmo',
-        y: '%dy',
-        yy: '%dy'
-    }
-})
-
 function Article() {
     View.apply(this, arguments)
     var width = app.context.getSize()[0]
