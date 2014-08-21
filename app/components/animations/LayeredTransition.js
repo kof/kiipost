@@ -14,22 +14,22 @@ LayeredTransition.DEFAULT_OPTIONS = {
         duration: 300,
         curve: 'easeIn'
     },
-    outOpacity: 0,
+    outOpacity: 1,
     outScale: 0.9,
     outTransition: {
         duration: 300,
         curve: 'easeIn'
     },
-    size: null
+    size: null,
+    inZ: 2,
+    outZ: 0
 }
 
 inherits(LayeredTransition, BaseTransition)
 module.exports = LayeredTransition
 
 LayeredTransition.prototype.outOpacity = function(val) {
-    var o = this.options
-
-    return o.outOpacity + (1 - o.outOpacity) * val
+    return 1
 }
 
 LayeredTransition.prototype.outTransform = function(val) {
@@ -40,7 +40,7 @@ LayeredTransition.prototype.outTransform = function(val) {
 
     return Transform.multiply(
         Transform.scale(scale, scale, scale),
-        Transform.translate(x, y, 0)
+        Transform.translate(x, y, o.outZ)
     )
 }
 
@@ -51,8 +51,5 @@ LayeredTransition.prototype.inOpacity = function() {
 LayeredTransition.prototype.inTransform = function(val) {
     var o = this.options
 
-    return Transform.multiply(
-        Transform.translate(o.size[0] * (1 - val), 0, 0),
-        Transform.inFront
-    )
+    return Transform.translate(o.size[0] * (1 - val), 0, o.inZ)
 }

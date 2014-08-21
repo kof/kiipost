@@ -7,6 +7,7 @@ var _ = require('underscore')
 var StreamCollection = require('app/components/stream/collections/Stream')
 var BaseTransition = require('app/components/animations/BaseTransition')
 var MemoModel = require('app/components/memo/models/Memo')
+var Overlay = require('app/components/overlay/Overlay')
 
 var MemosView = require('./views/Memos')
 
@@ -18,6 +19,7 @@ function Memos(options) {
     }
     options = _.extend({}, Memos.DEFAULT_OPTIONS, options)
     this.models = options.models
+    this.views = {}
     Controller.call(this, options)
     this.router = this.options.router
     this._reset = false
@@ -30,24 +32,27 @@ Memos.prototype.initialize = function() {
         urlRoot: '/api/memos',
         model: MemoModel
     })
-    this.view = new MemosView({
+    this.views.memo = new MemosView({
         collection: this.collection,
         models: this.models
     })
     this.baseTransition = new BaseTransition()
-    this.view.on('menu:change', this._onMenuChange.bind(this))
+    this.views.memo.on('menu:change', this._onMenuChange.bind(this))
     // XXX
     // Fix EventProxy
-    this.view.on('open', this._onMemoOpen.bind(this))
+    this.views.memo.on('open', this._onMemoOpen.bind(this))
     app.context
         .on('memos:open', this._onOpen.bind(this))
         .on('fullArticle:close', this._onFullArticleClose.bind(this))
         .on('fullArticle:kiiposted', this._onFullArticleKiiposted.bind(this))
+
+    this.views.overlay = new Overlay()
+    app.context.add(this.views.overlay)
 }
 
 Memos.prototype.memos = function() {
-    app.controller.show(this.view, function() {
-        this.view.load({reset: this._reset})
+    app.controller.show(this.views.memo, function() {
+        this.views.memo.load({reset: this._reset})
         this._reset = false
     }.bind(this))
 }
@@ -63,6 +68,7 @@ Memos.prototype._onOpen = function() {
 }
 
 Memos.prototype._onMemoOpen = function(e) {
+    this.views.overlay.show()
     app.context.emit('fullArticle:open', e)
 }
 
@@ -71,9 +77,10 @@ Memos.prototype._onFullArticleClose = function(e) {
     this.navigate('memos')
     this.memos()
     this.baseTransition.commit(app.controller)
+    this.views.overlay.hide()
 }
 
 Memos.prototype._onFullArticleKiiposted = function() {
     this._reset = true
-    this.view.loaded = false
+    this.views.memo.loaded = false
 }
