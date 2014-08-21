@@ -9,6 +9,8 @@
 }
 .full-article .original {
     right: 0;
+    font-size: 1.6rem;
+    padding: 1rem;
 }
 .full-article .header {
     padding: 0;
