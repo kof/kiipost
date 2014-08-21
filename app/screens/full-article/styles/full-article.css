@@ -41,4 +41,6 @@
     font-family: 'Ubuntu';
     color: #d2d2d2;
 }
-
+.full-article .date {
+    text-align: right;
+}

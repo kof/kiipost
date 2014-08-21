@@ -26,13 +26,13 @@
 .article .link,
 .article .date {
     font-family: 'Ubuntu-M';
-    padding: 0.3rem 0.7rem 0 0.7rem;
+    padding: 0 0.7rem;
     font-size: 0.8rem;
-    line-height: 1;
+    line-height: 1.4;
     text-decoration: none;
     color: #bebebe;
 }
 .article .date {
-    padding: 0.3rem 0.7rem 0 0;
+    padding-left: 0;
     text-align: right;
 }

@@ -91,7 +91,7 @@ FullArticle.prototype.initialize = function() {
     this.body.pipe(this.scrollview)
     this.surfaces.push(this.body)
 
-    var linkWidth =  this._size[0] - o.date.width - o.padding
+    var linkWidth =  this._size[0] - o.date.width - o.padding * 2
     this.link = new Surface({
         classes: ['truncate', 'link'],
         size: [linkWidth, o.link.height]
