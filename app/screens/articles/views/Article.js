@@ -15,9 +15,8 @@ var constants = require('app/constants')
 
 function Article() {
     View.apply(this, arguments)
-    var width = app.context.getSize()[0]
     this.model = this.options.model
-    this.options.size = [width, Math.round(width * constants.BRULE_RATIO)]
+    this.options.size = Article.getSize()
     this.scrollviewController = this.options.stream.scrollviewController
     this.initialize()
     this.setContent()
@@ -36,6 +35,11 @@ Article.DEFAULT_OPTIONS = {
     title: {height: 0.39},
     summary: {height: 0.43},
     date: {width: 40}
+}
+
+Article.getSize = function() {
+    var width = app.context.getSize()[0]
+    return [width, Math.round(width * constants.BRULE_RATIO)]
 }
 
 Article.prototype.initialize = function() {

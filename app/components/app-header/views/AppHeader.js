@@ -8,7 +8,7 @@ var ContainerSurface = require('famous/surfaces/ContainerSurface')
 
 var constants = require('app/constants')
 
-function Header() {
+function AppHeader() {
     View.apply(this, arguments)
 
     var size = this.options.context.getSize()
@@ -19,7 +19,7 @@ function Header() {
 
     this.surface = new ContainerSurface({
         size: this.options.size,
-        classes: ['header']
+        classes: ['app-header']
     })
     this.surface.pipe(this._eventOutput)
     this.surface.on('click', this._onClick.bind(this))
@@ -48,24 +48,24 @@ function Header() {
     this.models.user.on('change:imageUrl', this._onAvatarChange.bind(this))
 }
 
-inherits(Header, View)
-module.exports = Header
+inherits(AppHeader, View)
+module.exports = AppHeader
 
-Header.DEFAULT_OPTIONS = {
+AppHeader.DEFAULT_OPTIONS = {
     title: 'Home',
     models: null
 }
 
-Header.prototype.setAvatarUrl = function(url) {
+AppHeader.prototype.setAvatarUrl = function(url) {
     //this.avatar.setProperties({backgroundImage: 'url(' + url + ')'})
 }
 
-Header.prototype._onClick = function() {
+AppHeader.prototype._onClick = function() {
     //if (e.target.classList.contains('avatar')) {
         //console.log('avatar')
     //}
 }
 
-Header.prototype._onAvatarChange = function(model, url) {
+AppHeader.prototype._onAvatarChange = function(model, url) {
     this.setAvatarUrl(url)
 }

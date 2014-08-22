@@ -1,28 +1,27 @@
 .full-article .background {
     background-color: #f0f1f2;
 }
-.full-article .close,
-.full-article .original {
+.full-article .header {
+    color: #fff;
+}
+.full-article .header .close,
+.full-article .header .original {
     font-size: 1.7rem;
     padding: 1rem 0.5rem;
     text-shadow: 1px 1px 4px rgba(0,0,0,0.50);
 }
-.full-article .original {
+.full-article .header .original {
     right: 0;
     font-size: 1.6rem;
     padding: 1rem;
 }
-.full-article .header {
-    padding: 0;
-}
-.full-article .title {
+.full-article .header .title {
     font-family: 'Ubuntu-M';
     font-size: 1.5rem;
     line-height: 2rem;
     max-height: 6rem;
     bottom: 0.7rem;
     padding: 0 1rem;
-    color: #fff;
     text-shadow: 1px 1px 4px rgba(0,0,0,0.50);
     text-align: left;
     overflow: hidden;
@@ -34,14 +33,14 @@
     font-size: 1rem;
     line-height: 1.4;
 }
-.full-article .text p {
+.full-article .body .text p {
     margin: 0;
 }
-.full-article .link,
-.full-article .date {
+.full-article .body .link,
+.full-article .body .date {
     font-family: 'Ubuntu';
     color: #d2d2d2;
 }
-.full-article .date {
+.full-article .body .date {
     text-align: right;
 }

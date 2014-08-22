@@ -7,7 +7,7 @@ var Modifier = require('famous/core/Modifier')
 var Transform = require('famous/core/Transform')
 
 var EventProxy = require('app/components/famous/EventProxy')
-var HeaderView = require('app/components/header/views/Header')
+var HeaderView = require('app/components/app-header/views/AppHeader')
 var StreamView = require('app/components/stream/views/Stream')
 var MenuView = require('app/components/menu/views/Menu')
 var JumperView = require('app/components/jumper/views/Jumper')

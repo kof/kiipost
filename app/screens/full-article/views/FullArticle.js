@@ -11,9 +11,16 @@ var Modifier = require('famous/core/Modifier')
 var Group = require('famous/core/Group')
 var Transform = require('famous/core/Transform')
 var Scrollview = require('famous/views/Scrollview')
+var Utility = require('famous/utilities/Utility')
 
 var ParallaxedBackgroundView = require('app/components/parallaxed-background/ParallaxedBackground')
 var SpinnerView = require('app/components/spinner/views/Renderer')
+var StreamView = require('app/components/stream/views/Stream')
+var StreamCollection = require('app/components/stream/collections/Stream')
+var ArticleModel = require('app/components/article/models/Article')
+
+// XXX Move it to components
+var ArticleView = require('app/screens/articles/views/Article')
 
 var app = require('app')
 var constants = require('app/constants')
@@ -21,8 +28,8 @@ var constants = require('app/constants')
 function FullArticle() {
     View.apply(this, arguments)
     this._size = app.context.getSize()
-    this._textSize = [undefined, undefined]
     this.surfaces = []
+    this.collections = {}
     this.initialize()
 }
 
@@ -57,8 +64,7 @@ FullArticle.prototype.initialize = function() {
         classes: ['header'],
         size: this._headerSize
     })
-    this.header.pipe(this.scrollview)
-    this.surfaces.push(this.header)
+    this.addItem(this.header)
 
     this.close = new Surface({
         classes: ['icomatic', 'close'],
@@ -88,8 +94,7 @@ FullArticle.prototype.initialize = function() {
             padding: o.padding + 'px'
         }
     })
-    this.body.pipe(this.scrollview)
-    this.surfaces.push(this.body)
+    this.addItem(this.body)
 
     var linkWidth =  this._size[0] - o.date.width - o.padding * 2
     this.link = new Surface({
@@ -118,6 +123,26 @@ FullArticle.prototype.initialize = function() {
     })).add(this.text)
     this._minBodyHeight = this._size[1] - this._headerSize[1] + o.padding * 2
 
+    this.collections.articlesStream = new StreamCollection(null, {
+        urlRoot: '/api/articles',
+        model: ArticleModel
+    })
+
+    this.articlesStream = new StreamView({
+        scrollview: {direction: Utility.Direction.X},
+        ItemView: ArticleView,
+        collection: this.collections.articlesStream,
+        classes: ['articles'],
+        context: app.context,
+        back: false,
+        size: ArticleView.getSize()
+    })
+    //this.articlesStream.pipe(this.scrollview)
+    this.articlesStream.scrollview._eventInput.pipe(this.scrollview)
+    //this.body.add(this.articlesStream)
+    this.addItem(this.articlesStream)
+    this.articlesStream.load()
+
     this.spinner = new SpinnerView({spinner: {
         containerTransform: Transform.translate(0, this._headerSize[1], 1),
         containerSize: [this._size[0], this._minBodyHeight],
@@ -128,7 +153,6 @@ FullArticle.prototype.initialize = function() {
     this.add(this.spinner)
 
     this._optionsManager.on('change', this._onOptionsChange.bind(this))
-    this.container.on('recall', this._onRecall.bind(this))
 }
 
 FullArticle.prototype.setContent = function() {
@@ -163,6 +187,11 @@ FullArticle.prototype.cleanup = function() {
     this.text.setSize([undefined, true])
     this._resetImage()
     this.bg.setContent()
+}
+
+FullArticle.prototype.addItem = function(renderable) {
+    renderable.pipe(this.scrollview)
+    this.surfaces.push(renderable)
 }
 
 FullArticle.prototype.setOption = function(key, value) {
@@ -218,10 +247,6 @@ FullArticle.prototype._open = function(url) {
         'allowInlineMediaPlayback=yes',
         'transitionstyle=fliphorizontal'
     ].join(','))
-}
-
-FullArticle.prototype._onRecall = function() {
-    clearInterval(this._textSizeIntervalId)
 }
 
 FullArticle.prototype._onClose = function() {

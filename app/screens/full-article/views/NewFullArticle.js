@@ -5,6 +5,7 @@ var inherits = require('inherits')
 var View = require('famous/core/View')
 var Surface = require('famous/core/Surface')
 var Modifier = require('famous/core/Modifier')
+var Transform = require('famous/core/Transform')
 
 var FullArticleView = require('./FullArticle')
 var MemoEditView = require('app/components/memo-edit/views/MemoEdit')
@@ -23,8 +24,14 @@ module.exports = NewFullArticle
 
 NewFullArticle.DEFAULT_OPTIONS = {
     models: null,
-    darkInTransition: {duration: 200},
-    darkOutTransition: {duration: 200}
+    memoEdit: {
+        darkInTransition: {duration: 200},
+        darkOutTransition: {duration: 200},
+    },
+    kiipostButton: {
+        size: [60, 60],
+        origin: [0.5, 0.96]
+    }
 }
 
 NewFullArticle.prototype.initialize = function() {
@@ -38,10 +45,13 @@ NewFullArticle.prototype.initialize = function() {
 
     this.kiipostBtn = new Surface({
         classes: ['kiipost-btn'],
-        size: [true, true]
+        size: this.options.kiipostButton.size
     })
     this.kiipostBtn.on('click', this._onMemoEditOpen.bind(this))
-    this.container.add(new Modifier({origin: [0.5, 0.96]})).add(this.kiipostBtn)
+    this.container.add(new Modifier({
+        origin: this.options.kiipostButton.origin,
+        transform: Transform.translate(0, 0, 1)
+    })).add(this.kiipostBtn)
 
     this.memoEdit = new MemoEditView({
         context: app.context,
@@ -51,6 +61,15 @@ NewFullArticle.prototype.initialize = function() {
         .on('hide', this._onMemoEditHide.bind(this))
         .on('saved', this._onMemoEditSaved.bind(this))
     this.add(this.memoEdit)
+
+    var height = app.context.getSize()[1]
+    var buttonHeight = this.kiipostBtn.getSize()[1]
+    var buttonPadding = height - height * this.options.kiipostButton.origin[1]
+    this.articleView.addItem(new Surface({
+        classes: ['placeholder'],
+        size: [undefined, buttonPadding * 2 + buttonHeight],
+        properties: {background: '#fff'}
+    }))
 
     this._optionsManager.on('change', this._onOptionsChange.bind(this))
 }
@@ -79,13 +98,13 @@ NewFullArticle.prototype.closeMemoEdit = function(options) {
 
 NewFullArticle.prototype._onMemoEditOpen = function(e) {
     this.articleView.bg.pause()
-    this.containerModifier.setOpacity(0.3, this.options.darkInTransition)
+    this.containerModifier.setOpacity(0.3, this.options.memoEdit.darkInTransition)
     this.memoEdit.show()
     this._memoEditOpened = true
 }
 
 NewFullArticle.prototype._onMemoEditHide = function() {
-    this.closeMemoEdit(this.options.darkOutTransition)
+    this.closeMemoEdit(this.options.memoEdit.darkOutTransition)
 }
 
 NewFullArticle.prototype._onMemoEditSaved = function() {

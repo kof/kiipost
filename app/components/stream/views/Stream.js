@@ -13,6 +13,8 @@ var ScrollviewController = require('app/components/famous/ScrollviewController')
 var InfiniteScrollView  = require('app/components/famous/InfiniteScrollview')
 var SpinnerRenderer  = require('app/components/spinner/views/Renderer')
 var SpinnerContainerView  = require('app/components/spinner/views/Container')
+var Utility = require('famous/utilities/Utility')
+
 
 /**
  * Infinite list.
@@ -47,26 +49,33 @@ Stream.EVENTS = {
 
 Stream.DEFAULT_OPTIONS = {
     ItemView: null,
-    views: null,
-    classes: null
-}
-
-Stream.prototype.initialize = function() {
-    var size = this.options.context.getSize()
-
-    this.stream = new Group({classes: this.options.classes})
-    this.add(this.stream)
-
-    this.scrollview = new InfiniteScrollView({
-        // Trigger infiniteScroll event 5 screens before items actually get rendered.
-        offset: size[1] * 10,
+    views: [],
+    classes: null,
+    scrollview: {
         // Margin for full scroller to render invisible items
         // before they get shown.
         // Don't render more then can be displayed.
         margin: 0,
         // Makes the scrolling animation stop faster.
-        friction: 0.003
-    })
+        friction: 0.003,
+        direction: Utility.Direction.Y
+    },
+    back: {
+        classes: ['back'],
+        properties: {backgroundColor: '#fff'}
+    }
+}
+
+Stream.prototype.initialize = function() {
+    var o = this.options
+    var size = o.context.getSize()
+
+    this.stream = new Group({classes: o.classes})
+    this.add(this.stream)
+
+    // Trigger infiniteScroll event 5 screens before items actually get rendered.
+    o.scrollview.offset = size[o.scrollview.direction] * 10,
+    this.scrollview = new InfiniteScrollView(o.scrollview)
     this.scrollviewController = new ScrollviewController(this.scrollview)
     this.stream.add(new Modifier({
         transform: Transform.inFront
@@ -76,13 +85,12 @@ Stream.prototype.initialize = function() {
 
     this.collection.on('end', this._onCollectionEnd.bind(this))
 
-    this.back = new Surface({
-        classes: ['back'],
-        properties: {backgroundColor: '#fff'}
-    })
-    this.stream.add(new Modifier({
-        transform: Transform.translate(0, this._initialViewsHeight)
-    })).add(this.back)
+    if (o.back) {
+        this.back = new Surface(o.back)
+        this.stream.add(new Modifier({
+            transform: Transform.translate(0, this._initialViewsHeight)
+        })).add(this.back)
+    }
 
     this.centralSpinner = new SpinnerRenderer()
     var spinnerY = this._initialViewsHeight + (size[1] - this._initialViewsHeight - this.centralSpinner.getSize()[1]) / 2
