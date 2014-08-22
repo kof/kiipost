@@ -132,7 +132,7 @@ FullArticle.prototype.initialize = function() {
 }
 
 FullArticle.prototype.setContent = function() {
-    this.setTitle(this.model.get('title'))
+    this.title.setContent(this.model.get('title'))
     // TODO fix design issues and use html.
     var descr = this.model.get('description') || ''
     descr = descr.replace(/<\/p>/g, '___br___')
@@ -152,13 +152,13 @@ FullArticle.prototype.setContent = function() {
  * Content to be rendered before transition starts.
  */
 FullArticle.prototype.setPreviewContent = function(model, callback) {
-    this.setTitle(model.get('title'))
+    this.title.setContent(model.get('title'))
     this.bg.resume()
     this._setImage(model, callback)
 }
 
 FullArticle.prototype.cleanup = function() {
-    this.title.textContent = ''
+    this.title.setContent('')
     this.text.setContent('')
     this.text.setSize([undefined, true])
     this._resetImage()
@@ -167,12 +167,6 @@ FullArticle.prototype.cleanup = function() {
 
 FullArticle.prototype.setOption = function(key, value) {
     this._optionsManager.set(key, value)
-}
-
-FullArticle.prototype.setTitle = function(title) {
-    if (title == this._currTitle) return
-    this.title.setContent(title)
-    this._currTitle = title
 }
 
 FullArticle.prototype._resetImage = function() {
