@@ -19,12 +19,13 @@
     font-family: 'Ubuntu-M';
     font-size: 1.5rem;
     line-height: 2rem;
-    max-height: 6.2rem;
-    bottom: 0;
-    padding: 0 1rem 0.7rem 1rem;
+    max-height: 6rem;
+    bottom: 0.7rem;
+    padding: 0 1rem;
     color: #fff;
     text-shadow: 1px 1px 4px rgba(0,0,0,0.50);
     text-align: left;
+    overflow: hidden;
 }
 .full-article .body {
     font-family: 'Ubuntu-L';
