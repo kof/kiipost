@@ -11,9 +11,8 @@ var HeaderView = require('app/components/app-header/views/AppHeader')
 var StreamView = require('app/components/stream/views/Stream')
 var MenuView = require('app/components/menu/views/Menu')
 var JumperView = require('app/components/jumper/views/Jumper')
+var ArticleView = require('app/components/article/views/Article')
 var ParallaxedBackgroundView = require('app/components/parallaxed-background/ParallaxedBackground')
-
-var ArticleView = require('./Article')
 
 var app = require('app')
 

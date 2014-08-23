@@ -9,11 +9,9 @@ var Transform = require('famous/core/Transform')
 var ContainerSurface = require('famous/surfaces/ContainerSurface')
 
 var StreamView = require('app/components/stream/views/Stream')
+var ArticleView = require('app/components/article/views/Article')
 var StreamCollection = require('app/components/stream/collections/Stream')
 var ArticleModel = require('app/components/article/models/Article')
-
-// XXX Move it to components
-var ArticleView = require('app/screens/articles/views/Article')
 
 var app = require('app')
 
