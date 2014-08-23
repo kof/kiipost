@@ -3,16 +3,15 @@
 var m = require('mongoose')
 var _ = require('underscore')
 
-var getTags = require('../helpers/getTags')
+var tagsHelper = require('../helpers/tags')
 
 /**
  * Read saved memos.
  */
 exports.read = function* () {
     var articleId = this.params.id
-    var article
 
-    article = yield m.model('article')
+    var article = yield m.model('article')
         .findById(articleId)
         .lean()
         .exec()
@@ -24,7 +23,7 @@ exports.read = function* () {
     }
 
     var userId = this.session.user._id
-    var tagsData = yield getTags(userId, true)
+    var tagsData = yield tagsHelper.get(userId, true)
 
     tagsData = tagsData.filter(function(data) {
         if (_.intersection(data.tags, article.tags).length === data.tags.length) {

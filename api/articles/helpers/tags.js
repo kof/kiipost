@@ -2,7 +2,7 @@ var _ = require('underscore')
 var m = require('mongoose')
 
 // Amount of tags we take from each saved article to find new articles.
-var SEARCH_TAGS_AMOUNT = 3
+exports.SEARCH_TAGS_AMOUNT = 3
 
 /**
  * Get user tags for articles lookup.
@@ -11,7 +11,7 @@ var SEARCH_TAGS_AMOUNT = 3
  * @param {Boolean} [full] return full memos and articles
  * @return {Array}
  */
-module.exports = function(userId, full) {
+exports.get = function(userId, full) {
     return function* () {
         var memos = yield m.model('memo')
             .find({userId: userId})
@@ -26,12 +26,12 @@ module.exports = function(userId, full) {
             var article = memo.articles[0]
 
             // Filter memos where tags amount is too low.
-            if (!article || article.tags.length < SEARCH_TAGS_AMOUNT) return
+            if (!article || article.tags.length < exports.SEARCH_TAGS_AMOUNT) return
 
             // Verify if this tags fit our dna, don't use them if not
             if (!_.intersection(article.tags, dna).length) return
 
-            var searchTags = _(article.tags).first(SEARCH_TAGS_AMOUNT).sort()
+            var searchTags = _(article.tags).first(exports.SEARCH_TAGS_AMOUNT).sort()
             // Create map to avoid duplicates
             var tagsStr = String(searchTags)
             if (!map[tagsStr]) {

@@ -18,13 +18,20 @@ module.exports = Stream
 Stream.DEFAULT_OPTIONS = {
     limit: 50,
     skip: 0,
-    urlRoot: null
+    urlRoot: null,
+    relatedToArticle: null,
+    relatedToMemo: null,
+    qs: ['skip', 'limit', 'relatedToArticle', 'relatedToMemo']
 }
 
 Stream.prototype.url = function() {
-    var o = this.options
-    var params = _.pick(o, 'skip', 'limit')
-    return this.urlRoot + '?' + qs.stringify(params)
+    var query = {}
+
+    _(this.options).each(function(value, option, options) {
+        if (value != null && options.qs.indexOf(option) >= 0) query[option] = value
+    })
+
+    return this.urlRoot + '?' + qs.stringify(query)
 }
 
 Stream.prototype._onSync = function() {

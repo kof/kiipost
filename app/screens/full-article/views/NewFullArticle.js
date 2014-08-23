@@ -75,6 +75,7 @@ NewFullArticle.prototype.initialize = function() {
 }
 
 NewFullArticle.prototype.setContent = function() {
+    this.articleView.collections.articlesStream.options.relatedToArticle = this.model.id
     this.articleView.setContent()
     var avatarUrl = this.models.user.get('imageUrl')
     if (avatarUrl) this.memoEdit.setAvatarUrl(avatarUrl)
