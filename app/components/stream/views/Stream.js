@@ -8,6 +8,7 @@ var Surface = require('famous/core/Surface')
 var Group = require('famous/core/Group')
 var Transform = require('famous/core/Transform')
 var Modifier = require('famous/core/Modifier')
+var EventHandler = require('famous/core/EventHandler')
 
 var ScrollviewController = require('app/components/famous/ScrollviewController')
 var InfiniteScrollView  = require('app/components/famous/InfiniteScrollview')
@@ -35,6 +36,7 @@ function Stream() {
     }, this)
     this._loading = false
     this._endReached = false
+    this.containersEventOutput = new EventHandler()
     this.initialize()
 }
 
@@ -107,13 +109,16 @@ Stream.prototype.initialize = function() {
 }
 
 Stream.prototype.load = function(options) {
-    if (this._loading || this._endReached) return
     if (!options) options = {}
+    if (!options.reset && (this._loading || this._endReached)) return
+
     this._loading = true
     this.scrollview.infiniteScrollDisabled = true
+
     if (options.reset) {
-        this.views.splice(this._initialViewsAmount, this.views.length)
-        this.collection.options.skip = 0
+        this.views.splice(this._initialViewsAmount)
+        this.collection.reset()
+        this.scrollviewController.goToFirst(undefined, 0)
     } else {
         // Minus views added before scroll items.
         this.collection.options.skip = this.views.length - this._initialViewsAmount
@@ -142,6 +147,7 @@ Stream.prototype.setContent = function() {
             stream: this
         })
         view.container.pipe(this.scrollview)
+        view.container.pipe(this.containersEventOutput)
         view.pipe(this._eventOutput)
         this.views.push(view)
     }, this)

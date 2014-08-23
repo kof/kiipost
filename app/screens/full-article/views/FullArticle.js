@@ -13,11 +13,12 @@ var Transform = require('famous/core/Transform')
 var Scrollview = require('famous/views/Scrollview')
 var Utility = require('famous/utilities/Utility')
 
+var GenericSync = require('famous/inputs/GenericSync')
+
+
 var ParallaxedBackgroundView = require('app/components/parallaxed-background/ParallaxedBackground')
 var SpinnerView = require('app/components/spinner/views/Renderer')
 var StreamView = require('app/components/stream/views/Stream')
-var StreamCollection = require('app/components/stream/collections/Stream')
-var ArticleModel = require('app/components/article/models/Article')
 
 // XXX Move it to components
 var ArticleView = require('app/screens/articles/views/Article')
@@ -29,7 +30,7 @@ function FullArticle() {
     View.apply(this, arguments)
     this._size = app.context.getSize()
     this.surfaces = []
-    this.collections = {}
+    this.collections = this.options.collections
     this.initialize()
 }
 
@@ -122,12 +123,6 @@ FullArticle.prototype.initialize = function() {
         transform: Transform.translate(0, o.link.height)
     })).add(this.text)
     this._minBodyHeight = this._size[1] - this._headerSize[1] + o.padding * 2
-
-    this.collections.articlesStream = new StreamCollection(null, {
-        urlRoot: '/api/articles',
-        model: ArticleModel
-    })
-
     this.articlesStream = new StreamView({
         scrollview: {direction: Utility.Direction.X},
         ItemView: ArticleView,
@@ -137,11 +132,8 @@ FullArticle.prototype.initialize = function() {
         back: false,
         size: ArticleView.getSize()
     })
-    //this.articlesStream.pipe(this.scrollview)
-    this.articlesStream.scrollview._eventInput.pipe(this.scrollview)
-    //this.body.add(this.articlesStream)
+    this.articlesStream.containersEventOutput.pipe(this.scrollview)
     this.addItem(this.articlesStream)
-    this.articlesStream.load()
 
     this.spinner = new SpinnerView({spinner: {
         containerTransform: Transform.translate(0, this._headerSize[1], 1),
@@ -170,6 +162,7 @@ FullArticle.prototype.setContent = function() {
     var date = this.model.get('pubDate')
     if (date) this.date.setContent(moment(date).locale('en-short').fromNow(true))
     setTimeout(this._setBodySize.bind(this), 500)
+    this.articlesStream.load({reset: true})
 }
 
 /**

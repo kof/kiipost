@@ -24,7 +24,7 @@ InfiniteScrollView.prototype._setContentSize = function() {
     var node = this._node
     this.contentSize = 0
     for (var i in node._.array) {
-        this.contentSize += node._.array[i].getSize()[1]
+        this.contentSize += node._.array[i].getSize()[this.options.direction]
     }
 }
 
@@ -43,7 +43,9 @@ function _monitor() {
     }.bind(this))
 
     this.sync.on('update',function(data) {
-        if (!this.infiniteScrollDisabled && this._scroller._position + Math.abs(this._pageSpringPosition) + this.getSize()[1] >= this.contentSize - this.offset) {
+        var position = this._scroller._position + Math.abs(this._pageSpringPosition) +
+            this.getSize()[this.options.direction]
+        if (!this.infiniteScrollDisabled && position >= this.contentSize - this.offset) {
             this._eventOutput.emit('infiniteScroll')
         }
     }.bind(this))

@@ -33,3 +33,8 @@ Stream.prototype._onSync = function() {
         this.emit('end')
     }
 }
+
+Stream.prototype.reset = function() {
+    this.options.skip = 0
+    return Stream.super_.apply(this, arguments)
+}

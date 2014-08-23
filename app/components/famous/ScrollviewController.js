@@ -29,8 +29,8 @@ ScrollviewController.prototype.getIndex = function() {
 }
 
 ScrollviewController.prototype.goToIndex = function(i, velocity, position) {
-    // if we're already there, don't move!
-    if (i == this.getIndex()) return
+    // if we're already there, don't move if no explicit position passed.
+    if (i == this.getIndex() && position == null) return
     // create ViewSequence node at proper location
     var _ = this.scrollview._node._
     var node = new ViewSequence({
@@ -56,14 +56,14 @@ ScrollviewController.prototype.goToIndex = function(i, velocity, position) {
     this.scrollview.setVelocity(velocity)
 }
 
-ScrollviewController.prototype.goToFirst = function(velocity, position) {
-    this.goToIndex(this.scrollview._node._.firstIndex, velocity, position)
+ScrollviewController.prototype.goToFirst = function(velocity) {
+    this.goToIndex(this.scrollview._node._.firstIndex, velocity, 0)
 }
 
 ScrollviewController.prototype.goToLast = function(velocity, position) {
     var _ = this.scrollview._node._
     var index = _.firstIndex + _.array.length - 1
-    this.goToIndex(index, position, velocity)
+    this.goToIndex(index, velocity, position)
 }
 
 ScrollviewController.prototype._scrollEnd = function() {
