@@ -33,7 +33,8 @@ RelatedArticles.prototype.initialize = function() {
 
     this.collection = new StreamCollection(null, {
         urlRoot: '/api/articles',
-        model: ArticleModel
+        model: ArticleModel,
+        limit: 10
     })
 
     this.container = new ContainerSurface({
