@@ -6,15 +6,13 @@ var FullArticleView = require('./FullArticle')
 
 var View = require('famous/core/View')
 
-function MemoFullArticle(options) {
+function MemoFullArticle() {
     View.apply(this, arguments)
-    this.models = options.models
     this.initialize()
 }
 
 inherits(MemoFullArticle, View)
 module.exports = MemoFullArticle
-
 
 MemoFullArticle.prototype.initialize = function() {
     this.articleView = new FullArticleView(this.options)
@@ -28,7 +26,7 @@ MemoFullArticle.prototype.initialize = function() {
 }
 
 MemoFullArticle.prototype.setContent = function() {
-    this.articleView.collections.articlesStream.options.relatedToMemo = this.models.memo.id
+    this.articleView.relatedArticles.collection.options.relatedToMemo = this.models.memo.id
     this.articleView.setContent()
 }
 

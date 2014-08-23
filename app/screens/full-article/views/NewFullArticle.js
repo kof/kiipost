@@ -26,7 +26,7 @@ NewFullArticle.DEFAULT_OPTIONS = {
     models: null,
     memoEdit: {
         darkInTransition: {duration: 200},
-        darkOutTransition: {duration: 200},
+        darkOutTransition: {duration: 200}
     },
     kiipostButton: {
         size: [60, 60],
@@ -75,7 +75,7 @@ NewFullArticle.prototype.initialize = function() {
 }
 
 NewFullArticle.prototype.setContent = function() {
-    this.articleView.collections.articlesStream.options.relatedToArticle = this.model.id
+    this.articleView.relatedArticles.collection.options.relatedToArticle = this.model.id
     this.articleView.setContent()
     var avatarUrl = this.models.user.get('imageUrl')
     if (avatarUrl) this.memoEdit.setAvatarUrl(avatarUrl)

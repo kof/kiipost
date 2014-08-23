@@ -7,8 +7,6 @@ var _ = require('underscore')
 var LayeredTransition = require('app/components/animations/LayeredTransition')
 var ArticleModel = require('app/components/article/models/Article')
 var MemoModel = require('app/components/memo/models/Memo')
-var StreamCollection = require('app/components/stream/collections/Stream')
-var ArticleModel = require('app/components/article/models/Article')
 
 var MemoFullArticleView = require('./views/MemoFullArticle')
 var NewFullArticleView = require('./views/NewFullArticle')
@@ -23,7 +21,6 @@ function FullArticle(options) {
 
     options = _.extend({}, FullArticle.DEFAULT_OPTIONS, options)
     this.models = options.models
-    this.collections = {}
     Controller.call(this, options)
     this.router = this.options.router
 }
@@ -34,18 +31,10 @@ module.exports = FullArticle
 FullArticle.DEFAULT_OPTIONS = {models: null}
 
 FullArticle.prototype.initialize = function() {
-    this.collections.articlesStream = new StreamCollection(null, {
-        urlRoot: '/api/articles',
-        model: ArticleModel
-    })
-
     this.layeredTransition = new LayeredTransition({size: app.context.getSize()})
     this.views = {
-        memoFullArticleView: new MemoFullArticleView({collections: this.collections}),
-        newFullArticleView: new NewFullArticleView({
-            models: this.models,
-            collections: this.collections
-        })
+        memoFullArticleView: new MemoFullArticleView(),
+        newFullArticleView: new NewFullArticleView({models: this.models})
     }
     this.views.memoFullArticleView.on('close', this._onClose.bind(this))
     this.views.newFullArticleView.on('close', this._onClose.bind(this))

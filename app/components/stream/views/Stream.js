@@ -14,8 +14,6 @@ var ScrollviewController = require('app/components/famous/ScrollviewController')
 var InfiniteScrollView  = require('app/components/famous/InfiniteScrollview')
 var SpinnerRenderer  = require('app/components/spinner/views/Renderer')
 var SpinnerContainerView  = require('app/components/spinner/views/Container')
-var Utility = require('famous/utilities/Utility')
-
 
 /**
  * Infinite list.
@@ -60,7 +58,7 @@ Stream.DEFAULT_OPTIONS = {
         margin: 0,
         // Makes the scrolling animation stop faster.
         friction: 0.003,
-        direction: Utility.Direction.Y
+        direction: 1
     },
     back: {
         classes: ['back'],
@@ -76,7 +74,7 @@ Stream.prototype.initialize = function() {
     this.add(this.stream)
 
     // Trigger infiniteScroll event 5 screens before items actually get rendered.
-    o.scrollview.offset = size[o.scrollview.direction] * 10,
+    o.scrollview.offset = size[o.scrollview.direction] * 10
     this.scrollview = new InfiniteScrollView(o.scrollview)
     this.scrollviewController = new ScrollviewController(this.scrollview)
     this.stream.add(new Modifier({
