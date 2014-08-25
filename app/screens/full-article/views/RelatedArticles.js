@@ -38,9 +38,9 @@ RelatedArticles.prototype.initialize = function() {
         limit: 10
     })
 
+    this.containerSize = [size[0], size[1] + o.title.height]
     this.container = new ContainerSurface({
-        classes: ['related-articles'],
-        size: [size[0], size[1] + o.title.height]
+        classes: ['related-articles']
     })
 
     this.category = new Surface({
@@ -67,5 +67,7 @@ RelatedArticles.prototype.initialize = function() {
 }
 
 RelatedArticles.prototype.load = function(options) {
-    this.stream.load(options)
+    this.stream.load(options, function() {
+        if (this.collection.length) this.container.setSize(this.containerSize)
+    }.bind(this))
 }

@@ -149,6 +149,7 @@ FullArticle.prototype.setContent = function() {
     var date = this.model.get('pubDate')
     if (date) this.date.setContent(moment(date).locale('en-short').fromNow(true))
     setTimeout(this._setBodySize.bind(this), 500)
+    this.relatedArticles.container.setSize([undefined, 0])
     this.relatedArticles.load({reset: true})
 }
 

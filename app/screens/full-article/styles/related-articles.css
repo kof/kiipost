@@ -1,5 +1,6 @@
 .related-articles {
     background: #f0f1f2;
+    overflow: hidden;
 }
 .related-articles .category {
     color: #000;

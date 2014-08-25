@@ -104,7 +104,7 @@ Stream.prototype.initialize = function() {
     this.edgeSpinner.spinner.addClass('green')
 }
 
-Stream.prototype.load = function(options) {
+Stream.prototype.load = function(options, callback) {
     if (!options) options = {}
     if (!options.reset && (this._loading || this._endReached)) return
 
@@ -130,6 +130,7 @@ Stream.prototype.load = function(options) {
             this.centralSpinner.hide()
             var spinnerIndex = this.views.indexOf(this.edgeSpinner)
             if (spinnerIndex >= 0) this.views.splice(spinnerIndex, 1)
+            if (callback) callback()
         }.bind(this))
 }
 
