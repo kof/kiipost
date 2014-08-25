@@ -49,10 +49,10 @@ Overlay.DEFAULT_OPTIONS = {
     outTransition: {duration: 300}
 }
 
-Overlay.prototype.show = function() {
-    RenderController.prototype.show.call(this, this.container, this.options.inTransition)
+Overlay.prototype.show = function(transition) {
+    RenderController.prototype.show.call(this, this.container, transition || this.options.inTransition)
 }
 
-Overlay.prototype.hide = function() {
-    RenderController.prototype.hide.call(this, this.options.outTransition)
+Overlay.prototype.hide = function(transition) {
+    RenderController.prototype.hide.call(this, transition || this.options.outTransition)
 }

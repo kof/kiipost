@@ -8,7 +8,6 @@ var app = require('app')
 
 var ArticleModel = require('app/components/article/models/Article')
 var StreamCollection = require('app/components/stream/collections/Stream')
-var Overlay = require('app/components/overlay/Overlay')
 
 var ArticlesView = require('./views/Articles')
 
@@ -41,9 +40,6 @@ Articles.prototype.initialize = function() {
     app.context
         .on('fullArticle:close', this._onFullArticleClose.bind(this))
         .on('articles:open', this._onOpen.bind(this))
-
-    this.views.overlay = new Overlay()
-    app.context.add(this.views.overlay)
 }
 
 Articles.prototype.articles = function() {
@@ -56,14 +52,12 @@ Articles.prototype._onMenuChange = function(e) {
 }
 
 Articles.prototype._onArticleOpen = function(e) {
-    this.views.overlay.show()
     app.context.emit('fullArticle:open', e)
 }
 
 Articles.prototype._onFullArticleClose = function(e) {
     if (e.isMemo) return
     this.navigate('articles')
-    this.views.overlay.hide()
     this.articles()
 }
 

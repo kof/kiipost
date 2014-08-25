@@ -20,12 +20,11 @@ function ParallaxedBackground() {
 
     this.container = new ContainerSurface({
         classes: ['background'],
-        properties: {
-            zIndex: o.properties.zIndex,
-            overflow: 'hidden'
-        }
+        properties: {overflow: 'hidden'}
     })
-    this.add(this.container)
+    this.add(new Modifier({
+        transform: Transform.translate(0, 0, o.z)
+    })).add(this.container)
 
     if (o.overlay) {
         this.overlay = new Surface({
@@ -61,11 +60,12 @@ ParallaxedBackground.DEFAULT_OPTIONS = {
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
-        backgroundImage: null,
-        zIndex: -1
+        backgroundImage: null
     },
     context: null,
-    overlay: false
+    // Dark overlay over background to make fonts on top look good.
+    overlay: false,
+    z: -1
 }
 
 ParallaxedBackground.prototype.setContent = function(url) {

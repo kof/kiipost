@@ -14,6 +14,11 @@ function MemoFullArticle() {
 inherits(MemoFullArticle, View)
 module.exports = MemoFullArticle
 
+MemoFullArticle.DEFAULT_OPTIONS = {
+    models: null,
+    z: 2
+}
+
 MemoFullArticle.prototype.initialize = function() {
     this.articleView = new FullArticleView(this.options)
     this.articleView.container.addClass('memo-full-article')

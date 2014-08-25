@@ -32,26 +32,27 @@ NewFullArticle.DEFAULT_OPTIONS = {
     kiipostButton: {
         size: [60, 60],
         origin: [0.5, 0.96]
-    }
+    },
+    z: 2
 }
 
 NewFullArticle.prototype.initialize = function() {
-    this.articleView = new FullArticleView(this.options)
+    var o = this.options
+    this.articleView = new FullArticleView(o)
     this.articleView.container.addClass('new-full-article')
     this.container = this.articleView.container
-    this.containerModifier = this.articleView.containerModifier
     this.spinner = this.articleView.spinner
     this.articleView.pipe(this._eventOutput)
     this.add(this.articleView)
 
     this.kiipostBtn = new Surface({
         classes: ['kiipost-btn'],
-        size: this.options.kiipostButton.size
+        size: o.kiipostButton.size
     })
     this.kiipostBtn.on('click', this._onMemoEditOpen.bind(this))
     this.container.add(new Modifier({
-        origin: this.options.kiipostButton.origin,
-        transform: Transform.translate(0, 0, 1)
+        origin: o.kiipostButton.origin,
+        transform: Transform.translate(0, 0, o.z)
     })).add(this.kiipostBtn)
 
     this.memoEdit = new MemoEditView({
@@ -65,7 +66,7 @@ NewFullArticle.prototype.initialize = function() {
 
     var height = app.context.getSize()[1]
     var buttonHeight = this.kiipostBtn.getSize()[1]
-    var buttonPadding = height - height * this.options.kiipostButton.origin[1]
+    var buttonPadding = height - height * o.kiipostButton.origin[1]
     this.articleView.addItem(new Surface({
         classes: ['placeholder'],
         size: [undefined, buttonPadding * 2 + buttonHeight],
@@ -90,17 +91,15 @@ NewFullArticle.prototype.cleanup = function() {
     this.articleView.cleanup.apply(this.articleView, arguments)
 }
 
-NewFullArticle.prototype.closeMemoEdit = function(options) {
+NewFullArticle.prototype.closeMemoEdit = function() {
     if (!this._memoEditOpened) return
     this.articleView.bg.resume()
-    this.containerModifier.setOpacity(1, options || {duration: 0})
     this.memoEdit.hide({silent: true})
     this._memoEditOpened = false
 }
 
 NewFullArticle.prototype._onMemoEditOpen = _.debounce(function(e) {
     this.articleView.bg.pause()
-    this.containerModifier.setOpacity(0.3, this.options.memoEdit.darkInTransition)
     this.memoEdit.show()
     this._memoEditOpened = true
 }, 500, true)

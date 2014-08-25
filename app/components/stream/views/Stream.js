@@ -8,7 +8,6 @@ var Surface = require('famous/core/Surface')
 var Group = require('famous/core/Group')
 var Transform = require('famous/core/Transform')
 var Modifier = require('famous/core/Modifier')
-var EventHandler = require('famous/core/EventHandler')
 
 var ScrollviewController = require('app/components/famous/ScrollviewController')
 var InfiniteScrollView  = require('app/components/famous/InfiniteScrollview')
@@ -34,7 +33,6 @@ function Stream() {
     }, this)
     this._loading = false
     this._endReached = false
-    this.containersEventOutput = new EventHandler()
     this.initialize()
 }
 
@@ -145,7 +143,6 @@ Stream.prototype.setContent = function() {
             stream: this
         })
         view.container.pipe(this.scrollview)
-        view.container.pipe(this.containersEventOutput)
         view.pipe(this._eventOutput)
         this.views.push(view)
     }, this)

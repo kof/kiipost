@@ -7,7 +7,6 @@ var _ = require('underscore')
 var StreamCollection = require('app/components/stream/collections/Stream')
 var BaseTransition = require('app/components/animations/BaseTransition')
 var MemoModel = require('app/components/memo/models/Memo')
-var Overlay = require('app/components/overlay/Overlay')
 
 var MemosView = require('./views/Memos')
 
@@ -45,9 +44,6 @@ Memos.prototype.initialize = function() {
         .on('memos:open', this._onOpen.bind(this))
         .on('fullArticle:close', this._onFullArticleClose.bind(this))
         .on('fullArticle:kiiposted', this._onFullArticleKiiposted.bind(this))
-
-    this.views.overlay = new Overlay()
-    app.context.add(this.views.overlay)
 }
 
 Memos.prototype.memos = function() {
@@ -68,7 +64,6 @@ Memos.prototype._onOpen = function() {
 }
 
 Memos.prototype._onMemoOpen = function(e) {
-    this.views.overlay.show()
     app.context.emit('fullArticle:open', e)
 }
 
@@ -77,7 +72,6 @@ Memos.prototype._onFullArticleClose = function(e) {
     this.navigate('memos')
     this.memos()
     this.baseTransition.commit(app.controller)
-    this.views.overlay.hide()
 }
 
 Memos.prototype._onFullArticleKiiposted = function() {

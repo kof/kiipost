@@ -7,6 +7,7 @@ var _ = require('underscore')
 var LayeredTransition = require('app/components/animations/LayeredTransition')
 var ArticleModel = require('app/components/article/models/Article')
 var MemoModel = require('app/components/memo/models/Memo')
+var Overlay = require('app/components/overlay/Overlay')
 
 var MemoFullArticleView = require('./views/MemoFullArticle')
 var NewFullArticleView = require('./views/NewFullArticle')
@@ -21,6 +22,7 @@ function FullArticle(options) {
 
     options = _.extend({}, FullArticle.DEFAULT_OPTIONS, options)
     this.models = options.models
+    this.views = {}
     Controller.call(this, options)
     this.router = this.options.router
 }
@@ -31,13 +33,17 @@ module.exports = FullArticle
 FullArticle.DEFAULT_OPTIONS = {models: null}
 
 FullArticle.prototype.initialize = function() {
-    this.layeredTransition = new LayeredTransition({size: app.context.getSize()})
-    this.views = {
-        memoFullArticleView: new MemoFullArticleView(),
-        newFullArticleView: new NewFullArticleView({models: this.models})
-    }
+    this.layeredTransition = new LayeredTransition({context: app.context})
+
+    this.views.memoFullArticleView = new MemoFullArticleView()
     this.views.memoFullArticleView.on('close', this._onClose.bind(this))
+
+    this.views.newFullArticleView = new NewFullArticleView({models: this.models})
     this.views.newFullArticleView.on('close', this._onClose.bind(this))
+
+    this.views.overlay = new Overlay()
+    app.context.add(this.views.overlay)
+
     app.context.on('fullArticle:open', this._onOpen.bind(this))
 }
 
@@ -57,6 +63,7 @@ FullArticle.prototype._show = function(id, isMemo, model, callback) {
     this.current = id
 
     if (!isCached) view.cleanup()
+    this.views.overlay.show()
 
     if (model) {
         if (isMemo) model = model.get('articles')[0]
@@ -65,11 +72,11 @@ FullArticle.prototype._show = function(id, isMemo, model, callback) {
     } else show.call(this)
 
     function show() {
-        if (!isCached) view.spinner.show(true)
         app.controller.show(view, load.bind(this))
     }
 
     function load() {
+        this.views.overlay.hide({duration: 0})
         if (!isCached) this._load(id, isMemo)
         if (callback) callback()
     }
@@ -79,10 +86,11 @@ FullArticle.prototype._load = function(id, isMemo) {
     var view = this._currView
 
     this.isMemo = isMemo
+    view.spinner.show(true)
     this.models.user.authorize.then(function() {
         var xhr
         var memo = new MemoModel(isMemo ? {_id: id} : {userId: this.models.user.id})
-        view.setOptions({models: _.defaults({memo: memo}, view.models)})
+        view.setOptions({models: _({memo: memo}).defaults(view.models)})
 
         if (isMemo) {
             xhr = memo.fetch().then(function() {
@@ -112,5 +120,6 @@ FullArticle.prototype._onOpen = function(model) {
 }
 
 FullArticle.prototype._onClose = function() {
+    this.views.overlay.hide()
     app.context.emit('fullArticle:close', {isMemo: this.isMemo})
 }

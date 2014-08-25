@@ -36,14 +36,14 @@ FullArticle.DEFAULT_OPTIONS = {
     model: null,
     padding: 16,
     link: {height: 40},
-    date: {width: 40}
+    date: {width: 40},
+    z: 0
 }
 
 FullArticle.prototype.initialize = function() {
     var o = this.options
     this.container = new Group({classes: ['full-article']})
-    this.containerModifier = new Modifier()
-    this.add(this.containerModifier).add(this.container)
+    this.add(this.container)
 
     this.scrollview = new Scrollview()
     this.container.add(this.scrollview)
@@ -119,12 +119,11 @@ FullArticle.prototype.initialize = function() {
     })).add(this.text)
     this._minBodyHeight = this._size[1] - this._headerSize[1] + o.padding * 2
 
-    this.relatedArticles = new RelatedArticles()
-    this.relatedArticles.container.pipe(this.scrollview)
-    this.addItem(this.relatedArticles)
+    this.relatedArticles = new RelatedArticles({z: o.z})
+    this.addItem(this.relatedArticles.container)
 
     this.spinner = new SpinnerView({spinner: {
-        containerTransform: Transform.translate(0, this._headerSize[1], 1),
+        containerTransform: Transform.translate(0, this._headerSize[1], o.z + 1),
         containerSize: [this._size[0], this._minBodyHeight],
         hasBox: false
     }})
@@ -150,7 +149,7 @@ FullArticle.prototype.setContent = function() {
     var date = this.model.get('pubDate')
     if (date) this.date.setContent(moment(date).locale('en-short').fromNow(true))
     setTimeout(this._setBodySize.bind(this), 500)
-    this.relatedArticles.stream.load({reset: true})
+    this.relatedArticles.load({reset: true})
 }
 
 /**

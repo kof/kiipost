@@ -24,7 +24,8 @@ inherits(RelatedArticles, View)
 module.exports = RelatedArticles
 
 RelatedArticles.DEFAULT_OPTIONS = {
-    title: {height: 70}
+    title: {height: 70},
+    z: 0
 }
 
 RelatedArticles.prototype.initialize = function() {
@@ -41,7 +42,6 @@ RelatedArticles.prototype.initialize = function() {
         classes: ['related-articles'],
         size: [size[0], size[1] + o.title.height]
     })
-    this.add(this.container)
 
     this.category = new Surface({
         classes: ['category'],
@@ -49,7 +49,9 @@ RelatedArticles.prototype.initialize = function() {
         size: [undefined, o.title.height],
         properties: {lineHeight: o.title.height + 'px'}
     })
-    this.container.add(this.category)
+    this.container.add(new Modifier({
+        transform: Transform.translate(0, 0, o.z)
+    })).add(this.category)
 
     this.stream = new StreamView({
         scrollview: {direction: 0},
@@ -60,6 +62,10 @@ RelatedArticles.prototype.initialize = function() {
         back: false
     })
     this.container.add(new Modifier({
-        transform: Transform.translate(0, o.title.height)
+        transform: Transform.translate(0, o.title.height, o.z)
     })).add(this.stream)
+}
+
+RelatedArticles.prototype.load = function(options) {
+    this.stream.load(options)
 }
