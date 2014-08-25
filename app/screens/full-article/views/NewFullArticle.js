@@ -10,6 +10,7 @@ var Transform = require('famous/core/Transform')
 
 var FullArticleView = require('./FullArticle')
 var MemoEditView = require('app/components/memo-edit/views/MemoEdit')
+var Overlay = require('app/components/overlay/Overlay')
 
 var app = require('app')
 var constants = require('app/constants')
@@ -52,8 +53,11 @@ NewFullArticle.prototype.initialize = function() {
     this.kiipostBtn.on('click', this._onMemoEditOpen.bind(this))
     this.container.add(new Modifier({
         origin: o.kiipostButton.origin,
-        transform: Transform.translate(0, 0, o.z)
+        transform: Transform.translate(0, 0, o.z + 2)
     })).add(this.kiipostBtn)
+
+    this.overlay = new Overlay({z: o.z + 3})
+    this.add(this.overlay)
 
     this.memoEdit = new MemoEditView({
         context: app.context,
@@ -62,7 +66,9 @@ NewFullArticle.prototype.initialize = function() {
     this.memoEdit
         .on('hide', this._onMemoEditHide.bind(this))
         .on('saved', this._onMemoEditSaved.bind(this))
-    this.add(this.memoEdit)
+    this.add(new Modifier({
+        transform: Transform.translate(0, 0, o.z + 4)
+    })).add(this.memoEdit)
 
     var height = app.context.getSize()[1]
     var buttonHeight = this.kiipostBtn.getSize()[1]
@@ -100,11 +106,13 @@ NewFullArticle.prototype.closeMemoEdit = function() {
 
 NewFullArticle.prototype._onMemoEditOpen = _.debounce(function(e) {
     this.articleView.bg.pause()
+    this.overlay.show()
     this.memoEdit.show()
     this._memoEditOpened = true
 }, 500, true)
 
 NewFullArticle.prototype._onMemoEditHide = function() {
+    this.overlay.hide()
     this.closeMemoEdit(this.options.memoEdit.darkOutTransition)
 }
 

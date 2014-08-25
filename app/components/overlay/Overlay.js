@@ -20,12 +20,14 @@ function Overlay() {
         }
     })
 
+    var transform = Transform.translate(0, 0, o.z)
+
     this.inTransformMap = function() {
-        return o.inTransform
+        return transform
     }
 
     this.outTransformMap = function() {
-        return o.outTransform
+        return transform
     }
 
     this.inOpacityMap = function(val) {
@@ -41,8 +43,7 @@ inherits(Overlay, RenderController)
 module.exports = Overlay
 
 Overlay.DEFAULT_OPTIONS = {
-    inTransform: Transform.translate(0, 0, 1),
-    outTransform: Transform.translate(0, 0, 1),
+    z: 1,
     opacity: 0.5,
     background: '#000',
     inTransition: {duration: 300},
