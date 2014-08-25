@@ -1,6 +1,7 @@
 'use strict'
 
 var inherits = require('inherits')
+var _ = require('underscore')
 var _s = require('underscore.string')
 var moment = require('moment')
 
@@ -119,7 +120,7 @@ FullArticle.prototype.initialize = function() {
     this._minBodyHeight = this._size[1] - this._headerSize[1] + o.padding * 2
 
     this.relatedArticles = new RelatedArticles()
-    this.relatedArticles.stream.containersEventOutput.pipe(this.scrollview)
+    this.relatedArticles.container.pipe(this.scrollview)
     this.addItem(this.relatedArticles)
 
     this.spinner = new SpinnerView({spinner: {
@@ -229,16 +230,16 @@ FullArticle.prototype._open = function(url) {
     ].join(','))
 }
 
-FullArticle.prototype._onClose = function() {
-    this._eventOutput.emit('close')
-}
-
 FullArticle.prototype._onOptionsChange = function(option) {
     if (option.id == 'model') {
         this.model = option.value
     }
 }
 
-FullArticle.prototype._onOpenOriginal = function() {
+FullArticle.prototype._onClose = _.debounce(function() {
+    this._eventOutput.emit('close')
+}, 500, true)
+
+FullArticle.prototype._onOpenOriginal = _.debounce(function() {
     this._open(this.model.get('url'))
-}
+}, 500, true)

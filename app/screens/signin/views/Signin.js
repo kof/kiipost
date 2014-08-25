@@ -1,6 +1,7 @@
 'use strict'
 
 var inherits = require('inherits')
+var _ = require('underscore')
 
 var View = require('famous/core/View')
 var Surface = require('famous/core/Surface')
@@ -119,10 +120,10 @@ Signin.prototype.animate = function(dir, callback) {
     this.animation[dir](callback)
 }
 
-Signin.prototype._onConnect = function() {
+Signin.prototype._onConnect = _.debounce(function() {
     this._eventOutput.emit('connect')
-}
+}, 500, true)
 
-Signin.prototype._onShowTerms = function() {
+Signin.prototype._onShowTerms = _.debounce(function() {
     this._eventOutput.emit('terms')
-}
+}, 500, true)

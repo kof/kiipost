@@ -75,12 +75,12 @@ Menu.prototype._createItems = function() {
     return items
 }
 
-Menu.prototype._onClick = function(e) {
+Menu.prototype._onClick = _.debounce(function(e) {
     if (!e.target.classList.contains('item')) return
     var name = e.target.getAttribute('data-name')
     if (this.selected && this.selected.name == name) return
     this._eventOutput.emit('change', {name: name})
-}
+}, 500, true)
 
 Menu.prototype._onDeploy = function() {
     this.select(this.options.selected)

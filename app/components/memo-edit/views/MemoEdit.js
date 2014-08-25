@@ -45,7 +45,7 @@ function MemoEdit() {
         classes: ['abort'],
         size: [true, undefined]
     })
-    this.abort.on('click', this.hide.bind(this))
+    this.abort.on('click', this._onHide.bind(this))
     this.actionBar.add(this.abort)
 
     this.counter = new Surface({
@@ -132,7 +132,11 @@ MemoEdit.prototype._onType = _.throttle(function() {
     this.counter.setContent(remaining)
 }, 100, {leading: false})
 
-MemoEdit.prototype._onSave = function() {
+MemoEdit.prototype._onHide = _.debounce(function() {
+    this.hide()
+}, 500, true)
+
+MemoEdit.prototype._onSave = _.debounce(function() {
     if (this.limitViolation || this._saving) return
     this._saving = true
     this.model.set('text', this.textarea.getValue())
@@ -144,4 +148,4 @@ MemoEdit.prototype._onSave = function() {
         .always(function() {
             this._saving = false
         }.bind(this))
-}
+}, 500, true)

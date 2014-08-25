@@ -1,6 +1,7 @@
 'use strict'
 
 var inherits = require('inherits')
+var _ = require('underscore')
 
 var View = require('famous/core/View')
 var Surface = require('famous/core/Surface')
@@ -97,12 +98,12 @@ NewFullArticle.prototype.closeMemoEdit = function(options) {
     this._memoEditOpened = false
 }
 
-NewFullArticle.prototype._onMemoEditOpen = function(e) {
+NewFullArticle.prototype._onMemoEditOpen = _.debounce(function(e) {
     this.articleView.bg.pause()
     this.containerModifier.setOpacity(0.3, this.options.memoEdit.darkInTransition)
     this.memoEdit.show()
     this._memoEditOpened = true
-}
+}, 500, true)
 
 NewFullArticle.prototype._onMemoEditHide = function() {
     this.closeMemoEdit(this.options.memoEdit.darkOutTransition)
