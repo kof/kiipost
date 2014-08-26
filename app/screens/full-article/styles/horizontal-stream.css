@@ -1,8 +1,8 @@
-.related-articles {
+.horizontal-stream {
     background: #f0f1f2;
     overflow: hidden;
 }
-.related-articles .category {
+.horizontal-stream .category {
     color: #000;
     font-size: 1.2rem;
     margin-left: 1rem;

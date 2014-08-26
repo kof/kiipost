@@ -16,7 +16,7 @@ var Scrollview = require('famous/views/Scrollview')
 var ParallaxedBackgroundView = require('app/components/parallaxed-background/ParallaxedBackground')
 var SpinnerView = require('app/components/spinner/views/Renderer')
 
-var RelatedArticles = require('./RelatedArticles')
+var HorizontalStream = require('./HorizontalStream')
 
 var app = require('app')
 var constants = require('app/constants')
@@ -26,6 +26,7 @@ function FullArticle() {
     this._size = app.context.getSize()
     this.surfaces = []
     this.collections = this.options.collections
+    this.models = this.options.models
     this.initialize()
 }
 
@@ -119,8 +120,22 @@ FullArticle.prototype.initialize = function() {
     })).add(this.text)
     this._minBodyHeight = this._size[1] - this._headerSize[1] + o.padding * 2
 
-    this.relatedArticles = new RelatedArticles({z: o.z})
+    this.relatedArticles = new HorizontalStream({
+        type: 'articles',
+        z: o.z,
+        urlRoot: '/api/articles',
+        categoryTitle: 'Related articles'
+    })
     this.addItem(this.relatedArticles.container)
+
+    this.relatedMemos = new HorizontalStream({
+        type: 'memos',
+        z: o.z,
+        urlRoot: '/api/memos',
+        categoryTitle: 'Related kiiposts',
+        models: this.models
+    })
+    this.addItem(this.relatedMemos.container)
 
     this.spinner = new SpinnerView({spinner: {
         containerTransform: Transform.translate(0, this._headerSize[1], o.z + 1),
@@ -150,7 +165,10 @@ FullArticle.prototype.setContent = function() {
     if (date) this.date.setContent(moment(date).locale('en-short').fromNow(true))
     setTimeout(this._setBodySize.bind(this), 500)
     this.relatedArticles.container.setSize([undefined, 0])
-    this.relatedArticles.load({reset: true})
+    this.relatedArticles.load()
+
+    this.relatedMemos.container.setSize([undefined, 0])
+    this.relatedMemos.load()
 }
 
 /**
@@ -233,6 +251,8 @@ FullArticle.prototype._open = function(url) {
 FullArticle.prototype._onOptionsChange = function(option) {
     if (option.id == 'model') {
         this.model = option.value
+    } else if (option.id == 'models') {
+        this.models = option.value
     }
 }
 

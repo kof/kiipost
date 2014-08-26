@@ -12,40 +12,48 @@ var StreamView = require('app/components/stream/views/Stream')
 var ArticleView = require('app/components/article/views/Article')
 var StreamCollection = require('app/components/stream/collections/Stream')
 var ArticleModel = require('app/components/article/models/Article')
+var MemoModel = require('app/components/memo/models/Memo')
+
+var MemoView = require('app/screens/memos/views/Memo')
 
 var app = require('app')
 
-function RelatedArticles() {
+function HorizontalStream() {
     View.apply(this, arguments)
     this.initialize()
 }
 
-inherits(RelatedArticles, View)
-module.exports = RelatedArticles
+inherits(HorizontalStream, View)
+module.exports = HorizontalStream
 
-RelatedArticles.DEFAULT_OPTIONS = {
+HorizontalStream.DEFAULT_OPTIONS = {
     title: {height: 70},
-    z: 0
+    z: 0,
+    urlRoot: null,
+    type: null,
+    categoryTitle: null,
+    models: null
 }
 
-RelatedArticles.prototype.initialize = function() {
+HorizontalStream.prototype.initialize = function() {
     var o = this.options
-    var size = ArticleView.getSize()
+    var ItemView = o.type == 'articles' ? ArticleView : MemoView
+    var size = ItemView.getSize()
 
     this.collection = new StreamCollection(null, {
-        urlRoot: '/api/articles',
-        model: ArticleModel,
+        urlRoot: o.urlRoot,
+        model: o.type == 'articles' ? ArticleModel : MemoModel,
         limit: 10
     })
 
     this.containerSize = [size[0], size[1] + o.title.height]
     this.container = new ContainerSurface({
-        classes: ['related-articles']
+        classes: ['horizontal-stream']
     })
 
     this.category = new Surface({
         classes: ['category'],
-        content: 'Related articles',
+        content: o.categoryTitle,
         size: [undefined, o.title.height],
         properties: {lineHeight: o.title.height + 'px'}
     })
@@ -55,9 +63,10 @@ RelatedArticles.prototype.initialize = function() {
 
     this.stream = new StreamView({
         scrollview: {direction: 0},
-        ItemView: ArticleView,
+        ItemView: ItemView,
         collection: this.collection,
-        classes: ['articles'],
+        models: o.models,
+        classes: [o.type],
         context: app.context,
         back: false
     })
@@ -66,8 +75,8 @@ RelatedArticles.prototype.initialize = function() {
     })).add(this.stream)
 }
 
-RelatedArticles.prototype.load = function(options) {
-     this.stream.load(options, function() {
+HorizontalStream.prototype.load = function() {
+     this.stream.load({reset: true}, function() {
         if (this.collection.length) this.container.setSize(this.containerSize)
     }.bind(this))
 }

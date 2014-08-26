@@ -32,6 +32,7 @@ MemoFullArticle.prototype.initialize = function() {
 
 MemoFullArticle.prototype.setContent = function() {
     this.articleView.relatedArticles.collection.options.relatedToMemo = this.models.memo.id
+    this.articleView.relatedMemos.collection.options.relatedToMemo = this.models.memo.id
     this.articleView.setContent()
 }
 

@@ -35,7 +35,7 @@ FullArticle.DEFAULT_OPTIONS = {models: null}
 FullArticle.prototype.initialize = function() {
     this.layeredTransition = new LayeredTransition({context: app.context})
 
-    this.views.memoFullArticleView = new MemoFullArticleView()
+    this.views.memoFullArticleView = new MemoFullArticleView({models: this.models})
     this.views.memoFullArticleView.on('close', this._onClose.bind(this))
 
     this.views.newFullArticleView = new NewFullArticleView({models: this.models})
@@ -90,7 +90,7 @@ FullArticle.prototype._load = function(id, isMemo) {
     this.models.user.authorize.then(function() {
         var xhr
         var memo = new MemoModel(isMemo ? {_id: id} : {userId: this.models.user.id})
-        view.setOptions({models: _({memo: memo}).defaults(view.models)})
+        view.setOptions({models: _({memo: memo}).defaults(this.models)})
 
         if (isMemo) {
             xhr = memo.fetch().then(function() {
