@@ -98,8 +98,9 @@ Stream.prototype.initialize = function() {
 
     this.add(this.centralSpinner)
 
+    var itemSize = o.ItemView.getSize()
     this.edgeSpinner = new SpinnerContainerView({
-        containerSize: [size[0], 64]
+        containerSize: o.direction == 1 ? [itemSize[0], 64] : [64, itemSize[1]]
     })
     this.edgeSpinner.spinner.addClass('green')
 }

@@ -27,16 +27,15 @@ pool.setCreator(function() {
     return map
 })
 
-function MemoItem() {
+function Memo() {
     View.apply(this, arguments)
 
-    var width = app.context.getSize()[0]
-    var height = Math.round(width * constants.BRULE_RATIO)
+    var size = Memo.getSize()
 
     this.model = this.options.model
     this.models = this.options.models
-    this.options.size = [width, height]
-    this._imageWidth = Math.round((height - (height * this.options.memoHeight)) * constants.GOLDEN_RATIO)
+    this.options.size = size
+    this._imageWidth = Math.round((size[1] - (size[1] * this.options.memoHeight)) * constants.GOLDEN_RATIO)
     this.scrollviewController = this.options.stream.scrollviewController
 
     this._poolItem = pool.get()
@@ -54,16 +53,21 @@ function MemoItem() {
     this.scrollviewController.on('scrollEnd', this._onScrollEnd.bind(this))
 }
 
-inherits(MemoItem, View)
-module.exports = MemoItem
+inherits(Memo, View)
+module.exports = Memo
 
-MemoItem.DEFAULT_OPTIONS = {
+Memo.DEFAULT_OPTIONS = {
     model: null,
     memoHeight: 0.35,
     stream: null
 }
 
-MemoItem.prototype.setContent = function() {
+Memo.getSize = function() {
+    var width = app.context.getSize()[0]
+    return [width, Math.round(width * constants.BRULE_RATIO)]
+}
+
+Memo.prototype.setContent = function() {
     var attr = this.model.attributes
     var article = attr.articles[0] ? attr.articles[0].attributes : {}
     var i = this._poolItem
@@ -96,7 +100,7 @@ MemoItem.prototype.setContent = function() {
     if (!this.scrollviewController.isScrolling && image) setTimeout(this._setImages.bind(this), 300)
 }
 
-MemoItem.prototype._setImages = function() {
+Memo.prototype._setImages = function() {
     if (this._imagesSet) return
     var attr = this.model.attributes
     var image = attr.articles[0] ? attr.articles[0].getImage() : null
@@ -131,25 +135,25 @@ MemoItem.prototype._setImages = function() {
     this._imagesSet = true
 }
 
-MemoItem.prototype._setVisible = function() {
+Memo.prototype._setVisible = function() {
     this._poolItem.container.style.opacity = 1
 }
 
-MemoItem.prototype._onClick = _.debounce(function() {
+Memo.prototype._onClick = _.debounce(function() {
     if (this.scrollviewController.isScrolling) return
     this._eventOutput.emit('open', this.model)
 }, 500, true)
 
-MemoItem.prototype._onScrollEnd = function() {
+Memo.prototype._onScrollEnd = function() {
     if (this._deployed) this._setImages()
 }
 
-MemoItem.prototype._onRecall = function() {
+Memo.prototype._onRecall = function() {
     this._deployed = false
     pool.release(this._poolItem)
 }
 
-MemoItem.prototype._onDeploy = function() {
+Memo.prototype._onDeploy = function() {
     this._deployed = true
     // Without nextTick changes will not applied.
     Engine.nextTick(this.setContent.bind(this))

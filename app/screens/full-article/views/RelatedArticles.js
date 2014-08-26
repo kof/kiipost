@@ -67,7 +67,7 @@ RelatedArticles.prototype.initialize = function() {
 }
 
 RelatedArticles.prototype.load = function(options) {
-    this.stream.load(options, function() {
+     this.stream.load(options, function() {
         if (this.collection.length) this.container.setSize(this.containerSize)
     }.bind(this))
 }
