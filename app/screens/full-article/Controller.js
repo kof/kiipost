@@ -57,7 +57,7 @@ FullArticle.prototype.memos = function(id) {
 
 FullArticle.prototype._show = function(id, isMemo, model, callback) {
     var prev = this.current
-    var view = this._currView = isMemo ? this.views.memoFullArticleView : this.views.newFullArticleView
+    var view = this._currView = this.views[(isMemo ? 'memo' : 'new') + 'FullArticleView']
     var isCached = prev == id
 
     this.current = id

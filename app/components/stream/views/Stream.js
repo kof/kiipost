@@ -24,7 +24,7 @@ function Stream() {
     View.apply(this, arguments)
 
     this.models = this.options.models
-    this.views = this.options.views
+    this.views = _(this.options.views).clone()
     this.collection = this.options.collection
     this._initialViewsAmount = this.views.length
     this._initialViewsHeight = 0
