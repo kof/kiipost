@@ -165,5 +165,5 @@ Article.prototype._onRecall = function() {
 
 Article.prototype._onClick = _.debounce(function() {
     if (this.scrollviewController.isScrolling) return
-    this._eventOutput.emit('open', this.model)
+    this._eventOutput.emit('open', this)
 }, 500, true)

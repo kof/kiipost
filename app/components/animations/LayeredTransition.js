@@ -7,11 +7,10 @@ var BaseTransition = require('./BaseTransition')
 
 function LayeredTransition() {
     BaseTransition.apply(this, arguments)
-    this.size = this.options.context.getSize()
 }
 
 LayeredTransition.DEFAULT_OPTIONS = {
-    context: null,
+    size: null,
     inTransition: {
         duration: 300,
         curve: 'easeIn'
@@ -22,7 +21,6 @@ LayeredTransition.DEFAULT_OPTIONS = {
         duration: 300,
         curve: 'easeIn'
     },
-    size: null,
     inZ: 2,
     outZ: 0
 }
@@ -38,11 +36,11 @@ LayeredTransition.prototype.outOpacity = function(val) {
 LayeredTransition.prototype.outTransform = function(val) {
     var o = this.options
     var scale = o.outScale + (1 - o.outScale) * val
-    var x = (this.size[0] - this.size[0] * scale) / 2
-    var y = (this.size[1] - this.size[1] * scale) / 2
+    var x = (o.size[0] - o.size[0] * scale) / 2
+    var y = (o.size[1] - o.size[1] * scale) / 2
 
     return Transform.multiply(
-        Transform.scale(scale, scale, scale),
+        Transform.scale(scale, scale),
         Transform.translate(x, y, o.outZ)
     )
 }
@@ -50,5 +48,5 @@ LayeredTransition.prototype.outTransform = function(val) {
 LayeredTransition.prototype.inTransform = function(val) {
     var o = this.options
 
-    return Transform.translate(this.size[0] * (1 - val), 0, o.inZ)
+    return Transform.translate(o.size[0] * (1 - val), 0, o.inZ)
 }

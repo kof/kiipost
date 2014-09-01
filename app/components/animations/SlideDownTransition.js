@@ -19,7 +19,8 @@ SlideDownTransition.DEFAULT_OPTIONS = {
         duration: 300,
         curve: easing.outQuart
     },
-    size: null
+    size: null,
+    z: 1
 }
 
 inherits(SlideDownTransition, BaseTransition)
@@ -34,8 +35,5 @@ SlideDownTransition.prototype.inTransform =
 SlideDownTransition.prototype.outTransform = function(val) {
     var height = this.options.size[1]
 
-    return Transform.multiply(
-        Transform.translate(0, (height * val) - height, 0),
-        Transform.inFront
-    )
+    return Transform.translate(0, (height * val) - height, this.options.z)
 }

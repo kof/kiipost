@@ -44,7 +44,6 @@ function Memo() {
         classes: ['memo']
     })
     this.add(this.container)
-    this.container.pipe(this._eventOutput)
 
     this.container.on('click', this._onClick.bind(this))
     this.container.on('recall', this._onRecall.bind(this))
@@ -90,7 +89,6 @@ Memo.prototype.setContent = function() {
     i.content.style.width = textWidth
     i.title.textContent = article.title || ''
     i.summary.textContent = article.summary || ''
-    i.link.href = article.url || ''
     i.link.textContent = article.hostname || ''
 
     this.container.setContent(i.container)
@@ -141,7 +139,7 @@ Memo.prototype._setVisible = function() {
 
 Memo.prototype._onClick = _.debounce(function() {
     if (this.scrollviewController.isScrolling) return
-    this._eventOutput.emit('open', this.model)
+    this._eventOutput.emit('open', this)
 }, 500, true)
 
 Memo.prototype._onScrollEnd = function() {

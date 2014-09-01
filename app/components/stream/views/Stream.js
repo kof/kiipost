@@ -68,14 +68,19 @@ Stream.prototype.initialize = function() {
     var o = this.options
     var size = o.context.getSize()
 
-    this.stream = new Group({classes: o.classes})
-    this.add(this.stream)
+    this.container = new Group({
+        classes: o.classes,
+        properties: {
+            clip: 'rect(' + [0, size[0], size[1], 0].join('px,') + ')'
+        }
+    })
+    this.add(this.container)
 
     // Trigger infiniteScroll event 5 screens before items actually get rendered.
     o.scrollview.offset = size[o.scrollview.direction] * 10
     this.scrollview = new InfiniteScrollView(o.scrollview)
     this.scrollviewController = new ScrollviewController(this.scrollview)
-    this.stream.add(new Modifier({
+    this.container.add(new Modifier({
         transform: Transform.inFront
     })).add(this.scrollview)
     this.scrollview.sequenceFrom(this.views)
@@ -85,7 +90,7 @@ Stream.prototype.initialize = function() {
 
     if (o.back) {
         this.back = new Surface(o.back)
-        this.stream.add(new Modifier({
+        this.container.add(new Modifier({
             transform: Transform.translate(0, this._initialViewsHeight)
         })).add(this.back)
     }

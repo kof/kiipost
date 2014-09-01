@@ -36,7 +36,7 @@ Signin.DEFAULT_OPTIONS = {
 }
 
 Signin.prototype.initialize = function() {
-    this.layeredTransition = new LayeredTransition({context: app.context})
+    this.layeredTransition = new LayeredTransition({size: app.context.getSize()})
     this.baseTransition = new BaseTransition()
 
     var signin = this.views.signin = new SigninView({model: this.models.user})

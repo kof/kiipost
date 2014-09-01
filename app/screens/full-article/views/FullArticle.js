@@ -126,6 +126,7 @@ FullArticle.prototype.initialize = function() {
         urlRoot: '/api/articles',
         categoryTitle: 'Related articles'
     })
+    this.relatedArticles.pipe(this._eventOutput)
     this.addItem(this.relatedArticles.container)
 
     this.relatedMemos = new HorizontalStream({
@@ -135,6 +136,7 @@ FullArticle.prototype.initialize = function() {
         categoryTitle: 'Related kiiposts',
         models: this.models
     })
+    this.relatedMemos.pipe(this._eventOutput)
     this.addItem(this.relatedMemos.container)
 
     this.spinner = new SpinnerView({spinner: {
@@ -257,7 +259,7 @@ FullArticle.prototype._onOptionsChange = function(option) {
 }
 
 FullArticle.prototype._onClose = _.debounce(function() {
-    this._eventOutput.emit('close')
+    this._eventOutput.emit('close', this.model)
 }, 500, true)
 
 FullArticle.prototype._onOpenOriginal = _.debounce(function() {

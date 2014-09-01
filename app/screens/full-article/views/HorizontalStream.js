@@ -70,6 +70,7 @@ HorizontalStream.prototype.initialize = function() {
         context: app.context,
         back: false
     })
+    this.stream.pipe(this._eventOutput)
     this.container.add(new Modifier({
         transform: Transform.translate(0, o.title.height, o.z)
     })).add(this.stream)

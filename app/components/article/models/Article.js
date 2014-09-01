@@ -8,12 +8,12 @@ var url = require('app/components/utils/url')
 
 var wwwRegexp = /^www\./
 
-function Article() {
-    this.name = 'article'
+function Article(attr, options) {
     this.urlRoot = '/api/articles'
     this.defaults = {
         images: []
     }
+    if (options && options.parent) this.parent = options.parent
     Article.super_.apply(this, arguments)
 }
 

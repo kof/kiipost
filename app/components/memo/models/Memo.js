@@ -5,7 +5,7 @@ var Model = require('backbone').Model
 var Article = require('app/components/article/models/Article')
 
 function Memo() {
-    this.name = 'memo'
+    this.isMemo = true
     this.urlRoot = '/api/memos'
     this.defaults = {
         createdAt: new Date(),
@@ -23,7 +23,10 @@ Memo.prototype.initialize = function() {
 
 Memo.prototype.parse = function(data) {
     if (data.articles[0]) {
-        data.articles[0] = new Article(data.articles[0], {parse: true})
+        data.articles[0] = new Article(data.articles[0], {
+            parse: true,
+            parent: this
+        })
     }
     return data
 }

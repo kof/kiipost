@@ -5,6 +5,7 @@ var inherits = require('inherits')
 var _ = require('underscore')
 
 var LayeredTransition = require('app/components/animations/LayeredTransition')
+var SlideTransition = require('app/components/animations/SlideTransition')
 var ArticleModel = require('app/components/article/models/Article')
 var MemoModel = require('app/components/memo/models/Memo')
 var Overlay = require('app/components/overlay/Overlay')
@@ -33,13 +34,9 @@ module.exports = FullArticle
 FullArticle.DEFAULT_OPTIONS = {models: null}
 
 FullArticle.prototype.initialize = function() {
-    this.layeredTransition = new LayeredTransition({context: app.context})
-
-    this.views.memoFullArticleView = new MemoFullArticleView({models: this.models})
-    this.views.memoFullArticleView.on('close', this._onClose.bind(this))
-
-    this.views.newFullArticleView = new NewFullArticleView({models: this.models})
-    this.views.newFullArticleView.on('close', this._onClose.bind(this))
+    var size = app.context.getSize()
+    this.layeredTransition = new LayeredTransition({size: size})
+    this.slideTransition = new SlideTransition({size: size})
 
     this.views.overlay = new Overlay()
     app.context.add(this.views.overlay)
@@ -48,44 +45,53 @@ FullArticle.prototype.initialize = function() {
 }
 
 FullArticle.prototype.new = function(id) {
-    this._show(id, false)
+    this._open({
+        id: id,
+        isMemo: false,
+        overlay: true
+    })
 }
 
 FullArticle.prototype.memos = function(id) {
-    this._show(id, true)
+    this._open({
+        id: id,
+        isMemo: true,
+        overlay: true
+    })
 }
 
-FullArticle.prototype._show = function(id, isMemo, model, callback) {
-    var prev = this.current
-    var view = this._currView = this.views[(isMemo ? 'memo' : 'new') + 'FullArticleView']
-    var isCached = prev == id
+FullArticle.prototype._open = function(options, callback) {
+    var view = this.views[options.id]
+    var isCached = Boolean(view)
+    var model = options.model
 
-    this.current = id
+    if (options.overlay) this.views.overlay.show()
 
-    if (!isCached) view.cleanup()
-    this.views.overlay.show()
-
-    if (model) {
-        if (isMemo) model = model.get('articles')[0]
-        else view.closeMemoEdit()
-        view.setPreviewContent(model, show.bind(this))
-    } else show.call(this)
+    if (isCached) {
+        show.call(this)
+    } else {
+        view = this.views[options.id] = this._createView(options.id, options.isMemo)
+        if (model) {
+            if (options.isMemo) {
+                model = model.get('articles')[0]
+            }
+            view.setPreviewContent(model, show.bind(this))
+        } else show.call(this)
+    }
 
     function show() {
-        app.controller.show(view, load.bind(this))
-    }
-
-    function load() {
-        this.views.overlay.hide({duration: 0})
-        if (!isCached) this._load(id, isMemo)
-        if (callback) callback()
+        app.controller.show(view, function() {
+            if (options.overlay) this.views.overlay.hide({duration: 0})
+            if (!isCached) this._load(view, options)
+            if (callback) callback()
+        }.bind(this))
     }
 }
 
-FullArticle.prototype._load = function(id, isMemo) {
-    var view = this._currView
+FullArticle.prototype._load = function(view, options) {
+    var id = options.id
+    var isMemo = options.isMemo
 
-    this.isMemo = isMemo
     view.spinner.show(true)
     this.models.user.authorize.then(function() {
         var xhr
@@ -109,17 +115,51 @@ FullArticle.prototype._load = function(id, isMemo) {
     }.bind(this))
 }
 
-FullArticle.prototype._onOpen = function(model) {
-    var isMemo = model.name == 'memo'
+FullArticle.prototype._createView = function(id, isMemo) {
+    var view
+
+    if (isMemo) view = new MemoFullArticleView({models: this.models})
+    else view = new NewFullArticleView({models: this.models})
+    view.on('close', this._onClose.bind(this))
+    view.on('open', this._onOpenRelated.bind(this))
+
+    return view
+}
+
+FullArticle.prototype._onOpen = function(view) {
+    var model = view.model
+    var isMemo = model.isMemo
 
     this.layeredTransition.commit(app.controller)
-    this._show(model.id, isMemo, model, function() {
+    this._open({
+        id: model.id,
+        model: model,
+        isMemo: isMemo,
+        overlay: true
+    }, function() {
         this.layeredTransition.commit(app.controller, true)
     }.bind(this))
     this.navigate((isMemo ? 'full-articles/memos' : 'full-articles/new') + '/' + model.id)
 }
 
-FullArticle.prototype._onClose = function() {
+FullArticle.prototype._onOpenRelated = function(view) {
+    var model = view.model
+    var isMemo = model.isMemo
+
+    this._scaleStartSize = view.getSize()
+    this.slideTransition.commit(app.controller)
+    this._open({
+        id: model.id,
+        model: model,
+        isMemo: isMemo
+    }, function() {
+        this.layeredTransition.commit(app.controller, true)
+    }.bind(this))
+    this.navigate((isMemo ? 'full-articles/memos' : 'full-articles/new') + '/' + model.id, {replace: true})
+}
+
+FullArticle.prototype._onClose = function(model) {
+    var isMemo = model.isMemo || (model.parent && model.parent.isMemo)
     this.views.overlay.hide()
-    app.context.emit('fullArticle:close', {isMemo: this.isMemo})
+    app.context.emit('fullArticle:close', {isMemo: isMemo})
 }
