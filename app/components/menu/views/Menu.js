@@ -28,8 +28,8 @@ module.exports = Menu
 Menu.DEFAULT_OPTIONS = {
     size: [undefined, 50],
     items: [
-        {title: 'kiiposts', name: 'memos'},
-        {title: 'discover', name: 'articles'}
+        {title: 'my tweets', name: 'memos'},
+        {title: 'updates', name: 'articles'}
     ],
     selected: 'articles'
 }

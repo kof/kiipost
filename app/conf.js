@@ -10,5 +10,6 @@ exports.server = {
 exports.twitter = {
     accessToken: '{{conf.twitter.accessToken}}',
     accessTokenSecret: '{{conf.twitter.accessTokenSecret}}',
-    userId: '{{conf.twitter.userId}}'
+    userId: '{{conf.twitter.userId}}',
+    shortUrlMaxLength: '{{conf.twitter.shortUrlMaxLength}}'
 }

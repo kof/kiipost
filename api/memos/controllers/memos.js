@@ -4,6 +4,7 @@ var m = require('mongoose')
 var _ = require('underscore')
 
 var tagsHelper = require('api/articles/helpers/tags')
+var queue = require('api/queue')
 
 var RETURN_PROPERTIES = {text: 1, createdAt: 1, tweetId: 1, 'articles.title': 1,
     'articles.url': 1, 'articles.summary': 1, 'articles.images': 1, 'articles.icon': 1,
@@ -69,6 +70,9 @@ function readRelatedMemos() {
     }
 }
 
+// Map of users which required a refresh of twitter data.
+var refreshing = {}
+
 /**
  * Read all memos.
  */
@@ -80,10 +84,23 @@ function readAllMemos() {
             .lean()
             .exec()
 
-        if (user.processing.TwitterSync) {
+        var retry = false
+
+        // We need to avoid that frontend retries to refresh data over and over,
+        // when sync is finished before the next try.
+        // XXX this can't scale
+        if (this.query.refresh && !refreshing[user._id]) {
+            retry = true
+            refreshing[user._id] = true
+            yield queue.enqueue('TwitterSync', {userId: user._id, block: user._id})
+        }
+
+        if (retry || user.processing.TwitterSync) {
             this.status = 'service unavailable'
             this.set('retry-after', 2)
         } else {
+            delete refreshing[user._id]
+
             this.body = yield m.model('memo')
                 .find({userId: user._id})
                 .sort({createdAt: -1})

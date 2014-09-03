@@ -31,15 +31,15 @@ Memos.prototype.initialize = function() {
         urlRoot: '/api/memos',
         model: MemoModel
     })
-    this.views.memo = new MemosView({
+    this.views.memos = new MemosView({
         collection: this.collection,
         models: this.models
     })
     this.baseTransition = new BaseTransition()
-    this.views.memo.on('menu:change', this._onMenuChange.bind(this))
+    this.views.memos.on('menu:change', this._onMenuChange.bind(this))
     // XXX
     // Fix EventProxy
-    this.views.memo.on('open', this._onMemoOpen.bind(this))
+    this.views.memos.on('open', this._onMemoOpen.bind(this))
     app.context
         .on('memos:open', this._onOpen.bind(this))
         .on('fullArticle:close', this._onFullArticleClose.bind(this))
@@ -47,9 +47,10 @@ Memos.prototype.initialize = function() {
 }
 
 Memos.prototype.memos = function() {
-    app.controller.show(this.views.memo, function() {
-        this.views.memo.load({reset: this._reset})
+    app.controller.show(this.views.memos, function() {
+        this.views.memos.load({reset: this._reset, refresh: this._refresh})
         this._reset = false
+        this._refresh = false
     }.bind(this))
 }
 
@@ -76,5 +77,6 @@ Memos.prototype._onFullArticleClose = function(e) {
 
 Memos.prototype._onFullArticleKiiposted = function() {
     this._reset = true
-    this.views.memo.loaded = false
+    this._refresh = true
+    this.views.memos.loaded = false
 }

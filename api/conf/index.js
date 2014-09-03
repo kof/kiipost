@@ -52,9 +52,13 @@ exports.session = {
 }
 
 exports.twitter = {
-    consumerKey: 'JmTqJFn47mOp14NpR0UiSdxig',
-    consumerSecret: 'MHTdjpIwfVjcV2rZOyxesl939FqlnIKFzE50DhLZmG5UCwAViI',
-    cacheFor: ms('1h')
+    // Change also in /cordova/platforms/ios/Kiipost/Plugins/...socialauth/SocialAuthPlugin.m
+    consumerKey: 'Iw8bDtDTP8P1VMIujDGHI5vxD',
+    consumerSecret: 'dnkWMCsJzR4ehUlfqMa7KJOwHylRG6JQy7YhcIsVfpmVPhcyXD',
+    cacheFor: ms('1h'),
+    // Current max length of shortened url.
+    // TODO update this value periodically from twitter.
+    shortUrlMaxLength: 23
 }
 
 exports.queue = {

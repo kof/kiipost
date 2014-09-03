@@ -47,7 +47,8 @@ NewFullArticle.prototype.initialize = function() {
     this.add(this.articleView)
 
     this.kiipostBtn = new Surface({
-        classes: ['kiipost-btn'],
+        content: 'twitter',
+        classes: ['icomatic', 'kiipost-btn'],
         size: o.kiipostButton.size
     })
     this.kiipostBtn.on('click', this._onMemoEditOpen.bind(this))
@@ -61,7 +62,7 @@ NewFullArticle.prototype.initialize = function() {
 
     this.memoEdit = new MemoEditView({
         context: app.context,
-        model: this.models.memo
+        models: this.models
     })
     this.memoEdit
         .on('hide', this._onMemoEditHide.bind(this))
@@ -124,9 +125,9 @@ NewFullArticle.prototype._onMemoEditSaved = function() {
 NewFullArticle.prototype._onOptionsChange = function(option) {
     if (option.id == 'models') {
         this.models = option.value
-        this.memoEdit.model = this.models.memo
     } else if (option.id == 'model') {
         this.model = option.value
+        this.memoEdit.options.models.article = this.model
     }
 
     this.articleView.setOption(option.id, option.value)

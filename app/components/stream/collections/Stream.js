@@ -21,7 +21,8 @@ Stream.DEFAULT_OPTIONS = {
     urlRoot: null,
     relatedToArticle: null,
     relatedToMemo: null,
-    qs: ['skip', 'limit', 'relatedToArticle', 'relatedToMemo']
+    refresh: null,
+    qs: ['skip', 'limit', 'relatedToArticle', 'relatedToMemo', 'refresh']
 }
 
 Stream.prototype.url = function() {

@@ -12,14 +12,35 @@ var FormContainerSurface = require('famous/surfaces/FormContainerSurface')
 var TextareaSurface = require('famous/surfaces/TextareaSurface')
 
 var SlideDownTransition = require('app/components/animations/SlideDownTransition')
+var alert = require('app/components/notification/alert')
+
+var TweetModel = require('../models/Tweet')
+
+var conf = require('app/conf')
 
 function MemoEdit() {
     RenderController.apply(this, arguments)
-
+    this.models = this.options.models
     var o = this.options
+    // 1 is for space after text.
+    this.limit =  o.maxLength - 1 - conf.twitter.shortUrlMaxLength - o.suffix.length
+    this.initialize()
+}
 
-    this.model = o.model
-    this.models = o.models
+inherits(MemoEdit, RenderController)
+module.exports = MemoEdit
+
+MemoEdit.DEFAULT_OPTIONS = {
+    suffix: ' via @kiipost',
+    maxLength: 140,
+    contentSize: [undefined, 180],
+    actionBarSize: [undefined, 50],
+    context: null,
+    models: null
+}
+
+MemoEdit.prototype.initialize = function() {
+    var o = this.options
 
     this.container = new ContainerSurface({
         classes: ['memo-edit']
@@ -34,38 +55,9 @@ function MemoEdit() {
     this.layout.sequenceFrom(this.layoutSequence)
     this.container.add(this.layout)
 
-    this.actionBar = new ContainerSurface({
-        classes: ['action-bar'],
-        size: [undefined, 50]
-    })
-    this.layoutSequence.push(this.actionBar)
-
-    this.abort = new Surface({
-        content: 'cancel',
-        classes: ['abort'],
-        size: [true, undefined]
-    })
-    this.abort.on('click', this._onHide.bind(this))
-    this.actionBar.add(this.abort)
-
-    this.counter = new Surface({
-        classes: ['counter'],
-        content: o.limit,
-        size: [true, true]
-    })
-    this.actionBar.add(this.counter)
-
-    this.submit = new Surface({
-        content: '<span>kiipost</span>',
-        classes: ['submit'],
-        size: [true, undefined]
-    })
-    this.submit.on('click', this._onSave.bind(this))
-    this.actionBar.add(this.submit)
-
     this.memo = new FormContainerSurface({
         classes: ['memo'],
-        size: [undefined, o.contentSize[1] - this.actionBar.getSize()[1]]
+        size: [undefined, o.contentSize[1] - o.actionBarSize[1]]
     })
     this.layoutSequence.push(this.memo)
 
@@ -83,25 +75,40 @@ function MemoEdit() {
     })
     this.memoSurfaces.push(this.avatar)
 
-    this.textarea = new TextareaSurface({
-        placeholder: 'What did you learn from that link?',
-        size: [undefined, undefined]
-    })
+    this.textarea = new TextareaSurface({})
     this.textarea.on('keydown', this._onType.bind(this))
     this.memoSurfaces.push(this.textarea)
 
+    this.actionBar = new ContainerSurface({
+        classes: ['action-bar'],
+        size: o.actionBarSize
+    })
+    this.layoutSequence.push(this.actionBar)
+
+    this.abort = new Surface({
+        content: 'cancel',
+        classes: ['abort'],
+        size: [true, undefined]
+    })
+    this.abort.on('click', this._onHide.bind(this))
+    this.actionBar.add(this.abort)
+
+    this.counter = new Surface({
+        classes: ['counter'],
+        content: this.limit,
+        size: [true, true]
+    })
+    this.actionBar.add(this.counter)
+
+    this.submit = new Surface({
+        content: '<span>tweet</span>',
+        classes: ['submit'],
+        size: [true, undefined]
+    })
+    this.submit.on('click', this._onSave.bind(this))
+    this.actionBar.add(this.submit)
+
     new SlideDownTransition({size: o.contentSize}).commit(this)
-
-}
-
-inherits(MemoEdit, RenderController)
-module.exports = MemoEdit
-
-MemoEdit.DEFAULT_OPTIONS = {
-    limit: 130,
-    contentSize: [undefined, 180],
-    context: null,
-    model: null
 }
 
 MemoEdit.prototype.show = function() {
@@ -121,7 +128,7 @@ MemoEdit.prototype.setAvatarUrl = function(url) {
 }
 
 MemoEdit.prototype._onType = _.throttle(function() {
-    var remaining = this.options.limit - this.textarea.getValue().length
+    var remaining = this.limit - this.textarea.getValue().length
 
     this.limitViolation = remaining < 0
     if (this.limitViolation) {
@@ -137,14 +144,22 @@ MemoEdit.prototype._onHide = _.debounce(function() {
 }, 500, true)
 
 MemoEdit.prototype._onSave = _.debounce(function() {
-    if (this.limitViolation || this._saving) return
+    var text = this.textarea.getValue()
+    if (this.limitViolation || this._saving || !text) return
     this._saving = true
-    this.model.set('text', this.textarea.getValue())
-    this.model.save()
+
+    var model = new TweetModel()
+
+    model.set('text', text + ' ' + this.models.article.get('url') + this.options.suffix)
+
+    model.save()
         .then(function() {
             this._eventOutput.emit('saved')
             this.hide()
         }.bind(this))
+        .fail(function(xhr) {
+            alert(xhr.responseText)
+        })
         .always(function() {
             this._saving = false
         }.bind(this))

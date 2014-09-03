@@ -14,8 +14,8 @@
 #define FB_TOKEN_INFO                FB_API_ROOT "/debug_token"
 
 // change to your application key
-#define TW_CONSUMER_KEY              @"JmTqJFn47mOp14NpR0UiSdxig"
-#define TW_CONSUMER_SECRET           @"MHTdjpIwfVjcV2rZOyxesl939FqlnIKFzE50DhLZmG5UCwAViI"
+#define TW_CONSUMER_KEY              @"Iw8bDtDTP8P1VMIujDGHI5vxD"
+#define TW_CONSUMER_SECRET           @"dnkWMCsJzR4ehUlfqMa7KJOwHylRG6JQy7YhcIsVfpmVPhcyXD"
 #define FB_APP_ID                    @""
 
 @interface SocialAuthPlugin()

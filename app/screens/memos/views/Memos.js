@@ -60,11 +60,14 @@ module.exports = Memos
 
 Memos.DEFAULT_OPTIONS = {}
 
-Memos.prototype.load = function(options) {
-    if (this.loaded) return
+Memos.prototype.load = function(options, callback) {
+    if (this.loaded) {
+        if (callback) callback()
+        return
+    }
     this.stream.centralSpinner.show()
     this.models.user.authorize.then(function() {
-        this.stream.load(options)
+        this.stream.load(options, callback)
     }.bind(this))
     this.loaded = true
 }

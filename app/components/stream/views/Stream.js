@@ -112,10 +112,15 @@ Stream.prototype.initialize = function() {
 
 Stream.prototype.load = function(options, callback) {
     if (!options) options = {}
-    if (!options.reset && (this._loading || this._endReached)) return
+    if (!options.reset && (this._loading || this._endReached)) {
+        if (callback) callback()
+        return
+    }
 
     this._loading = true
     this.scrollview.infiniteScrollDisabled = true
+
+    this.collection.options.refresh = options.refresh
 
     if (options.reset) {
         this.views.splice(this._initialViewsAmount)

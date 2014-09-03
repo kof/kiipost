@@ -1,7 +1,10 @@
 .new-full-article .kiipost-btn {
+    color: #fff;
+    background: #000;
     cursor: pointer;
-    background: url('components/content/images/logo.svg') no-repeat center #000;
-    background-size: 33%;
     border: 3px solid #b4b4b4;
     border-radius: 100%;
+    font-size: 2rem;
+    line-height: 3.5rem;
+    text-align: center;
 }

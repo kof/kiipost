@@ -133,7 +133,7 @@ FullArticle.prototype.initialize = function() {
         type: 'memos',
         z: o.z,
         urlRoot: '/api/memos',
-        categoryTitle: 'Related kiiposts',
+        categoryTitle: 'You tweeted in the past',
         models: this.models
     })
     this.relatedMemos.pipe(this._eventOutput)

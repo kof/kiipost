@@ -13,7 +13,9 @@ function wrap(method, path, defaults) {
         options = _.extend({}, defaults, options)
         options = transformKeys(options, 'underscored')
         return function(callback) {
-            this.get(path, options, function(err, data) {
+            var method = options.method || 'get'
+            delete options.method
+            this[method](path, options, function(err, data) {
                 callback(err, transformKeys(data, 'camelize', true))
             })
         }.bind(this)
@@ -28,6 +30,9 @@ wrap('showUser', 'users/show', {includeEntities: false})
 wrap('getHomeTimeline', 'statuses/home_timeline', {trimUser: true})
 wrap('getUserTimeline', 'statuses/user_timeline', {trimUser: true})
 wrap('getFavorites', 'favorites/list')
+wrap('getConfig', 'help/configuration')
+
+wrap('tweet', 'statuses/update', {method: 'post'})
 
 exports.create = function(auth) {
     auth = transformKeys(auth, 'underscored')
