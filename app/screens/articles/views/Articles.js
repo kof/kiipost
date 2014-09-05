@@ -9,7 +9,7 @@ var Transform = require('famous/core/Transform')
 var EventProxy = require('app/components/famous/EventProxy')
 var HeaderView = require('app/components/app-header/views/AppHeader')
 var StreamView = require('app/components/stream/views/Stream')
-var MenuView = require('app/components/menu/views/Menu')
+var NaviView = require('app/components/navi/views/Navi')
 var JumperView = require('app/components/jumper/views/Jumper')
 var ArticleView = require('app/components/article/views/Article')
 var ParallaxedBackgroundView = require('app/components/parallaxed-background/ParallaxedBackground')
@@ -39,11 +39,11 @@ Articles.prototype.initialize = function() {
         models: this.models
     })
 
-    this.menu = new MenuView({selected: 'articles'})
-    this.menu.pipe(new EventProxy(function(name, data, emit) {
-        emit('menu:' + name, data)
+    this.navi = new NaviView({selected: 'articles'})
+    this.navi.pipe(new EventProxy(function(name, data, emit) {
+        emit('navi:' + name, data)
     })).pipe(this._eventOutput)
-    this.header.surface.add(this.menu)
+    this.header.surface.add(this.navi)
 
     this.stream = new StreamView({
         ItemView: ArticleView,

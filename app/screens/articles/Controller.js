@@ -33,7 +33,7 @@ Articles.prototype.initialize = function() {
         collection: this.collection,
         models: this.models
     })
-    this.views.articles.on('menu:change', this._onMenuChange.bind(this))
+    this.views.articles.on('navi:change', this._onNaviChange.bind(this))
     // XXX
     // Fix EventProxy
     this.views.articles.on('open', this._onArticleOpen.bind(this))
@@ -47,7 +47,7 @@ Articles.prototype.articles = function() {
     app.controller.show(articles, articles.load.bind(articles))
 }
 
-Articles.prototype._onMenuChange = function(e) {
+Articles.prototype._onNaviChange = function(e) {
     app.context.emit(e.name + ':open')
 }
 

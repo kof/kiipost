@@ -36,7 +36,7 @@ Memos.prototype.initialize = function() {
         models: this.models
     })
     this.baseTransition = new BaseTransition()
-    this.views.memos.on('menu:change', this._onMenuChange.bind(this))
+    this.views.memos.on('navi:change', this._onNaviChange.bind(this))
     // XXX
     // Fix EventProxy
     this.views.memos.on('open', this._onMemoOpen.bind(this))
@@ -54,7 +54,7 @@ Memos.prototype.memos = function() {
     }.bind(this))
 }
 
-Memos.prototype._onMenuChange = function(e) {
+Memos.prototype._onNaviChange = function(e) {
     app.context.emit(e.name + ':open')
 }
 
