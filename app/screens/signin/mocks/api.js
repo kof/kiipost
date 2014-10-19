@@ -1,12 +1,10 @@
 'use strict'
 
-var server = require('test/server')
+var server = require('app/test/server')
 
 module.exports = function() {
-    server.respondWith(/\/api\/users/, function(xhr) {
-        var data = JSON.parse(xhr.requestBody)
-        // Set session id
-        data._id = '1234567'
-        xhr.respond(200, null, JSON.stringify(data))
-    })
+    server.respondWith('POST', /\/api\/users/, [
+        200, {'Content-Type':'application/json'},
+        JSON.stringify(require('./users.json'))
+    ])
 }

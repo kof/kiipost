@@ -1,6 +1,6 @@
 'use strict'
 
-var server = require('test/server')
+var server = require('app/test/server')
 
 module.exports = function() {
     server.respondWith('GET', /\/api\/articles/, [

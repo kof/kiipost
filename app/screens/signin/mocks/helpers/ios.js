@@ -3,7 +3,7 @@
 var ios = require('../../helpers/ios')
 var conf = require('app/conf')
 
-function mock() {
+module.exports = function() {
     ios.available = function() {
         return new Promise(function(fulfill, reject) {
             fulfill()
@@ -25,5 +25,3 @@ function mock() {
         return true
     }
 }
-
-if (conf.twitter.userId) mock()
