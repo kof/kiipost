@@ -16,6 +16,9 @@ var constants = require('app/constants')
 
 var tpl = require('../templates/memo.html')
 
+// Its experimental approach for implementing high performance infinite
+// scroll with avoiding performance issues existing at the moment in famo.us core.
+// Pool allows a dom node reuse outside of famous control.
 var pool = new Pool()
 
 pool.setCreator(function() {
