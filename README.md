@@ -1,6 +1,6 @@
 ## Kiipost
 
-This project has died on bootstrapping stage. I have opened the source for demonstration purpose as it contains application written using [famo.us](http://famo.us) and maybe you will find the RSS aggregation service written in node 0.11 using ES6 generators interesting.
+This project has died on bootstrapping stage. I have opened the source for demonstration purpose as it contains application written using [famo.us](http://famo.us) and maybe you will find the RSS aggregation service and website data extraction similar to [embedly](http://embed.ly) written in node 0.11 using ES6 generators interesting.
 
 ## Problem
 Its hard to keep track of specific interests. Social networks are full of noise. News websites are too broad.
