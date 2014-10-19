@@ -14,24 +14,23 @@ Kiipost is a personal mobile app that keeps people posted on the links they twee
 - Install mongodb: 2.6.2 (optionally)
 - Install dependencies: `npm i`
 - Write profile mock file to run without real twitter login
-
-```javascript
-// some-user.js
-module.exports = function(conf) {
-    conf.twitter.accessToken = 'xxx'
-    conf.twitter.accessTokenSecret = 'xxx'
-    conf.twitter.userId = 'xxx'
-}
-```
+    ```javascript
+    // some-user.js
+    module.exports = function(conf) {
+        conf.twitter.accessToken = 'xxx'
+        conf.twitter.accessTokenSecret = 'xxx'
+        conf.twitter.userId = 'xxx'
+    }
+    ```
 - Setup env variables
   - write env file `local`
-```bash
-# local
-export ENV=local
-export MONGO_URL=mongodb://127.0.0.1:27019/kiipost
-export PORT=3000
-export SENTRY_DSN=''
-```
+    ```bash
+    export ENV=local
+    export MONGO_URL=mongodb://127.0.0.1:27019/kiipost
+    export PORT=3000
+    export SENTRY_DSN=''
+    ```
   - load variables `source local`
+
 - build `gulp build -p some-user.js`
 
