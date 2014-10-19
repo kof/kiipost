@@ -10,11 +10,8 @@ Kiipost is a personal mobile app that keeps people posted on the links they twee
 
 ## Build
 
-
-Current app uses mocked http api to work without server.
-To run it with predefined user you need to mock the account:
-
 - Install node: 0.11.x
+- Install mongodb: 2.6.2 (optionally)
 - Install dependencies: `npm i`
 - Write profile mock file to run without real twitter login
 
