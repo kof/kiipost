@@ -22,7 +22,6 @@ function AppHeader() {
         classes: ['app-header']
     })
     this.surface.pipe(this._eventOutput)
-    this.surface.on('click', this._onClick.bind(this))
     this.add(this.surface)
 
     this.logo = new Surface({
@@ -58,12 +57,6 @@ AppHeader.DEFAULT_OPTIONS = {
 
 AppHeader.prototype.setAvatarUrl = function(url) {
     //this.avatar.setProperties({backgroundImage: 'url(' + url + ')'})
-}
-
-AppHeader.prototype._onClick = function() {
-    //if (e.target.classList.contains('avatar')) {
-        //console.log('avatar')
-    //}
 }
 
 AppHeader.prototype._onAvatarChange = function(model, url) {

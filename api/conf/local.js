@@ -1,4 +1,4 @@
 // For the clients.
 exports.client = {
-    baseUrl: 'http://0.0.0.0:3000'
+    baseUrl: 'http://192.168.1.44:3000'
 }

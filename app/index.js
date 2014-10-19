@@ -14,6 +14,7 @@ var RenderController = require('famous/views/RenderController')
 var UserModel = require('./components/user/models/User')
 var BaseTransition = require('./components/animations/BaseTransition')
 var deviceready = require('./components/deviceready')
+var MenuView = require('./components/menu/views/Menu')
 
 var SigninController = require('./screens/signin/Controller')
 var ArticlesController = require('./screens/articles/Controller')
@@ -26,6 +27,7 @@ exports.controller = new RenderController()
 new BaseTransition().commit(exports.controller)
 
 exports.controllers = {}
+exports.views = {}
 
 domready(function() {
     var context = exports.context = Engine.createContext()
@@ -39,6 +41,8 @@ domready(function() {
         var options = {router: true, models: {}}
 
         options.models.user = new UserModel()
+
+        exports.views.menu = new MenuView({context: context})
 
         exports.controllers.signin = new SigninController(options)
         exports.controllers.articles = new ArticlesController(options)

@@ -1,0 +1,15 @@
+.menu {
+    background: #1e1e1e;
+    color: #fff;
+    font-size: 1.2rem;
+    padding: 1.2rem;
+}
+.menu .level-0 {
+    font-family: 'Ubuntu-M';
+    opacity: 0.25;
+}
+.menu .level-1 {
+    font-family: 'Ubuntu-L';
+    opacity: 0.75;
+    padding-left: 2rem;
+}

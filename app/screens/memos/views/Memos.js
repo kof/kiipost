@@ -5,6 +5,7 @@ var inherits = require('inherits')
 var View = require('famous/core/View')
 var Modifier = require('famous/core/Modifier')
 var Transform = require('famous/core/Transform')
+var ContainerSurface = require('famous/surfaces/ContainerSurface')
 
 var EventProxy = require('app/components/famous/EventProxy')
 var HeaderView = require('app/components/app-header/views/AppHeader')
@@ -21,8 +22,12 @@ function Memos() {
 
     this.models = this.options.models
 
+    this.container = new ContainerSurface()
+    this.containerModifier = new Modifier()
+    this.add(this.containerModifier).add(this.container)
+
     this.background = new ParallaxedBackgroundView({context: app.context})
-    this.add(this.background)
+    this.container.add(this.background)
 
     this.header = new HeaderView({
         context: app.context,
@@ -44,7 +49,7 @@ function Memos() {
         context: app.context
     })
     this.stream.pipe(this._eventOutput)
-    this.add(this.stream)
+    this.container.add(this.stream)
 
     // Header can scroll the scrollview.
     this.header.pipe(this.stream.scrollview)

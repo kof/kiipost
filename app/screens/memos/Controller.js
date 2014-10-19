@@ -31,19 +31,25 @@ Memos.prototype.initialize = function() {
         urlRoot: '/api/memos',
         model: MemoModel
     })
-    this.views.memos = new MemosView({
+    var memos = this.views.memos = new MemosView({
         collection: this.collection,
         models: this.models
     })
     this.baseTransition = new BaseTransition()
-    this.views.memos.on('navi:change', this._onNaviChange.bind(this))
+    memos.on('navi:change', this._onNaviChange.bind(this))
     // XXX
     // Fix EventProxy
-    this.views.memos.on('open', this._onMemoOpen.bind(this))
+    memos.on('open', this._onMemoOpen.bind(this))
     app.context
         .on('memos:open', this._onOpen.bind(this))
         .on('fullArticle:close', this._onFullArticleClose.bind(this))
         .on('fullArticle:kiiposted', this._onFullArticleKiiposted.bind(this))
+
+    memos.header.logo.on('click', function() {
+        app.views.menu
+            .setMainModifier(memos.containerModifier)
+            .open()
+    }.bind(this))
 }
 
 Memos.prototype.memos = function() {
