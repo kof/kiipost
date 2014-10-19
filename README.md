@@ -25,13 +25,13 @@ module.exports = function(conf) {
 ```
 - Setup env variables
   - write env file `local`
-    ```bash
-    # local
-    export ENV=local
-    export MONGO_URL=mongodb://127.0.0.1:27019/kiipost
-    export PORT=3000
-    export SENTRY_DSN=''
-    ```
+```bash
+# local
+export ENV=local
+export MONGO_URL=mongodb://127.0.0.1:27019/kiipost
+export PORT=3000
+export SENTRY_DSN=''
+```
   - load variables `source local`
 - build `gulp build -p some-user.js`
 
